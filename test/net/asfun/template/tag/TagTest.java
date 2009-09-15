@@ -91,8 +91,8 @@ public class TagTest {
 	}
 	
 	@Test
-	public void ifchangeFor() throws ScriptException {
-		script = "{% for item in var1|reverse %}{%ifchange item%}{{item}}{%endif%}{% endfor%}";
+	public void ifchangedFor() throws ScriptException {
+		script = "{% for item in var1|reverse %}{%ifchanged item%}{{item}}{%endif%}{% endfor%}";
 		res = engine.eval(script);
 		assertEquals("6894523", res);
 	}

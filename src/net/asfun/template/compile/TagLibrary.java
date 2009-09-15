@@ -38,7 +38,7 @@ public class TagLibrary extends SimpleLibrary<Tag>{
 		register(forTag.getName(), forTag);
 		Tag cycleTag = new CycleTag();
 		register(cycleTag.getName(), cycleTag);
-		Tag ifcTag = new IfchangeTag();
+		Tag ifcTag = new IfchangedTag();
 		register(ifcTag.getName(), ifcTag);
 		
 		Tag ifTag = new IfTag();
