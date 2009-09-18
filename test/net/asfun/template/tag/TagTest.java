@@ -48,6 +48,13 @@ public class TagTest {
 		assertEquals("234545689", res);
 	}
 	
+	@Test(expected=ScriptException.class)
+	public void forTag1() throws ScriptException {
+		script = "{% for  %}{{item}}{% endfor%}";
+		res = engine.eval(script);
+		assertEquals("234545689", res);
+	}
+	
 	@Test
 	public void forLoop() throws ScriptException {
 		script = "{% for item in var1 %}{{loop.first}}{{item}}{% endfor%}";
@@ -193,5 +200,47 @@ public class TagTest {
 		script = "{%if var1|or:var5,'ok' %}hello{%else%}world{%endif%}";
 		res = engine.eval(script);
 		assertEquals("hello", res);
+	}
+	
+	@Test(expected=ScriptException.class)
+	public void ifTag8() throws ScriptException {
+		script = "{%if  %}hello{%else%}world{%endif%}";
+		res = engine.eval(script);
+		assertEquals("hello", res);
+	}
+	
+	@Test
+	public void echo1() throws ScriptException {
+		script = "{{ 	 }}";
+		res = engine.eval(script);
+		assertEquals("", res);
+	}
+	
+	@Test
+	public void echo2() throws ScriptException {
+		script = "{{	_	}}";
+		res = engine.eval(script);
+		assertEquals("", res);
+	}
+	
+	@Test
+	public void echo3() throws ScriptException {
+		script = "{{	%}	}}";
+		res = engine.eval(script);
+		assertEquals("", res);
+	}
+	
+	@Test(expected=ScriptException.class)
+	public void block() throws ScriptException {
+		script = "{%block 	%}";
+		res = engine.eval(script);
+		assertEquals("", res);
+	}
+	
+	@Test
+	public void block1() throws ScriptException {
+		script = "{%block a	%}";
+		res = engine.eval(script);
+		assertEquals("", res);
 	}
 }

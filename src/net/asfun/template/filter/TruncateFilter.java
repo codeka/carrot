@@ -31,7 +31,7 @@ public class TruncateFilter implements Filter{
 				try {
 					length = Integer.valueOf(compiler.resolveString(arg[0]));
 				} catch (Exception e) {
-					JangodLogger.warning("Filter truncate get length error use default >>> 100");
+					JangodLogger.warning("filter truncate get length error use default >>> 100");
 				}
 			}
 			if ( arg.length > 1 ) {

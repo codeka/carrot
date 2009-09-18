@@ -35,6 +35,9 @@ public class IfchangedTag implements Tag{
 	@Override
 	public String compile(List<Node> carries, String helpers, JangodCompiler compiler)
 			throws CompilerException {
+		if ( helpers.length() == 0 ) {
+			throw new CompilerException("ifchanged tag expects 1 helper >>> 0");
+		}
 		boolean isChanged = true;
 		String var = helpers;
 		Object older = compiler.fetchRuntimeScope(LASTKEY + var);

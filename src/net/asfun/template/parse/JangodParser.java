@@ -43,7 +43,7 @@ public class JangodParser implements Iterator<Token>{
 				buff.append("\n");
 			}
 		} catch (IOException e) {
-			throw new ParserException("Read template reader fault.");
+			throw new ParserException("read template reader fault.");
 		}
 		tm.init(buff.toString());
 	}

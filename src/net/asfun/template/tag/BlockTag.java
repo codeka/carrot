@@ -45,6 +45,9 @@ public class BlockTag implements Tag{
 //			throw new CompilerException("extends tag expects 1 helper >>> " + helper.length);
 //		}
 		String blockName = helpers;
+		if ( helpers.length() == 0 ) {
+			throw new CompilerException("block tag expects 1 helper >>> 0");
+		}
 		//check block name is unique
 		List<String> blockNames = (List<String>) compiler.fetchRuntimeScope(BLOCKNAMES ,1);
 		if ( blockNames == null ) {

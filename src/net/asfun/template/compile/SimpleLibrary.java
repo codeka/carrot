@@ -33,7 +33,7 @@ public abstract class SimpleLibrary<T> {
 		if ( lib.containsKey(item) ) {
 			return lib.get(item);
 		}
-		throw new CompilerException("Library doesn't contain >>> " + item);
+		throw new CompilerException("library doesn't contain >>> " + item);
 	}
 	
 	public void register(String item, T obj) {

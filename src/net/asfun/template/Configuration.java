@@ -53,9 +53,9 @@ public class Configuration {
 			InstructionLibrary.addInstruction((Instruction)importee);
 		} else {
 			if ( importee != null )
-				JangodLogger.warning("Can't recognize the importing object >>> " + importee.getClass().getName());
+				JangodLogger.warning("can't recognize the importing object >>> " + importee.getClass().getName());
 			else 
-				JangodLogger.warning("Can't import null object");
+				JangodLogger.warning("can't import null object");
 		}
 	}
 	

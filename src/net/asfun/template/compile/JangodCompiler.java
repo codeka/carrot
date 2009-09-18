@@ -98,6 +98,10 @@ public class JangodCompiler {
 	}
 
 	public Object retraceVariable(String variable) {
+		if ( variable == null || variable.trim().length() == 0 ) {
+			JangodLogger.severe("variable name is required.");
+			return "";
+		}
 		Variable var = new Variable(variable);
 		String varName = var.getName();
 		//find from runtime(tree scope) > engine > global

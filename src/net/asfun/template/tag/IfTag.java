@@ -36,6 +36,9 @@ public class IfTag implements Tag {
 	@Override
 	public String compile(List<Node> carries, String helpers, JangodCompiler compiler)
 			throws CompilerException {
+		if ( helpers.length() == 0 ) {
+			throw new CompilerException("if tag expects 1 helper >>> 0");
+		}
 		Object test = VariableFilter.compute(helpers, compiler);
 		StringBuffer sb = new StringBuffer();
 		if ( ObjectTruthValue.evaluate(test) ) {

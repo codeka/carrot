@@ -1,5 +1,6 @@
 <project name="jangod" default="jar" basedir=".">
 	<property name="jlogdir" value="${basedir}/../jvalog/war/WEB-INF/lib" />
+	<property name="demodir" value="${basedir}/../moboxes/war/WEB-INF/lib" />
 	<property name="product" value="jangod" />
 	<property name="version" value="0.28" />
 	<property name="src.dir" value="${basedir}/src" />
@@ -38,6 +39,7 @@
 			</manifest>
 		</jar>
 		<copy file="${basedir}/${jar.file}" tofile="${jlogdir}/${jar.file}" />
+		<copy file="${basedir}/${jar.file}" tofile="${demodir}/${jar.file}" />
 		<delete dir="${build.dir}" quiet="true"/>
 	</target>
 </project>

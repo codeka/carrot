@@ -54,7 +54,7 @@ public abstract class Token{
 		case TOKEN_INST :
 			return new InstToken(image2);
 		default :
-			throw new ParserException("Creating a token with unknown type" + (char)tokenKind);	
+			throw new ParserException("creating a token with unknown type" + (char)tokenKind);	
 		}
 	}
 	

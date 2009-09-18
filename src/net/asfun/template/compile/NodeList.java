@@ -53,7 +53,7 @@ public class NodeList {
 						InstNode in = new InstNode((InstToken) token);
 						nodes.add(in);
 					} catch (CompilerException e) {
-						JangodLogger.log(Level.WARNING, "Can't create node with token >>> " + token, e.getCause());
+						JangodLogger.log(Level.WARNING, "can't create node with token >>> " + token, e.getCause());
 					}	
 					break;
 				case TOKEN_ECHO :
@@ -69,12 +69,16 @@ public class NodeList {
 						TagNode tn = new TagNode((TagToken) token, parser, level);
 						nodes.add(tn);
 					} catch (CompilerException e) {
-						JangodLogger.log(Level.WARNING, "Can't create node with token >>> " + token,e.getCause());
+						JangodLogger.log(Level.WARNING, "can't create node with token >>> " + token,e.getCause());
 					}
 					break;
 				default :
-					JangodLogger.warning("Unknown type token >>> " + token);
+					JangodLogger.warning("unknown type token >>> " + token);
 			}
+		}
+		//can't reach end tag
+		if(endTagName != null ) {
+			JangodLogger.severe("lost end tag >>> " + endTagName);
 		}
 		return nodes;
 	}
