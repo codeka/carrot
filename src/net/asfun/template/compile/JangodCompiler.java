@@ -121,15 +121,19 @@ public class JangodCompiler {
 		if ( obj != null ) {
 			obj = var.resolve(obj);
 			if ( obj == null ) {
-				JangodLogger.warning(varName + " can't resolve member >>> " + variable);
+				JangodLogger.fine(varName + " can't resolve member >>> " + variable);
 			}
 		} else {
-			JangodLogger.info(variable + " can't resolve variable >>> " + varName);
+			JangodLogger.finer(variable + " can't resolve variable >>> " + varName);
 		}
 		return obj;
 	}
 	
 	public String resolveString(String variable) {
+		if ( variable == null || variable.trim().length() == 0 ) {
+			JangodLogger.severe("variable name is required.");
+			return "";
+		}
 		if ( variable.startsWith("\"") || variable.startsWith("'") ) {
 			return variable.substring(1, variable.length()-1);
 		} else {
@@ -140,6 +144,10 @@ public class JangodCompiler {
 	}
 	
 	public Object resolveObject(String variable) {
+		if ( variable == null || variable.trim().length() == 0 ) {
+			JangodLogger.severe("variable name is required.");
+			return "";
+		}
 		if ( variable.startsWith("\"") || variable.startsWith("'") ) {
 			return variable.substring(1, variable.length()-1);
 		} else {

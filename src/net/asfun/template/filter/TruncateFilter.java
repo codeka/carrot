@@ -37,7 +37,12 @@ public class TruncateFilter implements Filter{
 			if ( arg.length > 1 ) {
 				ends = compiler.resolveString(arg[1]);
 			}
-			return object.toString().substring(0, length) + ends;
+			String string = (String)object;
+			if ( string.length() > length ) {
+				return string.substring(0, length) + ends;
+			} else {
+				return string;
+			}
 		}
 		return object;
 	}

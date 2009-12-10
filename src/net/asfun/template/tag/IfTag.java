@@ -27,7 +27,7 @@ import net.asfun.template.util.ObjectTruthValue;
 
 /**
  * {% if a|f1:b,c|f2 %}
- * @author fangchq
+ * @author anysome
  *
  */
 public class IfTag implements Tag {
