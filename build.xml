@@ -4,6 +4,7 @@
 	<property name="product" value="jangod" />
 	<property name="version" value="0.28" />
 	<property name="src.dir" value="${basedir}/src" />
+	<property name="springsrc.dir" value="${basedir}/spring-mvc" />
 	<property name="build.dir" value="${basedir}/build" />
 	<property name="lib.dir" value="${basedir}/lib" />
 	<property name="jar.file" value="${product}-${version}.jar" />
@@ -23,6 +24,10 @@
 	<target name="compile" depends="init">
 		<echo>compile the source</echo>
 		<javac srcdir="${src.dir}" destdir="${build.dir}">
+			<include name="**/*.java" />
+			<classpath refid="classpath" />
+		</javac>
+		<javac srcdir="${springsrc.dir}" destdir="${build.dir}">
 			<include name="**/*.java" />
 			<classpath refid="classpath" />
 		</javac>
