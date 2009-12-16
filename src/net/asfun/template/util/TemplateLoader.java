@@ -15,7 +15,6 @@ limitations under the License.
 **********************************************************************/
 package net.asfun.template.util;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -24,31 +23,24 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 
+import net.asfun.template.Configuration;
+
 public class TemplateLoader {
 	
-	private String encoding = "utf-8";
-	private String root = null;
+
+	private Configuration config;
 	
-	public void setBase(String rootPath) {
-		if ( rootPath == null) return;
-		if ( ! rootPath.endsWith(File.separator) ) {
-			root = rootPath + File.separator;
-		} else {
-			root = rootPath;
-		}
-	}
-	
-	public void setEncoding(String enc) {
-		encoding = enc;
+	public TemplateLoader(Configuration config) {
+		this.config = config;
 	}
 	
 	public Reader getReader(String fileName) throws IOException {
-		return getReader(fileName, encoding);
+		return getReader(fileName, config.getEncoding());
 	}
 	
 	public Reader getReader(String fileName, String encoding) throws IOException {
-		if ( root != null ) {
-			fileName = root + fileName;
+		if ( config.getTemplateRoot() != null ) {
+			fileName = config.getTemplateRoot() + fileName;
 		}
 		try {
 			return new InputStreamReader(new FileInputStream(fileName),encoding);

@@ -46,8 +46,7 @@ public class ExtendsTag implements Tag{
 		}
 		String templateFile = compiler.resolveString(helper[0]);
 		try {
-			TemplateLoader loader = new TemplateLoader();
-			loader.setBase(compiler.getConfig().getTemplateRoot());
+			TemplateLoader loader = new TemplateLoader(compiler.getConfig());
 			JangodParser parser = new JangodParser(loader.getReader(templateFile));
 			JangodCompiler parent = compiler.copy();
 			compiler.assignRuntimeScope(JangodCompiler.CHILD_FLAG, true, 1);

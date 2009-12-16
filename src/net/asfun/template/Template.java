@@ -49,11 +49,13 @@ public class Template {
 		init();
 	}
 	
+	public Configuration getConfiguration() {
+		return config;
+	}
+	
 	private void init() {
 		factory = new JangodEngineFactory();
-		loader = new TemplateLoader();
-		loader.setBase(config.getTemplateRoot());
-		loader.setEncoding(config.getEncoding());
+		loader = new TemplateLoader(config);
 		setCommonBindings(new SimpleBindings());
 	}
 	
@@ -73,14 +75,14 @@ public class Template {
 		}
 	}
 	
-	public String render(String tpl, Bindings engineBindings) throws TemplateException{
-		return render(tpl, engineBindings, config.getEncoding());
+	public String render(String templateFile, Bindings engineBindings) throws TemplateException{
+		return render(templateFile, engineBindings, config.getEncoding());
 	}
 	
-	public String render(String tpl, Bindings engineBindings, String encoding) throws TemplateException {
+	public String render(String templateFile, Bindings engineBindings, String encoding) throws TemplateException {
 		ScriptEngine engine = factory.getScriptEngine();
 		try {
-			return (String) engine.eval(loader.getReader(tpl, encoding), engineBindings);
+			return (String) engine.eval(loader.getReader(templateFile, encoding), engineBindings);
 		} catch (ScriptException e) {
 			throw new TemplateException(e.getMessage());
 		} catch (IOException e) {
@@ -88,23 +90,23 @@ public class Template {
 		}
 	}
 	
-	public void render(String tpl, Bindings engineBindings, Writer out) throws TemplateException, IOException{
-		out.write(render(tpl, engineBindings));
+	public void render(String templateFile, Bindings engineBindings, Writer out) throws TemplateException, IOException{
+		out.write(render(templateFile, engineBindings));
 	}
 	
-	public void render(String tpl, Bindings engineBindings, String encoding, Writer out) throws TemplateException, IOException{
-		out.write(render(tpl, engineBindings, encoding));
+	public void render(String templateFile, Bindings engineBindings, String encoding, Writer out) throws TemplateException, IOException{
+		out.write(render(templateFile, engineBindings, encoding));
 	}
 	
 	
-	public String render(String tpl) throws TemplateException{
-		return render(tpl, config.getEncoding());
+	public String render(String templateFile) throws TemplateException{
+		return render(templateFile, config.getEncoding());
 	}
 	
-	public String render(String tpl, String encoding) throws TemplateException {
+	public String render(String templateFile, String encoding) throws TemplateException {
 		ScriptEngine engine = factory.getScriptEngine();
 		try {
-			return (String) engine.eval(loader.getReader(tpl, encoding));
+			return (String) engine.eval(loader.getReader(templateFile, encoding));
 		} catch (ScriptException e) {
 			throw new TemplateException(e.getMessage());
 		} catch (IOException e) {
@@ -112,11 +114,11 @@ public class Template {
 		}
 	}
 	
-	public void render(String tpl, Writer out) throws TemplateException, IOException{
-		out.write(render(tpl));
+	public void render(String templateFile, Writer out) throws TemplateException, IOException{
+		out.write(render(templateFile));
 	}
 	
-	public void render(String tpl, String encoding, Writer out) throws TemplateException, IOException{
-		out.write(render(tpl, encoding));
+	public void render(String templateFile, String encoding, Writer out) throws TemplateException, IOException{
+		out.write(render(templateFile, encoding));
 	}
 }

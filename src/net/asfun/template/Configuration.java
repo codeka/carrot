@@ -15,6 +15,7 @@ limitations under the License.
 **********************************************************************/
 package net.asfun.template;
 
+import java.io.File;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -59,12 +60,12 @@ public class Configuration {
 		}
 	}
 	
-	public void setEncoding(String encoding2) {
-		encoding = encoding2;
+	public void setEncoding(String encoding) {
+		this.encoding = encoding;
 	}
 	
-	public void setLocale(Locale locale2) {
-		locale = locale2;
+	public void setLocale(Locale locale) {
+		this.locale = locale;
 	}
 	
 	public String getEncoding() {
@@ -79,8 +80,8 @@ public class Configuration {
 		return timezone;
 	}
 
-	public void setTimezone(TimeZone timezone2) {
-		timezone = timezone2;
+	public void setTimezone(TimeZone timezone) {
+		this.timezone = timezone;
 	}
 
 	public static Configuration getDefaultConfig() {
@@ -92,6 +93,11 @@ public class Configuration {
 	}
 	
 	public void setTemplateRoot(String rootPath) {
-		root = rootPath;
+		if ( rootPath == null) return;
+		if ( ! rootPath.endsWith(File.separator) ) {
+			root = rootPath + File.separator;
+		} else {
+			root = rootPath;
+		}
 	}
 }

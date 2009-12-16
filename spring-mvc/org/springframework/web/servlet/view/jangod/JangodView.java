@@ -1,38 +1,63 @@
 package org.springframework.web.servlet.view.jangod;
 
+import java.io.File;
 import java.util.Map;
 
 import javax.script.Bindings;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.asfun.template.Configuration;
 import net.asfun.template.Template;
 
+import org.springframework.web.servlet.ThemeResolver;
+import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springframework.web.servlet.view.AbstractTemplateView;
 
 public class JangodView extends AbstractTemplateView{
 	
 	private Template template;
-	private Configuration config;
-	
-	public JangodView() {
-		config = Configuration.getDefaultConfig();
-		template = new Template(config);
-	}
+	private String encoding;
+	private String themeRoot;
+	private JangodConfig jangodConfig;
+	private String fileName;
 	
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void renderMergedTemplateModel(Map model, HttpServletRequest req,
 			HttpServletResponse resp) throws Exception {
+		if ( jangodConfig.isUseTheme() ) {
+			ThemeResolver themeResolver = RequestContextUtils.getThemeResolver(req);
+			String theme = themeResolver.resolveThemeName(req);
+			if ( logger.isDebugEnabled() ) {
+				logger.debug("Current theme is " + theme);
+			}
+			template.getConfiguration().setTemplateRoot(themeRoot + theme + File.separator);
+			setUrl(fileName);
+		}
 		Bindings bings = template.createBindings(Template.NORMBINDINGS);
 		bings.putAll(model);
-		template.render(getUrl(), bings, resp.getWriter());
+		if ( encoding == null ) {
+			template.render(getUrl(), bings, resp.getWriter());
+		} else {
+			template.render(getUrl(), bings, encoding, resp.getWriter());
+		}
+	}
+	
+	public void setEncoding(String encoding) {
+		this.encoding = (encoding!=null ? encoding:"utf-8");
+	}
+	
+	public void setJangodConfig(JangodConfig jangodConfig) {
+		this.jangodConfig = jangodConfig;
+		template = jangodConfig.getTemplate();
+		themeRoot = template.getConfiguration().getTemplateRoot();
 	}
 
-	public void setRoot(String root) {
-		config.setTemplateRoot(root);
-		template = new Template(config);
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
 	}
-
+	
+	public String getFileName() {
+		return this.fileName;
+	}
 }

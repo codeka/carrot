@@ -44,8 +44,7 @@ public class IncludeTag implements Tag{
 		}
 		String templateFile = compiler.resolveString(helper[0]);
 		try {
-			TemplateLoader loader = new TemplateLoader();
-			loader.setBase(compiler.getConfig().getTemplateRoot());
+			TemplateLoader loader = new TemplateLoader(compiler.getConfig());
 			JangodParser parser = new JangodParser(loader.getReader(templateFile));
 			JangodCompiler child = compiler.copy();
 			child.assignRuntimeScope(JangodCompiler.INSERT_FLAG, true, 1);
