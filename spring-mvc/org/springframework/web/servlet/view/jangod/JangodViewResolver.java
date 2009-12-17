@@ -30,9 +30,7 @@ public class JangodViewResolver extends AbstractTemplateViewResolver {
 			isConfigUnset = false;
 		}
 		view.setJangodConfig(jangodConfig);
-		if ( jangodConfig.isUseTheme() ) {
-			view.setFileName(viewName + getSuffix());
-		}
+		view.setUrl(viewName + getSuffix());
 		return view;
 	}
 

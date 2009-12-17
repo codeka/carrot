@@ -19,7 +19,6 @@ public class JangodView extends AbstractTemplateView{
 	private String encoding;
 	private String themeRoot;
 	private JangodConfig jangodConfig;
-	private String fileName;
 	
 	@SuppressWarnings("unchecked")
 	@Override
@@ -32,7 +31,6 @@ public class JangodView extends AbstractTemplateView{
 				logger.debug("Current theme is " + theme);
 			}
 			template.getConfiguration().setTemplateRoot(themeRoot + theme + File.separator);
-			setUrl(fileName);
 		}
 		Bindings bings = template.createBindings(Template.NORMBINDINGS);
 		bings.putAll(model);
@@ -51,13 +49,5 @@ public class JangodView extends AbstractTemplateView{
 		this.jangodConfig = jangodConfig;
 		template = jangodConfig.getTemplate();
 		themeRoot = template.getConfiguration().getTemplateRoot();
-	}
-
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
-	}
-	
-	public String getFileName() {
-		return this.fileName;
 	}
 }
