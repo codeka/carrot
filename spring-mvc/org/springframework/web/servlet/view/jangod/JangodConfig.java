@@ -9,4 +9,6 @@ public interface JangodConfig {
 	public boolean isUseTheme();
 	
 	public void setRoot(String root);
+	
+	public String getRoot();
 }

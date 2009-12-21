@@ -17,7 +17,6 @@ public class JangodView extends AbstractTemplateView{
 	
 	private Template template;
 	private String encoding;
-	private String themeRoot;
 	private JangodConfig jangodConfig;
 	
 	@SuppressWarnings("unchecked")
@@ -30,7 +29,7 @@ public class JangodView extends AbstractTemplateView{
 			if ( logger.isDebugEnabled() ) {
 				logger.debug("Current theme is " + theme);
 			}
-			template.getConfiguration().setTemplateRoot(themeRoot + theme + File.separator);
+			template.getConfiguration().setTemplateRoot(jangodConfig.getRoot() + theme + File.separator);
 		}
 		Bindings bings = template.createBindings(Template.NORMBINDINGS);
 		bings.putAll(model);
@@ -48,6 +47,5 @@ public class JangodView extends AbstractTemplateView{
 	public void setJangodConfig(JangodConfig jangodConfig) {
 		this.jangodConfig = jangodConfig;
 		template = jangodConfig.getTemplate();
-		themeRoot = template.getConfiguration().getTemplateRoot();
 	}
 }
