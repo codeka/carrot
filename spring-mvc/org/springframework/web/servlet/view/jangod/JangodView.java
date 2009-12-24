@@ -15,9 +15,9 @@ import org.springframework.web.servlet.view.AbstractTemplateView;
 
 public class JangodView extends AbstractTemplateView{
 	
-	private Template template;
-	private String encoding;
-	private JangodConfig jangodConfig;
+	protected Template template;
+	protected String encoding;
+	protected JangodConfig jangodConfig;
 	
 	@SuppressWarnings("unchecked")
 	@Override

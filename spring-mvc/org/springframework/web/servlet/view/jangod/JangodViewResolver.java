@@ -9,7 +9,7 @@ import org.springframework.web.util.WebUtils;
 public class JangodViewResolver extends AbstractTemplateViewResolver {
 	
 	private JangodConfig jangodConfig;
-	private boolean isConfigUnset = true;
+	protected boolean isConfigUnset = true;
 	private ModelDataProvider commonAttributes;
 	
 	public JangodViewResolver() {
