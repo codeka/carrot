@@ -25,6 +25,7 @@ import static net.asfun.template.util.logging.JangodLogger;
 
 public class ReverseFilter implements Filter{
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Object filter(Object object, JangodCompiler compiler, String... arg)
 			throws CompilerException {

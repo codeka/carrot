@@ -46,6 +46,7 @@ public class VariableChain {
 		return value;
 	}
 
+	@SuppressWarnings("unchecked")
 	private Object resolveInternal(String name) {
 		// field
 		Class<?> clazz = value.getClass();

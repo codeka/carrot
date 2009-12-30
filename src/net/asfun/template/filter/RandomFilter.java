@@ -27,6 +27,7 @@ import net.asfun.template.compile.JangodCompiler;
 
 public class RandomFilter implements Filter{
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Object filter(Object object, JangodCompiler compiler, String... arg)
 			throws CompilerException {

@@ -1,6 +1,7 @@
 package org.springframework.web.servlet.view.jangod;
 
 import java.io.File;
+import java.util.TimeZone;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ResourceLoaderAware;
@@ -15,6 +16,7 @@ public class JangodConfigurer implements JangodConfig, InitializingBean, Resourc
 	private String encoding;
 	private String root = File.separator;
 	private boolean useTheme = false;
+	private String timezone;
 
 	@Override
 	public boolean isUseTheme() {
@@ -44,6 +46,9 @@ public class JangodConfigurer implements JangodConfig, InitializingBean, Resourc
 			if ( root != null ) {
 				config.setTemplateRoot(root);
 			}
+			if ( timezone != null ) {
+				config.setTimezone(TimeZone.getTimeZone(timezone));
+			}
 			template = new Template(config);
 		}
 	}
@@ -72,6 +77,15 @@ public class JangodConfigurer implements JangodConfig, InitializingBean, Resourc
 			this.encoding = encoding;
 			if ( template != null ) {
 				template.getConfiguration().setEncoding(encoding);
+			}
+		}
+	}
+	
+	public void setTimezone(String timezone) {
+		if ( timezone != null && timezone.trim().length() > 0 ) {
+			this.timezone = timezone;
+			if ( template != null ) {
+				template.getConfiguration().setTimezone(TimeZone.getTimeZone(timezone));
 			}
 		}
 	}

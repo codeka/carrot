@@ -26,6 +26,7 @@ import net.asfun.template.util.ObjectStringEqual;
 
 public class ContainFilter implements Filter{
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Object filter(Object object, JangodCompiler compiler, String... arg)
 			throws CompilerException {

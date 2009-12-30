@@ -24,6 +24,7 @@ import java.util.Map;
 
 public class ObjectIterator {
 	
+	@SuppressWarnings("unchecked")
 	public static ForLoop getLoop(Object obj) {
 		if ( obj == null ) {
 			return new ForLoop(new ArrayList<Object>().iterator(), 0);
