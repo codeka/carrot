@@ -27,7 +27,7 @@ public class EscapeFilter implements Filter{
 			String value = object.toString();
 			return value.replaceAll("&", "&amp;")
 				.replaceAll(">", "&gt;")
-				.replaceAll("<", "&lt");
+				.replaceAll("<", "&lt;");
 		}
 		return object;
 	}
