@@ -32,6 +32,7 @@
 			<classpath refid="classpath" />
 		</javac>
 		<copy file="${src.dir}/META-INF/services/javax.script.ScriptEngineFactory" tofile="${build.dir}/META-INF/services/javax.script.ScriptEngineFactory" />
+		<copy file="${src.dir}/jangod.config.properties" tofile="${build.dir}/jangod.config.properties" />
 	</target>
 
 	<target name="jar" depends="compile">

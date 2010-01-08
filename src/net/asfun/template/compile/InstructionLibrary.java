@@ -16,6 +16,7 @@ limitations under the License.
 package net.asfun.template.compile;
 
 //import net.asfun.template.inst.*;
+import static net.asfun.template.util.logging.JangodLogger;
 
 public class InstructionLibrary extends SimpleLibrary<Instruction>{
 
@@ -36,6 +37,7 @@ public class InstructionLibrary extends SimpleLibrary<Instruction>{
 	
 	public static void addInstruction(Instruction inst) {
 		lib.register(inst.getName(), inst);
+		JangodLogger.fine("Imported instruction >>>" + inst.getName());
 	}
 
 }

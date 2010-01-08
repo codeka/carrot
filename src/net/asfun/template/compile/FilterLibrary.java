@@ -15,6 +15,7 @@ limitations under the License.
 **********************************************************************/
 package net.asfun.template.compile;
 
+import static net.asfun.template.util.logging.JangodLogger;
 import net.asfun.template.filter.*;
 
 public class FilterLibrary extends SimpleLibrary<Filter>{
@@ -36,10 +37,10 @@ public class FilterLibrary extends SimpleLibrary<Filter>{
 		register(ctnf.getName(), ctnf);
 		Filter lenf = new LengthFilter();
 		register(lenf.getName(), lenf);
-		Filter revf = new ReverseFilter();
-		register(revf.getName(), revf);
-		Filter ranf = new RandomFilter();
-		register(ranf.getName(), ranf);
+//		Filter revf = new ReverseFilter();
+//		register(revf.getName(), revf);
+//		Filter ranf = new RandomFilter();
+//		register(ranf.getName(), ranf);
 		
 		//logic
 		Filter equf = new EqualFilter();
@@ -56,16 +57,16 @@ public class FilterLibrary extends SimpleLibrary<Filter>{
 		register(datf.getName(), datf);
 		
 		//number
-		Filter absf = new AbsFilter();
-		register(absf.getName(), absf);
 		Filter diaf = new DivisibleFilter();
 		register(diaf.getName(), diaf);
-		Filter addf = new AddFilter();
-		register(addf.getName(), addf);
-		Filter mulf = new MultiplyFilter();
-		register(mulf.getName(), mulf);
-		Filter divf = new DivideFilter();
-		register(divf.getName(), divf);
+//		Filter absf = new AbsFilter();
+//		register(absf.getName(), absf);
+//		Filter addf = new AddFilter();
+//		register(addf.getName(), addf);
+//		Filter mulf = new MultiplyFilter();
+//		register(mulf.getName(), mulf);
+//		Filter divf = new DivideFilter();
+//		register(divf.getName(), divf);
 		
 		//string
 		Filter escf = new EscapeFilter();
@@ -76,8 +77,10 @@ public class FilterLibrary extends SimpleLibrary<Filter>{
 		register(truf.getName(), truf);
 		Filter upcf = new UpperFilter();
 		register(upcf.getName(), upcf);
-		Filter cutf = new CutFilter();
-		register(cutf.getName(), cutf);
+//		Filter cutf = new CutFilter();
+//		register(cutf.getName(), cutf);
+//		Filter md5f = new Md5Filter();
+//		register(md5f.getName(), md5f);
 	}
 	
 	public static Filter getFilter(String filterName) throws CompilerException {
@@ -86,5 +89,6 @@ public class FilterLibrary extends SimpleLibrary<Filter>{
 
 	public static void addFilter(Filter filter) {
 		lib.register(filter.getName(), filter);
+		JangodLogger.fine("Imported filter >>>" + filter.getName());
 	}
 }

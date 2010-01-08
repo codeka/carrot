@@ -30,17 +30,18 @@ public abstract class SimpleLibrary<T> {
 	protected abstract void initialize();
 	
 	public T fetch(String item) throws CompilerException {
-		if ( lib.containsKey(item) ) {
-			return lib.get(item);
+		String key = item.toLowerCase();
+		if ( lib.containsKey(key) ) {
+			return lib.get(key);
 		}
 		throw new CompilerException("library doesn't contain >>> " + item);
 	}
 	
 	public void register(String item, T obj) {
-		lib.put(item, obj);
+		lib.put(item.toLowerCase(), obj);
 	}
 	
 	public boolean isRegistered(String name) {
-		return lib.containsKey(name);
+		return lib.containsKey(name.toLowerCase());
 	}
 }

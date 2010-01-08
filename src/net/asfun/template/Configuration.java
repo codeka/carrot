@@ -35,9 +35,10 @@ public class Configuration {
 	private String encoding = "utf-8";
 	private Locale locale = Locale.CHINESE;
 	private TimeZone timezone = TimeZone.getDefault();
-	
 	private String root;
-
+	
+	protected Configuration(){};
+	
 	public static void addImport(Importable importee) {
 		if ( importee instanceof Filter) {
 			FilterLibrary.addFilter((Filter)importee);
@@ -80,7 +81,7 @@ public class Configuration {
 	}
 
 	public static Configuration getDefaultConfig() {
-		return new Configuration();
+		return ConfigInitializer.getConfig();
 	}
 
 	public String getTemplateRoot() {

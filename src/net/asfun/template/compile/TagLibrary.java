@@ -15,6 +15,7 @@ limitations under the License.
 **********************************************************************/
 package net.asfun.template.compile;
 
+import static net.asfun.template.util.logging.JangodLogger;
 import net.asfun.template.tag.*;
 
 public class TagLibrary extends SimpleLibrary<Tag>{
@@ -38,8 +39,8 @@ public class TagLibrary extends SimpleLibrary<Tag>{
 		register(forTag.getName(), forTag);
 		Tag cycleTag = new CycleTag();
 		register(cycleTag.getName(), cycleTag);
-		Tag ifcTag = new IfchangedTag();
-		register(ifcTag.getName(), ifcTag);
+//		Tag ifcTag = new IfchangedTag();
+//		register(ifcTag.getName(), ifcTag);
 		
 		Tag ifTag = new IfTag();
 		register(ifTag.getName(), ifTag);	
@@ -53,5 +54,6 @@ public class TagLibrary extends SimpleLibrary<Tag>{
 
 	public static void addTag(Tag tag) {
 		lib.register(tag.getName(), tag);
+		JangodLogger.fine("Imported tag >>>" + tag.getName());
 	}
 }
