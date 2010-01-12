@@ -1,6 +1,0 @@
-{# if a and b and c or d or e or f #}
-{% if a|and:b,c|or:d,e,f %}
-{# if !(a or b) and c and d #}
-{% if a|or:b|not|and:c,d %}
-{# if (a or b ) and (c or d) #}
-{%set e == c|or:d %}{% if a|or:b|and:e %}
