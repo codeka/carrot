@@ -1,0 +1,122 @@
+<project name="jangod" default="jar" basedir=".">
+	<property name="product" value="jangod" />
+	<property name="build.dir" value="${basedir}/build" />
+	<property name="dist.dir" value="${basedir}/dist" />
+
+	<path id="classpath">
+		<fileset dir="${basedir}/lib">
+			<include name="**/*.jar" />
+		</fileset>
+		<pathelement location="${build.dir}/core" />
+		<pathelement location="${build.dir}/template" />
+	</path>
+
+	<target name="init">
+		<delete dir="${dist.dir}" quiet="true"/>
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${build.dir}/core" />
+		<mkdir dir="${build.dir}/template" />
+		<mkdir dir="${build.dir}/script" />
+		<mkdir dir="${build.dir}/spring-mvc" />
+		<mkdir dir="${dist.dir}" />
+	</target>
+
+
+	<target name="compile" depends="init">
+		<echo>compile core source</echo>
+		<javac srcdir="${basedir}/core" destdir="${build.dir}/core">
+			<include name="**/*.java" />
+			<classpath refid="classpath" />
+		</javac>
+		<copy file="${basedir}/core/jangod.config.properties" tofile="${build.dir}/core/jangod.config.properties" />
+		<echo>compile template source</echo>
+		<javac srcdir="${basedir}/template" destdir="${build.dir}/template">
+			<include name="**/*.java" />
+			<classpath refid="classpath" />
+		</javac>
+		<echo>compile script source</echo>
+		<javac srcdir="${basedir}/script" destdir="${build.dir}/script">
+			<include name="**/*.java" />
+			<classpath refid="classpath" />
+		</javac>
+		<copy file="${basedir}/script/META-INF/services/javax.script.ScriptEngineFactory" tofile="${build.dir}/script/META-INF/services/javax.script.ScriptEngineFactory" />
+		<echo>compile spring-mvc source</echo>
+		<javac srcdir="${basedir}/spring-mvc" destdir="${build.dir}/spring-mvc">
+			<include name="**/*.java" />
+			<classpath refid="classpath" />
+		</javac>
+	</target>
+
+	<target name="jar" depends="compile">
+		<jar destfile="${dist.dir}/${product}-core.jar">
+			<fileset dir="${build.dir}/core">
+				<include name="**/*.*" />
+			</fileset>	
+			<manifest>
+				<attribute name="Class-Path" value="jcache-1.0-dev-3.jar" />
+			</manifest>
+		</jar>
+		<jar destfile="${dist.dir}/${product}-template.jar">
+			<fileset dir="${build.dir}/core">
+				<include name="**/*.*" />
+			</fileset>
+			<fileset dir="${build.dir}/template">
+				<include name="**/*.*" />
+			</fileset>	
+			<manifest>
+				<attribute name="Class-Path" value="jcache-1.0-dev-3.jar" />
+			</manifest>
+		</jar>
+		<jar destfile="${dist.dir}/${product}-script.jar">
+			<fileset dir="${build.dir}/core">
+				<include name="**/*.*" />
+			</fileset>
+			<fileset dir="${build.dir}/script">
+				<include name="**/*.*" />
+			</fileset>	
+			<manifest>
+				<attribute name="Class-Path" value="jcache-1.0-dev-3.jar" />
+			</manifest>
+		</jar>
+		<jar destfile="${dist.dir}/${product}-spring-mvc.jar">
+			<fileset dir="${build.dir}/spring-mvc">
+				<include name="**/*.*" />
+			</fileset>	
+			<manifest>
+				<attribute name="Class-Path" value="jcache-1.0-dev-3.jar" />
+			</manifest>
+		</jar>
+		<jar destfile="${dist.dir}/spring-${product}.jar">
+			<fileset dir="${build.dir}/core">
+				<include name="**/*.*" />
+			</fileset>
+			<fileset dir="${build.dir}/template">
+				<include name="**/*.*" />
+			</fileset>
+			<fileset dir="${build.dir}/spring-mvc">
+				<include name="**/*.*" />
+			</fileset>
+			<manifest>
+				<attribute name="Class-Path" value="jcache-1.0-dev-3.jar" />
+			</manifest>
+		</jar>
+		<jar destfile="${dist.dir}/${product}.jar">
+			<fileset dir="${build.dir}/core">
+				<include name="**/*.*" />
+			</fileset>
+			<fileset dir="${build.dir}/template">
+				<include name="**/*.*" />
+			</fileset>
+			<fileset dir="${build.dir}/spring-mvc">
+				<include name="**/*.*" />
+			</fileset>
+			<fileset dir="${build.dir}/script">
+				<include name="**/*.*" />
+			</fileset>
+			<manifest>
+				<attribute name="Class-Path" value="jcache-1.0-dev-3.jar" />
+			</manifest>
+		</jar>
+		<delete dir="${build.dir}" quiet="true"/>
+	</target>
+</project>
