@@ -19,6 +19,7 @@ import static net.asfun.jangod.util.logging.JangodLogger;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Locale;
@@ -73,9 +74,11 @@ public class ConfigInitializer {
 			config = new Configuration();
 			URL u = findConfigFile();
 			if (u != null) {
+				InputStream is = null;
 				Properties props = new Properties();
 				try {
-					props.load(u.openStream());
+					is = u.openStream();
+					props.load(is);
 					if (props.containsKey("extends")) {
 						String exts = props.getProperty("extends");
 						String[] imports = exts.split("\\s+");
@@ -105,6 +108,14 @@ public class ConfigInitializer {
 					}
 				} catch (IOException e) {
 					JangodLogger.warning("Reading configuration file error >>> " + e.getMessage());
+				} finally {
+					if ( is != null ) {
+						try {
+							is.close();
+						} catch (IOException e) {
+							JangodLogger.warning("Reading configuration file error >>> " + e.getMessage());
+						}
+					}
 				}
 			}
 		}
