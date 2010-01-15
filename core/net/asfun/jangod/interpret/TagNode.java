@@ -49,7 +49,7 @@ public class TagNode implements Node{
 	@Override
 	public String render(JangodInterpreter interperter) throws InterpretException {
 		interperter.setLevel(level);
-		return tag.compile(carries, master.getHelpers(), interperter);
+		return tag.interpreter(carries, master.getHelpers(), interperter);
 	}
 	
 	@Override

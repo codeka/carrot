@@ -28,7 +28,7 @@ import net.asfun.jangod.util.ListOrderedMap;
 import net.asfun.jangod.util.Variable;
 import net.asfun.jangod.util.ListOrderedMap.Item;
 
-public class JangodInterpreter {
+public class JangodInterpreter implements Cloneable{
 	
 	private int level = 1;
 	private FloorBindings runtime;
@@ -45,15 +45,20 @@ public class JangodInterpreter {
 		return context.getConfiguration();
 	}
 	
-	public JangodInterpreter copy() {
+	@Override
+	public JangodInterpreter clone() {
 		JangodInterpreter compiler = new JangodInterpreter();
 		compiler.context = context;
-		compiler.runtime = runtime.copy();
+		compiler.runtime = runtime.clone();
 		return compiler;
 	}
 	
-	public String render(JangodParser parser) throws InterpretException {
+	public void init() {
 		runtime = new FloorBindings();
+		level = 1;
+	}
+	
+	public String render(JangodParser parser) throws InterpretException {
 		List<Node> nodes = NodeList.makeList(parser, null, 1);
 		StringBuffer buff = new StringBuffer();
 		for(Node node : nodes) {
@@ -61,9 +66,11 @@ public class JangodInterpreter {
 		}
 		if ( runtime.get(Context.CHILD_FLAG, 1) != null && 
 				runtime.get(Context.INSERT_FLAG, 1) == null) {
-			StringBuilder sb = new StringBuilder(context.getAttribute(Context.SEMI_RENDER).toString());
+//			StringBuilder sb = new StringBuilder(context.getAttribute(Context.SEMI_RENDER).toString());
+			StringBuilder sb = new StringBuilder((String)fetchRuntimeScope(Context.SEMI_RENDER, 1));
 			//replace the block identify with block content
-			ListOrderedMap blockList = (ListOrderedMap) fetchSessionScope(Context.BLOCK_LIST);
+//			ListOrderedMap blockList = (ListOrderedMap) fetchSessionScope(Context.BLOCK_LIST);
+			ListOrderedMap blockList = (ListOrderedMap) fetchRuntimeScope(Context.BLOCK_LIST, 1);
 			Iterator<Item> mi = blockList.iterator();
 			int index;
 			String replace;
@@ -166,14 +173,17 @@ public class JangodInterpreter {
 		level = lvl;
 	}
 
+	@Deprecated
 	public Object fetchGlobalScope(String name) {
 		return context.getAttribute(name, Context.SCOPE_GLOBAL);
 	}
 
+	@Deprecated
 	public Object fetchSessionScope(String name) {
 		return context.getAttribute(name, Context.SCOPE_SESSION);
 	}
 	
+	@Deprecated
 	public void assignSessionScope(String name, Object value) {
 		context.setAttribute(name, value, Context.SCOPE_SESSION);
 	}

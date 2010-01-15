@@ -30,7 +30,7 @@ import net.asfun.jangod.lib.Tag;
 public class ElseTag implements Tag{
 
 	@Override
-	public String compile(List<Node> carries, String helpers, JangodInterpreter interpreter)
+	public String interpreter(List<Node> carries, String helpers, JangodInterpreter interpreter)
 			throws InterpretException {
 		return "";
 	}

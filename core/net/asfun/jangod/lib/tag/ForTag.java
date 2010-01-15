@@ -35,7 +35,7 @@ public class ForTag implements Tag {
 	
 
 	@Override
-	public String compile(List<Node> carries, String helpers, JangodInterpreter interpreter) throws InterpretException {
+	public String interpreter(List<Node> carries, String helpers, JangodInterpreter interpreter) throws InterpretException {
 		String[] helper = new HelperStringTokenizer(helpers).allTokens();
 		if ( helper.length != 3 ) {
 			throw new InterpretException("Tag 'for' expects 3 helpers >>> " + helper.length);

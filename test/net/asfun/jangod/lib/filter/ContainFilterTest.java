@@ -32,18 +32,18 @@ public class ContainFilterTest extends ZzzBase{
 	@Before
 	public void setUp() throws Exception {
 		filter = new ContainFilter();
-		compiler.assignSessionScope("var1", 
+		compiler.assignRuntimeScope("var1", 
 				new String[] {"abc", "def", null, "ghi", "xyz", "123", "aaa"});
-		compiler.assignSessionScope("var2", "asdfghjkl");
-		compiler.assignSessionScope("var3", null);
-		compiler.assignSessionScope("var4", 234);
-		compiler.assignSessionScope("var5", compiler);
+		compiler.assignRuntimeScope("var2", "asdfghjkl");
+		compiler.assignRuntimeScope("var3", null);
+		compiler.assignRuntimeScope("var4", 234);
+		compiler.assignRuntimeScope("var5", compiler);
 		HashMap map = new HashMap();
 		map.put("a", "aaa");
 		map.put("b", "bbb");
 		map.put("c", "ccc");
 		map.put("d", null);
-		compiler.assignSessionScope("var6", map);
+		compiler.assignRuntimeScope("var6", map);
 		ArrayList al = new ArrayList();
 		al.add("ddd");
 		al.add("ccc");
@@ -53,8 +53,8 @@ public class ContainFilterTest extends ZzzBase{
 		al.add("abc");
 		al.add(null);
 		al.add(true);
-		compiler.assignSessionScope("var7", al);
-		compiler.assignSessionScope("var8", "bcd");
+		compiler.assignRuntimeScope("var7", al);
+		compiler.assignRuntimeScope("var8", "bcd");
 	}
 
 	@Test
@@ -65,105 +65,105 @@ public class ContainFilterTest extends ZzzBase{
 	
 	@Test
 	public void test2() throws InterpretException {
-		Object obj = compiler.fetchSessionScope("var1");
+		Object obj = compiler.fetchRuntimeScope("var1");
 		Object res = filter.filter(obj, compiler, "var6.a");
 		assertEquals(true, res);
 	}
 	
 	@Test
 	public void test3() throws InterpretException {
-		Object obj = compiler.fetchSessionScope("var1");
+		Object obj = compiler.fetchRuntimeScope("var1");
 		Object res = filter.filter(obj, compiler, "'def'");
 		assertEquals(true, res);
 	}
 	
 	@Test
 	public void test4() throws InterpretException {
-		Object obj = compiler.fetchSessionScope("var7");
+		Object obj = compiler.fetchRuntimeScope("var7");
 		Object res = filter.filter(obj, compiler, "var6");
 		assertEquals(true, res);
 	}
 	
 	@Test
 	public void test5() throws InterpretException {
-		Object obj = compiler.fetchSessionScope("var7");
+		Object obj = compiler.fetchRuntimeScope("var7");
 		Object res = filter.filter(obj, compiler, "var6.c");
 		assertEquals(true, res);
 	}
 	
 	@Test
 	public void test6() throws InterpretException {
-		Object obj = compiler.fetchSessionScope("var7");
+		Object obj = compiler.fetchRuntimeScope("var7");
 		Object res = filter.filter(obj, compiler, "var4");
 		assertEquals(true, res);
 	}
 	
 	@Test
 	public void test7() throws InterpretException {
-		Object obj = compiler.fetchSessionScope("var7");
+		Object obj = compiler.fetchRuntimeScope("var7");
 		Object res = filter.filter(obj, compiler, "var3");
 		assertEquals(true, res);
 	}
 	
 	@Test
 	public void test8() throws InterpretException {
-		Object obj = compiler.fetchSessionScope("var1");
+		Object obj = compiler.fetchRuntimeScope("var1");
 		Object res = filter.filter(obj, compiler, "var3");
 		assertEquals(true, res);
 	}
 	
 	@Test
 	public void test9() throws InterpretException {
-		Object obj = compiler.fetchSessionScope("var2");
+		Object obj = compiler.fetchRuntimeScope("var2");
 		Object res = filter.filter(obj, compiler, "'dfgh\"");
 		assertEquals(true, res);
 	}
 	
 	@Test(expected=InterpretException.class)
 	public void test10() throws InterpretException {
-		Object obj = compiler.fetchSessionScope("var5");
+		Object obj = compiler.fetchRuntimeScope("var5");
 		Object res = filter.filter(obj, compiler, "'dfgh\"");
 		assertEquals(true, res);
 	}
 	
 	@Test
 	public void test11() throws InterpretException {
-		Object obj = compiler.fetchSessionScope("var6");
+		Object obj = compiler.fetchRuntimeScope("var6");
 		Object res = filter.filter(obj, compiler, "'aaa'");
 		assertEquals(true, res);
 	}
 	
 	@Test
 	public void test12() throws InterpretException {
-		Object obj = compiler.fetchSessionScope("var6");
+		Object obj = compiler.fetchRuntimeScope("var6");
 		Object res = filter.filter(obj, compiler, "tv");
 		assertEquals(true, res);
 	}
 	
 	@Test
 	public void test13() throws InterpretException {
-		Object obj = compiler.fetchSessionScope("var7");
+		Object obj = compiler.fetchRuntimeScope("var7");
 		Object res = filter.filter(obj, compiler, "'234'");
 		assertEquals(true, res);
 	}
 	
 	@Test
 	public void test16() throws InterpretException {
-		Object obj = compiler.fetchSessionScope("var7");
+		Object obj = compiler.fetchRuntimeScope("var7");
 		Object res = filter.filter(obj, compiler, "234");
 		assertEquals(true, res);
 	}
 	
 	@Test
 	public void test14() throws InterpretException {
-		Object obj = compiler.fetchSessionScope("var7");
+		Object obj = compiler.fetchRuntimeScope("var7");
 		Object res = filter.filter(obj, compiler, "var7");
 		assertEquals(true, res);
 	}
 	
 	@Test
 	public void test15() throws InterpretException {
-		Object obj = compiler.fetchSessionScope("var7");
+		Object obj = compiler.fetchRuntimeScope("var7");
 		Object res = filter.filter(obj, compiler, "'TRUe'");
 		assertEquals(true, res);
 	}

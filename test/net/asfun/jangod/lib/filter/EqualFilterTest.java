@@ -32,18 +32,18 @@ public class EqualFilterTest extends ZzzBase{
 	@Before
 	public void setUp() throws Exception {
 		filter = new EqualFilter();
-		compiler.assignSessionScope("var1", 
+		compiler.assignRuntimeScope("var1", 
 				new String[] {"abc", "def", null, "ghi", "xyz", "123", "aaa"});
-		compiler.assignSessionScope("var2", "asdfghjkl");
-		compiler.assignSessionScope("var3", null);
-		compiler.assignSessionScope("var4", 234);
-		compiler.assignSessionScope("var5", compiler);
+		compiler.assignRuntimeScope("var2", "asdfghjkl");
+		compiler.assignRuntimeScope("var3", null);
+		compiler.assignRuntimeScope("var4", 234);
+		compiler.assignRuntimeScope("var5", compiler);
 		HashMap map = new HashMap();
 		map.put("a", "aaa");
 		map.put("b", "bbb");
 		map.put("c", "ccc");
 		map.put("d", null);
-		compiler.assignSessionScope("var6", map);
+		compiler.assignRuntimeScope("var6", map);
 		ArrayList al = new ArrayList();
 		al.add("ddd");
 		al.add("ccc");
@@ -53,8 +53,8 @@ public class EqualFilterTest extends ZzzBase{
 		al.add("abc");
 		al.add(null);
 		al.add(true);
-		compiler.assignSessionScope("var7", al);
-		compiler.assignSessionScope("var8", "bcd");
+		compiler.assignRuntimeScope("var7", al);
+		compiler.assignRuntimeScope("var8", "bcd");
 	}
 	
 	@Test
@@ -65,28 +65,28 @@ public class EqualFilterTest extends ZzzBase{
 	
 	@Test
 	public void test2() throws InterpretException {
-		Object obj = compiler.fetchSessionScope("var4");
+		Object obj = compiler.fetchRuntimeScope("var4");
 		Object res = filter.filter(obj, compiler, "'234'");
 		assertEquals(true, res);
 	}
 	
 	@Test
 	public void test3() throws InterpretException {
-		Object obj = compiler.fetchSessionScope("var3");
+		Object obj = compiler.fetchRuntimeScope("var3");
 		Object res = filter.filter(obj, compiler, "'234'");
 		assertEquals(false, res);
 	}
 	
 	@Test
 	public void test4() throws InterpretException {
-		Object obj = compiler.fetchSessionScope("var3");
+		Object obj = compiler.fetchRuntimeScope("var3");
 		Object res = filter.filter(obj, compiler, "'234'");
 		assertEquals(false, res);
 	}
 	
 	@Test
 	public void test5() throws InterpretException {
-		Object obj = compiler.fetchSessionScope("var5");
+		Object obj = compiler.fetchRuntimeScope("var5");
 		Object res = filter.filter(obj, compiler, "var5");
 		assertEquals(true, res);
 	}

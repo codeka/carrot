@@ -24,7 +24,7 @@ import net.asfun.jangod.interpret.Node;
 
 public interface Tag extends Importable{
 
-	public String compile(List<Node> carries, String helpers, JangodInterpreter interpreter) throws InterpretException;
+	public String interpreter(List<Node> carries, String helpers, JangodInterpreter interpreter) throws InterpretException;
 
 	/**
 	 * Get name of end tag

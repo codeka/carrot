@@ -18,7 +18,7 @@ package net.asfun.jangod.base;
 import java.util.HashMap;
 import java.util.Map;
 
-public class FloorBindings {
+public class FloorBindings implements Cloneable{
 
 	private Map<Integer, Map<String,Object>> floor;
 	
@@ -80,8 +80,9 @@ public class FloorBindings {
             throw new IllegalArgumentException("key can not be empty");
         }
     }
-
-	public FloorBindings copy() {
+	
+	@Override
+	public FloorBindings clone() {
 		FloorBindings fb = new FloorBindings();
 		for (Map.Entry<Integer, Map<String,Object>> entry : floor.entrySet()) {
 			fb.putAll(entry.getValue(), entry.getKey());

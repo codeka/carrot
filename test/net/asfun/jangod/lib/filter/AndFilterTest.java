@@ -31,15 +31,15 @@ public class AndFilterTest extends ZzzBase{
 	@Before
 	public void setUp() throws Exception {
 		filter = new AndFilter();
-		compiler.assignSessionScope("var1", "hello");
-		compiler.assignSessionScope("var2", "");
-		compiler.assignSessionScope("var3", null);
-		compiler.assignSessionScope("var4", new Object[]{});
-		compiler.assignSessionScope("var5", new ArrayList<Object>());
-		compiler.assignSessionScope("var6", 0);
-		compiler.assignSessionScope("var7", 0.0f);
-		compiler.assignSessionScope("var8", 21);
-		compiler.assignSessionScope("var9", compiler);
+		compiler.assignRuntimeScope("var1", "hello");
+		compiler.assignRuntimeScope("var2", "");
+		compiler.assignRuntimeScope("var3", null);
+		compiler.assignRuntimeScope("var4", new Object[]{});
+		compiler.assignRuntimeScope("var5", new ArrayList<Object>());
+		compiler.assignRuntimeScope("var6", 0);
+		compiler.assignRuntimeScope("var7", 0.0f);
+		compiler.assignRuntimeScope("var8", 21);
+		compiler.assignRuntimeScope("var9", compiler);
 	}
 	
 	@Test

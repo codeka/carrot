@@ -79,6 +79,7 @@ public class Processor {
 		try {
 			Reader reader = loader.getReader(templateFile, encoding);
 			parser.init(reader);
+			interpreter.init();
 			return interpreter.render(parser);
 		} catch ( Exception e) {
 			throw new IOException(e.getMessage(), e.getCause());

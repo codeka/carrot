@@ -24,7 +24,7 @@ import net.asfun.jangod.interpret.JangodInterpreter;
 import net.asfun.jangod.interpret.Node;
 import net.asfun.jangod.lib.Tag;
 import net.asfun.jangod.util.ListOrderedMap;
-//import net.asfun.template.util.HelperStringTokenizer;
+import net.asfun.jangod.util.HelperStringTokenizer;
 
 /**
  * {% block name %}
@@ -38,17 +38,13 @@ public class BlockTag implements Tag{
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public String compile(List<Node> carries, String helpers, JangodInterpreter interpreter)
+	public String interpreter(List<Node> carries, String helpers, JangodInterpreter interpreter)
 			throws InterpretException {
-		//init
-//		String[] helper = new HelperStringTokenizer(helpers).allTokens();
-//		if( helper.length != 1) {
-//			throw new CompilerException("extends tag expects 1 helper >>> " + helper.length);
-//		}
-		String blockName = helpers;
-		if ( helpers.length() == 0 ) {
-			throw new InterpretException("Tag 'block' expects 1 helper >>> 0");
+		String[] helper = new HelperStringTokenizer(helpers).allTokens();
+		if( helper.length != 1) {
+			throw new InterpretException("Tag 'block' expects 1 helper >>> " + helper.length);
 		}
+		String blockName = interpreter.resolveString(helper[0]);
 		//check block name is unique
 		List<String> blockNames = (List<String>) interpreter.fetchRuntimeScope(BLOCKNAMES ,1);
 		if ( blockNames == null ) {
@@ -62,7 +58,8 @@ public class BlockTag implements Tag{
 		}
 		Object isChild = interpreter.fetchRuntimeScope(Context.CHILD_FLAG, 1);
 		if ( isChild != null ) {
-			ListOrderedMap blockList = (ListOrderedMap) interpreter.fetchSessionScope(Context.BLOCK_LIST);
+//			ListOrderedMap blockList = (ListOrderedMap) interpreter.fetchSessionScope(Context.BLOCK_LIST);
+			ListOrderedMap blockList = (ListOrderedMap) interpreter.fetchRuntimeScope(Context.BLOCK_LIST, 1);
 			//check block was defined in parent
 			if ( ! blockList.containsKey(blockName) ) {
 				throw new InterpretException("Dosen't define block in extends parent with name >>> " + blockName);
@@ -74,7 +71,8 @@ public class BlockTag implements Tag{
 		Object isParent = interpreter.fetchRuntimeScope(Context.PARENT_FLAG, 1);
 		if ( isParent != null) {
 			//save block content to engine, and return identify
-			ListOrderedMap blockList = (ListOrderedMap) interpreter.fetchSessionScope(Context.BLOCK_LIST);
+//			ListOrderedMap blockList = (ListOrderedMap) interpreter.fetchSessionScope(Context.BLOCK_LIST);
+			ListOrderedMap blockList = (ListOrderedMap) interpreter.fetchRuntimeScope(Context.BLOCK_LIST, 1);
 			blockList.put(blockName, getBlockContent(carries, interpreter));
 			return Context.SEMI_BLOCK + blockName;
 		}

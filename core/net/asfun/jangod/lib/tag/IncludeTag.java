@@ -37,7 +37,7 @@ import net.asfun.jangod.util.HelperStringTokenizer;
 public class IncludeTag implements Tag{
 	
 	@Override
-	public String compile(List<Node> carries, String helpers, JangodInterpreter interpreter)
+	public String interpreter(List<Node> carries, String helpers, JangodInterpreter interpreter)
 			throws InterpretException {
 		String[] helper = new HelperStringTokenizer(helpers).allTokens();
 		if( helper.length != 1) {
@@ -48,7 +48,7 @@ public class IncludeTag implements Tag{
 			UrlResourceLoader loader = new UrlResourceLoader(
 					interpreter.getConfig().getEncoding(), interpreter.getConfig().getWorkspace());
 			JangodParser parser = new JangodParser(loader.getReader(templateFile));
-			JangodInterpreter child = interpreter.copy();
+			JangodInterpreter child = interpreter.clone();
 			child.assignRuntimeScope(Context.INSERT_FLAG, true, 1);
 			return child.render(parser);
 		} catch (IOException e) {

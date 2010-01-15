@@ -33,7 +33,7 @@ public class IfchangedTag implements Tag{
 	
 
 	@Override
-	public String compile(List<Node> carries, String helpers, JangodInterpreter interpreter)
+	public String interpreter(List<Node> carries, String helpers, JangodInterpreter interpreter)
 			throws InterpretException {
 		if ( helpers.length() == 0 ) {
 			throw new InterpretException("Tag 'ifchanged' expects 1 helper >>> 0");

@@ -55,7 +55,7 @@ public class AddFilterTest extends ZzzBase{
 	
 	@Test
 	public void testDouble() throws InterpretException {
-		compiler.assignSessionScope("var1", 25);
+		compiler.assignRuntimeScope("var1", 25);
 		Object res = filter.filter(new Double(-20.24), compiler, "var1");
 		assertEquals(4.76f, (Double)res, 0.01f);
 	}

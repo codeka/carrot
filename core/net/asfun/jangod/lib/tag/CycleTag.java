@@ -34,7 +34,7 @@ public class CycleTag implements Tag{
 	
 
 	@Override
-	public String compile(List<Node> carries, String helpers, JangodInterpreter interpreter)
+	public String interpreter(List<Node> carries, String helpers, JangodInterpreter interpreter)
 			throws InterpretException {
 		String[] values;
 		String var = null;

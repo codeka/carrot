@@ -39,7 +39,7 @@ public class ExtendsTag implements Tag{
 
 
 	@Override
-	public String compile(List<Node> carries, String helpers, JangodInterpreter interpreter)
+	public String interpreter(List<Node> carries, String helpers, JangodInterpreter interpreter)
 			throws InterpretException {
 		String[] helper = new HelperStringTokenizer(helpers).allTokens();
 		if( helper.length != 1) {
@@ -50,13 +50,15 @@ public class ExtendsTag implements Tag{
 			UrlResourceLoader loader = new UrlResourceLoader(
 					interpreter.getConfig().getEncoding(), interpreter.getConfig().getWorkspace());
 			JangodParser parser = new JangodParser(loader.getReader(templateFile));
-			JangodInterpreter parent = interpreter.copy();
+			ListOrderedMap blockList = new ListOrderedMap();
+//			interpreter.assignSessionScope(Context.BLOCK_LIST, blockList);
+			interpreter.assignRuntimeScope(Context.BLOCK_LIST, blockList, 1);
+			JangodInterpreter parent = interpreter.clone();
 			interpreter.assignRuntimeScope(Context.CHILD_FLAG, true, 1);
 			parent.assignRuntimeScope(Context.PARENT_FLAG, true, 1);
-			ListOrderedMap blockList = new ListOrderedMap();
-			interpreter.assignSessionScope(Context.BLOCK_LIST, blockList);
 			String semi = parent.render(parser);
-			interpreter.assignSessionScope(Context.SEMI_RENDER, semi);
+//			interpreter.assignSessionScope(Context.SEMI_RENDER, semi);
+			interpreter.assignRuntimeScope(Context.SEMI_RENDER, semi, 1);
 			return "";
 		} catch (ParseException e) {
 			throw new InterpretException(e.getMessage());

@@ -38,13 +38,14 @@ public class SetTag implements Tag{
 	}
 
 	@Override
-	public String compile(List<Node> carries, String helpers, JangodInterpreter interpreter) throws InterpretException {
+	public String interpreter(List<Node> carries, String helpers, JangodInterpreter interpreter) throws InterpretException {
 		String[] helper = new HelperStringTokenizer(helpers).allTokens();
 		if ( helper.length != 2 ) {
 			throw new InterpretException("Tag 'set' expects 2 helper >>> " + helper.length);
 		}
 		Object value = VariableFilter.compute(helper[1], interpreter);
-		interpreter.assignSessionScope(helper[0], value);
+//		interpreter.assignSessionScope(helper[0], value);
+		interpreter.assignRuntimeScope(helper[0], value, 1);
 		return "";
 	}
 
