@@ -32,6 +32,8 @@ import net.asfun.jangod.util.HelperStringTokenizer;
  */
 public class CycleTag implements Tag{
 	
+	final String LOOP_INDEX = "loop.index";
+	final String TAGNAME = "cycle";
 
 	@Override
 	public String interpreter(List<Node> carries, String helpers, JangodInterpreter interpreter)
@@ -45,7 +47,7 @@ public class CycleTag implements Tag{
 			HelperStringTokenizer items = new HelperStringTokenizer(helper[0]);
 			items.splitComma(true);
 			values = items.allTokens();
-			Integer forindex = (Integer) interpreter.retraceVariable("loop.index");
+			Integer forindex = (Integer) interpreter.retraceVariable(LOOP_INDEX);
 			if (forindex == null) {
 				forindex = 0;
 			}
@@ -70,7 +72,7 @@ public class CycleTag implements Tag{
 			}
 			var = helper[2];
 			interpreter.assignRuntimeScope(var, values);
-			return "";
+			return BLANK_STRING;
 		} else {
 			throw new InterpretException("Tag 'cycle' expects 1 or 3 helper(s) >>> " + helper.length);
 		}
@@ -83,7 +85,7 @@ public class CycleTag implements Tag{
 
 	@Override
 	public String getName() {
-		return "cycle";
+		return TAGNAME;
 	}
 
 }

@@ -19,15 +19,22 @@ import net.asfun.jangod.interpret.InterpretException;
 import net.asfun.jangod.interpret.JangodInterpreter;
 import net.asfun.jangod.lib.Filter;
 
-public class EscapeFilter implements Filter{
+public class EscapeFilter implements Filter {
 
+	final String samp = "&";
+	final String bamp = "&amp;";
+	final String sgt = ">";
+	final String bgt = "&gt;";
+	final String slt = "<";
+	final String blt = "&lt;";
+	
 	@Override
 	public Object filter(Object object, JangodInterpreter interpreter, String... arg) throws InterpretException {
 		if ( object instanceof String ) {
 			String value = object.toString();
-			return value.replaceAll("&", "&amp;")
-				.replaceAll(">", "&gt;")
-				.replaceAll("<", "&lt;");
+			return value.replaceAll(samp, bamp)
+				.replaceAll(sgt, bgt)
+				.replaceAll(slt, blt);
 		}
 		return object;
 	}

@@ -29,7 +29,7 @@ public class EqualFilter implements Filter{
 		}
 		Object argObj ;
 		boolean isNull = false;
-		if ( arg[0].startsWith("'") || arg[0].startsWith("\"") ) {
+		if ( arg[0].startsWith(SINGLE_QUOTE) || arg[0].startsWith(DOUBLE_QUOTE) ) {
 			argObj = arg[0].substring(1, arg[0].length()-1);
 		} else {
 			argObj = interpreter.retraceVariable(arg[0]);

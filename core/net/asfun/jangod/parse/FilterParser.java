@@ -15,6 +15,8 @@ limitations under the License.
 **********************************************************************/
 package net.asfun.jangod.parse;
 
+import static net.asfun.jangod.parse.ParserConstants.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,9 +24,7 @@ public class FilterParser {
 
 	private String content;
 	private String var;
-
 	private List<String> filters;
-	
 	private List<String[]> argss;
 
 	public FilterParser(String cont) {
@@ -66,7 +66,7 @@ public class FilterParser {
 		filters = new ArrayList<String>();
 		argss = new ArrayList<String[]>();
 		//image = obj.attr.attr|filter1:"ar|g1",arg2|filter2:'a:",b"c'
-		int pointer = content.indexOf('|');
+		int pointer = content.indexOf(VL);
 		if ( pointer < 0 ) {
 			var = content;
 		} else {
@@ -81,7 +81,7 @@ public class FilterParser {
 	private void parseFilter(String filterString) throws ParseException {
 		//filterString = filter1:"ar|g1",arg2|filter2:'a:",b"c'
 		int postColon = filterString.indexOf(':');
-		int postPipe = filterString.indexOf('|');
+		int postPipe = filterString.indexOf(VL);
 		//filterString = filter1
 		if ( postColon == postPipe ) {
 			filters.add(filterString);
@@ -108,11 +108,11 @@ public class FilterParser {
 	
 	private String parseArg(String argString, List<String> args) throws ParseException {
 		//"ar|g1:",arg2   or 'a:"b"|c'|filter2  or arg3
-		if( argString.charAt(0) == '"' ) {
+		if( argString.charAt(0) == DQ ) {
 			//change to save quote in arg
 //			argString = argString.substring(1);
-//			int post = argString.indexOf('"');
-			int post = argString.substring(1).indexOf('"');
+//			int post = argString.indexOf(DQ);
+			int post = argString.substring(1).indexOf(DQ);
 			if ( post < 0 ) {
 				throw new ParseException("Filter argument doesn't match quotes >>> " + getVariable());
 			} else {
@@ -123,11 +123,11 @@ public class FilterParser {
 				args.add(argString.substring(0,post+2));
 				if( post < argString.length() - 3) {
 					argString = argString.substring(post+2).trim();
-					if ( argString.charAt(0) == '|' ) {
+					if ( argString.charAt(0) == VL ) {
 						content = argString.substring(1).trim();
 						return null;
 					} 
-					else if ( argString.charAt(0) == ',' ) {
+					else if ( argString.charAt(0) == CM ) {
 						return argString.substring(1).trim();
 					}
 					else {
@@ -136,11 +136,11 @@ public class FilterParser {
 				}
 			}
 		}
-		else if( argString.charAt(0) == '\'' ) {
+		else if( argString.charAt(0) == SQ ) {
 			//change to save quote in arg
 //			argString = argString.substring(1);
-//			int post = argString.indexOf('\'');
-			int post = argString.substring(1).indexOf('\'');
+//			int post = argString.indexOf(SQ);
+			int post = argString.substring(1).indexOf(SQ);
 			if ( post < 0 ) {
 				throw new ParseException("Filter argument doesn't match quotes >>> " + getVariable());
 			} else {
@@ -151,11 +151,11 @@ public class FilterParser {
 				args.add(argString.substring(0,post+2));
 				if( post < argString.length() - 3) {
 					argString = argString.substring(post+2).trim();
-					if ( argString.charAt(0) == '|' ) {
+					if ( argString.charAt(0) == VL ) {
 						content = argString.substring(1).trim();
 						return null;
 					} 
-					else if ( argString.charAt(0) == ',' ) {
+					else if ( argString.charAt(0) == CM ) {
 						return argString.substring(1).trim();
 					}
 					else {
@@ -165,8 +165,8 @@ public class FilterParser {
 			}
 		}
 		else {
-			int postComma = argString.indexOf(',');
-			int postPipe = argString.indexOf('|');
+			int postComma = argString.indexOf(CM);
+			int postPipe = argString.indexOf(VL);
 			if ( postComma > 0 && ( postPipe > postComma || postPipe < 0)) {
 				args.add(argString.substring(0,postComma).trim());
 				if( postComma < argString.length() - 1) {

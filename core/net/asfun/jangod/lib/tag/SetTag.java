@@ -31,10 +31,11 @@ import net.asfun.jangod.util.HelperStringTokenizer;
  */
 public class SetTag implements Tag{
 
-
+	final String TAGNAME = "set";
+	
 	@Override
 	public String getName() {
-		return "set";
+		return TAGNAME;
 	}
 
 	@Override
@@ -44,9 +45,8 @@ public class SetTag implements Tag{
 			throw new InterpretException("Tag 'set' expects 2 helper >>> " + helper.length);
 		}
 		Object value = VariableFilter.compute(helper[1], interpreter);
-//		interpreter.assignSessionScope(helper[0], value);
 		interpreter.assignRuntimeScope(helper[0], value, 1);
-		return "";
+		return BLANK_STRING;
 	}
 
 	@Override

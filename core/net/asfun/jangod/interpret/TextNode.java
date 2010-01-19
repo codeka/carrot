@@ -16,23 +16,38 @@ limitations under the License.
 package net.asfun.jangod.interpret;
 
 import net.asfun.jangod.parse.FixedToken;
-import net.asfun.jangod.parse.Token;
+//import net.asfun.jangod.parse.Token;
 
 public class TextNode implements Node{
 
-	public TextNode(Token tk) {
+	//if NodeList DONT add NoteToken
+	
+//	public TextNode(Token tk) {
+//		token = tk;
+//	}
+//	
+//	private Token token;
+//
+//	@Override
+//	public String render(JangodInterpreter interperter) {
+//		if ( token instanceof FixedToken ) {
+//			return ((FixedToken) token).output();
+//		} else {
+//			return "";
+//		}
+//	}
+	
+	private FixedToken token;
+	
+	public TextNode(FixedToken tk) {
 		token = tk;
 	}
-	
-	private Token token;
 
 	@Override
-	public String render(JangodInterpreter interperter) {
-		if ( token instanceof FixedToken ) {
-			return ((FixedToken) token).output();
-		} else {
-			return "";
-		}
+	public String render(JangodInterpreter interperter)
+			throws InterpretException {
+		return token.output();
 	}
 
+	
 }

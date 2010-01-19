@@ -114,6 +114,6 @@ public class NodeListTest {
 		script = "{%extends a %}都督府{{ab}}{#dlff{{dkf}}j#}";
 		parser = new JangodParser(script);
 		List<Node> nodes = NodeList.makeList(parser, null, 1);
-		assertEquals(4, nodes.size());
+		assertEquals(3, nodes.size());
 	}
 }

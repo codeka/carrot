@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.asfun.jangod.parse.EchoToken;
+import net.asfun.jangod.parse.FixedToken;
 import net.asfun.jangod.parse.InstToken;
 import net.asfun.jangod.parse.JangodParser;
 import net.asfun.jangod.parse.TagToken;
@@ -45,9 +46,11 @@ public class NodeList {
 			token = parser.next();
 			switch(token.getType()) {
 				case TOKEN_FIXED :
-				case TOKEN_NOTE :		
-					TextNode xn = new TextNode(token);
+					TextNode xn = new TextNode((FixedToken)token);
 					nodes.add(xn);
+					break;
+				case TOKEN_NOTE :		
+					//even not need to add this node, or, it could be add like a fixedtoken
 					break;
 				case TOKEN_INST :
 					try {

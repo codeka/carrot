@@ -30,6 +30,8 @@ public class JangodParser implements Iterator<Token>{
 	private TokenManager tm = new TokenManager();
 	private Token token;
 	private boolean proceeding = true;
+	
+	static final String NEW_LINE = "\n";
 
 	public JangodParser(String text) {
 		tm.init(text);
@@ -52,7 +54,7 @@ public class JangodParser implements Iterator<Token>{
 		try {
 			while( (line=br.readLine()) != null ) {
 				buff.append(line);
-				buff.append("\n");
+				buff.append(NEW_LINE);
 			}
 		} catch (IOException e) {
 			throw new ParseException("read template reader fault.", e.getCause());

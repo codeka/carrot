@@ -11,8 +11,9 @@ import net.asfun.jangod.lib.Filter;
 
 public class Md5Filter implements Filter {
 
-	private final static String[] NOSTR = { "0", "1", "2", "3", "4", "5", "6",
+	final String[] NOSTR = { "0", "1", "2", "3", "4", "5", "6",
 			"7", "8", "9", "a", "b", "c", "d", "e", "f" };
+	final String md5 = "MD5";
 
 	private String byteToArrayString(byte bByte) {
 		int temp = bByte;
@@ -36,7 +37,7 @@ public class Md5Filter implements Filter {
 		String result = null;
 		MessageDigest md;
 		try {
-			md = MessageDigest.getInstance("MD5");
+			md = MessageDigest.getInstance(md5);
 			result = byteToString(md.digest(str.getBytes()));
 		} catch (NoSuchAlgorithmException ex) {
 			JangodLogger.severe(ex.getMessage());

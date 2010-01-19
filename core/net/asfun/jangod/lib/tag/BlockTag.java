@@ -34,7 +34,9 @@ import net.asfun.jangod.util.HelperStringTokenizer;
 
 public class BlockTag implements Tag{
 	
-	private static final String BLOCKNAMES = "'BLK\"NAMES";
+	final String BLOCKNAMES = "'BLK\"NAMES";
+	final String TAGNAME = "block";
+	final String ENDTAGNAME = "endblock";
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -58,7 +60,6 @@ public class BlockTag implements Tag{
 		}
 		Object isChild = interpreter.fetchRuntimeScope(Context.CHILD_FLAG, 1);
 		if ( isChild != null ) {
-//			ListOrderedMap blockList = (ListOrderedMap) interpreter.fetchSessionScope(Context.BLOCK_LIST);
 			ListOrderedMap blockList = (ListOrderedMap) interpreter.fetchRuntimeScope(Context.BLOCK_LIST, 1);
 			//check block was defined in parent
 			if ( ! blockList.containsKey(blockName) ) {
@@ -71,7 +72,6 @@ public class BlockTag implements Tag{
 		Object isParent = interpreter.fetchRuntimeScope(Context.PARENT_FLAG, 1);
 		if ( isParent != null) {
 			//save block content to engine, and return identify
-//			ListOrderedMap blockList = (ListOrderedMap) interpreter.fetchSessionScope(Context.BLOCK_LIST);
 			ListOrderedMap blockList = (ListOrderedMap) interpreter.fetchRuntimeScope(Context.BLOCK_LIST, 1);
 			blockList.put(blockName, getBlockContent(carries, interpreter));
 			return Context.SEMI_BLOCK + blockName;
@@ -89,12 +89,12 @@ public class BlockTag implements Tag{
 
 	@Override
 	public String getEndTagName() {
-		return "endblock";
+		return ENDTAGNAME;
 	}
 
 	@Override
 	public String getName() {
-		return "block";
+		return TAGNAME;
 	}
 
 }

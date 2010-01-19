@@ -22,11 +22,13 @@ import net.asfun.jangod.lib.Filter;
 
 public class TruncateFilter implements Filter{
 
+	final String ENDS = "...";
+	
 	@Override
 	public Object filter(Object object, JangodInterpreter interpreter, String... arg) throws InterpretException {
 		if ( object instanceof String ) {
 			int length = 100;
-			String ends = "...";
+			String ends = ENDS;
 			if ( arg.length > 0 ) {
 				try {
 					length = Integer.valueOf(interpreter.resolveString(arg[0]));

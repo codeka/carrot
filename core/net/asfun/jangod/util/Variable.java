@@ -20,6 +20,9 @@ import java.util.List;
 
 public class Variable {
 
+	static final String DOT = ".";
+	static final String DOT_REGX = "\\.";
+	
 	private String name;
 	private List<String> chainList;
 	
@@ -28,13 +31,13 @@ public class Variable {
 	}
 
 	private void split(String variable) {
-		if (!variable.contains(".")) {
+		if (!variable.contains(DOT)) {
 			name = variable;
 			chainList = null;
 			return;
 		}
 		
-		String[] parts = variable.split("\\.");
+		String[] parts = variable.split(DOT_REGX);
 		name = parts[0];
 		chainList = Arrays.asList(parts);
 		chainList = chainList.subList(1, chainList.size());

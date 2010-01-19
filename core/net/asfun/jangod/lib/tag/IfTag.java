@@ -32,6 +32,8 @@ import net.asfun.jangod.util.ObjectTruthValue;
  */
 public class IfTag implements Tag {
 
+	final String TAGNAME = "if";
+	final String ENDTAGNAME = "endif";
 
 	@Override
 	public String interpreter(List<Node> carries, String helpers, JangodInterpreter interpreter)
@@ -43,8 +45,7 @@ public class IfTag implements Tag {
 		StringBuffer sb = new StringBuffer();
 		if ( ObjectTruthValue.evaluate(test) ) {
 			for(Node node : carries) {
-//				if ( "[TagNode:else]".equals(node.toString()) ) {
-				if ( "else".equals(node.toString()) ) {
+				if ( ElseTag.ELSE.equals(node.toString()) ) {
 					break;
 				}
 				sb.append(node.render(interpreter));
@@ -55,8 +56,7 @@ public class IfTag implements Tag {
 				if (inElse) {
 					sb.append(node.render(interpreter));
 				}
-//				if ( "[TagNode:else]".equals(node.toString()) ) {
-				if ( "else".equals(node.toString()) ) {
+				if (  ElseTag.ELSE.equals(node.toString()) ) {
 					inElse = true;
 				}
 			}
@@ -66,12 +66,12 @@ public class IfTag implements Tag {
 
 	@Override
 	public String getEndTagName() {
-		return "endif";
+		return ENDTAGNAME;
 	}
 
 	@Override
 	public String getName() {
-		return "if";
+		return TAGNAME;
 	}
 
 }

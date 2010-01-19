@@ -26,4 +26,12 @@ public final class ParserConstants {
 	public static final int TOKEN_ECHO2 = '}';
 	public static final int TOKEN_INST = '!';
 	
+	public static final char VL = '|';
+	public static final char CL = ':';
+	public static final char CM = ',';
+	public static final char SQ = '\'';
+	public static final char DQ = '"';
+	
+	public static final String SCPACE_STR = "\\s";
+	public static final String BLANK_STR = " ";
 }

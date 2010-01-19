@@ -37,6 +37,7 @@ import net.asfun.jangod.util.ListOrderedMap;
  */
 public class ExtendsTag implements Tag{
 
+	final String TAGNAME = "extends";
 
 	@Override
 	public String interpreter(List<Node> carries, String helpers, JangodInterpreter interpreter)
@@ -51,13 +52,11 @@ public class ExtendsTag implements Tag{
 					interpreter.getConfig().getEncoding(), interpreter.getConfig().getWorkspace());
 			JangodParser parser = new JangodParser(loader.getReader(templateFile));
 			ListOrderedMap blockList = new ListOrderedMap();
-//			interpreter.assignSessionScope(Context.BLOCK_LIST, blockList);
 			interpreter.assignRuntimeScope(Context.BLOCK_LIST, blockList, 1);
 			JangodInterpreter parent = interpreter.clone();
 			interpreter.assignRuntimeScope(Context.CHILD_FLAG, true, 1);
 			parent.assignRuntimeScope(Context.PARENT_FLAG, true, 1);
 			String semi = parent.render(parser);
-//			interpreter.assignSessionScope(Context.SEMI_RENDER, semi);
 			interpreter.assignRuntimeScope(Context.SEMI_RENDER, semi, 1);
 			return "";
 		} catch (ParseException e) {
@@ -74,7 +73,7 @@ public class ExtendsTag implements Tag{
 
 	@Override
 	public String getName() {
-		return "extends";
+		return TAGNAME;
 	}
 
 }

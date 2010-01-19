@@ -54,7 +54,6 @@ public class TagNode implements Node{
 	
 	@Override
 	public String toString() {
-//		return "[TagNode:" + tag.getName() + "]";
 		return tag.getName();
 	}
 }

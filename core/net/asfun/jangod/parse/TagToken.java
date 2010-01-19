@@ -36,20 +36,20 @@ public class TagToken extends Token {
 	 */
 	@Override
 	protected void parse() {
-		content = image.substring(2, image.length()-2).trim().replaceFirst("\\s", " ");
+		content = image.substring(2, image.length()-2).trim().replaceFirst(SCPACE_STR, BLANK_STR);
 		int postBlank = content.indexOf(' ');
 		if ( postBlank > 0 ) {
-			tagName = content.substring(0, postBlank);
+			tagName = content.substring(0, postBlank).toLowerCase();
 			helpers = content.substring(postBlank).trim();
 		}
 		else {
-			tagName = content;
+			tagName = content.toLowerCase();
 			helpers = "";
 		}
 	}
 	
 	public String getTagName() {
-		return tagName.toLowerCase();
+		return tagName;
 	}
 	
 	public String getHelpers() {

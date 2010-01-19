@@ -29,8 +29,9 @@ import net.asfun.jangod.lib.Tag;
  */
 public class IfchangedTag implements Tag{
 	
-	private static final String LASTKEY = "'IF\"CHG";
-	
+	final String LASTKEY = "'IF\"CHG";
+	final String TAGNAME = "ifchanged";
+	final String ENDTAGNAME = "endif";
 
 	@Override
 	public String interpreter(List<Node> carries, String helpers, JangodInterpreter interpreter)
@@ -57,17 +58,17 @@ public class IfchangedTag implements Tag{
 			}
 			return sb.toString();
 		}
-		return "";
+		return BLANK_STRING;
 	}
 
 	@Override
 	public String getEndTagName() {
-		return "endif";
+		return ENDTAGNAME;
 	}
 
 	@Override
 	public String getName() {
-		return "ifchanged";
+		return TAGNAME;
 	}
 
 }

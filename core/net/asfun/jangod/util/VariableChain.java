@@ -27,6 +27,9 @@ import net.asfun.jangod.util.logging.Level;
 
 public class VariableChain {
 
+	static final String GET = "get";
+	static final String IS = "is";
+	
 	private List<String> chain;
 	private Object value;
 
@@ -61,11 +64,11 @@ public class VariableChain {
 			} catch( NoSuchMethodException e) {
 				String uname = upperFirst(name);
 				try {
-					mth1 = clazz.getDeclaredMethod("get" + uname);
+					mth1 = clazz.getDeclaredMethod(GET + uname);
 //					mth1.setAccessible(array, flag)
 				} catch (NoSuchMethodException e2) {
 					try {
-						mth1 = clazz.getDeclaredMethod("is" + uname);
+						mth1 = clazz.getDeclaredMethod(IS + uname);
 					} catch (NoSuchMethodException e3) {
 						//nothing;
 					}

@@ -36,6 +36,8 @@ import net.asfun.jangod.util.HelperStringTokenizer;
  */
 public class IncludeTag implements Tag{
 	
+	final String TAGNAME = "include";
+	
 	@Override
 	public String interpreter(List<Node> carries, String helpers, JangodInterpreter interpreter)
 			throws InterpretException {
@@ -65,7 +67,7 @@ public class IncludeTag implements Tag{
 
 	@Override
 	public String getName() {
-		return "include";
+		return TAGNAME;
 	}
 
 }

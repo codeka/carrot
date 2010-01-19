@@ -15,6 +15,8 @@ limitations under the License.
 **********************************************************************/
 package net.asfun.jangod.util;
 
+import static net.asfun.jangod.parse.ParserConstants.*;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -30,7 +32,6 @@ public class HelperStringTokenizer implements Iterator<String>{
 	private int currPost = 0;
 	private int tokenStart = 0;
 	private int length = 0;
-//	private int startChar = -1;//change to save quote in helper 
 	private char lastChar = ' ';
 	private int lastStart = 0;
 	private boolean useComma = false;
@@ -72,33 +73,8 @@ public class HelperStringTokenizer implements Iterator<String>{
 	}
 	
 	private String makeToken() {
-		//change to save quote in helper            -----start
-//		if ( c =='"' | c == '\'' ) {
-//			//reach the end of current token
-//			if (startChar == c) {
-//				return newToken();
-//			} 
-//			//start a new token
-//			else if(startChar == -1) {
-//				startChar = c;
-//				tokenStart = currPost;
-//			}
-//			//in a token
-//		}
-//		else if ( Character.isWhitespace(c) || (useComma && c == ',') ) {
-//			if ( Character.isWhitespace(startChar) ) {
-//				return newToken();
-//			} 
-//			else if(startChar == -1) {
-//				return makeToken();
-//			}
-//		}
-//		else if ( startChar == -1) {
-//			startChar = 32;// ' '
-//			tokenStart = currPost - 1;
-//		}
 		char c = helpers[currPost++];
-		if ( c == '"' | c == '\'') {
+		if ( c == DQ | c == SQ ) {
 			if ( inQuote ){
 				if ( quoteChar == c ) {
 					inQuote = false;
@@ -108,12 +84,11 @@ public class HelperStringTokenizer implements Iterator<String>{
 				quoteChar = c;
 			}
 		}
-		if ( Character.isWhitespace(c) || (useComma && c == ',') ) {
+		if ( Character.isWhitespace(c) || (useComma && c == CM) ) {
 			if ( ! inQuote ) {
 				return newToken();
 			}
 		}
-		//change to save quote in helper             ----end
 		if ( currPost == length ) {
 			return getEndToken();
 		}
@@ -127,7 +102,7 @@ public class HelperStringTokenizer implements Iterator<String>{
 	private String newToken() {
 		lastStart = tokenStart;
 		tokenStart = currPost;
-		if ( Character.isWhitespace(lastChar) || (useComma && lastChar == ',')) {
+		if ( Character.isWhitespace(lastChar) || (useComma && lastChar == CM)) {
 			return null;
 		}
 //		startChar = -1;//change to save quote in helper 

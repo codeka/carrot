@@ -18,6 +18,9 @@ package net.asfun.jangod.parse;
 import static net.asfun.jangod.parse.ParserConstants.*;
 
 public class FixedToken extends Token{
+	
+	static final String toReplace = "\\{\\\\(\\\\*[\\{!#%])";
+	static final String replaceWith = "{$1";
 
 	public FixedToken(String image) throws ParseException{
 		super(image);
@@ -35,7 +38,7 @@ public class FixedToken extends Token{
 	 */
 	@Override
 	protected void parse() {
-		content = image.replaceAll("\\{\\\\(\\\\*[\\{!#%])","{$1");
+		content = image.replaceAll(toReplace, replaceWith);
 	}
 
 	public boolean isBlank() {

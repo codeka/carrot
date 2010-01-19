@@ -33,7 +33,10 @@ import net.asfun.jangod.interpret.Node;
  */
 public class ForTag implements Tag {
 	
-
+	final String LOOP = "loop";
+	final String TAGNAME = "for";
+	final String ENDTAGNAME = "endfor";
+	
 	@Override
 	public String interpreter(List<Node> carries, String helpers, JangodInterpreter interpreter) throws InterpretException {
 		String[] helper = new HelperStringTokenizer(helpers).allTokens();
@@ -45,7 +48,7 @@ public class ForTag implements Tag {
 		ForLoop loop = ObjectIterator.getLoop(collection);
 		
 		int level = interpreter.getLevel() + 1;
-		interpreter.assignRuntimeScope("loop", loop, level);
+		interpreter.assignRuntimeScope(LOOP, loop, level);
 		StringBuffer buff = new StringBuffer();
 		while ( loop.hasNext() ) {
 			//set item variable
@@ -59,12 +62,12 @@ public class ForTag implements Tag {
 
 	@Override
 	public String getEndTagName() {
-		return "endfor";
+		return ENDTAGNAME;
 	}
 
 	@Override
 	public String getName() {
-		return "for";
+		return TAGNAME;
 	}
 
 }

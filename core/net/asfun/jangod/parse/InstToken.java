@@ -38,7 +38,7 @@ public class InstToken extends Token {
 
 	@Override
 	protected void parse() throws ParseException{
-		content = image.substring(2, image.length()-2).trim().replaceFirst("\\s", " ");
+		content = image.substring(2, image.length()-2).trim().replaceFirst(SCPACE_STR, BLANK_STR);
 		int postBlank = content.indexOf(' ');
 		if ( postBlank > 0 ) {
 			instName = content.substring(0, postBlank);

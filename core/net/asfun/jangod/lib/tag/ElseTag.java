@@ -29,10 +29,12 @@ import net.asfun.jangod.lib.Tag;
  */
 public class ElseTag implements Tag{
 
+	static final String ELSE = "else";
+	
 	@Override
 	public String interpreter(List<Node> carries, String helpers, JangodInterpreter interpreter)
 			throws InterpretException {
-		return "";
+		return BLANK_STRING;
 	}
 
 	@Override
@@ -42,7 +44,7 @@ public class ElseTag implements Tag{
 
 	@Override
 	public String getName() {
-		return "else";
+		return ELSE;
 	}
 
 }
