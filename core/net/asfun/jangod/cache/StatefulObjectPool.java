@@ -13,25 +13,13 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 **********************************************************************/
-package org.springframework.web.servlet.view.jangod;
+package net.asfun.jangod.cache;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.web.servlet.theme.AbstractThemeResolver;
+public interface StatefulObjectPool<T> {
 
-public class ApplicationThemeResolver extends AbstractThemeResolver{
+	public T pop();
 	
-	private String theme = "default";
-
-	@Override
-	public String resolveThemeName(HttpServletRequest req) {
-		return theme;
-	}
-
-	@Override
-	public void setThemeName(HttpServletRequest req, HttpServletResponse resp, String theme) {
-		this.theme = theme;
-	}
-
+	public void push(T instance);
+	
 }

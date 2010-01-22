@@ -16,27 +16,26 @@ limitations under the License.
 package net.asfun.jangod.template;
 
 import java.io.IOException;
-import java.io.Reader;
 import java.io.Writer;
 import java.util.Map;
 
 import net.asfun.jangod.base.Configuration;
 import net.asfun.jangod.base.Context;
-import net.asfun.jangod.base.UrlResourceLoader;
+import net.asfun.jangod.base.ResourceManager;
 import net.asfun.jangod.interpret.JangodInterpreter;
 import net.asfun.jangod.parse.JangodParser;
 
 /**
  * DON'T run in multi-thread
- * @author fangchq
+ * @author anysome
  *
  */
 public class Processor {
 
 	protected Context context;
-	protected UrlResourceLoader loader;
 	JangodParser parser;
 	JangodInterpreter interpreter;
+	boolean hasRoot = false;
 	
 	public Processor(TemplateConfig config) {
 		context = new Context();
@@ -46,12 +45,18 @@ public class Processor {
 			}
 			if ( config.getTemplateRoot() != null ) {
 				context.getConfiguration().setWorkspace(config.getTemplateRoot());
+				hasRoot = true;
 			}
 		}
-		loader = new UrlResourceLoader(context.getConfiguration().getEncoding(), 
-				context.getConfiguration().getWorkspace());
 		parser = new JangodParser("");
 		interpreter = new JangodInterpreter(context);
+	}
+	
+	private String getFullFileName(String fileName) {
+		if ( hasRoot ) {
+			return context.getConfiguration().getWorkspace() + fileName;
+		}
+		return fileName;
 	}
 	
 	public Configuration getConfiguration() {
@@ -77,8 +82,7 @@ public class Processor {
 			context.initBindings(bindings, Context.SCOPE_SESSION);
 		}
 		try {
-			Reader reader = loader.getReader(templateFile, encoding);
-			parser.init(reader);
+			parser.init(ResourceManager.getResource(getFullFileName(templateFile), encoding));
 			interpreter.init();
 			return interpreter.render(parser);
 		} catch ( Exception e) {

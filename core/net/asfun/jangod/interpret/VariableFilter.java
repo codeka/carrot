@@ -35,9 +35,9 @@ public class VariableFilter {
 		}
 		Object var = interpreter.retraceVariable(fp.getVariable());
 		List<String> filters = fp.getFilters();
-//		if ( filters.isEmpty() ) {
-//			return var;
-//		}
+		if ( filters.isEmpty() ) {
+			return var;
+		}
 		List<String[]> argss = fp.getArgss();
 		String[] args;
 		Filter filter;

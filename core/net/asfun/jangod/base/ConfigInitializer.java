@@ -32,7 +32,72 @@ public class ConfigInitializer {
 
 	final static String AUTOCONFIG_FILE = "jangod.config.properties";
 	final static String CONFIG_FILE_PROPERTY = "jangod.configurationFile";
-	private static Configuration config;
+	final static Configuration config;
+	final static Properties properties = new Properties();
+	
+	static {
+		config = new Configuration();
+		URL u = findConfigFile();
+		if (u != null) {
+			InputStream is = null;
+			try {
+				is = u.openStream();
+				properties.load(is);
+				if (properties.containsKey("lib.imports")) {
+					String exts = properties.getProperty("lib.imports");
+					String[] imports = exts.split("\\s+");
+					for(String importClass : imports) {
+						try {
+							Importable importee = (Importable) Class.forName(importClass).newInstance();
+							Configuration.addImport(importee);
+						} catch (Exception e) {
+							JangodLogger.warning("Can't created importable object >>> " + importClass);
+						}
+					}
+				}
+				JangodLogger.fine("Load config from file >>> " + u.getFile());
+				if (properties.containsKey("language")) {
+					try {
+						config.setLocale(new Locale(properties.getProperty("language")));
+					} catch(Exception e) {
+						config.setLocale(Locale.CHINESE);
+						JangodLogger.warning("Language value from config file is invalid(use default) >>> "
+								+ properties.getProperty("language"));
+					}
+				}
+				if (properties.containsKey("timezone")) {
+					try {
+						config.setTimezone(TimeZone.getTimeZone(properties.getProperty("timezone")));
+					} catch(Exception e) {
+						config.setTimezone(TimeZone.getDefault());
+						JangodLogger.warning("Timezone value from config file is invalid(use default) >>> "
+								+ properties.getProperty("timezone"));
+					}
+				}
+				//TODO check encoding value is valid
+				if (properties.containsKey("file.encoding")) {
+					config.setEncoding(properties.getProperty("file.encoding"));
+				} else if ( System.getProperty("file.encoding") != null) {
+					config.setEncoding(System.getProperty("file.encoding"));
+				} else {
+					config.setEncoding("utf-8");
+				}
+				if (properties.containsKey("file.root")) {
+					config.setWorkspace(properties.getProperty("file.root"));
+				}
+			} catch (IOException e) {
+				JangodLogger.warning("Reading configuration file error >>> " + e.getMessage());
+			} finally {
+				if ( is != null ) {
+					try {
+						is.close();
+					} catch (IOException e) {
+						JangodLogger.warning("Reading configuration file error >>> " + e.getMessage());
+					}
+				}
+			}
+		}
+	}
 
 	private static URL findConfigFile() {
 		String file = null;
@@ -42,8 +107,8 @@ public class ConfigInitializer {
 				file = System.getenv(CONFIG_FILE_PROPERTY);
 			}
 		} catch (SecurityException e) {
-			JangodLogger.finest("Can't get file name from env by key >>>" + CONFIG_FILE_PROPERTY);
 			file = null;
+			JangodLogger.finest("Can't get file name from env by key >>>" + CONFIG_FILE_PROPERTY);
 		}
 		if (file == null) {
 			file = AUTOCONFIG_FILE;
@@ -70,55 +135,14 @@ public class ConfigInitializer {
 	}
 
 	public static Configuration getConfig() {
-		if (config == null) {
-			config = new Configuration();
-			URL u = findConfigFile();
-			if (u != null) {
-				InputStream is = null;
-				Properties props = new Properties();
-				try {
-					is = u.openStream();
-					props.load(is);
-					if (props.containsKey("extends")) {
-						String exts = props.getProperty("extends");
-						String[] imports = exts.split("\\s+");
-						for(String importClass : imports) {
-							try {
-								Importable importee = (Importable) Class.forName(importClass).newInstance();
-								Configuration.addImport(importee);
-							} catch (Exception e) {
-								JangodLogger.warning("Can't created importable object >>> " + importClass);
-							}
-						}
-					}
-					JangodLogger.fine("Load config from file >>> " + u.getFile());
-					if (props.containsKey("language")) {
-						config.setLocale(new Locale(props.getProperty("language")));
-					}
-					if (props.containsKey("timezone")) {
-						config.setTimezone(TimeZone.getTimeZone(props.getProperty("timezone")));
-					}
-					if (props.containsKey("encoding")) {
-						config.setEncoding(props.getProperty("encoding"));
-					} else if ( System.getProperty("file.encoding") != null) {
-						config.setEncoding(System.getProperty("file.encoding"));
-					}
-					if (props.containsKey("workspace")) {
-						config.setWorkspace(props.getProperty("workspace"));
-					}
-				} catch (IOException e) {
-					JangodLogger.warning("Reading configuration file error >>> " + e.getMessage());
-				} finally {
-					if ( is != null ) {
-						try {
-							is.close();
-						} catch (IOException e) {
-							JangodLogger.warning("Reading configuration file error >>> " + e.getMessage());
-						}
-					}
-				}
-			}
-		}
 		return config;
+	}
+	
+	public static String getProperty(String key, String defaultValue) {
+		return properties.getProperty(key, defaultValue);
+	}
+	
+	public static String getProperty(String key) {
+		return properties.getProperty(key);
 	}
 }

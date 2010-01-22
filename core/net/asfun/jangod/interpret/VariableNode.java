@@ -40,9 +40,9 @@ public class VariableNode implements Node{
 		Object var = interperter.retraceVariable(token.getVariable());
 		//filters
 		List<String> filters = token.getFilters();
-//		if ( filters.isEmpty() ) {
-//			return ObjectValue.printable(var);
-//		}
+		if ( filters.isEmpty() ) {
+			return ObjectValue.printable(var);
+		}
 		List<String[]> argss = token.getArgss();
 		String[] args;
 		Filter filter;

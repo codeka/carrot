@@ -20,7 +20,7 @@ import net.asfun.jangod.parse.FixedToken;
 
 public class TextNode implements Node{
 
-	//if NodeList DONT add NoteToken
+	//if NodeList DO add NoteToken
 	
 //	public TextNode(Token tk) {
 //		token = tk;

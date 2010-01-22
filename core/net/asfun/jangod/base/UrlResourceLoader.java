@@ -1,5 +1,5 @@
 /**********************************************************************
-Copyright (c) 2009 Asfun Net.
+Copyright (c) 2010 Asfun Net.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@ package net.asfun.jangod.base;
 
 import static net.asfun.jangod.util.logging.JangodLogger;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -28,16 +29,10 @@ import java.net.URL;
 
 public class UrlResourceLoader implements ResourceLoader{
 	
+	static final String NEW_LINE = "\n";
+	
 	String root;
 	String encoding;
-	
-	public UrlResourceLoader(String encoding, String root) {
-		if ( encoding == null ) {
-			throw new NullPointerException("encoding can not be null.");
-		}
-		this.encoding = encoding;
-		this.root = root;
-	}
 	
 	public String getRoot() {
 		return root;
@@ -71,7 +66,7 @@ public class UrlResourceLoader implements ResourceLoader{
 						JangodLogger.warning("Can't find file >>> " + fileName);
 					}
 				} else {
-					JangodLogger.warning("Can't find config file >>> " + fileName);
+					JangodLogger.warning("Can't find file >>> " + fileName);
 				}
 			}
 			return new InputStreamReader(urlFile.openStream(), encoding);
@@ -80,6 +75,44 @@ public class UrlResourceLoader implements ResourceLoader{
 		} catch (FileNotFoundException e) {
 			throw new IOException(e.getMessage());
 		}
+	}
+
+	@Override
+	public String getString(String fileName) throws IOException {
+		return getString(fileName, encoding);
+	}
+
+	@Override
+	public String getString(String fileName, String encoding)
+			throws IOException {
+		Reader reader = getReader(fileName, encoding);
+		BufferedReader br = new BufferedReader(reader);
+		StringBuffer buff = new StringBuffer();
+		String line;
+		try {
+			while( (line=br.readLine()) != null ) {
+				buff.append(line);
+				buff.append(NEW_LINE);
+			}
+		} catch (IOException e) {
+			throw e;
+		} finally {
+			reader.close();
+		}
+		return buff.toString();
+	}
+
+	@Override
+	public void setEncoding(String encoding) {
+		if ( encoding == null ) {
+			throw new NullPointerException("encoding can not be null.");
+		}
+		this.encoding = encoding;
+	}
+
+	@Override
+	public void setRoot(String root) {
+		this.root = root;
 	}
 	
 }

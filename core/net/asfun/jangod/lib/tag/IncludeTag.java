@@ -19,13 +19,12 @@ import java.io.IOException;
 import java.util.List;
 
 import net.asfun.jangod.base.Context;
-import net.asfun.jangod.base.UrlResourceLoader;
+import net.asfun.jangod.base.ResourceManager;
 import net.asfun.jangod.interpret.InterpretException;
 import net.asfun.jangod.interpret.JangodInterpreter;
 import net.asfun.jangod.interpret.Node;
 import net.asfun.jangod.lib.Tag;
 import net.asfun.jangod.parse.JangodParser;
-import net.asfun.jangod.parse.ParseException;
 import net.asfun.jangod.util.HelperStringTokenizer;
 
 /**
@@ -47,15 +46,15 @@ public class IncludeTag implements Tag{
 		}
 		String templateFile = interpreter.resolveString(helper[0]);
 		try {
-			UrlResourceLoader loader = new UrlResourceLoader(
-					interpreter.getConfig().getEncoding(), interpreter.getConfig().getWorkspace());
-			JangodParser parser = new JangodParser(loader.getReader(templateFile));
+			if ( interpreter.getConfig().getWorkspace() != null ) {
+				templateFile = interpreter.getConfig().getWorkspace() + templateFile;
+			}
+			JangodParser parser = new JangodParser( ResourceManager.getResource(
+					templateFile, interpreter.getConfig().getEncoding()) );
 			JangodInterpreter child = interpreter.clone();
 			child.assignRuntimeScope(Context.INSERT_FLAG, true, 1);
 			return child.render(parser);
 		} catch (IOException e) {
-			throw new InterpretException(e.getMessage());
-		} catch (ParseException e) {
 			throw new InterpretException(e.getMessage());
 		}
 	}

@@ -31,11 +31,9 @@ import net.asfun.jangod.lib.TagLibrary;
 
 public class Configuration {
 	
-	public static final String CONFIG_VAR = "'CFG\"CURRENT";
-	
-	private String encoding = "utf-8";
-	private Locale locale = Locale.CHINESE;
-	private TimeZone timezone = TimeZone.getDefault();
+	private String encoding;
+	private Locale locale;
+	private TimeZone timezone;
 	private String workspace;
 	
 	protected Configuration(){};
@@ -51,9 +49,9 @@ public class Configuration {
 			InstructionLibrary.addInstruction((Instruction)importee);
 		} else {
 			if ( importee != null )
-				JangodLogger.warning("can't recognize the importing object >>> " + importee.getClass().getName());
+				JangodLogger.warning("Can't recognize the importing object >>> " + importee.getClass().getName());
 			else 
-				JangodLogger.warning("can't import null object");
+				JangodLogger.warning("Can't import null object");
 		}
 	}
 	

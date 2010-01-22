@@ -66,10 +66,8 @@ public class JangodInterpreter implements Cloneable{
 		}
 		if ( runtime.get(Context.CHILD_FLAG, 1) != null && 
 				runtime.get(Context.INSERT_FLAG, 1) == null) {
-//			StringBuilder sb = new StringBuilder(context.getAttribute(Context.SEMI_RENDER).toString());
 			StringBuilder sb = new StringBuilder((String)fetchRuntimeScope(Context.SEMI_RENDER, 1));
 			//replace the block identify with block content
-//			ListOrderedMap blockList = (ListOrderedMap) fetchSessionScope(Context.BLOCK_LIST);
 			ListOrderedMap blockList = (ListOrderedMap) fetchRuntimeScope(Context.BLOCK_LIST, 1);
 			Iterator<Item> mi = blockList.iterator();
 			int index;

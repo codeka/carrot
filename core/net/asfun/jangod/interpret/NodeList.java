@@ -18,7 +18,7 @@ package net.asfun.jangod.interpret;
 import static net.asfun.jangod.parse.ParserConstants.*;
 import static net.asfun.jangod.util.logging.*;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import net.asfun.jangod.parse.EchoToken;
@@ -39,7 +39,7 @@ public class NodeList {
 	 * @return
 	 */
 	public static List<Node> makeList(JangodParser parser, String endTagName, int level) {
-		List<Node> nodes = new ArrayList<Node>();
+		List<Node> nodes = new LinkedList<Node>();
 		Token token;
 		TagToken tag;
 		while( parser.hasNext() ) {
