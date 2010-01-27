@@ -19,9 +19,9 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.Map;
 
+import net.asfun.jangod.base.Application;
 import net.asfun.jangod.base.Configuration;
 import net.asfun.jangod.base.Context;
-import net.asfun.jangod.base.ResourceManager;
 import net.asfun.jangod.interpret.JangodInterpreter;
 import net.asfun.jangod.parse.JangodParser;
 
@@ -33,30 +33,15 @@ import net.asfun.jangod.parse.JangodParser;
 public class Processor {
 
 	protected Context context;
+	protected Application application;
 	JangodParser parser;
 	JangodInterpreter interpreter;
-	boolean hasRoot = false;
 	
-	public Processor(TemplateConfig config) {
-		context = new Context();
-		if ( config != null ) {
-			if ( config.getTemplateEncoding() != null ) {
-				context.getConfiguration().setEncoding(config.getTemplateEncoding());
-			}
-			if ( config.getTemplateRoot() != null ) {
-				context.getConfiguration().setWorkspace(config.getTemplateRoot());
-				hasRoot = true;
-			}
-		}
+	public Processor(Application application) {
+		this.application = application;
+		context = new Context(application);
 		parser = new JangodParser("");
 		interpreter = new JangodInterpreter(context);
-	}
-	
-	private String getFullFileName(String fileName) {
-		if ( hasRoot ) {
-			return context.getConfiguration().getWorkspace() + fileName;
-		}
-		return fileName;
 	}
 	
 	public Configuration getConfiguration() {
@@ -64,10 +49,10 @@ public class Processor {
 	}
 	
 	public void setCommonBindings(Map<String, Object> bindings) {
-		if ( bindings == null ) {
-			context.reset(Context.SCOPE_GLOBAL);
+		if (bindings == null ) {
+			application.getGlobalBindings().clear();
 		} else {
-			context.initBindings(bindings, Context.SCOPE_GLOBAL);
+			application.setGlobalBindings(bindings);
 		}
 	}
 	
@@ -81,8 +66,9 @@ public class Processor {
 		} else {
 			context.initBindings(bindings, Context.SCOPE_SESSION);
 		}
+		context.setFile(templateFile);
 		try {
-			parser.init(ResourceManager.getResource(getFullFileName(templateFile), encoding));
+			parser.init(application.getResource(templateFile, encoding, null));
 			interpreter.init();
 			return interpreter.render(parser);
 		} catch ( Exception e) {

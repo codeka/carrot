@@ -35,7 +35,7 @@ public class JangodContext extends Context implements ScriptContext{
 	
 	public JangodContext(Bindings global) {
 		super();
-		globalBindings = global;
+		application.setGlobalBindings(global);
 		sessionBindings = new SimpleBindings();
 	}
 
@@ -45,7 +45,7 @@ public class JangodContext extends Context implements ScriptContext{
 		if ( sessionBindings.containsKey(name) ) {
 			return ENGINE_SCOPE;
 		}
-		if ( globalBindings.containsKey(name) ) {
+		if ( application.getGlobalBindings().containsKey(name) ) {
 			return GLOBAL_SCOPE;
 		}
 		return -1;
@@ -57,7 +57,7 @@ public class JangodContext extends Context implements ScriptContext{
 			case ENGINE_SCOPE :
 				return (Bindings) sessionBindings;
 			case GLOBAL_SCOPE :
-				return (Bindings) globalBindings;
+				return (Bindings) application.getGlobalBindings();
 			default :
 				throw new IllegalArgumentException("Illegal scope value.");
 		}
@@ -95,10 +95,10 @@ public class JangodContext extends Context implements ScriptContext{
 			}
 			return sessionBindings.remove(name);
 		case GLOBAL_SCOPE :
-			if ( globalBindings == null ) {
+			if ( application.getGlobalBindings() == null ) {
 				return null;
 			}
-			return globalBindings.remove(name);
+			return application.getGlobalBindings().remove(name);
 		default :
 			throw new IllegalArgumentException("Illegal scope value.");
 		}
@@ -114,7 +114,7 @@ public class JangodContext extends Context implements ScriptContext{
 				sessionBindings = bindings;
 				break;
 			case GLOBAL_SCOPE :
-				globalBindings = bindings;
+				application.setGlobalBindings(bindings);
 				break;
 			default :
 				throw new IllegalArgumentException("Illegal scope value.");

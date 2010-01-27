@@ -19,31 +19,31 @@ import static net.asfun.jangod.util.logging.JangodLogger;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.util.HashMap;
 import java.util.Map;
 
-import net.asfun.jangod.base.ConfigInitializer;
+import net.asfun.jangod.base.Application;
+import net.asfun.jangod.base.Configuration;
 import net.asfun.jangod.cache.ConcurrentListPool;
 import net.asfun.jangod.cache.StatefulObjectPool;
 
 public class TemplateEngine {
 
-	Map<String, Object> commonBindings = new HashMap<String, Object>(0);
 	StatefulObjectPool<Processor> pool;
-	TemplateConfig config = null;
+	Application application;
 	
 	public TemplateEngine() {
+		application = new Application();
 		initProcessorPool();
 	}
 	
-	public TemplateEngine(TemplateConfig config) {
-		this.config = config;
+	public TemplateEngine(Application application) {
+		this.application = application;
 		initProcessorPool();
 	}
 	
 	@SuppressWarnings("unchecked")
 	protected void initProcessorPool() {
-		String poolClass = ConfigInitializer.getProperty("processor.pool");
+		String poolClass = application.getConfiguration().getProperty("processor.pool");
 		if ( poolClass == null ) {
 			pool = new ConcurrentListPool<Processor>();
 		} else {
@@ -56,48 +56,34 @@ public class TemplateEngine {
 		}
 	}
 	
-	public void setEngineBindings(Map<String, Object> bindings ) {
+	public void setEngineBindings(Map<String, Object> bindings) {
 		if (bindings == null ) {
-			commonBindings.clear();
+			application.getGlobalBindings().clear();
 		} else {
-			commonBindings = bindings;
+			application.setGlobalBindings(bindings);
 		}
-	}
-	
-	public void setEngineConfig(TemplateConfig config) {
-		this.config = config;
-	}
-	
-	public String process(String templateFile, Map<String, Object> bindings, TemplateConfig config) throws IOException {
-		Processor processor = new Processor(config);
-		processor.setCommonBindings(commonBindings);
-		return processor.render(templateFile, bindings);
 	}
 	
 	public String process(String templateFile, Map<String, Object> bindings) throws IOException {
 		Processor processor = pool.pop();
 		if ( processor == null ) {
-			processor = new Processor(config);
+			processor = new Processor(application);
 		}
-		processor.setCommonBindings(commonBindings);
 		String result = processor.render(templateFile, bindings);
 		pool.push(processor);
 		return result;
 	}
 	
-	public void process(String templateFile, Map<String, Object> bindings, Writer out, TemplateConfig config) throws IOException {
-		Processor processor = new Processor(config);
-		processor.setCommonBindings(commonBindings);
-		processor.render(templateFile, bindings, out);
-	}
-	
 	public void process(String templateFile, Map<String, Object> bindings, Writer out) throws IOException {
 		Processor processor = pool.pop();
 		if ( processor == null ) {
-			processor = new Processor(config);
+			processor = new Processor(application);
 		}
-		processor.setCommonBindings(commonBindings);
 		processor.render(templateFile, bindings, out);
 		pool.push(processor);
+	}
+
+	public Configuration getConfiguration() {
+		return application.getConfiguration();
 	}
 }

@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.util.List;
 
 import net.asfun.jangod.base.Context;
-import net.asfun.jangod.base.ResourceManager;
 import net.asfun.jangod.interpret.Node;
 import net.asfun.jangod.interpret.InterpretException;
 import net.asfun.jangod.interpret.JangodInterpreter;
@@ -47,11 +46,8 @@ public class ExtendsTag implements Tag{
 		}
 		String templateFile = interpreter.resolveString(helper[0]);
 		try {
-			if ( interpreter.getConfig().getWorkspace() != null ) {
-				templateFile = interpreter.getConfig().getWorkspace() + templateFile;
-			}
-			JangodParser parser = new JangodParser( ResourceManager.getResource(
-					templateFile, interpreter.getConfig().getEncoding()) );
+			JangodParser parser = new JangodParser( interpreter.getContext()
+					.getRelatedResource(templateFile) );
 			ListOrderedMap blockList = new ListOrderedMap();
 			interpreter.assignRuntimeScope(Context.BLOCK_LIST, blockList, 1);
 			JangodInterpreter parent = interpreter.clone();

@@ -32,17 +32,56 @@ public class ConfigInitializer {
 
 	final static String AUTOCONFIG_FILE = "jangod.config.properties";
 	final static String CONFIG_FILE_PROPERTY = "jangod.configurationFile";
-	final static Configuration config;
-	final static Properties properties = new Properties();
-	
-	static {
-		config = new Configuration();
-		URL u = findConfigFile();
+
+	private static URL findConfigFile(String configurationFile) {
+		String file = null;
+		if ( configurationFile == null ) {
+			try {
+				file = System.getProperty(CONFIG_FILE_PROPERTY);
+				if (file == null) {
+					file = System.getenv(CONFIG_FILE_PROPERTY);
+				}
+			} catch (SecurityException e) {
+				file = null;
+				JangodLogger.finest("Can't get file name from env by key >>> " + CONFIG_FILE_PROPERTY);
+			}
+			if (file == null) {
+				file = AUTOCONFIG_FILE;
+			}
+		} else {
+			file = configurationFile;
+		}
+		URL result = null;
+		try {
+			result = new URL(file);
+		} catch (MalformedURLException e) {
+			result = Configuration.class.getClassLoader().getResource(file);
+		}
+		if (result == null) {
+			File f = new File(file);
+			if (f.exists() && f.isFile()) {
+				try {
+					result = f.toURI().toURL();
+				} catch (MalformedURLException e) {
+					JangodLogger.warning("Can't find file >>> " + file);
+				}
+			} else {
+				JangodLogger.warning("Can't find config file >>> " + file);
+			}
+		}
+		return result;
+	}
+
+	static Configuration getConfig(String configurationFile) {
+		Configuration config = new Configuration();
+		URL u = findConfigFile(configurationFile);
 		if (u != null) {
 			InputStream is = null;
 			try {
 				is = u.openStream();
+				Properties properties = new Properties();
 				properties.load(is);
+				config.properties = properties;
 				if (properties.containsKey("lib.imports")) {
 					String exts = properties.getProperty("lib.imports");
 					String[] imports = exts.split("\\s+");
@@ -64,6 +103,8 @@ public class ConfigInitializer {
 						JangodLogger.warning("Language value from config file is invalid(use default) >>> "
 								+ properties.getProperty("language"));
 					}
+				} else {
+					config.setLocale(Locale.CHINESE);
 				}
 				if (properties.containsKey("timezone")) {
 					try {
@@ -73,6 +114,8 @@ public class ConfigInitializer {
 						JangodLogger.warning("Timezone value from config file is invalid(use default) >>> "
 								+ properties.getProperty("timezone"));
 					}
+				} else {
+					config.setTimezone(TimeZone.getDefault());
 				}
 				//TODO check encoding value is valid
 				if (properties.containsKey("file.encoding")) {
@@ -97,52 +140,7 @@ public class ConfigInitializer {
 				}
 			}
 		}
-	}
-
-	private static URL findConfigFile() {
-		String file = null;
-		try {
-			file = System.getProperty(CONFIG_FILE_PROPERTY);
-			if (file == null) {
-				file = System.getenv(CONFIG_FILE_PROPERTY);
-			}
-		} catch (SecurityException e) {
-			file = null;
-			JangodLogger.finest("Can't get file name from env by key >>>" + CONFIG_FILE_PROPERTY);
-		}
-		if (file == null) {
-			file = AUTOCONFIG_FILE;
-		}
-		URL result = null;
-		try {
-			result = new URL(file);
-		} catch (MalformedURLException e) {
-			result = Configuration.class.getClassLoader().getResource(file);
-		}
-		if (result == null) {
-			File f = new File(file);
-			if (f.exists() && f.isFile()) {
-				try {
-					result = f.toURI().toURL();
-				} catch (MalformedURLException e) {
-					JangodLogger.warning("Can't find file >>> " + file);
-				}
-			} else {
-				JangodLogger.warning("Can't find config file >>> " + file);
-			}
-		}
-		return result;
-	}
-
-	public static Configuration getConfig() {
 		return config;
 	}
-	
-	public static String getProperty(String key, String defaultValue) {
-		return properties.getProperty(key, defaultValue);
-	}
-	
-	public static String getProperty(String key) {
-		return properties.getProperty(key);
-	}
+
 }

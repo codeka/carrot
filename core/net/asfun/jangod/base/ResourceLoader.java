@@ -19,21 +19,31 @@ import java.io.IOException;
 import java.io.Reader;
 
 public interface ResourceLoader {
-
-	public String getRoot();
 	
-	public void setRoot(String root);
+	static final String NEW_LINE = "\n";
 	
-	public String getEncoding();
+	public void setConfiguration(Configuration config);
 	
-	public void setEncoding(String encoding);
+	/**
+	 * get file 
+	 * 		if exist fileName file
+	 * 		or if directory is not null and exist directory+fileName file
+	 * 		or if exist config.workspace+fileName
+	 * 		or IOException 
+	 * @param fileName
+	 * @param encoding
+	 * @param directory
+	 * @return
+	 * @throws IOException
+	 */
+	public Reader getReader(String fileName, String encoding, String directory) throws IOException;
 	
-	public Reader getReader(String fileName) throws IOException;
+	public String getString(String fileName, String encoding, String directory) throws IOException;
 	
-	public Reader getReader(String fileName, String encoding) throws IOException;
+	public Reader getReader(String fileName, String directory) throws IOException;
 	
-	public String getString(String fileName) throws IOException;
+	public String getString(String fileName, String directory) throws IOException;
 	
-	public String getString(String fileName, String encoding) throws IOException;
+	public String getDirectory(String fileName, String directory);
 	
 }

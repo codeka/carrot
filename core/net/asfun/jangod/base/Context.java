@@ -15,8 +15,8 @@ limitations under the License.
 **********************************************************************/
 package net.asfun.jangod.base;
 
+import java.io.IOException;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.Map;
 
 public class Context {
@@ -31,33 +31,35 @@ public class Context {
 	public static final String BLOCK_LIST = "'BLK\"LIST";
 	public static final String SEMI_BLOCK = "<K2C9OL7B>";
 	
-	Configuration config;
-	protected Map<String, Object> globalBindings;
 	protected Map<String, Object> sessionBindings;
+	protected Application application;
+	String file = null;
 	
 	public Context() {
-		config = Configuration.getDefault();
-		globalBindings = new Hashtable<String, Object>();
+		application = new Application();
 		sessionBindings = new HashMap<String, Object>();
 	}
 	
-	public Context(Configuration configuration) {
-		if ( configuration == null ) {
-			configuration = Configuration.getDefault();
+	public Context(Application application) {
+		if ( application == null ) {
+			application = new Application();
 		}
-		config = configuration;
-		globalBindings = new Hashtable<String, Object>();
+		this.application = application;
 		sessionBindings = new HashMap<String, Object>();
 	}
 	
 	public Configuration getConfiguration() {
-		return config;
+		return application.config;
+	}
+	
+	public void setFile(String file) {
+		this.file = file;
 	}
 
 	public Object getAttribute(String varName, int scope) {
 		switch ( scope ) {
 		case SCOPE_GLOBAL :
-			return globalBindings.get(varName);
+			return application.globalBindings.get(varName);
 		case SCOPE_SESSION :
 			return sessionBindings.get(varName);
 		default :
@@ -69,8 +71,8 @@ public class Context {
 		if ( sessionBindings.containsKey(varName) ) {
 			return sessionBindings.get(varName);
 		} 
-		else if ( globalBindings.containsKey(varName) ) {
-			return globalBindings.get(varName);
+		else if ( application.globalBindings.containsKey(varName) ) {
+			return application.globalBindings.get(varName);
 		} 
 		return null;	
 	}
@@ -78,7 +80,7 @@ public class Context {
 	public void setAttribute(String varName, Object value, int scope) {
 		switch ( scope ) {
 		case SCOPE_GLOBAL :
-			globalBindings.put(varName, value);
+			application.globalBindings.put(varName, value);
 			break;
 		case SCOPE_SESSION :
 			sessionBindings.put(varName, value);
@@ -91,7 +93,7 @@ public class Context {
 	public void initBindings(Map<String, Object> bindings, int scope) {
 		switch ( scope ) {
 		case SCOPE_GLOBAL :
-			globalBindings = bindings;
+			application.globalBindings = bindings;
 			break;
 		case SCOPE_SESSION :
 			sessionBindings = bindings;
@@ -104,7 +106,7 @@ public class Context {
 	public void setAttributes(Map<String, Object> bindings, int scope) {
 		switch ( scope ) {
 		case SCOPE_GLOBAL :
-			globalBindings.putAll(bindings);
+			application.globalBindings.putAll(bindings);
 			break;
 		case SCOPE_SESSION :
 			sessionBindings.putAll(bindings);
@@ -117,13 +119,21 @@ public class Context {
 	public void reset(int scope) {
 		switch ( scope ) {
 		case SCOPE_GLOBAL :
-			globalBindings.clear();
+			application.globalBindings.clear();
 			break;
 		case SCOPE_SESSION :
 			sessionBindings.clear();
 			break;
 		default :
 			throw new IllegalArgumentException("Illegal scope value.");
+		}
+	}
+
+	public String getRelatedResource(String templateFile) throws IOException {
+		if ( file != null ) {
+			return application.getResource(templateFile, application.getDirectory(file));
+		} else {
+			return application.getResource(templateFile, null);
 		}
 	}
 	

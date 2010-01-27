@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.util.List;
 
 import net.asfun.jangod.base.Context;
-import net.asfun.jangod.base.ResourceManager;
 import net.asfun.jangod.interpret.InterpretException;
 import net.asfun.jangod.interpret.JangodInterpreter;
 import net.asfun.jangod.interpret.Node;
@@ -46,11 +45,8 @@ public class IncludeTag implements Tag{
 		}
 		String templateFile = interpreter.resolveString(helper[0]);
 		try {
-			if ( interpreter.getConfig().getWorkspace() != null ) {
-				templateFile = interpreter.getConfig().getWorkspace() + templateFile;
-			}
-			JangodParser parser = new JangodParser( ResourceManager.getResource(
-					templateFile, interpreter.getConfig().getEncoding()) );
+			JangodParser parser = new JangodParser( interpreter.getContext()
+					.getRelatedResource(templateFile) );
 			JangodInterpreter child = interpreter.clone();
 			child.assignRuntimeScope(Context.INSERT_FLAG, true, 1);
 			return child.render(parser);

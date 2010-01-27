@@ -1,3 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE project>
 <project name="jangod" default="jar" basedir=".">
 	<property name="product" value="jangod" />
 	<property name="build.dir" value="${basedir}/build" />

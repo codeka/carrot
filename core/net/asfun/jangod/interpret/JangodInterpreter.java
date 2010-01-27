@@ -171,22 +171,11 @@ public class JangodInterpreter implements Cloneable{
 		level = lvl;
 	}
 
-	@Deprecated
-	public Object fetchGlobalScope(String name) {
-		return context.getAttribute(name, Context.SCOPE_GLOBAL);
-	}
-
-	@Deprecated
-	public Object fetchSessionScope(String name) {
-		return context.getAttribute(name, Context.SCOPE_SESSION);
-	}
-	
-	@Deprecated
-	public void assignSessionScope(String name, Object value) {
-		context.setAttribute(name, value, Context.SCOPE_SESSION);
-	}
-
 	public int getLevel() {
 		return level;
+	}
+
+	public Context getContext() {
+		return context;
 	}
 }

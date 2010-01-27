@@ -19,6 +19,7 @@ import static net.asfun.jangod.util.logging.JangodLogger;
 
 import java.io.File;
 import java.util.Locale;
+import java.util.Properties;
 import java.util.TimeZone;
 
 import net.asfun.jangod.lib.Filter;
@@ -29,12 +30,13 @@ import net.asfun.jangod.lib.InstructionLibrary;
 import net.asfun.jangod.lib.Tag;
 import net.asfun.jangod.lib.TagLibrary;
 
-public class Configuration {
+public class Configuration implements Cloneable{
 	
 	private String encoding;
 	private Locale locale;
 	private TimeZone timezone;
 	private String workspace;
+	Properties properties = new Properties();
 	
 	protected Configuration(){};
 	
@@ -79,18 +81,8 @@ public class Configuration {
 		this.timezone = timezone;
 	}
 
-	public static Configuration getGlobal() {
-		return ConfigInitializer.getConfig();
-	}
-	
 	public static Configuration getDefault() {
-		Configuration conf = new Configuration();
-		Configuration global = getGlobal();
-		conf.encoding = global.encoding;
-		conf.locale = global.locale;
-		conf.workspace = global.workspace;
-		conf.timezone = global.timezone;
-		return conf;
+		return ConfigInitializer.getConfig(null);
 	}
 
 	public String getWorkspace() {
@@ -104,5 +96,23 @@ public class Configuration {
 		} else {
 			workspace = rootPath;
 		}
+	}
+	
+	public String getProperty(String key, String defaultValue) {
+		return properties.getProperty(key, defaultValue);
+	}
+	
+	public String getProperty(String key) {
+		return properties.getProperty(key);
+	}
+	
+	@Override
+	public Configuration clone() {
+		Configuration config = new Configuration();
+		config.encoding = ConfigInitializer.getConfig(null).encoding;
+		config.locale = ConfigInitializer.getConfig(null).locale;
+		config.timezone = ConfigInitializer.getConfig(null).timezone;
+		config.workspace = ConfigInitializer.getConfig(null).workspace;
+		return config;
 	}
 }
