@@ -13,38 +13,44 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 **********************************************************************/
-package net.asfun.jangod.lib.tag;
-
-import java.util.List;
+package net.asfun.jangod.node;
 
 import net.asfun.jangod.interpret.InterpretException;
 import net.asfun.jangod.interpret.JangodInterpreter;
-import net.asfun.jangod.lib.Tag;
-import net.asfun.jangod.node.Node;
+import net.asfun.jangod.parse.FixedToken;
+//import net.asfun.jangod.parse.Token;
 
-/**
- * {% else %}
- * @author anysome
- *
- */
-public class ElseTag implements Tag{
+public class TextNode implements Node{
 
-	static final String ELSE = "else";
+	//if NodeList DO add NoteToken
 	
+//	public TextNode(Token tk) {
+//		token = tk;
+//	}
+//	
+//	private Token token;
+//
+//	@Override
+//	public String render(JangodInterpreter interperter) {
+//		if ( token instanceof FixedToken ) {
+//			return ((FixedToken) token).output();
+//		} else {
+//			return "";
+//		}
+//	}
+	
+	private static final long serialVersionUID = -8374124146910288224L;
+	private FixedToken token;
+	
+	public TextNode(FixedToken tk) {
+		token = tk;
+	}
+
 	@Override
-	public String interpreter(List<Node> carries, String helpers, JangodInterpreter interpreter)
+	public String render(JangodInterpreter interperter)
 			throws InterpretException {
-		return BLANK_STRING;
+		return token.output();
 	}
 
-	@Override
-	public String getEndTagName() {
-		return null;
-	}
-
-	@Override
-	public String getName() {
-		return ELSE;
-	}
-
+	
 }

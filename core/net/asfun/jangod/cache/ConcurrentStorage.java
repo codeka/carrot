@@ -15,11 +15,10 @@ limitations under the License.
 **********************************************************************/
 package net.asfun.jangod.cache;
 
-import java.io.Serializable;
 import java.lang.ref.SoftReference;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class ConcurrentStorage<K,V extends Serializable> implements StatelessObjectStorage<K,V> {
+public class ConcurrentStorage<K,V> implements StatelessObjectStorage<K,V> {
 
 	final ConcurrentHashMap<K, SoftReference<V>> storage = new ConcurrentHashMap<K, SoftReference<V>>();
 	

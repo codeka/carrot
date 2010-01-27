@@ -13,34 +13,39 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 **********************************************************************/
-package net.asfun.jangod.interpret;
+package net.asfun.jangod.node;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import net.asfun.jangod.interpret.InterpretException;
+import net.asfun.jangod.interpret.JangodInterpreter;
 import net.asfun.jangod.lib.Tag;
 import net.asfun.jangod.lib.TagLibrary;
-import net.asfun.jangod.parse.JangodParser;
+import net.asfun.jangod.parse.TokenParser;
+import net.asfun.jangod.parse.ParseException;
 import net.asfun.jangod.parse.TagToken;
 
 public class TagNode implements Node{
 
+
+	private static final long serialVersionUID = 3908702164792252867L;
+	
 	private int level;
 	private TagToken master;
 	private List<Node> carries;
 	private String endTagName;
-	private Tag tag;
 
-	public TagNode(TagToken token, JangodParser parser, int lvl) throws InterpretException {
+	public TagNode(TagToken token, TokenParser parser, int lvl) throws ParseException {
 		master = token;
 		level = lvl;
-		tag = TagLibrary.getTag(master.getTagName());
+		Tag tag = TagLibrary.getTag(master.getTagName());
 		if ( tag == null ) {
-			throw new InterpretException("Can't find tag >>> " + master.getTagName());
+			throw new ParseException("Can't find tag >>> " + master.getTagName());
 		}
 		endTagName = tag.getEndTagName();
 		if ( endTagName != null ) {
-			carries = NodeList.makeList(parser, endTagName, level + 1);
+			carries = NodeParser.makeList(parser, endTagName, level + 1);
 		} else {
 			carries = new ArrayList<Node>(0);
 		}
@@ -49,11 +54,12 @@ public class TagNode implements Node{
 	@Override
 	public String render(JangodInterpreter interperter) throws InterpretException {
 		interperter.setLevel(level);
+		Tag tag = TagLibrary.getTag(master.getTagName());
 		return tag.interpreter(carries, master.getHelpers(), interperter);
 	}
 	
 	@Override
 	public String toString() {
-		return tag.getName();
+		return master.getTagName();
 	}
 }

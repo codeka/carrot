@@ -35,7 +35,7 @@ public class DatetimeFilter implements Filter{
 		SimpleDateFormat sdf;
 		if ( arg.length == 1 ) {
 			sdf = new SimpleDateFormat(interpreter.resolveString(arg[0]));
-			sdf.setTimeZone(interpreter.getConfig().getTimezone());
+			sdf.setTimeZone(interpreter.getConfiguration().getTimezone());
 		} else if ( arg.length == 2 ) {
 			sdf = new SimpleDateFormat(interpreter.resolveString(arg[0]));
 			sdf.setTimeZone(TimeZone.getTimeZone(interpreter.resolveString(arg[1])));

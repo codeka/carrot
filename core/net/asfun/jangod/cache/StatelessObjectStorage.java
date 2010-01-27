@@ -15,9 +15,8 @@ limitations under the License.
 **********************************************************************/
 package net.asfun.jangod.cache;
 
-import java.io.Serializable;
 
-public interface StatelessObjectStorage<K,V extends Serializable> {
+public interface StatelessObjectStorage<K,V> {
 
     public V get(K key);
     

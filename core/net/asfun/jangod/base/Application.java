@@ -15,31 +15,20 @@ limitations under the License.
 **********************************************************************/
 package net.asfun.jangod.base;
 
-import static net.asfun.jangod.util.logging.JangodLogger;
-
-import java.io.IOException;
 import java.util.Hashtable;
 import java.util.Map;
-
-import net.asfun.jangod.cache.StatelessObjectStorage;
-import net.asfun.jangod.cache.SynchronousStorage;
 
 public class Application {
 
 	Map<String, Object> globalBindings = new Hashtable<String, Object>(5);
 	Configuration config;
-	ResourceLoader loader;
-	StatelessObjectStorage<String, String> resourceCache;
-	
 	
 	public Application() {
 		config = Configuration.getDefault().clone();
-		init();
 	}
 	
 	public Application(String configFile) {
 		config = ConfigInitializer.getConfig(configFile);
-		init();
 	}
 	
 	public Map<String, Object> getGlobalBindings() {
@@ -50,54 +39,6 @@ public class Application {
 		this.globalBindings = globalBindings;
 	}
 	
-	@SuppressWarnings("unchecked")
-	private void init() {
-		//file loader
-		String loaderClass = config.getProperty("file.loader", "net.asfun.jangod.base.FileLoader");
-		try {
-			loader = (ResourceLoader) Class.forName(loaderClass).newInstance();
-		} catch (Exception e) {
-			loader = new FileLoader();
-			JangodLogger.warning("Can't instance file loader(use default) >>> " + loaderClass);
-		}
-		loader.setConfiguration(config);
-		//file cacher
-		String storeClass = config.getProperty("file.cacher");
-		if ( storeClass == null ) {
-			resourceCache = new SynchronousStorage<String,String>();
-		} else {
-			try {
-				resourceCache = (StatelessObjectStorage<String, String>) Class.forName(storeClass).newInstance();
-			} catch (Exception e) {
-				resourceCache = new SynchronousStorage<String,String>();
-				JangodLogger.warning("Can't instance file cacher(use default) >>> " + loaderClass);
-			}
-		}
-	}
-	
-	public String getResource(String file, String directory) throws IOException {
-		return getResource(file, config.getEncoding(), directory);
-	}
-	
-	public String getResource(String file, String encoding, String directory) throws IOException {
-		String key;
-		if ( directory != null ) {
-			key = directory + file;
-		} else {
-			key = file;
-		}
-		String value = resourceCache.get(key);
-		if ( value == null ) {
-			value = loader.getString(file, encoding, directory);
-			resourceCache.put(key, value);
-		}
-		return value;
-	}
-	
-	public String getDirectory(String file) {
-		return loader.getDirectory(file, config.getWorkspace());
-	}
-
 	public Configuration getConfiguration() {
 		return config;
 	}

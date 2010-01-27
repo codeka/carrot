@@ -20,6 +20,8 @@ import java.util.List;
 
 public class EchoToken extends Token {
 	
+	private static final long serialVersionUID = 8307037212944170832L;
+	
 	private FilterParser fp;
 	
 	public EchoToken(String image) throws ParseException{

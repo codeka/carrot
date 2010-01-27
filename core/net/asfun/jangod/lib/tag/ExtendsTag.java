@@ -19,11 +19,12 @@ import java.io.IOException;
 import java.util.List;
 
 import net.asfun.jangod.base.Context;
-import net.asfun.jangod.interpret.Node;
+import net.asfun.jangod.base.ResourceManager;
 import net.asfun.jangod.interpret.InterpretException;
 import net.asfun.jangod.interpret.JangodInterpreter;
 import net.asfun.jangod.lib.Tag;
-import net.asfun.jangod.parse.JangodParser;
+import net.asfun.jangod.node.Node;
+import net.asfun.jangod.node.NodeListManager;
 import net.asfun.jangod.util.HelperStringTokenizer;
 import net.asfun.jangod.util.ListOrderedMap;
 
@@ -46,14 +47,16 @@ public class ExtendsTag implements Tag{
 		}
 		String templateFile = interpreter.resolveString(helper[0]);
 		try {
-			JangodParser parser = new JangodParser( interpreter.getContext()
-					.getRelatedResource(templateFile) );
+			String fullName = ResourceManager.getFullName(templateFile, 
+					interpreter.getContext().getWorkspace(), interpreter.getConfiguration().getWorkspace());
+			List<Node> nodes = NodeListManager.getParseResult(fullName,
+					interpreter.getConfiguration().getEncoding() );
 			ListOrderedMap blockList = new ListOrderedMap();
 			interpreter.assignRuntimeScope(Context.BLOCK_LIST, blockList, 1);
 			JangodInterpreter parent = interpreter.clone();
 			interpreter.assignRuntimeScope(Context.CHILD_FLAG, true, 1);
 			parent.assignRuntimeScope(Context.PARENT_FLAG, true, 1);
-			String semi = parent.render(parser);
+			String semi = parent.render(nodes);
 			interpreter.assignRuntimeScope(Context.SEMI_RENDER, semi, 1);
 			return "";
 		} catch (IOException e) {

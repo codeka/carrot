@@ -21,10 +21,10 @@ import net.asfun.jangod.interpret.InterpretException;
 import net.asfun.jangod.interpret.JangodInterpreter;
 import net.asfun.jangod.interpret.VariableFilter;
 import net.asfun.jangod.lib.Tag;
+import net.asfun.jangod.node.Node;
 import net.asfun.jangod.util.ForLoop;
 import net.asfun.jangod.util.HelperStringTokenizer;
 import net.asfun.jangod.util.ObjectIterator;
-import net.asfun.jangod.interpret.Node;
 
 /**
  * {% for a in b|f1:d,c %}	

@@ -19,6 +19,9 @@ import static net.asfun.jangod.parse.ParserConstants.*;
 
 public class FixedToken extends Token{
 	
+
+	private static final long serialVersionUID = -5015884072204770458L;
+	
 	static final String toReplace = "\\{\\\\(\\\\*[\\{!#%])";
 	static final String replaceWith = "{$1";
 

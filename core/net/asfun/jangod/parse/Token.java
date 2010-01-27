@@ -17,8 +17,12 @@ package net.asfun.jangod.parse;
 
 import static net.asfun.jangod.parse.ParserConstants.*;
 
-public abstract class Token{
+import java.io.Serializable;
 
+public abstract class Token implements Serializable{
+
+	private static final long serialVersionUID = -7513379852268838992L;
+	
 	protected String image;
 	//useful for some token type
 	protected String content;

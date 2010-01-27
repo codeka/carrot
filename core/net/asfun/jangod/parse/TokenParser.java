@@ -25,19 +25,19 @@ import java.util.NoSuchElementException;
 
 import net.asfun.jangod.util.logging.Level;
 
-public class JangodParser implements Iterator<Token>{
+public class TokenParser implements Iterator<Token>{
 	
-	private TokenManager tm = new TokenManager();
+	private Tokenizer tm = new Tokenizer();
 	private Token token;
 	private boolean proceeding = true;
 	
 	static final String NEW_LINE = "\n";
 
-	public JangodParser(String text) {
+	public TokenParser(String text) {
 		tm.init(text);
 	}
 
-	public JangodParser(Reader reader) throws ParseException {
+	public TokenParser(Reader reader) throws ParseException {
 		init(reader);
 	}
 	

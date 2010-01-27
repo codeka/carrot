@@ -15,11 +15,10 @@ limitations under the License.
 **********************************************************************/
 package net.asfun.jangod.cache;
 
-import java.io.Serializable;
 import java.lang.ref.SoftReference;
 import java.util.HashMap;
 
-public class SynchronousStorage<K, V extends Serializable> implements StatelessObjectStorage<K, V>{
+public class SynchronousStorage<K, V> implements StatelessObjectStorage<K, V>{
 	
 	final HashMap<K, SoftReference<V>> storage = new HashMap<K, SoftReference<V>>();
 
@@ -52,8 +51,11 @@ public class SynchronousStorage<K, V extends Serializable> implements StatelessO
 
 	@Override
 	public void remove(K key) {
-		// TODO Auto-generated method stub
-		
+		synchronized(storage) {
+			 SoftReference<V> value = storage.remove(key);
+			 value.enqueue();
+			 value = null;
+		}
 	}
 
 }

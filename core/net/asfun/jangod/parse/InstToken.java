@@ -24,6 +24,8 @@ import static net.asfun.jangod.parse.ParserConstants.*;
  */
 public class InstToken extends Token {
 	
+	private static final long serialVersionUID = -3710981054298651807L;
+	
 	private String instName;
 	private String helpers;
 

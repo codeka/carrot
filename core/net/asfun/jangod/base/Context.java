@@ -55,6 +55,18 @@ public class Context {
 	public void setFile(String file) {
 		this.file = file;
 	}
+	
+	public String getWorkspace() {
+		if ( file != null ) {
+			try {
+				return ResourceManager.getDirectory(file);
+			} catch ( IOException e) {
+				return application.config.getWorkspace();
+			}
+		} else {
+			return application.config.getWorkspace();
+		}
+	}
 
 	public Object getAttribute(String varName, int scope) {
 		switch ( scope ) {
@@ -126,14 +138,6 @@ public class Context {
 			break;
 		default :
 			throw new IllegalArgumentException("Illegal scope value.");
-		}
-	}
-
-	public String getRelatedResource(String templateFile) throws IOException {
-		if ( file != null ) {
-			return application.getResource(templateFile, application.getDirectory(file));
-		} else {
-			return application.getResource(templateFile, null);
 		}
 	}
 	

@@ -18,32 +18,15 @@ package net.asfun.jangod.base;
 import java.io.IOException;
 import java.io.Reader;
 
-public interface ResourceLoader {
+public interface ResourceLocater {
 	
 	static final String NEW_LINE = "\n";
+
+	public String getFullName(String relativeName, String relativeDir, String defaultDir) throws IOException;
+	public String getFullName(String relativeName, String defaultDir) throws IOException;
 	
-	public void setConfiguration(Configuration config);
+	public String getDirectory(String fullName) throws IOException;
 	
-	/**
-	 * get file 
-	 * 		if exist fileName file
-	 * 		or if directory is not null and exist directory+fileName file
-	 * 		or if exist config.workspace+fileName
-	 * 		or IOException 
-	 * @param fileName
-	 * @param encoding
-	 * @param directory
-	 * @return
-	 * @throws IOException
-	 */
-	public Reader getReader(String fileName, String encoding, String directory) throws IOException;
-	
-	public String getString(String fileName, String encoding, String directory) throws IOException;
-	
-	public Reader getReader(String fileName, String directory) throws IOException;
-	
-	public String getString(String fileName, String directory) throws IOException;
-	
-	public String getDirectory(String fileName, String directory);
-	
+	public Reader getReader(String fullName, String encoding) throws IOException;
+	public String getString(String fullName, String encoding) throws IOException;
 }

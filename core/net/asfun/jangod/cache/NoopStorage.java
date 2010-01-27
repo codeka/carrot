@@ -15,9 +15,8 @@ limitations under the License.
 **********************************************************************/
 package net.asfun.jangod.cache;
 
-import java.io.Serializable;
 
-public class NoopStorage<K,V extends Serializable> implements StatelessObjectStorage<K, V> {
+public class NoopStorage<K,V> implements StatelessObjectStorage<K, V> {
 
 	@Override
 	public void clear() {

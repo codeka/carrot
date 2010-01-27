@@ -13,12 +13,14 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 **********************************************************************/
-package net.asfun.jangod.interpret;
+package net.asfun.jangod.node;
 
 import static net.asfun.jangod.util.logging.JangodLogger;
 
 import java.util.List;
 
+import net.asfun.jangod.interpret.InterpretException;
+import net.asfun.jangod.interpret.JangodInterpreter;
 import net.asfun.jangod.lib.Filter;
 import net.asfun.jangod.lib.FilterLibrary;
 import net.asfun.jangod.parse.EchoToken;
@@ -26,6 +28,8 @@ import net.asfun.jangod.util.ObjectValue;
 
 public class VariableNode implements Node{
 	
+	private static final long serialVersionUID = -5675622411298871850L;
+
 	public VariableNode(EchoToken tk, int lvl) {
 		token = tk;
 		level = lvl;

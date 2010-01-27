@@ -27,7 +27,7 @@ import javax.script.SimpleBindings;
 import net.asfun.jangod.base.Context;
 import net.asfun.jangod.interpret.InterpretException;
 import net.asfun.jangod.interpret.JangodInterpreter;
-import net.asfun.jangod.parse.JangodParser;
+import net.asfun.jangod.parse.TokenParser;
 import net.asfun.jangod.parse.ParseException;
 
 import static net.asfun.jangod.util.logging.*;
@@ -72,7 +72,7 @@ public class JangodEngine implements ScriptEngine {
 
 	@Override
 	public Object eval(String script, ScriptContext ctx) throws ScriptException {
-		JangodParser parser = new JangodParser(script);
+		TokenParser parser = new TokenParser(script);
 		JangodInterpreter interpreter = new JangodInterpreter((Context) ctx);
 		try {
 			return interpreter.render(parser);
@@ -83,9 +83,9 @@ public class JangodEngine implements ScriptEngine {
 
 	@Override
 	public Object eval(Reader reader, ScriptContext ctx) throws ScriptException {
-		JangodParser parser;
+		TokenParser parser;
 		try {
-			parser = new JangodParser(reader);
+			parser = new TokenParser(reader);
 		} catch (ParseException e) {
 			throw new ScriptException(e.getMessage());
 		}
@@ -104,7 +104,7 @@ public class JangodEngine implements ScriptEngine {
 
 	@Override
 	public Object eval(String script) throws ScriptException {
-		JangodParser parser = new JangodParser(script);
+		TokenParser parser = new TokenParser(script);
 		JangodInterpreter interpreter = new JangodInterpreter((Context) context);
 		try {
 			return interpreter.render(parser);
@@ -115,9 +115,9 @@ public class JangodEngine implements ScriptEngine {
 
 	@Override
 	public Object eval(Reader reader) throws ScriptException {
-		JangodParser parser;
+		TokenParser parser;
 		try {
-			parser = new JangodParser(reader);
+			parser = new TokenParser(reader);
 		} catch (ParseException e) {
 			throw new ScriptException(e.getMessage());
 		}
@@ -131,7 +131,7 @@ public class JangodEngine implements ScriptEngine {
 
 	@Override
 	public Object eval(String script, Bindings n) throws ScriptException {
-		JangodParser parser = new JangodParser(script);
+		TokenParser parser = new TokenParser(script);
 		ScriptContext ctx = new JangodContext(factory.globalBindings);
 		ctx.setBindings(n, ScriptContext.ENGINE_SCOPE);
 		JangodInterpreter interpreter = new JangodInterpreter((Context) ctx);
@@ -144,9 +144,9 @@ public class JangodEngine implements ScriptEngine {
 
 	@Override
 	public Object eval(Reader reader, Bindings n) throws ScriptException {
-		JangodParser parser;
+		TokenParser parser;
 		try {
-			parser = new JangodParser(reader);
+			parser = new TokenParser(reader);
 		} catch (ParseException e) {
 			throw new ScriptException(e.getMessage());
 		}

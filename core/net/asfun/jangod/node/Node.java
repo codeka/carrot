@@ -13,41 +13,14 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 **********************************************************************/
-package net.asfun.jangod.interpret;
+package net.asfun.jangod.node;
 
-import net.asfun.jangod.parse.FixedToken;
-//import net.asfun.jangod.parse.Token;
+import java.io.Serializable;
 
-public class TextNode implements Node{
+import net.asfun.jangod.interpret.InterpretException;
+import net.asfun.jangod.interpret.JangodInterpreter;
 
-	//if NodeList DO add NoteToken
-	
-//	public TextNode(Token tk) {
-//		token = tk;
-//	}
-//	
-//	private Token token;
-//
-//	@Override
-//	public String render(JangodInterpreter interperter) {
-//		if ( token instanceof FixedToken ) {
-//			return ((FixedToken) token).output();
-//		} else {
-//			return "";
-//		}
-//	}
-	
-	private FixedToken token;
-	
-	public TextNode(FixedToken tk) {
-		token = tk;
-	}
+public interface Node extends Serializable{
 
-	@Override
-	public String render(JangodInterpreter interperter)
-			throws InterpretException {
-		return token.output();
-	}
-
-	
+	public String render(JangodInterpreter interperter) throws InterpretException;
 }

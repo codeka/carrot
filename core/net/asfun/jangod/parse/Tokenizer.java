@@ -17,7 +17,7 @@ package net.asfun.jangod.parse;
 
 import static net.asfun.jangod.parse.ParserConstants.*;
 
-public class TokenManager{
+public class Tokenizer{
 
 	private char[] is;
 	private int currPost = 0;

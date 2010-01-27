@@ -22,8 +22,9 @@ import java.util.Map;
 import net.asfun.jangod.base.Application;
 import net.asfun.jangod.base.Configuration;
 import net.asfun.jangod.base.Context;
+import net.asfun.jangod.base.ResourceManager;
 import net.asfun.jangod.interpret.JangodInterpreter;
-import net.asfun.jangod.parse.JangodParser;
+import net.asfun.jangod.node.NodeListManager;
 
 /**
  * DON'T run in multi-thread
@@ -34,13 +35,11 @@ public class Processor {
 
 	protected Context context;
 	protected Application application;
-	JangodParser parser;
 	JangodInterpreter interpreter;
 	
 	public Processor(Application application) {
 		this.application = application;
 		context = new Context(application);
-		parser = new JangodParser("");
 		interpreter = new JangodInterpreter(context);
 	}
 	
@@ -66,11 +65,11 @@ public class Processor {
 		} else {
 			context.initBindings(bindings, Context.SCOPE_SESSION);
 		}
-		context.setFile(templateFile);
+		String fullName = ResourceManager.getFullName(templateFile, application.getConfiguration().getWorkspace());
+		context.setFile(fullName);
 		try {
-			parser.init(application.getResource(templateFile, encoding, null));
 			interpreter.init();
-			return interpreter.render(parser);
+			return interpreter.render(NodeListManager.getParseResult(fullName, encoding));
 		} catch ( Exception e) {
 			throw new IOException(e.getMessage(), e.getCause());
 		}

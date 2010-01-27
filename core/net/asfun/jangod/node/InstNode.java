@@ -13,9 +13,12 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 **********************************************************************/
-package net.asfun.jangod.interpret;
+package net.asfun.jangod.node;
 
+import net.asfun.jangod.interpret.InterpretException;
+import net.asfun.jangod.interpret.JangodInterpreter;
 import net.asfun.jangod.parse.InstToken;
+import net.asfun.jangod.parse.ParseException;
 
 //import java.util.List;
 
@@ -27,7 +30,9 @@ public class InstNode implements Node {
 //	private List<Node> carries;
 //	private String endInstName;
 	
-	public InstNode(InstToken token) throws InterpretException {
+	private static final long serialVersionUID = 2480557554731321628L;
+
+	public InstNode(InstToken token) throws ParseException {
 //		token = tk;
 //		inst = InstructionLibrary.getInstruction(token.getInstName());
 //		endInstName = inst.getEndInstName();

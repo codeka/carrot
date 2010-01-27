@@ -17,11 +17,14 @@ package net.asfun.jangod.parse;
 
 import static net.asfun.jangod.parse.ParserConstants.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FilterParser {
+public class FilterParser implements Serializable{
 
+	private static final long serialVersionUID = 2328268066571880284L;
+	
 	private String content;
 	private String var;
 	private List<String> filters;

@@ -22,8 +22,9 @@ import java.util.List;
 
 import net.asfun.jangod.base.Configuration;
 import net.asfun.jangod.base.Context;
-import net.asfun.jangod.base.FloorBindings;
-import net.asfun.jangod.parse.JangodParser;
+import net.asfun.jangod.node.Node;
+import net.asfun.jangod.node.NodeParser;
+import net.asfun.jangod.parse.TokenParser;
 import net.asfun.jangod.util.ListOrderedMap;
 import net.asfun.jangod.util.Variable;
 import net.asfun.jangod.util.ListOrderedMap.Item;
@@ -41,7 +42,7 @@ public class JangodInterpreter implements Cloneable{
 	
 	private JangodInterpreter() {}
 	
-	public Configuration getConfig() {
+	public Configuration getConfiguration() {
 		return context.getConfiguration();
 	}
 	
@@ -58,8 +59,35 @@ public class JangodInterpreter implements Cloneable{
 		level = 1;
 	}
 	
-	public String render(JangodParser parser) throws InterpretException {
-		List<Node> nodes = NodeList.makeList(parser, null, 1);
+	public String render(TokenParser parser) throws InterpretException {
+		List<Node> nodes = NodeParser.makeList(parser, null, 1);
+		StringBuffer buff = new StringBuffer();
+		for(Node node : nodes) {
+			buff.append(node.render(this));
+		}
+		if ( runtime.get(Context.CHILD_FLAG, 1) != null && 
+				runtime.get(Context.INSERT_FLAG, 1) == null) {
+			StringBuilder sb = new StringBuilder((String)fetchRuntimeScope(Context.SEMI_RENDER, 1));
+			//replace the block identify with block content
+			ListOrderedMap blockList = (ListOrderedMap) fetchRuntimeScope(Context.BLOCK_LIST, 1);
+			Iterator<Item> mi = blockList.iterator();
+			int index;
+			String replace;
+			Item item;
+			while( mi.hasNext() ) {
+				item = mi.next();
+				replace = Context.SEMI_BLOCK + item.getKey();
+				while ( (index = sb.indexOf(replace)) > 0 ) {
+					sb.delete(index, index + replace.length());
+					sb.insert(index, item.getValue());
+				}
+			}
+			return sb.toString();
+		}
+		return buff.toString();
+	}
+	
+	public String render(List<Node> nodes) throws InterpretException {
 		StringBuffer buff = new StringBuffer();
 		for(Node node : nodes) {
 			buff.append(node.render(this));

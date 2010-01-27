@@ -19,6 +19,8 @@ import static net.asfun.jangod.parse.ParserConstants.*;
 
 public class TagToken extends Token {
 	
+	private static final long serialVersionUID = 2766011408032384360L;
+	
 	private String tagName;
 	private String helpers;
 

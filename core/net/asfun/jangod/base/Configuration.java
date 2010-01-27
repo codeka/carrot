@@ -37,6 +37,11 @@ public class Configuration implements Cloneable{
 	private TimeZone timezone;
 	private String workspace;
 	Properties properties = new Properties();
+	static final Configuration config;
+	
+	static {
+		config = ConfigInitializer.getConfig(null);
+	}
 	
 	protected Configuration(){};
 	
@@ -82,7 +87,7 @@ public class Configuration implements Cloneable{
 	}
 
 	public static Configuration getDefault() {
-		return ConfigInitializer.getConfig(null);
+		return config;
 	}
 
 	public String getWorkspace() {
@@ -91,8 +96,8 @@ public class Configuration implements Cloneable{
 	
 	public void setWorkspace(String rootPath) {
 		if ( rootPath == null) return;
-		if ( ! rootPath.endsWith(File.separator) ) {
-			workspace = rootPath + File.separator;
+		if ( rootPath.endsWith(File.separator) ) {
+			workspace = rootPath.substring(0, rootPath.lastIndexOf(File.separator));
 		} else {
 			workspace = rootPath;
 		}
