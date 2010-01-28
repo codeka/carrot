@@ -15,33 +15,45 @@ limitations under the License.
 **********************************************************************/
 package net.asfun.jangod.node;
 
-import net.asfun.jangod.interpret.InterpretException;
-import net.asfun.jangod.interpret.JangodInterpreter;
-import net.asfun.jangod.parse.InstToken;
-import net.asfun.jangod.parse.ParseException;
-
+//import java.util.ArrayList;
 //import java.util.List;
 
-public class InstNode implements Node {
+import net.asfun.jangod.interpret.InterpretException;
+import net.asfun.jangod.interpret.JangodInterpreter;
+//import net.asfun.jangod.lib.Macro;
+//import net.asfun.jangod.lib.MacroLibrary;
+import net.asfun.jangod.parse.MacroToken;
+import net.asfun.jangod.parse.ParseException;
+import net.asfun.jangod.parse.TokenParser;
+//import net.asfun.jangod.refactor.NodeRebuilder;
+//import net.asfun.jangod.refactor.RefactorException;
 
 
-//	private InstToken token;
-//	private Instruction inst;
+public class MacroNode implements Node {
+
+
+//	private MacroToken master;
 //	private List<Node> carries;
-//	private String endInstName;
+//	private String endMacroName;
+//	private int level;
 	
 	private static final long serialVersionUID = 2480557554731321628L;
 
-	public InstNode(InstToken token) throws ParseException {
-//		token = tk;
-//		inst = InstructionLibrary.getInstruction(token.getInstName());
-//		endInstName = inst.getEndInstName();
-//		if ( endInstName != null ) {
-//			carries = NodeList.makeList(parser, endInstName, level + 1);
+	public MacroNode(MacroToken token, TokenParser parser, int lvl) throws ParseException {
+//		master = token;
+//		Macro macro = MacroLibrary.getMacro(master.getMacroName());
+//		endMacroName = macro.getEndMacroName();
+//		if ( endMacroName != null ) {
+//			carries = NodeParser.makeList(parser, endMacroName, level + 1);
 //		} else {
-//			return
+//			carries = new ArrayList<Node>(0);
 //		}
 	}
+	
+//	public List<Node> refactor(NodeRebuilder rebuilder) throws RefactorException {
+//		Macro macro = MacroLibrary.getMacro(master.getMacroName());
+//		return macro.refactor(carries, master.getHelpers(), rebuilder);
+//	}
 
 	@Override
 	public String render(JangodInterpreter interperter) throws InterpretException {

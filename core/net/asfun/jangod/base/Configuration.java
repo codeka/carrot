@@ -25,8 +25,8 @@ import java.util.TimeZone;
 import net.asfun.jangod.lib.Filter;
 import net.asfun.jangod.lib.FilterLibrary;
 import net.asfun.jangod.lib.Importable;
-import net.asfun.jangod.lib.Instruction;
-import net.asfun.jangod.lib.InstructionLibrary;
+import net.asfun.jangod.lib.Macro;
+import net.asfun.jangod.lib.MacroLibrary;
 import net.asfun.jangod.lib.Tag;
 import net.asfun.jangod.lib.TagLibrary;
 
@@ -52,8 +52,8 @@ public class Configuration implements Cloneable{
 		else if ( importee instanceof Tag) {
 			TagLibrary.addTag((Tag)importee);
 		}
-		else if ( importee instanceof Instruction ) {
-			InstructionLibrary.addInstruction((Instruction)importee);
+		else if ( importee instanceof Macro ) {
+			MacroLibrary.addMacro((Macro)importee);
 		} else {
 			if ( importee != null )
 				JangodLogger.warning("Can't recognize the importing object >>> " + importee.getClass().getName());

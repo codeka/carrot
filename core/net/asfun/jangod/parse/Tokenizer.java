@@ -67,7 +67,7 @@ public class Tokenizer{
 							tokenKind = c;
 						}
 						break;
-					case TOKEN_INST :
+					case TOKEN_MACRO :
 					case TOKEN_TAG :
 					case TOKEN_ECHO :
 						if ( inComment > 0 ) {
@@ -98,7 +98,7 @@ public class Tokenizer{
 				}
 				break;
 			//mayby current token is closing	
-			case TOKEN_INST :
+			case TOKEN_MACRO :
 			case TOKEN_TAG :
 			case TOKEN_ECHO2 :
 				//match token two ends

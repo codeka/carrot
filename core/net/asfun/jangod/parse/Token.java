@@ -55,8 +55,8 @@ public abstract class Token implements Serializable{
 			return new EchoToken(image2);
 		case TOKEN_TAG :
 			return new TagToken(image2);
-		case TOKEN_INST :
-			return new InstToken(image2);
+		case TOKEN_MACRO :
+			return new MacroToken(image2);
 		default :
 			throw new ParseException("Creating a token with unknown type >>> " + (char)tokenKind);	
 		}

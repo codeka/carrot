@@ -15,29 +15,16 @@ limitations under the License.
 **********************************************************************/
 package net.asfun.jangod.lib;
 
-//import net.asfun.template.inst.*;
-import static net.asfun.jangod.util.logging.JangodLogger;
+//import java.util.List;
 
-public class InstructionLibrary extends SimpleLibrary<Instruction>{
+//import net.asfun.jangod.node.Node;
+//import net.asfun.jangod.refactor.NodeRebuilder;
+//import net.asfun.jangod.refactor.RefactorException;
 
-	private static InstructionLibrary lib;
-	
-	static {
-		lib = new InstructionLibrary();
-	}
-	
-	@Override
-	protected void initialize() {
-		//TODO someday
-	}
-	
-	public static Instruction getInstruction(String name) {
-		return lib.fetch(name);
-	}
-	
-	public static void addInstruction(Instruction inst) {
-		lib.register(inst.getName(), inst);
-		JangodLogger.fine("Imported instruction >>>" + inst.getName());
-	}
+public interface Macro extends Importable{
 
+//	public List<Node> refactor(List<Node> carries, String helpers, NodeRebuilder rebuilder) throws RefactorException;
+	
+	public String getEndMacroName();
+	
 }

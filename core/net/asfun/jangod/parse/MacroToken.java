@@ -19,23 +19,23 @@ import static net.asfun.jangod.parse.ParserConstants.*;
 
 /**
  * Do something hard to be done by TagToken
- * @author fangchq<anysome@com.gmail>
+ * @author anysome
  *
  */
-public class InstToken extends Token {
+public class MacroToken extends Token {
 	
 	private static final long serialVersionUID = -3710981054298651807L;
 	
-	private String instName;
+	private String macroName;
 	private String helpers;
 
-	public InstToken(String image) throws ParseException{
+	public MacroToken(String image) throws ParseException{
 		super(image);
 	}
 	
 	@Override
 	public int getType() {
-		return TOKEN_INST;
+		return TOKEN_MACRO;
 	}
 
 	@Override
@@ -43,17 +43,17 @@ public class InstToken extends Token {
 		content = image.substring(2, image.length()-2).trim().replaceFirst(SCPACE_STR, BLANK_STR);
 		int postBlank = content.indexOf(' ');
 		if ( postBlank > 0 ) {
-			instName = content.substring(0, postBlank);
+			macroName = content.substring(0, postBlank);
 			helpers = content.substring(postBlank).trim();
 		}
 		else {
-			instName = content;
+			macroName = content;
 			helpers = "";
 		}	
 	}
 
-	public String getInstName() {
-		return instName;
+	public String getMacroName() {
+		return macroName;
 	}
 	
 	public String getHelpers() {
@@ -63,9 +63,9 @@ public class InstToken extends Token {
 	@Override
 	public String toString() {
 		if ( helpers.length() == 0) {
-			return "[INST]\r\n" + instName;
+			return "[INST]\r\n" + macroName;
 		}
-		return "[INST]\r\n" + instName + "\r\n\t" + helpers;
+		return "[INST]\r\n" + macroName + "\r\n\t" + helpers;
 	}
 
 }

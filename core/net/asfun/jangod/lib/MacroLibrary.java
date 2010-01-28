@@ -15,13 +15,28 @@ limitations under the License.
 **********************************************************************/
 package net.asfun.jangod.lib;
 
-import net.asfun.jangod.interpret.InterpretException;
-import net.asfun.jangod.interpret.JangodInterpreter;
+import static net.asfun.jangod.util.logging.JangodLogger;
 
-public interface Instruction extends Importable{
+public class MacroLibrary extends SimpleLibrary<Macro>{
 
-	public void command(String helpers, JangodInterpreter interpreter) throws InterpretException;
+	private static MacroLibrary lib;
 	
-	public String getEndInstName();
+	static {
+		lib = new MacroLibrary();
+	}
 	
+	@Override
+	protected void initialize() {
+		//TODO someday
+	}
+	
+	public static Macro getMacro(String name) {
+		return lib.fetch(name);
+	}
+	
+	public static void addMacro(Macro macro) {
+		lib.register(macro.getName(), macro);
+		JangodLogger.fine("Imported macro >>>" + macro.getName());
+	}
+
 }
