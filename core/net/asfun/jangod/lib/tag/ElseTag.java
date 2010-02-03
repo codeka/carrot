@@ -15,12 +15,11 @@ limitations under the License.
 **********************************************************************/
 package net.asfun.jangod.lib.tag;
 
-import java.util.List;
 
 import net.asfun.jangod.interpret.InterpretException;
 import net.asfun.jangod.interpret.JangodInterpreter;
 import net.asfun.jangod.lib.Tag;
-import net.asfun.jangod.node.Node;
+import net.asfun.jangod.tree.NodeList;
 
 /**
  * {% else %}
@@ -32,7 +31,7 @@ public class ElseTag implements Tag{
 	static final String ELSE = "else";
 	
 	@Override
-	public String interpreter(List<Node> carries, String helpers, JangodInterpreter interpreter)
+	public String interpreter(NodeList carries, String helpers, JangodInterpreter interpreter)
 			throws InterpretException {
 		return BLANK_STRING;
 	}

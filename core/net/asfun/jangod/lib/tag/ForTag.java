@@ -15,13 +15,13 @@ limitations under the License.
 **********************************************************************/
 package net.asfun.jangod.lib.tag;
 
-import java.util.List;
 
 import net.asfun.jangod.interpret.InterpretException;
 import net.asfun.jangod.interpret.JangodInterpreter;
 import net.asfun.jangod.interpret.VariableFilter;
 import net.asfun.jangod.lib.Tag;
-import net.asfun.jangod.node.Node;
+import net.asfun.jangod.tree.Node;
+import net.asfun.jangod.tree.NodeList;
 import net.asfun.jangod.util.ForLoop;
 import net.asfun.jangod.util.HelperStringTokenizer;
 import net.asfun.jangod.util.ObjectIterator;
@@ -38,7 +38,7 @@ public class ForTag implements Tag {
 	final String ENDTAGNAME = "endfor";
 	
 	@Override
-	public String interpreter(List<Node> carries, String helpers, JangodInterpreter interpreter) throws InterpretException {
+	public String interpreter(NodeList carries, String helpers, JangodInterpreter interpreter) throws InterpretException {
 		String[] helper = new HelperStringTokenizer(helpers).allTokens();
 		if ( helper.length != 3 ) {
 			throw new InterpretException("Tag 'for' expects 3 helpers >>> " + helper.length);

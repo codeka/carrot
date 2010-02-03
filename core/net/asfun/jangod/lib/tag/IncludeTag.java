@@ -16,15 +16,14 @@ limitations under the License.
 package net.asfun.jangod.lib.tag;
 
 import java.io.IOException;
-import java.util.List;
 
 import net.asfun.jangod.base.Context;
 import net.asfun.jangod.base.ResourceManager;
 import net.asfun.jangod.interpret.InterpretException;
 import net.asfun.jangod.interpret.JangodInterpreter;
 import net.asfun.jangod.lib.Tag;
-import net.asfun.jangod.node.Node;
-import net.asfun.jangod.node.NodeListManager;
+import net.asfun.jangod.tree.Node;
+import net.asfun.jangod.tree.NodeList;
 import net.asfun.jangod.util.HelperStringTokenizer;
 
 /**
@@ -38,7 +37,7 @@ public class IncludeTag implements Tag{
 	final String TAGNAME = "include";
 	
 	@Override
-	public String interpreter(List<Node> carries, String helpers, JangodInterpreter interpreter)
+	public String interpreter(NodeList carries, String helpers, JangodInterpreter interpreter)
 			throws InterpretException {
 		String[] helper = new HelperStringTokenizer(helpers).allTokens();
 		if( helper.length != 1) {
@@ -47,12 +46,12 @@ public class IncludeTag implements Tag{
 		String templateFile = interpreter.resolveString(helper[0]);
 		try {
 			String fullName = ResourceManager.getFullName(templateFile, 
-					interpreter.getContext().getWorkspace(), interpreter.getConfiguration().getWorkspace());
-			List<Node> nodes = NodeListManager.getParseResult(fullName,
-					interpreter.getConfiguration().getEncoding() );
+					interpreter.getWorkspace(), interpreter.getConfiguration().getWorkspace());
+			Node node = interpreter.getApplication().getParseResult(
+					fullName, interpreter.getConfiguration().getEncoding() );
 			JangodInterpreter child = interpreter.clone();
 			child.assignRuntimeScope(Context.INSERT_FLAG, true, 1);
-			return child.render(nodes);
+			return child.render(node);
 		} catch (IOException e) {
 			throw new InterpretException(e.getMessage());
 		}

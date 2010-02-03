@@ -17,14 +17,16 @@ package net.asfun.jangod.interpret;
 
 import static net.asfun.jangod.util.logging.JangodLogger;
 
+import java.io.IOException;
 import java.util.Iterator;
-import java.util.List;
 
+import net.asfun.jangod.base.Application;
 import net.asfun.jangod.base.Configuration;
 import net.asfun.jangod.base.Context;
-import net.asfun.jangod.node.Node;
-import net.asfun.jangod.node.NodeParser;
+import net.asfun.jangod.base.ResourceManager;
 import net.asfun.jangod.parse.TokenParser;
+import net.asfun.jangod.tree.Node;
+import net.asfun.jangod.tree.TreeParser;
 import net.asfun.jangod.util.ListOrderedMap;
 import net.asfun.jangod.util.Variable;
 import net.asfun.jangod.util.ListOrderedMap.Item;
@@ -34,6 +36,7 @@ public class JangodInterpreter implements Cloneable{
 	private int level = 1;
 	private FloorBindings runtime;
 	private Context context;
+	String file = null;
 	
 	public JangodInterpreter(Context context) {
 		this.context = context;
@@ -60,36 +63,12 @@ public class JangodInterpreter implements Cloneable{
 	}
 	
 	public String render(TokenParser parser) throws InterpretException {
-		List<Node> nodes = NodeParser.makeList(parser, null, 1);
-		StringBuffer buff = new StringBuffer();
-		for(Node node : nodes) {
-			buff.append(node.render(this));
-		}
-		if ( runtime.get(Context.CHILD_FLAG, 1) != null && 
-				runtime.get(Context.INSERT_FLAG, 1) == null) {
-			StringBuilder sb = new StringBuilder((String)fetchRuntimeScope(Context.SEMI_RENDER, 1));
-			//replace the block identify with block content
-			ListOrderedMap blockList = (ListOrderedMap) fetchRuntimeScope(Context.BLOCK_LIST, 1);
-			Iterator<Item> mi = blockList.iterator();
-			int index;
-			String replace;
-			Item item;
-			while( mi.hasNext() ) {
-				item = mi.next();
-				replace = Context.SEMI_BLOCK + item.getKey();
-				while ( (index = sb.indexOf(replace)) > 0 ) {
-					sb.delete(index, index + replace.length());
-					sb.insert(index, item.getValue());
-				}
-			}
-			return sb.toString();
-		}
-		return buff.toString();
+		return render(TreeParser.parser(parser));
 	}
 	
-	public String render(List<Node> nodes) throws InterpretException {
+	public String render(Node root) throws InterpretException {
 		StringBuffer buff = new StringBuffer();
-		for(Node node : nodes) {
+		for (Node node : root.children() ) {
 			buff.append(node.render(this));
 		}
 		if ( runtime.get(Context.CHILD_FLAG, 1) != null && 
@@ -205,5 +184,25 @@ public class JangodInterpreter implements Cloneable{
 
 	public Context getContext() {
 		return context;
+	}
+	
+	public Application getApplication() {
+		return context.getApplication();
+	}
+
+	public String getWorkspace() {
+		if ( file != null ) {
+			try {
+				return ResourceManager.getDirectory(file);
+			} catch ( IOException e) {
+				return context.getConfiguration().getWorkspace();
+			}
+		} else {
+			return context.getConfiguration().getWorkspace();
+		}
+	}
+
+	public void setFile(String fullName) {
+		this.file = fullName;
 	}
 }

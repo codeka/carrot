@@ -15,16 +15,15 @@ limitations under the License.
 **********************************************************************/
 package net.asfun.jangod.lib;
 
-import java.util.List;
 
 import net.asfun.jangod.interpret.InterpretException;
 import net.asfun.jangod.interpret.JangodInterpreter;
-import net.asfun.jangod.node.Node;
+import net.asfun.jangod.tree.NodeList;
 
 
 public interface Tag extends Importable{
 
-	public String interpreter(List<Node> carries, String helpers, JangodInterpreter interpreter) throws InterpretException;
+	public String interpreter(NodeList carries, String helpers, JangodInterpreter interpreter) throws InterpretException;
 
 	/**
 	 * Get name of end tag

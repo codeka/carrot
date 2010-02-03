@@ -15,16 +15,31 @@ limitations under the License.
 **********************************************************************/
 package net.asfun.jangod.base;
 
+import static net.asfun.jangod.util.logging.JangodLogger;
+
+import java.io.IOException;
 import java.util.Hashtable;
 import java.util.Map;
+
+import net.asfun.jangod.tree.Node;
+import net.asfun.jangod.tree.ParseResultManager;
 
 public class Application {
 
 	Map<String, Object> globalBindings = new Hashtable<String, Object>(5);
 	Configuration config;
+	ParseResultManager parseResultManager;
+	boolean isMacroOn = true;
 	
 	public Application() {
 		config = Configuration.getDefault().clone();
+		String ima = config.getProperty("isMacroOn", "true");
+		try {
+			isMacroOn = Boolean.parseBoolean(ima);
+		} catch (Exception e) {
+			JangodLogger.warning("Config wrong boolean for isMacroOn(use default) >>> " + ima);
+		};
+		parseResultManager = new ParseResultManager(this);
 	}
 	
 	public Application(String configFile) {
@@ -41,6 +56,14 @@ public class Application {
 	
 	public Configuration getConfiguration() {
 		return config;
+	}
+
+	public Node getParseResult(String fullName, String encoding) throws IOException {
+		return parseResultManager.getParseResult(fullName, encoding);
+	}
+
+	public boolean isMacroOn() {
+		return isMacroOn;
 	}
 	
 }

@@ -15,7 +15,6 @@ limitations under the License.
 **********************************************************************/
 package net.asfun.jangod.base;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,7 +32,6 @@ public class Context {
 	
 	protected Map<String, Object> sessionBindings;
 	protected Application application;
-	String file = null;
 	
 	public Context() {
 		application = new Application();
@@ -48,24 +46,12 @@ public class Context {
 		sessionBindings = new HashMap<String, Object>();
 	}
 	
+	public Application getApplication() {
+		return application;
+	}
+	
 	public Configuration getConfiguration() {
 		return application.config;
-	}
-	
-	public void setFile(String file) {
-		this.file = file;
-	}
-	
-	public String getWorkspace() {
-		if ( file != null ) {
-			try {
-				return ResourceManager.getDirectory(file);
-			} catch ( IOException e) {
-				return application.config.getWorkspace();
-			}
-		} else {
-			return application.config.getWorkspace();
-		}
 	}
 
 	public Object getAttribute(String varName, int scope) {

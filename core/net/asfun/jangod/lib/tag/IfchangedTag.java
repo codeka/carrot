@@ -15,12 +15,12 @@ limitations under the License.
 **********************************************************************/
 package net.asfun.jangod.lib.tag;
 
-import java.util.List;
 
 import net.asfun.jangod.interpret.InterpretException;
 import net.asfun.jangod.interpret.JangodInterpreter;
 import net.asfun.jangod.lib.Tag;
-import net.asfun.jangod.node.Node;
+import net.asfun.jangod.tree.Node;
+import net.asfun.jangod.tree.NodeList;
 
 /**
  * {% ifchange var %}
@@ -34,7 +34,7 @@ public class IfchangedTag implements Tag{
 	final String ENDTAGNAME = "endif";
 
 	@Override
-	public String interpreter(List<Node> carries, String helpers, JangodInterpreter interpreter)
+	public String interpreter(NodeList carries, String helpers, JangodInterpreter interpreter)
 			throws InterpretException {
 		if ( helpers.length() == 0 ) {
 			throw new InterpretException("Tag 'ifchanged' expects 1 helper >>> 0");

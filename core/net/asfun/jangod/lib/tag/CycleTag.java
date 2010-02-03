@@ -15,12 +15,11 @@ limitations under the License.
 **********************************************************************/
 package net.asfun.jangod.lib.tag;
 
-import java.util.List;
 
 import net.asfun.jangod.interpret.InterpretException;
 import net.asfun.jangod.interpret.JangodInterpreter;
 import net.asfun.jangod.lib.Tag;
-import net.asfun.jangod.node.Node;
+import net.asfun.jangod.tree.NodeList;
 import net.asfun.jangod.util.HelperStringTokenizer;
 
 /**
@@ -36,7 +35,7 @@ public class CycleTag implements Tag{
 	final String TAGNAME = "cycle";
 
 	@Override
-	public String interpreter(List<Node> carries, String helpers, JangodInterpreter interpreter)
+	public String interpreter(NodeList carries, String helpers, JangodInterpreter interpreter)
 			throws InterpretException {
 		String[] values;
 		String var = null;

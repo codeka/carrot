@@ -63,9 +63,9 @@ public class MacroToken extends Token {
 	@Override
 	public String toString() {
 		if ( helpers.length() == 0) {
-			return "[INST]\r\n" + macroName;
+			return "[MACRO]\r\n" + macroName;
 		}
-		return "[INST]\r\n" + macroName + "\r\n\t" + helpers;
+		return "[MACRO]\r\n" + macroName + "\r\n\t" + helpers;
 	}
 
 }

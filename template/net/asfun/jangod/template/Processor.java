@@ -24,7 +24,6 @@ import net.asfun.jangod.base.Configuration;
 import net.asfun.jangod.base.Context;
 import net.asfun.jangod.base.ResourceManager;
 import net.asfun.jangod.interpret.JangodInterpreter;
-import net.asfun.jangod.node.NodeListManager;
 
 /**
  * DON'T run in multi-thread
@@ -66,10 +65,10 @@ public class Processor {
 			context.initBindings(bindings, Context.SCOPE_SESSION);
 		}
 		String fullName = ResourceManager.getFullName(templateFile, application.getConfiguration().getWorkspace());
-		context.setFile(fullName);
+		interpreter.setFile(fullName);
 		try {
 			interpreter.init();
-			return interpreter.render(NodeListManager.getParseResult(fullName, encoding));
+			return interpreter.render(application.getParseResult(fullName, encoding));
 		} catch ( Exception e) {
 			throw new IOException(e.getMessage(), e.getCause());
 		}

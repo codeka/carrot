@@ -22,14 +22,15 @@ import net.asfun.jangod.base.Context;
 import net.asfun.jangod.interpret.InterpretException;
 import net.asfun.jangod.interpret.JangodInterpreter;
 import net.asfun.jangod.lib.Tag;
-import net.asfun.jangod.node.Node;
+import net.asfun.jangod.tree.Node;
+import net.asfun.jangod.tree.NodeList;
 import net.asfun.jangod.util.ListOrderedMap;
 import net.asfun.jangod.util.HelperStringTokenizer;
 
 /**
  * {% block name %}
  * @author anysome
- *
+ * TODO EXTENDS NESTED
  */
 
 public class BlockTag implements Tag{
@@ -40,7 +41,7 @@ public class BlockTag implements Tag{
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public String interpreter(List<Node> carries, String helpers, JangodInterpreter interpreter)
+	public String interpreter(NodeList carries, String helpers, JangodInterpreter interpreter)
 			throws InterpretException {
 		String[] helper = new HelperStringTokenizer(helpers).allTokens();
 		if( helper.length != 1) {
@@ -79,7 +80,7 @@ public class BlockTag implements Tag{
 		return getBlockContent(carries, interpreter);
 	}
 	
-	private String getBlockContent(List<Node> carries, JangodInterpreter interpreter) throws InterpretException {
+	private String getBlockContent(NodeList carries, JangodInterpreter interpreter) throws InterpretException {
 		StringBuffer sb = new StringBuffer();
 		for(Node node : carries) {
 			sb.append(node.render(interpreter));

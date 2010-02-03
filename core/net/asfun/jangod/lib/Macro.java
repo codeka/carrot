@@ -15,16 +15,15 @@ limitations under the License.
 **********************************************************************/
 package net.asfun.jangod.lib;
 
-//import java.util.List;
+import net.asfun.jangod.parse.ParseException;
+import net.asfun.jangod.tree.Node;
+import net.asfun.jangod.tree.TreeRebuilder;
 
-//import net.asfun.jangod.node.Node;
-//import net.asfun.jangod.refactor.NodeRebuilder;
-//import net.asfun.jangod.refactor.RefactorException;
 
 public interface Macro extends Importable{
 
-//	public List<Node> refactor(List<Node> carries, String helpers, NodeRebuilder rebuilder) throws RefactorException;
-	
 	public String getEndMacroName();
+	
+	public void refactor(Node current, String helpers, TreeRebuilder rebuilder) throws ParseException;
 	
 }
