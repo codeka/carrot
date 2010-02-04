@@ -19,6 +19,8 @@ import java.lang.reflect.Array;
 import java.util.Collection;
 import java.util.Map;
 
+import net.asfun.jangod.base.Constants;
+
 public class ObjectTruthValue {
 	
 	@SuppressWarnings("unchecked")
@@ -38,7 +40,7 @@ public class ObjectTruthValue {
 		}
 		
 		if ( object instanceof String ) {
-			return !object.toString().equals("");
+			return !object.toString().equals(Constants.STR_BLANK);
 		}
 		
 		if ( object.getClass().isArray() ) {

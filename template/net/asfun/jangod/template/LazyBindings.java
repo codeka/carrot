@@ -22,6 +22,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import net.asfun.jangod.base.Constants;
+
 import static net.asfun.jangod.util.logging.*;
 
 public class LazyBindings implements Map<String, Object>{
@@ -163,7 +165,7 @@ public class LazyBindings implements Map<String, Object>{
         if (!(key instanceof String)) {
             throw new ClassCastException("key should be a String");
         }
-        if (key.equals("")) {
+        if (key.equals(Constants.STR_BLANK)) {
             throw new IllegalArgumentException("key can not be empty");
         }
     }

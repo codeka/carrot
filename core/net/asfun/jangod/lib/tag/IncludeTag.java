@@ -17,7 +17,6 @@ package net.asfun.jangod.lib.tag;
 
 import java.io.IOException;
 
-import net.asfun.jangod.base.Context;
 import net.asfun.jangod.base.ResourceManager;
 import net.asfun.jangod.interpret.InterpretException;
 import net.asfun.jangod.interpret.JangodInterpreter;
@@ -50,7 +49,7 @@ public class IncludeTag implements Tag{
 			Node node = interpreter.getApplication().getParseResult(
 					fullName, interpreter.getConfiguration().getEncoding() );
 			JangodInterpreter child = interpreter.clone();
-			child.assignRuntimeScope(Context.INSERT_FLAG, true, 1);
+			child.assignRuntimeScope(JangodInterpreter.INSERT_FLAG, true, 1);
 			return child.render(node);
 		} catch (IOException e) {
 			throw new InterpretException(e.getMessage());

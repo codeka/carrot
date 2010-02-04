@@ -16,6 +16,7 @@ limitations under the License.
 package net.asfun.jangod.lib.tag;
 
 
+import net.asfun.jangod.base.Constants;
 import net.asfun.jangod.interpret.InterpretException;
 import net.asfun.jangod.interpret.JangodInterpreter;
 import net.asfun.jangod.interpret.VariableFilter;
@@ -45,7 +46,7 @@ public class SetTag implements Tag{
 		}
 		Object value = VariableFilter.compute(helper[1], interpreter);
 		interpreter.assignRuntimeScope(helper[0], value, 1);
-		return BLANK_STRING;
+		return Constants.STR_BLANK;
 	}
 
 	@Override

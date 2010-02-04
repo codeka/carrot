@@ -40,7 +40,7 @@ public class NoteToken extends Token {
 	
 	@Override
 	public String toString() {
-		return "[NOTE]";
+		return "{# ----comment---- #}";
 	}
 
 }

@@ -16,6 +16,8 @@ limitations under the License.
 package net.asfun.jangod.lib;
 
 import static net.asfun.jangod.util.logging.JangodLogger;
+import net.asfun.jangod.lib.macro.BlockMacro;
+import net.asfun.jangod.lib.macro.ExtendsMacro;
 import net.asfun.jangod.lib.macro.IncludeMacro;
 
 public class MacroLibrary extends SimpleLibrary<Macro>{
@@ -30,6 +32,10 @@ public class MacroLibrary extends SimpleLibrary<Macro>{
 	protected void initialize() {
 		Macro incMacro = new IncludeMacro();
 		register(incMacro.getName(), incMacro);
+		Macro extMacro = new ExtendsMacro();
+		register(extMacro.getName(), extMacro);
+		Macro blkMacro = new BlockMacro();
+		register(blkMacro.getName(), blkMacro);
 	}
 	
 	public static Macro getMacro(String name) {

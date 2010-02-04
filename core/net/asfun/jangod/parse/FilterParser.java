@@ -21,6 +21,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.asfun.jangod.base.Constants;
+
 public class FilterParser implements Serializable{
 
 	private static final long serialVersionUID = 2328268066571880284L;
@@ -83,13 +85,13 @@ public class FilterParser implements Serializable{
 	
 	private void parseFilter(String filterString) throws ParseException {
 		//filterString = filter1:"ar|g1",arg2|filter2:'a:",b"c'
-		int postColon = filterString.indexOf(':');
+		int postColon = filterString.indexOf(CL);
 		int postPipe = filterString.indexOf(VL);
 		//filterString = filter1
 		if ( postColon == postPipe ) {
 			filters.add(filterString);
 			argss.add(null);
-			content = "";
+			content = Constants.STR_BLANK;
 		}
 		//filterString = filter1:argString|filter2
 		if ( postColon > 0 && ( postColon < postPipe || postPipe < 0 )) {
@@ -193,7 +195,7 @@ public class FilterParser implements Serializable{
 				args.add(argString);
 			}
 		}
-		content = "";
+		content = Constants.STR_BLANK;
 		return null;
 	}
 }

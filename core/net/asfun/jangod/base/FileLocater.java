@@ -82,7 +82,7 @@ public class FileLocater implements ResourceLocater {
 		try {
 			while( (line=br.readLine()) != null ) {
 				buff.append(line);
-				buff.append(NEW_LINE);
+				buff.append(Constants.STR_NEW_LINE);
 			}
 		} catch (IOException e) {
 			throw e;

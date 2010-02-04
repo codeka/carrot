@@ -67,18 +67,22 @@ public class EchoToken extends Token {
 
 	@Override
 	public String toString() {
-		String s = "[VAR]\r\n" + fp.getVariable();
+		String s = "{{ " + fp.getVariable();
 		int i,j;
 		for (i=0; i<fp.getFilters().size(); i++) {
-			s += "\r\n\t" + fp.getFilters().get(i);
+			s += "|" + fp.getFilters().get(i);
 			String[] args = fp.getArgss().get(i);
 			if ( args != null) {
-				s += "\r\n\t";
+				s += ":";
 				for(j=0; j<args.length; j++) {
-					s += "\t" + args[j];
+					s += args[j];
+					if ( j< args.length -1) {
+						s += ",";
+					}
 				}
 			}
 		}
+		s += " }}";
 		return s;
 	}
 

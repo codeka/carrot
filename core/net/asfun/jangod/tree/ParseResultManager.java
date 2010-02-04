@@ -1,3 +1,18 @@
+/**********************************************************************
+Copyright (c) 2010 Asfun Net.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+**********************************************************************/
 package net.asfun.jangod.tree;
 
 import static net.asfun.jangod.util.logging.JangodLogger;
@@ -15,6 +30,7 @@ public class ParseResultManager {
 
 	StatelessObjectStorage<String, Node> cache;
 	Application application;
+	static final String join = "@";
 	
 	public ParseResultManager (Application application) {
 		this.application = application;
@@ -37,17 +53,18 @@ public class ParseResultManager {
 	}
 	
 	public Node getParseResult(String file, String encoding) throws IOException {
-		String key = file + "@" + encoding;
+		String key = file + join + encoding;
 		Node root = cache.get(key);
 		if ( root == null ) {
 			root = TreeParser.parser(new TokenParser(ResourceManager.getResource(file, encoding)));
-			new TreeRebuilder(application, file).rebuilder(root);
+			root = new TreeRebuilder(application, file).refactor(root);
 			cache.put(key, root);
 		}
 //		TreeIterator nit = new TreeIterator(root);
 //		while (nit.hasNext()) {
 //			System.out.println(nit.next());
 //		}
+//		System.out.println("-------------------------------------------" + file);
 		return root;
 	}
 }

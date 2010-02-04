@@ -16,6 +16,7 @@ limitations under the License.
 package net.asfun.jangod.parse;
 
 import static net.asfun.jangod.parse.ParserConstants.*;
+import net.asfun.jangod.base.Constants;
 
 /**
  * Do something hard to be done by TagToken
@@ -40,15 +41,15 @@ public class MacroToken extends Token {
 
 	@Override
 	protected void parse() throws ParseException{
-		content = image.substring(2, image.length()-2).trim().replaceFirst(SCPACE_STR, BLANK_STR);
-		int postBlank = content.indexOf(' ');
+		content = image.substring(2, image.length()-2).trim().replaceFirst(SCPACE_STR, Constants.STR_SPACE);
+		int postBlank = content.indexOf(SP);
 		if ( postBlank > 0 ) {
-			macroName = content.substring(0, postBlank);
+			macroName = content.substring(0, postBlank).toLowerCase();
 			helpers = content.substring(postBlank).trim();
 		}
 		else {
 			macroName = content;
-			helpers = "";
+			helpers = Constants.STR_BLANK;
 		}	
 	}
 
@@ -63,9 +64,9 @@ public class MacroToken extends Token {
 	@Override
 	public String toString() {
 		if ( helpers.length() == 0) {
-			return "[MACRO]\r\n" + macroName;
+			return "{! " + macroName + " !}";
 		}
-		return "[MACRO]\r\n" + macroName + "\r\n\t" + helpers;
+		return "{! " + macroName + " " + helpers + " !}";
 	}
 
 }

@@ -1,3 +1,18 @@
+/**********************************************************************
+Copyright (c) 2010 Asfun Net.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+**********************************************************************/
 package net.asfun.jangod.tree;
 
 import java.util.Iterator;
@@ -27,7 +42,7 @@ public class NodeList implements Iterable<Node>{
 		size++;
 	}
 	
-	public boolean append(Node add) {
+	boolean append(Node add) {
 		if ( add == null ) {
 			return false;
 		}
@@ -48,7 +63,7 @@ public class NodeList implements Iterable<Node>{
 		return true;
 	}
 	
-	public boolean forend(Node add) {
+	boolean forend(Node add) {
 		if ( add == null ) {
 			return false;
 		}
@@ -69,7 +84,7 @@ public class NodeList implements Iterable<Node>{
 		return true;
 	}
 	
-	public boolean postend(Node to, Node add) {
+	boolean postend(Node to, Node add) {
 		if ( to == null || add == null || head == null
 				 || to.parent != head.parent || add.parent == to.parent ) {
 			return false;
@@ -89,7 +104,7 @@ public class NodeList implements Iterable<Node>{
 		return true;
 	}
 	
-	public boolean preend(Node to, Node add) {
+	boolean preend(Node to, Node add) {
 		if ( to == null || add == null || head == null
 				 || to.parent != head.parent || add.parent == to.parent ) {
 			return false;
@@ -109,7 +124,7 @@ public class NodeList implements Iterable<Node>{
 		return true;
 	}
 
-	public boolean alternate(Node e, Node n) {
+	boolean alternate(Node e, Node n) {
 		if ( e == null || n == null || head == null ||
 				e.parent != head.parent || n.parent != head.parent ) {
 			return false;
@@ -143,7 +158,7 @@ public class NodeList implements Iterable<Node>{
 		return true;
 	}
 	
-	public boolean replace(Node to, NodeList with) {
+	boolean replace(Node to, NodeList with) {
 		if ( to == null || with.size == 0 || head == null ||
 				to.parent != head.parent || with.head.parent == head.parent ) {
 			return false;
@@ -167,7 +182,7 @@ public class NodeList implements Iterable<Node>{
 		return true;
 	}
 	
-	public boolean replace(Node to, Node with) {
+	boolean replace(Node to, Node with) {
 		if ( to == null || with == null || head == null ||
 				to.parent != head.parent || with.parent == head.parent ) {
 			return false;
@@ -188,7 +203,7 @@ public class NodeList implements Iterable<Node>{
 		return true;
 	}
 	
-	public boolean remove(Node e) {
+	boolean remove(Node e) {
 		if ( e == null || head == null || 
 				e.parent != head.parent ) {
 			return false;

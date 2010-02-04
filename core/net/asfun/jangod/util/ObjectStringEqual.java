@@ -18,6 +18,8 @@ package net.asfun.jangod.util;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
+import net.asfun.jangod.base.Constants;
+
 public class ObjectStringEqual {
 
 	public static boolean evaluate(Object object, Object strObj) {
@@ -49,9 +51,9 @@ public class ObjectStringEqual {
 				
 				if ( object instanceof Boolean ) {
 					if ( (Boolean)object ) {
-						return str.equalsIgnoreCase("True");
+						return str.equalsIgnoreCase(Constants.STR_TRUE);
 					} else {
-						return str.equalsIgnoreCase("False");
+						return str.equalsIgnoreCase(Constants.STR_FALSE);
 					}
 				}
 				

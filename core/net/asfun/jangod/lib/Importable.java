@@ -16,10 +16,6 @@ limitations under the License.
 package net.asfun.jangod.lib;
 
 public interface Importable {
-
-	static final String BLANK_STRING = "";
-	static final String SINGLE_QUOTE = "'";
-	static final String DOUBLE_QUOTE = "\"";
 	
 	public String getName();
 }

@@ -20,8 +20,6 @@ import java.io.Reader;
 
 public interface ResourceLocater {
 	
-	static final String NEW_LINE = "\n";
-
 	public String getFullName(String relativeName, String relativeDir, String defaultDir) throws IOException;
 	public String getFullName(String relativeName, String defaultDir) throws IOException;
 	

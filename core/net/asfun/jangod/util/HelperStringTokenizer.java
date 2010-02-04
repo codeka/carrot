@@ -32,7 +32,7 @@ public class HelperStringTokenizer implements Iterator<String>{
 	private int currPost = 0;
 	private int tokenStart = 0;
 	private int length = 0;
-	private char lastChar = ' ';
+	private char lastChar = SP;
 	private int lastStart = 0;
 	private boolean useComma = false;
 	private char quoteChar = 0;

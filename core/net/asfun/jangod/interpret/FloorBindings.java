@@ -18,6 +18,8 @@ package net.asfun.jangod.interpret;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.asfun.jangod.base.Constants;
+
 public class FloorBindings implements Cloneable{
 
 	private Map<Integer, Map<String,Object>> floor;
@@ -76,7 +78,7 @@ public class FloorBindings implements Cloneable{
         if (key == null) {
             throw new NullPointerException("key can not be null");
         }
-        if (key.equals("")) {
+        if (key.equals(Constants.STR_BLANK)) {
             throw new IllegalArgumentException("key can not be empty");
         }
     }

@@ -45,7 +45,7 @@ public class IfTag implements Tag {
 		StringBuffer sb = new StringBuffer();
 		if ( ObjectTruthValue.evaluate(test) ) {
 			for(Node node : carries) {
-				if ( ElseTag.ELSE.equals(node.toString()) ) {
+				if ( ElseTag.ELSE.equals(node.getName()) ) {
 					break;
 				}
 				sb.append(node.render(interpreter));
@@ -56,7 +56,7 @@ public class IfTag implements Tag {
 				if (inElse) {
 					sb.append(node.render(interpreter));
 				}
-				if (  ElseTag.ELSE.equals(node.toString()) ) {
+				if (  ElseTag.ELSE.equals(node.getName()) ) {
 					inElse = true;
 				}
 			}

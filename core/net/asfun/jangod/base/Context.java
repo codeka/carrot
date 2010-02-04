@@ -22,14 +22,7 @@ public class Context {
 
 	public static final int SCOPE_GLOBAL = 1;
 	public static final int SCOPE_SESSION = 2;
-	
-	public static final String CHILD_FLAG = "'IS\"CHILD";
-	public static final String PARENT_FLAG = "'IS\"PARENT";
-	public static final String INSERT_FLAG = "'IS\"INSERT";
-	public static final String SEMI_RENDER = "'SEMI\"FORMAL";
-	public static final String BLOCK_LIST = "'BLK\"LIST";
-	public static final String SEMI_BLOCK = "<K2C9OL7B>";
-	
+
 	protected Map<String, Object> sessionBindings;
 	protected Application application;
 	

@@ -15,11 +15,13 @@ limitations under the License.
 **********************************************************************/
 package net.asfun.jangod.util;
 
+import net.asfun.jangod.base.Constants;
+
 public class ObjectValue {
 
 	public static String printable(Object variable) {
 		if ( variable == null ) {
-			return "";
+			return Constants.STR_BLANK;
 		}
 		//TODO if String , Integer, Float, boolean....
 		return variable.toString();

@@ -1,3 +1,18 @@
+/**********************************************************************
+Copyright (c) 2010 Asfun Net.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+**********************************************************************/
 package net.asfun.jangod.tree;
 
 import static net.asfun.jangod.parse.ParserConstants.TOKEN_ECHO;
@@ -17,12 +32,10 @@ import net.asfun.jangod.parse.TokenParser;
 import net.asfun.jangod.util.logging.Level;
 
 public class TreeParser {
-	
-	static final String TREE_ROOT_END = "anysome";
 
 	public static Node parser(TokenParser parser) {
 		Node root = new RootNode();
-		tree(root, parser, TREE_ROOT_END);
+		tree(root, parser, RootNode.TREE_ROOT_END);
 		return root;
 	}
 	
@@ -78,7 +91,7 @@ public class TreeParser {
 			}
 		}
 		//can't reach end tag
-		if( endName != null && !endName.equals(TREE_ROOT_END) ) {
+		if( endName != null && !endName.equals(RootNode.TREE_ROOT_END) ) {
 			JangodLogger.severe("lost end for tag or macro >>> " + endName);
 		}
 	}

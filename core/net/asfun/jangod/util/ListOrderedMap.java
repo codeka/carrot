@@ -22,6 +22,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import net.asfun.jangod.base.Constants;
+
 public class ListOrderedMap implements Map<String, Object>, Iterable<ListOrderedMap.Item>{
 
 	private HashMap<String, Object> store = new HashMap<String, Object>();
@@ -71,7 +73,7 @@ public class ListOrderedMap implements Map<String, Object>, Iterable<ListOrdered
         if (!(key instanceof String)) {
             throw new ClassCastException("key should be a String");
         }
-        if (key.equals("")) {
+        if (key.equals(Constants.STR_BLANK)) {
             throw new IllegalArgumentException("key can not be empty");
         }
         keys.add(key);

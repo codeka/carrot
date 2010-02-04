@@ -22,6 +22,7 @@ import java.util.Iterator;
 
 import net.asfun.jangod.base.Application;
 import net.asfun.jangod.base.Configuration;
+import net.asfun.jangod.base.Constants;
 import net.asfun.jangod.base.Context;
 import net.asfun.jangod.base.ResourceManager;
 import net.asfun.jangod.parse.TokenParser;
@@ -32,6 +33,16 @@ import net.asfun.jangod.util.Variable;
 import net.asfun.jangod.util.ListOrderedMap.Item;
 
 public class JangodInterpreter implements Cloneable{
+	
+	public static final String CHILD_FLAG = "'IS\"CHILD";
+	public static final String PARENT_FLAG = "'IS\"PARENT";
+	public static final String INSERT_FLAG = "'IS\"INSERT";
+	public static final String SEMI_RENDER = "'SEMI\"FORMAL";
+	public static final String BLOCK_LIST = "'BLK\"LIST";
+	public static final String SEMI_BLOCK = "<K2C9OL7B>";
+	
+	static final String VAR_DATE = "now";
+	static final String VAR_PATH = "workspace";
 	
 	private int level = 1;
 	private FloorBindings runtime;
@@ -71,18 +82,18 @@ public class JangodInterpreter implements Cloneable{
 		for (Node node : root.children() ) {
 			buff.append(node.render(this));
 		}
-		if ( runtime.get(Context.CHILD_FLAG, 1) != null && 
-				runtime.get(Context.INSERT_FLAG, 1) == null) {
-			StringBuilder sb = new StringBuilder((String)fetchRuntimeScope(Context.SEMI_RENDER, 1));
+		if ( runtime.get(CHILD_FLAG, 1) != null && 
+				runtime.get(INSERT_FLAG, 1) == null) {
+			StringBuilder sb = new StringBuilder((String)fetchRuntimeScope(SEMI_RENDER, 1));
 			//replace the block identify with block content
-			ListOrderedMap blockList = (ListOrderedMap) fetchRuntimeScope(Context.BLOCK_LIST, 1);
+			ListOrderedMap blockList = (ListOrderedMap) fetchRuntimeScope(BLOCK_LIST, 1);
 			Iterator<Item> mi = blockList.iterator();
 			int index;
 			String replace;
 			Item item;
 			while( mi.hasNext() ) {
 				item = mi.next();
-				replace = Context.SEMI_BLOCK + item.getKey();
+				replace = SEMI_BLOCK + item.getKey();
 				while ( (index = sb.indexOf(replace)) > 0 ) {
 					sb.delete(index, index + replace.length());
 					sb.insert(index, item.getValue());
@@ -96,7 +107,7 @@ public class JangodInterpreter implements Cloneable{
 	public Object retraceVariable(String variable) {
 		if ( variable == null || variable.trim().length() == 0 ) {
 			JangodLogger.severe("variable name is required.");
-			return "";
+			return Constants.STR_BLANK;
 		}
 		Variable var = new Variable(variable);
 		String varName = var.getName();
@@ -110,8 +121,11 @@ public class JangodInterpreter implements Cloneable{
 			obj = context.getAttribute(varName);
 		}
 		if ( obj == null ) {
-			if( "now".equals(variable) ) {
+			if( VAR_DATE.equals(variable) ) {
 				return new java.util.Date();
+			}
+			if ( VAR_PATH.equals(variable) ) {
+				return getWorkspace();
 			}
 		}
 		if ( obj != null ) {
@@ -128,9 +142,10 @@ public class JangodInterpreter implements Cloneable{
 	public String resolveString(String variable) {
 		if ( variable == null || variable.trim().length() == 0 ) {
 			JangodLogger.severe("variable name is required.");
-			return "";
+			return Constants.STR_BLANK;
 		}
-		if ( variable.startsWith("\"") || variable.startsWith("'") ) {
+		if ( variable.startsWith(Constants.STR_DOUBLE_QUOTE) ||
+				variable.startsWith(Constants.STR_SINGLE_QUOTE) ) {
 			return variable.substring(1, variable.length()-1);
 		} else {
 			Object val = retraceVariable(variable);
@@ -142,9 +157,10 @@ public class JangodInterpreter implements Cloneable{
 	public Object resolveObject(String variable) {
 		if ( variable == null || variable.trim().length() == 0 ) {
 			JangodLogger.severe("variable name is required.");
-			return "";
+			return Constants.STR_BLANK;
 		}
-		if ( variable.startsWith("\"") || variable.startsWith("'") ) {
+		if ( variable.startsWith(Constants.STR_DOUBLE_QUOTE) ||
+				variable.startsWith(Constants.STR_SINGLE_QUOTE) ) {
 			return variable.substring(1, variable.length()-1);
 		} else {
 			Object val = retraceVariable(variable);

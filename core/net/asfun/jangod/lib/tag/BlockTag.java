@@ -18,7 +18,6 @@ package net.asfun.jangod.lib.tag;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.asfun.jangod.base.Context;
 import net.asfun.jangod.interpret.InterpretException;
 import net.asfun.jangod.interpret.JangodInterpreter;
 import net.asfun.jangod.lib.Tag;
@@ -59,9 +58,9 @@ public class BlockTag implements Tag{
 			blockNames.add(blockName);
 			interpreter.assignRuntimeScope(BLOCKNAMES, blockNames, 1);
 		}
-		Object isChild = interpreter.fetchRuntimeScope(Context.CHILD_FLAG, 1);
+		Object isChild = interpreter.fetchRuntimeScope(JangodInterpreter.CHILD_FLAG, 1);
 		if ( isChild != null ) {
-			ListOrderedMap blockList = (ListOrderedMap) interpreter.fetchRuntimeScope(Context.BLOCK_LIST, 1);
+			ListOrderedMap blockList = (ListOrderedMap) interpreter.fetchRuntimeScope(JangodInterpreter.BLOCK_LIST, 1);
 			//check block was defined in parent
 			if ( ! blockList.containsKey(blockName) ) {
 				throw new InterpretException("Dosen't define block in extends parent with name >>> " + blockName);
@@ -70,12 +69,12 @@ public class BlockTag implements Tag{
 			blockList.put(blockName, getBlockContent(carries, interpreter));
 			return "";
 		}
-		Object isParent = interpreter.fetchRuntimeScope(Context.PARENT_FLAG, 1);
+		Object isParent = interpreter.fetchRuntimeScope(JangodInterpreter.PARENT_FLAG, 1);
 		if ( isParent != null) {
 			//save block content to engine, and return identify
-			ListOrderedMap blockList = (ListOrderedMap) interpreter.fetchRuntimeScope(Context.BLOCK_LIST, 1);
+			ListOrderedMap blockList = (ListOrderedMap) interpreter.fetchRuntimeScope(JangodInterpreter.BLOCK_LIST, 1);
 			blockList.put(blockName, getBlockContent(carries, interpreter));
-			return Context.SEMI_BLOCK + blockName;
+			return JangodInterpreter.SEMI_BLOCK + blockName;
 		}
 		return getBlockContent(carries, interpreter);
 	}

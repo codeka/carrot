@@ -33,7 +33,7 @@ public class Application {
 	
 	public Application() {
 		config = Configuration.getDefault().clone();
-		String ima = config.getProperty("isMacroOn", "true");
+		String ima = config.getProperty("isMacroOn", Constants.STR_TRUE);
 		try {
 			isMacroOn = Boolean.parseBoolean(ima);
 		} catch (Exception e) {

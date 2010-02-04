@@ -16,6 +16,7 @@ limitations under the License.
 package net.asfun.jangod.parse;
 
 import static net.asfun.jangod.parse.ParserConstants.*;
+import net.asfun.jangod.base.Constants;
 
 public class TagToken extends Token {
 	
@@ -38,15 +39,15 @@ public class TagToken extends Token {
 	 */
 	@Override
 	protected void parse() {
-		content = image.substring(2, image.length()-2).trim().replaceFirst(SCPACE_STR, BLANK_STR);
-		int postBlank = content.indexOf(' ');
+		content = image.substring(2, image.length()-2).trim().replaceFirst(SCPACE_STR, Constants.STR_SPACE);
+		int postBlank = content.indexOf(SP);
 		if ( postBlank > 0 ) {
 			tagName = content.substring(0, postBlank).toLowerCase();
 			helpers = content.substring(postBlank).trim();
 		}
 		else {
 			tagName = content.toLowerCase();
-			helpers = "";
+			helpers = Constants.STR_BLANK;
 		}
 	}
 	
@@ -61,9 +62,9 @@ public class TagToken extends Token {
 	@Override
 	public String toString() {
 		if ( helpers.length() == 0) {
-			return "[TAG]\r\n" + tagName;
+			return "{% " + tagName + " %}";
 		}
-		return "[TAG]\r\n" + tagName + "\r\n\t" + helpers;
+		return "{% " + tagName + " " + helpers + " %}";
 	}
 
 }

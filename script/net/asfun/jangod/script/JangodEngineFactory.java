@@ -23,6 +23,8 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineFactory;
 import javax.script.SimpleBindings;
 
+import net.asfun.jangod.base.Constants;
+
 public class JangodEngineFactory implements ScriptEngineFactory {
 	
 	protected Bindings globalBindings = new SimpleBindings();
@@ -107,7 +109,7 @@ public class JangodEngineFactory implements ScriptEngineFactory {
 	public String getProgram(String... statements) {
 		StringBuilder buff = new StringBuilder();
 		for (String statement : statements) {
-			buff.append(statement).append("\n");
+			buff.append(statement).append(Constants.STR_NEW_LINE);
 		}
 		return buff.toString();
 	}

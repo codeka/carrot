@@ -59,8 +59,8 @@ public class FixedToken extends Token{
 	@Override
 	public String toString() {
 		if ( isBlank() ) {
-			return "[OUT]";
+			return "{~ ~}";
 		}
-		return "[OUT]\r\n" + content;
+		return "{~ " + content +" ~}";
 	}
 }

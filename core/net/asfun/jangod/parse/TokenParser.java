@@ -23,6 +23,7 @@ import java.io.Reader;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import net.asfun.jangod.base.Constants;
 import net.asfun.jangod.util.logging.Level;
 
 public class TokenParser implements Iterator<Token>{
@@ -31,8 +32,6 @@ public class TokenParser implements Iterator<Token>{
 	private Token token;
 	private boolean proceeding = true;
 	
-	static final String NEW_LINE = "\n";
-
 	public TokenParser(String text) {
 		tm.init(text);
 	}
@@ -54,7 +53,7 @@ public class TokenParser implements Iterator<Token>{
 		try {
 			while( (line=br.readLine()) != null ) {
 				buff.append(line);
-				buff.append(NEW_LINE);
+				buff.append(Constants.STR_NEW_LINE);
 			}
 		} catch (IOException e) {
 			throw new ParseException("read template reader fault.", e.getCause());

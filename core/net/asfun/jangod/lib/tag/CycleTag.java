@@ -16,6 +16,7 @@ limitations under the License.
 package net.asfun.jangod.lib.tag;
 
 
+import net.asfun.jangod.base.Constants;
 import net.asfun.jangod.interpret.InterpretException;
 import net.asfun.jangod.interpret.JangodInterpreter;
 import net.asfun.jangod.lib.Tag;
@@ -71,7 +72,7 @@ public class CycleTag implements Tag{
 			}
 			var = helper[2];
 			interpreter.assignRuntimeScope(var, values);
-			return BLANK_STRING;
+			return Constants.STR_BLANK;
 		} else {
 			throw new InterpretException("Tag 'cycle' expects 1 or 3 helper(s) >>> " + helper.length);
 		}

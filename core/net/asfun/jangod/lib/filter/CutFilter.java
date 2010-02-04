@@ -15,6 +15,7 @@ limitations under the License.
 **********************************************************************/
 package net.asfun.jangod.lib.filter;
 
+import net.asfun.jangod.base.Constants;
 import net.asfun.jangod.interpret.InterpretException;
 import net.asfun.jangod.interpret.JangodInterpreter;
 import net.asfun.jangod.lib.Filter;
@@ -30,7 +31,7 @@ public class CutFilter implements Filter{
 		}
 		String cutee = interpreter.resolveString(arg[0]);
 		String origin = ObjectValue.printable(object);
-		return origin.replace(cutee, BLANK_STRING);
+		return origin.replace(cutee, Constants.STR_BLANK);
 	}
 
 	@Override

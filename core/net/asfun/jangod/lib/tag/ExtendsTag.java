@@ -17,7 +17,7 @@ package net.asfun.jangod.lib.tag;
 
 import java.io.IOException;
 
-import net.asfun.jangod.base.Context;
+import net.asfun.jangod.base.Constants;
 import net.asfun.jangod.base.ResourceManager;
 import net.asfun.jangod.interpret.InterpretException;
 import net.asfun.jangod.interpret.JangodInterpreter;
@@ -53,13 +53,13 @@ public class ExtendsTag implements Tag{
 			
 			
 			ListOrderedMap blockList = new ListOrderedMap();
-			interpreter.assignRuntimeScope(Context.BLOCK_LIST, blockList, 1);
+			interpreter.assignRuntimeScope(JangodInterpreter.BLOCK_LIST, blockList, 1);
 			JangodInterpreter parent = interpreter.clone();
-			interpreter.assignRuntimeScope(Context.CHILD_FLAG, true, 1);
-			parent.assignRuntimeScope(Context.PARENT_FLAG, true, 1);
+			interpreter.assignRuntimeScope(JangodInterpreter.CHILD_FLAG, true, 1);
+			parent.assignRuntimeScope(JangodInterpreter.PARENT_FLAG, true, 1);
 			String semi = parent.render(node);
-			interpreter.assignRuntimeScope(Context.SEMI_RENDER, semi, 1);
-			return "";
+			interpreter.assignRuntimeScope(JangodInterpreter.SEMI_RENDER, semi, 1);
+			return Constants.STR_BLANK;
 		} catch (IOException e) {
 			throw new InterpretException(e.getMessage());
 		}
