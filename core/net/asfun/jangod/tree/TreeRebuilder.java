@@ -33,11 +33,10 @@ import net.asfun.jangod.parse.ParseException;
 
 public class TreeRebuilder{
 	
-	public static final String BLK_NAME_PREFIX = "'BLK\"NAME:";
-	
 	String file = null;
 	Application application;
 	Map<String, Node> capture = new HashMap<String, Node>();
+	Map<String, Object> variables = new HashMap<String, Object>();
 	LinkedList<Method> actions = new LinkedList<Method>();
 	List<Object[]> msgs = new LinkedList<Object[]>();
 	public Node parent = null;
@@ -58,72 +57,11 @@ public class TreeRebuilder{
 	public TreeRebuilder derive() {
 		TreeRebuilder tr = new TreeRebuilder(this.application, this.file);
 		tr.capture = this.capture;
+		tr.variables = this.variables;
 		tr.parent = this.parent;
 		return tr;
 	}
 	
-	public Node refactor(Node root) {
-		boolean needRelevel = false;
-		if ( application.isMacroOn() ) {
-			TreeIterator nit = new TreeIterator(root);
-			Node temp = null;
-			while( nit.hasNext() ) {
-				temp = nit.next();
-				if ( temp instanceof MacroNode ) {
-					try {
-						((MacroNode)temp).refactor(this);
-					} catch (ParseException e) {
-						JangodLogger.warning(e.getMessage());
-					}
-					needRelevel = true;
-				}
-			}
-			//real refactor must run after iterated to make sure iterator correctly
-			if ( ! actions.isEmpty() ) {
-				Iterator<Object[]> it = msgs.iterator();
-				try {
-					for(Method action : actions) {
-						Object[] msg = it.next();
-						Object[] param = new Object[msg.length-1];
-						System.arraycopy(msg, 1, param, 0, param.length);
-						action.invoke(msg[0], param);
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-			if ( parent != null ) {
-				root = parent;
-			}
-		}
-		if ( needRelevel ) {
-			root.computeLevel(0);
-		}
-		return root;
-	}
-	
-	public void nodeReplaceWithChildren(Node tobe, Node withFrom) {
-		try {
-			Method action = Node.class.getDeclaredMethod("replaceWithChildren", new Class[]{Node.class});
-			actions.add(action);
-			Object[] msg = new Object[]{withFrom, tobe};
-			msgs.add(msg);
-		} catch (Exception e) {
-			JangodLogger.severe(e.getMessage());
-		}
-	}
-	
-	public void nodeRemove(Node node) {
-		try {
-			Method action = Node.class.getDeclaredMethod("remove", new Class[]{});
-			actions.add(action);
-			Object[] msg = new Object[]{node};
-			msgs.add(msg);
-		} catch (Exception e) {
-			JangodLogger.severe(e.getMessage());
-		}
-	}
-
 	public String resolveString(String string) {
 		if ( string == null || string.trim().length() == 0 ) {
 			return Constants.STR_BLANK;
@@ -154,6 +92,14 @@ public class TreeRebuilder{
 	public Node fetchNode(String key) {
 		return capture.get(key);
 	}
+	
+	public void assignVariable(String key, Object value) {
+		variables.put(key, value);
+	}
+	
+	public Object fetchVariable(String key, Object value) {
+		return variables.get(key);
+	}
 
 	public void setFile(String fullName) {
 		this.file = fullName;
@@ -166,5 +112,161 @@ public class TreeRebuilder{
 	public Application getApplication() {
 		return application;
 	}
+	
+	public Node refactor(Node root) {
+		boolean needRelevel = false;
+		if ( application.isMacroOn() ) {
+			TreeIterator nit = new TreeIterator(root);
+			Node temp = null;
+			while( nit.hasNext() ) {
+				temp = nit.next();
+				if ( temp instanceof MacroNode ) {
+					try {
+						((MacroNode)temp).refactor(this);
+					} catch (ParseException e) {
+						JangodLogger.warning(e.getMessage());
+					}
+					needRelevel = true;
+				}
+			}
+			//real refactor must run after iterated to make sure iterator correct
+			if ( ! actions.isEmpty() ) {
+				Iterator<Object[]> it = msgs.iterator();
+				try {
+					for(Method action : actions) {
+						Object[] msg = it.next();
+						action.invoke(null, msg);
+					}
+				} catch (Exception e) {
+					JangodLogger.severe(e.getMessage());
+				}
+			}
+			if ( parent != null ) {
+				root = parent;
+			}
+		}
+		if ( needRelevel ) {
+			root.computeLevel(0);
+		}
+		return root;
+	}
+	
+	/**
+	 * Replace a node with many nodes.<br />
+	 * It will take place after node tree iterate.
+	 * @param tobe The node tobe replaced
+	 * @param with The new nodelist instead of old node
+	 */
+	public void nodeReplace(Node tobe, NodeList with) {
+		if ( tobe != null ) {
+			try {
+				//keep fresh, don't use node.parent, node.predecessor, node.successor in msg.
+				Method action = NodeAction.class.getDeclaredMethod("replace", 
+						new Class[]{Node.class, NodeList.class});
+				Object[] msg = new Object[]{tobe, with};
+				actions.add(action);
+				msgs.add(msg);
+			} catch (Exception e) {
+				JangodLogger.severe(e.getMessage());
+			}
+		}
+	}
+	
+	public void nodeReplace(Node tobe, Node with) {
+		if ( tobe != null ) {
+			try {
+				Method action = NodeAction.class.getDeclaredMethod("replace", 
+						new Class[]{Node.class, Node.class});
+				Object[] msg = new Object[]{tobe, with};
+				actions.add(action);
+				msgs.add(msg);
+			} catch (Exception e) {
+				JangodLogger.severe(e.getMessage());
+			}
+		}
+	}
+	
+	public void nodeRemove(Node node) {
+		if ( node != null ) {
+			try {
+				Method action = NodeAction.class.getDeclaredMethod("remove",
+						new Class[]{Node.class});
+				Object[] msg = new Object[]{node};
+				actions.add(action);
+				msgs.add(msg);
+			} catch (Exception e) {
+				JangodLogger.severe(e.getMessage());
+			}
+		}
+	}
+	
+	public void nodeInsertAfter(Node node, Node toAdd) {
+		if ( node != null && toAdd != null) {
+			try {
+				Method action = NodeAction.class.getDeclaredMethod("insertAfter", 
+						new Class[]{Node.class, Node.class});
+				Object[] msg = new Object[]{node, toAdd};
+				actions.add(action);
+				msgs.add(msg);
+			} catch (Exception e) {
+				JangodLogger.severe(e.getMessage());
+			}
+		}
+	}
+	
+	public void nodeInsertBefore(Node node, Node toAdd) {
+		if ( node != null && toAdd != null) {
+			try {
+				Method action = NodeAction.class.getDeclaredMethod("insertBefore", 
+						new Class[]{Node.class, Node.class});
+				Object[] msg = new Object[]{node, toAdd};
+				actions.add(action);
+				msgs.add(msg);
+			} catch (Exception e) {
+				JangodLogger.severe(e.getMessage());
+			}
+		}
+	}
+	
+	public void nodeAddChildLast(Node parent, Node toAdd) {
+		if ( parent != null && toAdd != null ) {
+			try {
+				Method action = NodeAction.class.getDeclaredMethod("addChildLast", 
+						new Class[]{Node.class, Node.class});
+				Object[] msg = new Object[]{parent, toAdd};
+				actions.add(action);
+				msgs.add(msg);
+			} catch (Exception e) {
+				JangodLogger.severe(e.getMessage());
+			}
+		}
+	}
+	
+	public void nodeAddChildFirst(Node parent, Node toAdd) {
+		if ( parent != null && toAdd != null ) {
+			try {
+				Method action = NodeAction.class.getDeclaredMethod("addChildFirst", 
+						new Class[]{Node.class, Node.class});
+				Object[] msg = new Object[]{parent, toAdd};
+				actions.add(action);
+				msgs.add(msg);
+			} catch (Exception e) {
+				JangodLogger.severe(e.getMessage());
+			}
+		}
+	}
 
+	public void nodeExchange(Node node1, Node node2) {
+		if ( node1 != null && node2 != null  ) {
+			try {
+				Method action = NodeAction.class.getDeclaredMethod("exchange", 
+						new Class[]{Node.class, Node.class});
+				Object[] msg = new Object[]{node1, node2};
+				actions.add(action);
+				msgs.add(msg);
+			} catch (Exception e) {
+				JangodLogger.severe(e.getMessage());
+			}
+		}
+	}
 }

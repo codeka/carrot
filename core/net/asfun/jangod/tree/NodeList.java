@@ -17,15 +17,12 @@ package net.asfun.jangod.tree;
 
 import java.util.Iterator;
 
-public class NodeList implements Iterable<Node>{
+public class NodeList implements Iterable<Node>, Cloneable{
 
-	Node head;
-	Node tail;
-	int size = 0;
+	Node head = null;
+	Node tail = null;
+	transient int size = 0;
 	
-	public NodeList() {
-		head = null;
-	}
 	
 	/**
 	 * trusty call by Node
@@ -121,6 +118,50 @@ public class NodeList implements Iterable<Node>{
 			to.predecessor = add;
 		}
 		size++;
+		return true;
+	}
+	
+	boolean jumpAfter(Node to, Node jump) {
+		if ( to == null || jump == null || head == null 
+				|| to.parent != head.parent || jump.parent != head.parent ) {
+			return false;
+		}
+		if ( jump != head ) {
+			jump.predecessor.successor = jump.successor;
+		}
+		if ( jump != tail ) {
+			jump.successor.predecessor = jump.predecessor;
+		}
+		jump.successor = to.successor;
+		jump.predecessor = to;
+		if ( to == tail ) {
+			tail = jump;
+		} else {
+			to.successor.predecessor = jump;
+		}
+		to.successor = jump;
+		return true;
+	}
+	
+	boolean jumpBefore(Node to, Node jump) {
+		if ( to == null || jump == null || head == null 
+				|| to.parent != head.parent || jump.parent != head.parent ) {
+			return false;
+		}
+		if ( jump != head ) {
+			jump.predecessor.successor = jump.successor;
+		}
+		if ( jump != tail ) {
+			jump.successor.predecessor = jump.predecessor;
+		}
+		jump.successor = to;
+		jump.predecessor = to.predecessor;
+		if ( to == head ) {
+			head = jump;
+		} else {
+			to.predecessor.successor = jump;
+		}
+		to.predecessor = jump;
 		return true;
 	}
 
@@ -243,6 +284,26 @@ public class NodeList implements Iterable<Node>{
 
 	public Node getLast() {
 		return tail;
+	}
+	
+	@Override
+	public NodeList clone() {
+		NodeList clone = new NodeList();
+		for(Node node : this) {
+			node.parent = head.parent;
+			clone.add(node.clone());
+		}
+		return clone;
+	}
+	
+	NodeList clone(Node parent) {
+		NodeList clone = new NodeList();
+		for(Node node : this) {
+			Node temp = node.clone();
+			temp.parent = parent;
+			clone.add(temp);
+		}
+		return clone;
 	}
 	
 	

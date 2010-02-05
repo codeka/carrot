@@ -25,13 +25,14 @@ import net.asfun.jangod.tree.NodeList;
 import net.asfun.jangod.util.HelperStringTokenizer;
 
 /**
- * {% set varName post.id|equal:'12' %}
+ * {% set varName post.id|equal:'12' scope %}
  * @author anysome
  *
  */
 public class SetTag implements Tag{
 
 	final String TAGNAME = "set";
+	final String SCOPE_TOP = "top";
 	
 	@Override
 	public String getName() {
@@ -41,11 +42,19 @@ public class SetTag implements Tag{
 	@Override
 	public String interpreter(NodeList carries, String helpers, JangodInterpreter interpreter) throws InterpretException {
 		String[] helper = new HelperStringTokenizer(helpers).allTokens();
-		if ( helper.length != 2 ) {
-			throw new InterpretException("Tag 'set' expects 2 helper >>> " + helper.length);
+		if ( helper.length != 2 || helper.length != 3 ) {
+			throw new InterpretException("Tag 'set' expects 2 or 3 helper >>> " + helper.length);
+		}
+		String scope = SCOPE_TOP;
+		if ( helper.length == 3 ) {
+			scope = helper[2].toLowerCase();
 		}
 		Object value = VariableFilter.compute(helper[1], interpreter);
-		interpreter.assignRuntimeScope(helper[0], value, 1);
+		if ( SCOPE_TOP.equals(scope) ) {
+			interpreter.assignRuntimeScope(helper[0], value, 1);
+		} else {
+			interpreter.assignRuntimeScope(helper[0], value);
+		}
 		return Constants.STR_BLANK;
 	}
 

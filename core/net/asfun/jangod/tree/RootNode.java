@@ -23,9 +23,7 @@ public class RootNode extends Node{
 	private static final long serialVersionUID = 97675838726004658L;
 	static final String TREE_ROOT_END = "anysome";
 
-	RootNode() {
-		super();
-	}
+	RootNode() {}
 
 	@Override
 	public String render(JangodInterpreter interpreter) throws InterpretException {
@@ -35,5 +33,12 @@ public class RootNode extends Node{
 	@Override
 	public String getName() {
 		return TREE_ROOT_END;
+	}
+	
+	@Override
+	public Node clone() {
+		Node clone = new RootNode();
+		clone.children = this.children.clone(clone);
+		return clone;
 	}
 }

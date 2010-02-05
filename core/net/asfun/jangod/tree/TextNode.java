@@ -44,4 +44,11 @@ public class TextNode extends Node{
 	public String getName() {
 		return name;
 	}
+	
+	@Override
+	public Node clone() {
+		Node clone = new TextNode(master);
+		clone.children = this.children.clone(clone);
+		return clone;
+	}
 }

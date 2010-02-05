@@ -20,7 +20,7 @@ import java.io.Serializable;
 import net.asfun.jangod.interpret.InterpretException;
 import net.asfun.jangod.interpret.JangodInterpreter;
 
-public abstract class Node implements Serializable{
+public abstract class Node implements Serializable, Cloneable{
 
 	private static final long serialVersionUID = 7323842986596895498L;
 	
@@ -52,6 +52,9 @@ public abstract class Node implements Serializable{
 	public NodeList children() {
 		return children;
 	}
+	
+	@Override
+	public abstract Node clone();
 	
 	boolean remove() {
 		if ( parent != null ) {
@@ -107,6 +110,46 @@ public abstract class Node implements Serializable{
 			return parent.children.preend(this, node);
 		}
 		return false;
+	}
+	
+	boolean exchange(Node node) {
+		if ( parent == null || node == null || node.parent == null ) {
+			return false;
+		}
+		if ( parent == node.parent ) {
+			parent.children.alternate(this, node);
+		} else {
+			Node tempPar = node.parent;
+			Node tempPre = node.predecessor;
+			Node tempSuc = node.successor;
+			node.parent = parent;
+			node.predecessor = predecessor;
+			node.successor = successor;
+			if ( predecessor != null ) {
+				predecessor.successor = node;
+			} else {
+				parent.children.head = node;
+			}
+			if ( successor != null ) {
+				successor.predecessor = node;
+			} else {
+				parent.children.tail = node;
+			}
+			parent = tempPar;
+			predecessor = tempPre;
+			successor = tempSuc;
+			if ( predecessor != null ) {
+				predecessor.successor = this;
+			} else {
+				parent.children.head = this;
+			}
+			if ( successor != null ) {
+				successor.predecessor = this;
+			} else {
+				parent.children.tail = this;
+			}
+		}
+		return true;
 	}
 	
 	void computeLevel(int baseLevel) {

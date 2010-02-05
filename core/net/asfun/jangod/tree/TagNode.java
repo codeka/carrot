@@ -56,4 +56,15 @@ public class TagNode extends Node{
 	public String getName() {
 		return master.getTagName();
 	}
+	
+	@Override
+	public Node clone() {
+		try {
+			Node clone = new TagNode(master);
+			clone.children = this.children.clone(clone);
+			return clone;
+		} catch (ParseException e) {
+			throw new InternalError();
+		}
+	}
 }

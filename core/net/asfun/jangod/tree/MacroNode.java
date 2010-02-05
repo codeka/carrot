@@ -69,4 +69,15 @@ public class MacroNode extends Node{
 	public String getName() {
 		return master.getMacroName();
 	}
+	
+	@Override
+	public Node clone() {
+		try {
+			Node clone = new MacroNode(master);
+			clone.children = this.children.clone(clone);
+			return clone;
+		} catch (ParseException e) {
+			throw new InternalError();
+		}
+	}
 }

@@ -50,7 +50,7 @@ public class IncludeMacro implements Macro{
 					fullName, rebuilder.getConfiguration().getEncoding())));
 			
 //			includeRoot.replaceWithChildren(current);
-			rebuilder.nodeReplaceWithChildren(current, includeRoot);
+			rebuilder.nodeReplace(current, includeRoot.children());
 		} catch (IOException e) {
 			throw new ParseException(e.getMessage());
 		}

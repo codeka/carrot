@@ -25,7 +25,7 @@ public class ExtendsMacro implements Macro{
 			throws ParseException {
 		String[] helper = new HelperStringTokenizer(helpers).allTokens();
 		if( helper.length != 1) {
-			throw new ParseException("Macro 'include' expects 1 helper >>> " + helper.length);
+			throw new ParseException("Macro 'extends' expects 1 helper >>> " + helper.length);
 		}
 		String templateFile = rebuilder.resolveString(helper[0]);
 		try {

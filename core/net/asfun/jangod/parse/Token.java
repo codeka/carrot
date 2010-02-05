@@ -45,7 +45,7 @@ public abstract class Token implements Serializable{
 	
 	public abstract int getType();
 
-	public static Token newToken(int tokenKind, String image2) throws ParseException {
+	static Token newToken(int tokenKind, String image2) throws ParseException {
 		switch( tokenKind ) {
 		case TOKEN_FIXED : 
 			return new FixedToken(image2);

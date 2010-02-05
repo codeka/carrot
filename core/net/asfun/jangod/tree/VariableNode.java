@@ -75,4 +75,11 @@ public class VariableNode extends Node{
 	public String getName() {
 		return name;
 	}
+	
+	@Override
+	public Node clone() {
+		Node clone = new VariableNode(master);
+		clone.children = this.children.clone(clone);
+		return clone;
+	}
 }
