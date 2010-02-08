@@ -290,8 +290,9 @@ public class NodeList implements Iterable<Node>, Cloneable{
 	public NodeList clone() {
 		NodeList clone = new NodeList();
 		for(Node node : this) {
-			node.parent = head.parent;
-			clone.add(node.clone());
+			Node temp = node.clone();
+			temp.parent = head.parent;
+			clone.add(temp);
 		}
 		return clone;
 	}
