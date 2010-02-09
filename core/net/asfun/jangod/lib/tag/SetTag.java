@@ -42,7 +42,7 @@ public class SetTag implements Tag{
 	@Override
 	public String interpreter(NodeList carries, String helpers, JangodInterpreter interpreter) throws InterpretException {
 		String[] helper = new HelperStringTokenizer(helpers).allTokens();
-		if ( helper.length != 2 || helper.length != 3 ) {
+		if ( helper.length < 2 || helper.length > 3 ) {
 			throw new InterpretException("Tag 'set' expects 2 or 3 helper >>> " + helper.length);
 		}
 		String scope = SCOPE_TOP;
