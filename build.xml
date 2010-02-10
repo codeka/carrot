@@ -26,13 +26,13 @@
 
 	<target name="compile" depends="init">
 		<echo>compile core source</echo>
-		<javac srcdir="${basedir}/core" destdir="${build.dir}/core">
+		<javac srcdir="${basedir}/core" destdir="${build.dir}/core" target="1.5">
 			<include name="**/*.java" />
 			<classpath refid="classpath" />
 		</javac>
 		<copy file="${basedir}/core/jangod.config.properties" tofile="${build.dir}/core/jangod.config.properties" />
 		<echo>compile template source</echo>
-		<javac srcdir="${basedir}/template" destdir="${build.dir}/template">
+		<javac srcdir="${basedir}/template" destdir="${build.dir}/template" target="1.5">
 			<include name="**/*.java" />
 			<classpath refid="classpath" />
 		</javac>
@@ -43,7 +43,7 @@
 		</javac>
 		<copy file="${basedir}/script/META-INF/services/javax.script.ScriptEngineFactory" tofile="${build.dir}/script/META-INF/services/javax.script.ScriptEngineFactory" />
 		<echo>compile spring-mvc source</echo>
-		<javac srcdir="${basedir}/spring-mvc" destdir="${build.dir}/spring-mvc">
+		<javac srcdir="${basedir}/spring-mvc" destdir="${build.dir}/spring-mvc" target="1.5">
 			<include name="**/*.java" />
 			<classpath refid="classpath" />
 		</javac>
@@ -55,7 +55,7 @@
 				<include name="**/*.*" />
 			</fileset>	
 			<manifest>
-				<attribute name="Class-Path" value="jcache-1.0-dev-3.jar" />
+				<attribute name="Class-Path" value=" " />
 			</manifest>
 		</jar>
 		<jar destfile="${dist.dir}/${product}-template.jar">
@@ -66,7 +66,7 @@
 				<include name="**/*.*" />
 			</fileset>	
 			<manifest>
-				<attribute name="Class-Path" value="jcache-1.0-dev-3.jar" />
+				<attribute name="Class-Path" value=" " />
 			</manifest>
 		</jar>
 		<jar destfile="${dist.dir}/${product}-script.jar">
@@ -77,7 +77,7 @@
 				<include name="**/*.*" />
 			</fileset>	
 			<manifest>
-				<attribute name="Class-Path" value="jcache-1.0-dev-3.jar" />
+				<attribute name="Class-Path" value=" " />
 			</manifest>
 		</jar>
 		<jar destfile="${dist.dir}/${product}-spring-mvc.jar">
@@ -85,7 +85,7 @@
 				<include name="**/*.*" />
 			</fileset>	
 			<manifest>
-				<attribute name="Class-Path" value="jcache-1.0-dev-3.jar" />
+				<attribute name="Class-Path" value=" " />
 			</manifest>
 		</jar>
 		<jar destfile="${dist.dir}/spring-${product}.jar">
@@ -99,7 +99,7 @@
 				<include name="**/*.*" />
 			</fileset>
 			<manifest>
-				<attribute name="Class-Path" value="jcache-1.0-dev-3.jar" />
+				<attribute name="Class-Path" value=" " />
 			</manifest>
 		</jar>
 		<jar destfile="${dist.dir}/${product}.jar">
@@ -116,7 +116,7 @@
 				<include name="**/*.*" />
 			</fileset>
 			<manifest>
-				<attribute name="Class-Path" value="jcache-1.0-dev-3.jar" />
+				<attribute name="Class-Path" value=" " />
 			</manifest>
 		</jar>
 		<delete dir="${build.dir}" quiet="true"/>

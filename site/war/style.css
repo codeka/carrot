@@ -6,7 +6,7 @@
  body {
   font-family: Verdana,Arial,sans-serif;
   font-size: 10pt;
-  color: #666;
+  color: #a0a0a0;
   background-image: url(images/background.gif);
   background-repeat: repeat-y;
   background-color: #292929;
@@ -20,17 +20,17 @@
 
 .left ul li {
   font-family: Verdana,Arial,sans-serif;
-  font-size: 10pt;
   width: 170px;
   float: right;
  }
 .left b {
+  color:#666666;
   font-size: 11pt;
   width: 170px;
   float: right;
  }
 .left ul li a {
-  color: #FFF;
+  color: #888888;
   text-decoration: none;
   padding: 5px 1px 1px 1px;
   width: 155px;
@@ -48,7 +48,7 @@
  }
  
  .right {
-  padding-left: 310px;
+  padding-left: 320px;
   padding-top: 100px;
 }
 
@@ -62,15 +62,15 @@
   border: 3px solid #ff00aa;
  }
  
- .block {
-  margin-top: 10px;
+ .code {
+  margin: 5px 10px 5px 10px;
   height: 106px;
-  width: 600px;
- }
+  border: thin dashed;
+}
  
 h1 {
-  font-size: 20pt;
-  color: #FF00AA;
+  font-size: 19pt;
+  color: #EE00ee;
   font-weight: bold;
  }
  
@@ -80,15 +80,24 @@ h2 {
   font-size: 16pt;
  }
  
+h3 {
+  font-weight: normal;
+  font-size: 13pt;
+  padding-left:4px;
+  padding-bottom: 4px;
+  border-style:solid;
+  border-width:1px;
+}
+ 
  p {
-   font-size: 13pt;
+   font-size: 11pt;
+	margin-left: 10px;
    margin-top: 10px;
-   margin-right:30px;
  	margin-bottom: 10px;
  }
  
 a {
-  color: #5ff;
+  color: #6688ff;
   text-decoration: none;
  }
  
@@ -97,15 +106,18 @@ a:hover {
  }
  
  .content {
-  color:#ffaa00;
   min-height: 530px;
-  width: 100%;
+  margin-right:30px;
  }
  
  .footer {
- 	margin-top:20px;
-	margin-bottom:5px;
+   color:#666666;
 	width:100%;
+ 	padding: 20px, 20px, 5px, 10px;
 	text-align: right;
+ }
+ 
+ .light {
+ 	color:#ffaa00;
  }
   
