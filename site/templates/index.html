@@ -17,6 +17,46 @@ Jangod is highly customizable, developers can import their tags, filters or macr
 to enhance the template function. Also, it's an efficient engine while rendering,
 it can cache templates' parse or even pre-compiled to Java classes to spleed up processing.
 </p>
+<h2>Template file likes</h2>
+<div class="code">
+<pre>
+<span class="light">{\% extends "base.html" %}</span>
+<span class="light">{\% block content %}</span>
+    &lt;div id="part-content"&gt;
+    <span class="light">{\% if posts %}</span>
+        <span class="light">{\% for post in posts %}</span>
+            &lt;div id="post-<span class="light">{\{post.id}}</span>" class="post-home"&gt;
+                &lt;div class="post-title"&gt;
+                    &lt;h1&gt;&lt;a href="<span class="light">{\{post.link}}</span>" rel="bookmark"&gt;
+                        <span class="light">{\{post.title}}</span>
+                    &lt;/a&gt;&lt;/h1&gt;
+                &lt;/div&gt;
+                &lt;div class="post-content"&gt;<span class="light">{\{post.preview}}</span>&lt;/div&gt;
+                &lt;div class="post-time"&gt;<span class="light">{\{post.date|date:"HH:mm yyyy-MM-dd"}}</span>&lt;/div&gt;
+            &lt;/div&gt;        
+        <span class="light">{\% endfor %}</span>
+        &lt;div class="navigation"&gt;
+        <span class="light">{\% if pager.prev %}</span>
+            &lt;div class="alignleft"&gt;
+                &lt;a href="<span class="light">{\{site.url}}</span>post/<span class="light">{\{pager.prev}}</span>.html"&gt;&laquo; Prev&lt;/a&gt;
+            &lt;/div&gt;
+        <span class="light">{\% endif %}</span>
+        <span class="light">{\% if pager.next %}</span>
+            &lt;div class="alignright"&gt;
+                &lt;a href="<span class="light">{\{site.url}}</span>post/<span class="light">{\{pager.next}}</span>.html"&gt;Next &raquo;&lt;/a&gt;
+            &lt;/div&gt;
+        <span class="light">{\% endif %}</span>
+        &lt;/div&gt;
+    <span class="light">{\% else %}</span>
+        &lt;h2&gt;Not Found&lt;/h2&gt;
+        &lt;p&gt;Sorry, but you are looking for something that isn't here.&lt;/p&gt;
+    <span class="light">{\% endif %}</span>
+    &lt;/div&gt;
+<span class="light">{\% include "sidebar1.html" %}</span>
+<span class="light">{\% include "sidebar2.html" %}</span>
+<span class="light">{\% endblock %}</span>
+</pre>
+</div>
 <p>Jangod is free, under <a href="license.html">Apache License 2.0</a>, and is open-source too. Enjoy it.
 </p>
 {!endblock!}

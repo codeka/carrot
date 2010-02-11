@@ -20,6 +20,7 @@ import static net.asfun.jangod.util.logging.JangodLogger;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -83,24 +84,6 @@ public class VariableChain {
 					JangodLogger.log(Level.SEVERE, "resolve variable trigger error.", e.getCause());
 				}
 			}
-//			Method[] mths = clazz.getDeclaredMethods();
-//			for (Method mth : mths) {
-//				if (mth.getParameterTypes().length != 0
-//						|| !Modifier.isPublic(mth.getModifiers())) {
-//					continue;
-//				}
-//				if (name.equalsIgnoreCase(mth.getName())
-//						|| ("get" + name).equalsIgnoreCase(mth.getName())
-//						|| ("is" + name).equalsIgnoreCase(mth.getName())) {
-//					try {
-//						return mth.invoke(value);
-//					} catch (InvocationTargetException e) {
-//						JangodLogger.log(Level.SEVERE, "resolve variable trigger error.", e.getCause());
-//					} catch (Exception e) {
-//						continue;
-//					}
-//				}
-//			}
 		}
 
 		// map
@@ -110,22 +93,23 @@ public class VariableChain {
 				return map.get(name);
 			}
 		}
-
-		// array
-		if (value.getClass().isArray()) {
-			try {
-				return Array.get(value, Integer.parseInt(name));
-			} catch (Exception e) {
-				// nothing;
+		
+		try {
+			int index = Integer.parseInt(name);
+			// array
+			if (value.getClass().isArray()) {
+				return Array.get(value, index);
 			}
-		}
-		// list
-		if (value instanceof List) {
-			try {
-				return ((List<?>) value).get(Integer.parseInt(name));
-			} catch (Exception e) {
-				// nothing;
+			// list
+			if (value instanceof List) {
+				return ((List<?>) value).get(index);
 			}
+			// collection
+			if (value instanceof Collection) {
+				return ((Collection<?>) value).toArray()[index];
+			}
+		} catch(Exception e) {
+			//nothing;
 		}
 
 		return null;
