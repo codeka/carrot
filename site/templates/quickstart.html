@@ -1,5 +1,75 @@
 {!extends base.html !}
 {!block title!}{%set page 'quickstart'%}Jangod, join in simply{!endblock!}
 {!block content!}
-This page is building.
+<h1>Getting started with Jangod</h1>
+<p>Let's go to see how difficult it's :)</p>
+<h3>Intro Jangod to your project</h3>
+<p>To use the Jangod in your project is very easy, the following will introduce you to regular practice.
+As a portal to receive all the template-render requests, you may need to create a class to handle.
+<div class="code">
+<pre>
+import java.io.IOException;
+import java.util.Map;
+import net.asfun.jangod.template.TemplateEngine;
+
+public class ViewHandler {
+
+    final static TemplateEngine engine; //(2)
+    static {
+    	engine = new TemplateEngine(); //(3)
+        engine.getConfiguration().setWorkspace("D:/templates/"); //(1)
+    }
+    
+    public static String render(String templateFile, Map&lt;String,Object&gt; data)
+            throws IOException {
+        return engine.process(templateFile, data);
+    }
+}
+</pre>
+</div>
+</p>
+<h3>Design template page</h3>
+<p>
+Make template files with correct Jangod syntax, the file looks like this.
+<div class="code">
+<pre>
+&lt;html xmlns="http://www.w3.org/1999/xhtml"&gt;
+&lt;head>
+    &lt;meta http-equiv=Content-Type content="text/html;charset=utf-8" /&gt;
+    &lt;meta name="Keywords" content="{\{site.keywords}}" /&gt;
+    &lt;meta name="Description" content="{\{page.excerpt}}" /&gt;
+    &lt;title&gt;{\{page.title}} - {\{site.title}}&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div id="left-content-single"&gt;
+        &lt;div&gt;{\{ page.content }}&lt;/div&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+</div>
+</p>
+<h3>Invoke advanced render</h3>
+<p>Now, just take the convenience Jangod brought us, construct some of the data,
+pass them to the portal class, then get final result of a template.
+<div class="code">
+<pre>
+Map&lt;String,Object&gt; data;
+data.put("page",pageObject);
+String result = ViewHandler.render("page.html", data);
+</pre>
+</div>
+</p>
+<h3>Notes</h3>
+<p>
+(1) Workspace is the root directory where template files placed. It intents to tell the 
+engine where to load templates. It can be setup by coding or by configuration file. For 
+more information see <a alt="config Jangod" href="configuration.html">document about 
+how to configurate</a>.<br />
+(2) TemplateEngine used to save common data and configuration among templates, will engross
+a single proccessor each API call. Therefore it can run in multi-threaded environment.
+More methods of TemplateEngine look into <a alt="Jangod javadoc" href="doc/">API Javadoc</a>.<br />
+(3) Your project may has many engine instances of co-existence with diversity, and they work well 
+separably without interference.
+</p>
 {!endblock!}
