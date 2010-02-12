@@ -54,7 +54,7 @@ Make template files with correct Jangod syntax, the file looks like this.
 pass them to the portal class, then get final result of a template.
 <div class="code">
 <pre>
-Map&lt;String,Object&gt; data;
+Map&lt;String,Object&gt; data = new HashMap&lt;String, Object&gt;();
 data.put("page",pageObject);
 String result = ViewHandler.render("page.html", data);
 </pre>
