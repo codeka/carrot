@@ -1,5 +1,66 @@
 {!extends base.html !}
 {!block title!}{%set page 'features'%}Jangod, what's the difference{!endblock!}
 {!block content!}
-This page is building.
+<h1>Features</h1>
+<p>Here list some highlights why we use Jangod template engine.</p>
+<h2>Template Inheritance</h2>
+<p>Template Inheritance is Jangod engine's most important and flexible feature, and 
+also the most useful function. Through sub-block override, it provides the simplest 
+consistent modification, templates can be reused in a maximum. That's main reason
+and drive of creating this engine.
+</p>
+<h2>General purpose</h2>
+<p>Can be used to generate any kind of text like HTML, XML, JAVA, SQL, etc, without 
+any conflict.
+</p>
+<h2>Simple syntax</h2>
+<p>Jangod template syntax is easy to learn, you can fully grasp in 10 minutes. 
+Using engine just need to know 4 elements('{\{', '{\%', '{\#', '{\!'). 
+If you keep 3 libraries'(tag, filter, macro) usage in mind, then master it a hundred 
+percent. For details see <a href="userguide.html" alt="user guide">user guide</a>. 
+I's not recommended making much complex calculation or logic in template code.
+If really do so, there is still a viable approach, use filters or even customize tags 
+and filters to use.
+</p>
+<h2>Forgiveness</h2>
+<p>Usually don't need to care about the special characters. Template syntax parse 
+is intelligent while dealing with characters, actually only '{\{', '{\%', '{\#', '{\!' 
+were really considered to be special characters, inserting a slash in the middle to 
+replace them. Other characters, such as '{', '}', '}}', '%}', ... will be treated as 
+general text output if not matched.
+</p>
+<h2>Uniform</h2>
+<p>Uniform data access method is a dot '.' . If the data is an object, 'obj.prop' 
+acts as 'obj.getProp()'; if an array, 'arr.1' acts as 'arr[1]'; if a collection, 
+'list.1' acts as 'list.get(1)'; if a map, 'map.key' acts as 'map.get(key)'.
+</p>
+<h2>Configurable</h2>
+<p>Template's entire render process, from loading to presentment are configurable. 
+Where and how to get templates (local, network, database), text encoding, 
+whether and how to cache templates or parsing result etc., can be setup in the 
+configuration file to meet your requirements. With further development, 
+configurability will be more complete, more flexible. 
+</p>
+<h2>Free customization</h2>
+<p>Conventional extensions, file loader, cache, data container, etc.
+Core expansions, the three library items are free to expand or cover. Library 
+item's invoked specification can be regulated to your own, ruling distinctive 
+template syntax as you like. For example, make a new tag which will define 
+variables in template file while running, as follow: 
+<div class="code">
+<pre>
+{\%  define
+    int i = 10;
+    string str = "hello world";
+    tuple arr = (i, str, 'java engine');
+    dict dc = {a:'freemarker', b:'velocity', c:'django'}; 
+%}
+</pre>
+</div>
+Nothing impossible.
+</p>
+<h2>High efficiency</h2>
+<p>Jangod supports multi-thread, pre-compiled, refactor of template elements,
+they all help to optimize the efficiency of render.
+</p>
 {!endblock!}
