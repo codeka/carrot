@@ -19,13 +19,16 @@ public class WebGenerator {
 			generate("downloads.html");
 			generate("faq.html");
 			generate("features.html");
+			generate("filters.html");
 			generate("glossary.html");
 			generate("index.html");
 			generate("license.html");
 			generate("links.html");
+			generate("macros.html");
 			generate("quickstart.html");
 			generate("roadmap.html");
 			generate("sponsor.html");
+			generate("tags.html");
 			generate("thanks.html");
 			generate("usage.html");
 			generate("userguide.html");
