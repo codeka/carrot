@@ -4,9 +4,11 @@
 <h1>Syntax of template language</h1>
 <p>About what's Jangod and what it does, see <a href="index.html" alt="Jangod introduction" >here</a>. 
 This document is for end users (may be a web designer) as a manual, it all 
-about making templates.
+about making templates. Quick link to build-in <a href="builtins.html#tag" alt="tags manual">tags</a>, 
+<a href="builtins.html#filter" alt="filters manual">filters</a>, 
+<a href="builtins.html#macro" alt="macros manual">macros</a>.
 </p>
-<h2>Templates</h2>
+<a name="template"></a><h2>Templates</h2>
 <p>Any text file, no matter what suffix is having, can be a template. 
 As when you insert a text file with some of Jangod <a href="#element">elements</a>, 
 that is ready a Jangod template. Other text (which non-jangod elements) will be 
@@ -17,7 +19,7 @@ which will be replaced with the text computed-out runtime by engine.
 Taking regular text (fixed, direct output) as regular elements, a Jangod template 
 can be seen to be composed by a series of elements in order.
 </p>
-<h2>Syntax</h2>
+<a name="syntax"></a><h2>Syntax</h2>
 <p>Jangod's syntax is simple, similar with Django template language, but easier to use. 
 Here we just list the usage of built-in libraries, in most cases, these library items 
 are enough for you. Of course, developers can add their own libraries or even change 
@@ -27,19 +29,19 @@ if document doesn't match actual situation in use, there's no need wondering.
 Although the syntax can be ever-changing, it still follow some basic rules, which 
 will be presented below.
 </p>
-<h2>Basic concept</h2>
+<a name="concept"></a><h2>Basic concept</h2>
 <p>Just saying that the syntax may vary, but the basic concepts are the same. 
 Known these, you can just master Jangod and all its derivative language.
 </p>
-<h3>Four elements</h3>
-<p><a name="element">Elements</a> constitutes the template. There are only 4 elements.</p>
-<h4>echo element</h4>
+<a name="element"></a><h3>Four elements</h3>
+<p>Elements constitutes the template. There are only 4 elements.</p>
+<a name="echo-element"></a><h4>echo element</h4>
 <p>An echo element is surrounded by '{\{' and '}}'. The character string in it 
 is an <a href="#expression">expression</a>. Template engine will calculate the 
 expression a result value according to runtime environment, then the value 
 replace the whole element while rendering.
 </p>
-<h4>tag element</h4>
+<a name="tag-element"></a><h4>tag element</h4>
 <p>Tag used to control the logic of render flow, is surrounded by '{\%' and '%}'. 
 A tag may contains body content, which consists of a number of regular text or elements. 
 Tag with body needs an end tag as siege, tags without body do not need end tag.
@@ -54,7 +56,7 @@ Here is a if test tag :
 </pre>
 </div>
 </p>
-<h4>comment element</h4>
+<a name="comment-element"></a><h4>comment element</h4>
 <p>It could be some text that you don't want them to appear in generated output, 
 use comment element which surrounded by '{\#' and '#}'. Code in these elements produce 
 none effect, will be ignored. Comment element can comment-out other elements, but 
@@ -67,23 +69,23 @@ end in the time of first encountered '#}'.
 </pre>
 </div>
 </p>
-<h4>macro element</h4>
+<a name="macro-element"></a><h4>macro element</h4>
 <p>Macro defines a number of reusable components, which can contain regular text 
 and jangod elements. After definition, we can repeatedly use them where in need.
 Macro is aim to adjust elements' sequence and entire composition of the template.
 </p>
-<h3>Three libraries</h3>
+<a name="library"></a><h3>Three libraries</h3>
 <p>Jangod elements may need to invoke objects to do some action, these object items 
 are collected in libraries. Object items are divided into 3 libraries based on 
 their purpose.
 </p>
-<h4>tag library</h4>
+<a name="tag-library"></a><h4>tag library</h4>
 <p>Each tag element must invoke an object item, and only one. These items are in 
 tag library. Items have their own purpose and usage. Tag library is primarily used
-to control the output render flow. For details see built-in 
-<a href="tags.html" alt="tags manual">tags</a>.
+to control the output render flow. For details see  
+<a href="builtins.html#tag" alt="tags manual">built-in tags</a>.
 </p>
-<h4>filter library</h4>
+<a name="filter-library"></a><h4>filter library</h4>
 <p>What's a filter? It's a pipe for data (<a href="#expression">expression</a>). 
 Using filter to do certain algorithms on a data and get another value of data. 
 The echo elements and tag elements can use filters. To invoke a filter is connecting
@@ -92,15 +94,15 @@ means making the fitler 'addAll' on data 'var1', and the 'addAll' fitler needs
 two arguments 'arg1', 'b2'. The result we may get from this example is summary of
 var1, arg1 and b2. Filter can have arguments partition by ':' , or no argument 
 without ':'. Through successive invoke many filters, to achieve complex arithmetic.
-For details see built-in <a href="filters.html" alt="filters manual">filters</a>.
+For details see <a href="builtins.html#filter" alt="filters manual">built-in filters</a>.
 </p>
-<h4>macro library</h4>
+<a name="macro-library"></a><h4>macro library</h4>
 <p>Similar to tag library, they are used in the macro elements differently. 
 Macro library items are for refactoring template elements structure. 
-For details see build-in <a href="macros.html" alt="macros manual">macros</a>.
+For details see <a href="builtins.html#macro" alt="macros manual">build-in macros</a>.
 </p>
-<h3>expression</h3>
-<p>From above we learn <a name="expression">expression</a> probably approximate to 
+<a name="expression"></a><h3>expression</h3>
+<p>From above we learn expression probably approximate to 
 data. Expression is data and its arithmetic, evaluating new data. The simplest 
 expression is a variable, such as 'post', 'post.id' and so. Complex expressions, 
 such as 'posts|length', formed by a variable and filter. More complex expressions, 
@@ -115,7 +117,7 @@ a|or:b|not|and:c,d   {\# equals  !(a or b) and c and d  #}
 </pre>
 </div>
 </p>
-<h2>Data model</h2>
+<a name="data-model"></a><h2>Data model</h2>
 <p>Data model is the data container where template variables obtain value from. 
 Most of template engines have the similar data model, it's accepted widely. 
 <div class="code">
@@ -136,7 +138,7 @@ Most of template engines have the similar data model, it's accepted widely.
   |   |   |
   |   |   +- name = "django"
   |   |   |
-  |   |   +- theme = "mvc"
+  |   |   +- <span class="light">theme</span> = "mvc"
   |   |   |
   |   |   +- version = 1.1
   |   |
@@ -150,7 +152,7 @@ Most of template engines have the similar data model, it's accepted widely.
   |
   +- server
       |
-      +- controls
+      +- <span class="light">controls</span>
       |   |
       |   +- (1) = "engine"
       |   |
@@ -158,7 +160,7 @@ Most of template engines have the similar data model, it's accepted widely.
       |
       +- models
           |
-          +- key1 = HashMap
+          +- <span class="light">key1</span> = HashMap
           |
           +- key2 = Cache 
 </pre>
@@ -174,7 +176,44 @@ class implements Map&lt;String, Object&gt; could be a data model. And you can
 create own data model to satisfy your desire, such as lazy-load, just-in-time, 
 cachable and so on.
 </p>
-<h2>Template inheritance</h2>
-<h3>Inheritance with tags</h3>
-<h3>Inheritance with macros</h3>
+<a name="inheritance"></a><h2>Template inheritance</h2>
+<a name="tag-inheritance"></a><h3>Inheritance with tags</h3>
+<a name="macro-inheritance"></a><h3>Inheritance with macros</h3>
+{!endblock!}
+
+{!block table !}
+<div class="sidebar fixed">
+<h2>index</h2>
+<ul>
+<li><a href="#template">template</a></li>
+<li><a href="#syntax">syntax</a></li>
+<li><a href="#concept">concept</a>
+	<ul>
+		<li><a href="#element">elements</a>
+			<ul>
+				<li><a href="#echo-element">echo</a></li>
+				<li><a href="#tag-element">tag</a></li>
+				<li><a href="#comment-element">comment</a></li>
+				<li><a href="#macro-element">macro</a></li>
+			</ul>
+		</li>
+		<li><a href="#library">libraries</a>
+			<ul>
+				<li><a href="#tag-library">tags</a></li>
+				<li><a href="#filter-library">filters</a></li>
+				<li><a href="#macro-library">macros</a></li>
+			</ul>
+		</li>
+		<li><a href="#expression">expression</a></li>
+	</ul>
+</li>
+<li><a href="#data-model">data model</a></li>
+<li><a href="#inheritance">inheritance</a>
+	<ul>
+		<li><a href="#tag-inheritance">tag inheritance</a></li>
+		<li><a href="#macro-inheritance">macro inheritance</a></li>
+	</ul>
+</li>
+</ul>
+</div>
 {!endblock!}

@@ -1,125 +1,201 @@
 * {
-  padding: 0;
-  margin: 0;
- }
- 
- body {
-  font-family: Verdana,Arial,sans-serif;
-  font-size: 10pt;
-  color: #a0a0a0;
-  background-image: url(images/background.gif);
-  background-repeat: repeat-y; 
-  background-color: #292929;
- }
- 
- .left {
-  float:left;
-  padding-top: 30px;
-  width: 210px;
- }
-.left div {
-	margin-left:50px;
+	padding: 0;
+	margin: 0;
 }
+
+body {
+	font-family: Verdana, Arial, sans-serif;
+	font-size: 10pt;
+	color: #a0a0a0;
+	background-image: url(images/background.gif);
+	background-repeat: repeat-y;
+	background-color: #292929;
+}
+
+.left {
+	float: left;
+	padding-top: 30px;
+	width: 210px;
+}
+
+.left div {
+	margin-left: 50px;
+}
+
 .left ul li {
-  width: 160px;
-  float: right;
- }
+	width: 160px;
+	float: right;
+}
+
 .left b {
-  color:#666666;
-  font-size: 12pt;
-  width: 160px;
-  float: right;
- }
+	color: #666666;
+	font-size: 12pt;
+	width: 160px;
+	float: right;
+}
+
 .left ul li a {
-  color: #888888;
-  text-decoration: none;
-  padding: 2px 0px 2px 5px;
-  width: 145px;
-  float: right;
+	color: #888888;
+	text-decoration: none;
+	padding: 2px 0px 2px 5px;
+	width: 145px;
+	float: right;
 }
 
 .left ul li a:hover {
-  background: #292929;
- }
- 
- .left ul li.active a {
-  color: #ffaa00;
-  background: #292929;
- }
- 
- .right {
-  padding-left: 220px;
-  padding-top: 100px;
-  width: 750px;
+	background: #292929;
+}
+
+.left ul li.active a {
+	color: #ffaa00;
+	background: #292929;
+}
+
+.right {
+	padding-left: 220px;
+	padding-top: 100px;
 }
 
 .right img {
-  margin-right: 10px;
-  display: block;
-  border: 3px solid #CCC;
- }
- 
- .right img:hover {
-  border: 3px solid #ff00aa;
- }
- 
-h1 {
-  font-size: 19pt;
-  color: #EE00ee;
-  font-weight: bold;
-  padding-bottom: 8px;
- }
- 
-h2 {
-  font-weight: normal;
-  color:#ffaa00;
-  padding-top: 4px;
-  padding-bottom: 2px;
-  font-size: 16pt;
- }
- 
-h3 {
-  font-weight: normal;
-  font-size: 13pt;
-  padding-left:4px;
-  padding-bottom: 4px;
-  border-style:solid;
-  border-width:1px;
+	margin-right: 10px;
+	display: block;
+	border: 3px solid #CCC;
 }
- 
- p {
-   font-size: 11pt;
-   padding-top: 10px;
- 	padding-bottom: 10px;
- }
- 
+
+.right img:hover {
+	border: 3px solid #ff00aa;
+}
+
+.content h1 {
+	font-size: 19pt;
+	color: #EE00ee;
+	font-weight: bold;
+	padding-bottom: 8px;
+}
+
+.content h2 {
+	font-weight: normal;
+	color: #ffaa00;
+	padding-top: 4px;
+	padding-bottom: 2px;
+	font-size: 16pt;
+}
+
+.content h3 {
+	font-weight: normal;
+	font-size: 13pt;
+	padding-left: 4px;
+	padding-bottom: 4px;
+	border-style: solid;
+	border-width: 1px;
+}
+
+p {
+	font-size: 11pt;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
 a {
-  color: #6688ff;
-  text-decoration: none;
- }
- 
+	color: #6688ff;
+	text-decoration: none;
+}
+
 a:hover {
-  text-decoration: underline;
- }
- 
- .content {
-  min-height: 500px;
- }
- 
- .footer {
-   color:#666666;
+	text-decoration: underline;
+}
+
+.main {
+	float: left;
+	width: 750px;
+}
+
+.content {
+	min-height: 500px;
+}
+
+.bar {
+	margin-left: 770px;
+	margin-top: 40px;
+}
+
+.sidebar {
+	margin-right: 20px;
+}
+.fixed {
+	position: fixed;	
+}
+
+.sidebar ul {
+	padding-left: 2em;
+}
+
+.sidebar ol {
+	padding-left: 30px;
+}
+
+.sidebar ul li {
+	list-style-type: square;
+	margin-bottom: .4em;
+}
+
+.sidebar ul ul {
+	padding-left: 1.2em;
+}
+
+.sidebar ul ul ul {
+	padding-left: 1em;
+}
+
+.sidebar ul.linklist,ul.toc {
+	padding-left: 0;
+}
+
+.sidebar ul.toc ul {
+	margin-left: .6em;
+}
+
+.sidebar ul.toc ul li {
+	list-style-type: square;
+}
+
+.sidebar ul.toc ul ul li {
+	list-style-type: disc;
+}
+
+.sidebar ul.linklist li,ul.toc li {
+	list-style-type: none;
+}
+
+.sidebar dt {
+	font-weight: bold;
+	margin-top: .5em;
+	font-size: 1.1em;
+}
+
+.sidebar dd {
+	margin-bottom: .8em;
+}
+
+.sidebar dl.index dt {
+	font-weight: normal;
+}
+
+.footer {
+	color: #666666;
 	text-align: right;
- }
- 
- .footer a {
-  color:#666666;
-  text-decoration: none;
- }
- 
- .light {
- 	color:#ffaa00;
- }
- .code {
-  padding: 5px 10px 5px 10px;
-  background-color: #222222;
-}  
+}
+
+.footer a {
+	color: #666666;
+	text-decoration: none;
+}
+
+.light {
+	color: #ffaa00;
+}
+
+.code {
+	padding: 5px 10px 5px 10px;
+	background-color: #222222;
+}
