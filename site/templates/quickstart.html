@@ -5,9 +5,9 @@
 <p>Let's go to see how difficult it's :)</p>
 <h3>Intro Jangod to your project</h3>
 <p>To use the Jangod in your project is very easy, the following will introduce you to regular practice.
-As a portal to receive all the template-render requests, you may need to create a class to handle.
-<div class="code">
-<pre>
+<a href="downloads.html">Download</a> jangod-template.jar and place it to your project classpath.
+As a portal to receive all the template render requests, you may need a class created to handle.
+<pre class="code">
 import java.io.IOException;
 import java.util.Map;
 import net.asfun.jangod.template.TemplateEngine;
@@ -26,13 +26,12 @@ public class ViewHandler {
     }
 }
 </pre>
-</div>
 </p>
 <h3>Design template page</h3>
 <p>
-Make template files with correct Jangod syntax, the file looks like this.
-<div class="code">
-<pre>
+Make template files with correct Jangod <a href="userguide.html" title="user manual">syntax</a>, 
+the file looks like this.
+<pre class="code">
 &lt;html xmlns="http://www.w3.org/1999/xhtml"&gt;
 &lt;head>
     &lt;meta http-equiv=Content-Type content="text/html;charset=utf-8" /&gt;
@@ -47,28 +46,25 @@ Make template files with correct Jangod syntax, the file looks like this.
 &lt;/body&gt;
 &lt;/html&gt;
 </pre>
-</div>
 </p>
 <h3>Invoke advanced render</h3>
 <p>Now, just take the convenience Jangod brought us, construct some of the data,
 pass them to the portal class, then get final result of a template.
-<div class="code">
-<pre>
+<pre class="code">
 Map&lt;String,Object&gt; data = new HashMap&lt;String, Object&gt;();
 data.put("page",pageObject);
 String result = ViewHandler.render("page.html", data);
 </pre>
-</div>
 </p>
 <h3>Notes</h3>
 <p>
 (1) Workspace is the root directory where template files placed. It intents to tell the 
 engine where to load templates. It can be setup by coding or by configuration file. For 
-more information see <a alt="config Jangod" href="configuration.html">document about 
-how to configurate</a>.<br />
+more information see document about how to 
+<a title="config Jangod" href="configuration.html">configurate</a>.<br />
 (2) TemplateEngine used to save common data and configuration among templates, will engross
 a single proccessor each API call. Therefore it can run in multi-threaded environment.
-More methods of TemplateEngine look into <a alt="Jangod javadoc" href="doc/">API Javadoc</a>.<br />
+More methods of TemplateEngine look into <a title="Jangod javadoc" href="doc/">API Javadoc</a>.<br />
 (3) Your project may has many engine instances of co-existence with diversity, and they work well 
 separably without interference.
 </p>

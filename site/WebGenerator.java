@@ -15,6 +15,7 @@ public class WebGenerator {
 			generate("builtins.html");
 			generate("changes.html");
 			generate("codes.html");
+			generate("configuration.html");
 			generate("customize.html");
 			generate("developguide.html");
 			generate("downloads.html");

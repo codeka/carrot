@@ -2,11 +2,11 @@
 {!block title!}{%set page 'userguide'%}Jangod, end user manual{!endblock!}
 {!block content!}
 <h1>Syntax of template language</h1>
-<p>About what's Jangod and what it does, see <a href="index.html" alt="Jangod introduction" >here</a>. 
+<p>About what's Jangod and what it does, see <a href="index.html" title="Jangod introduction" >here</a>. 
 This document is for end users (may be a web designer) as a manual, it all 
-about making templates. Quick link to build-in <a href="builtins.html#tag" alt="tags manual">tags</a>, 
-<a href="builtins.html#filter" alt="filters manual">filters</a>, 
-<a href="builtins.html#macro" alt="macros manual">macros</a>.
+about making templates. Quick link to build-in <a href="builtins.html#tag" title="tags manual">tags</a>, 
+<a href="builtins.html#filter" title="filters manual">filters</a>, 
+<a href="builtins.html#macro" title="macros manual">macros</a>.
 </p>
 <a name="template"></a><h2>Templates</h2>
 <p>Any text file, no matter what suffix is having, can be a template. 
@@ -24,7 +24,7 @@ can be seen to be composed by a series of elements in order.
 Here we just list the usage of built-in libraries, in most cases, these library items 
 are enough for you. Of course, developers can add their own libraries or even change 
 the usage of built-in libraries, creating own special syntax 
-(see <a href="customize.html" alt="customize engine">customization</a>). Therefore, 
+(see <a href="customize.html" title="customize engine">customization</a>). Therefore, 
 if document doesn't match actual situation in use, there's no need wondering. 
 Although the syntax can be ever-changing, it still follow some basic rules, which 
 will be presented below.
@@ -46,15 +46,13 @@ replace the whole element while rendering.
 A tag may contains body content, which consists of a number of regular text or elements. 
 Tag with body needs an end tag as siege, tags without body do not need end tag.
 Here is a if test tag :
-<div class="code">
-<pre>
+<pre class="code">
 {\% if post.comments %}
     comments ( {\{post.comments|length}} )
 {\% else %}
     post a comment.
 {\% endif %}
 </pre>
-</div>
 </p>
 <a name="comment-element"></a><h4>comment element</h4>
 <p>It could be some text that you don't want them to appear in generated output, 
@@ -62,12 +60,10 @@ use comment element which surrounded by '{\#' and '#}'. Code in these elements p
 none effect, will be ignored. Comment element can comment-out other elements, but 
 a comment element must not be nested in another comment element, it will consider 
 end in the time of first encountered '#}'.
-<div class="code">
-<pre>
+<pre class="code">
 {\#  You can't see me.
     No, i see you.  #}
 </pre>
-</div>
 </p>
 <a name="macro-element"></a><h4>macro element</h4>
 <p>Macro defines a number of reusable components, which can contain regular text 
@@ -83,7 +79,7 @@ their purpose.
 <p>Each tag element must invoke an object item, and only one. These items are in 
 tag library. Items have their own purpose and usage. Tag library is primarily used
 to control the output render flow. For details see  
-<a href="builtins.html#tag" alt="tags manual">built-in tags</a>.
+<a href="builtins.html#tag" title="tags manual">built-in tags</a>.
 </p>
 <a name="filter-library"></a><h4>filter library</h4>
 <p>What's a filter? It's a pipe for data (<a href="#expression">expression</a>). 
@@ -94,12 +90,12 @@ means making the fitler 'addAll' on data 'var1', and the 'addAll' fitler needs
 two arguments 'arg1', 'b2'. The result we may get from this example is summary of
 var1, arg1 and b2. Filter can have arguments partition by ':' , or no argument 
 without ':'. Through successive invoke many filters, to achieve complex arithmetic.
-For details see <a href="builtins.html#filter" alt="filters manual">built-in filters</a>.
+For details see <a href="builtins.html#filter" title="filters manual">built-in filters</a>.
 </p>
 <a name="macro-library"></a><h4>macro library</h4>
 <p>Similar to tag library, they are used in the macro elements differently. 
 Macro library items are for refactoring template elements structure. 
-For details see <a href="builtins.html#macro" alt="macros manual">build-in macros</a>.
+For details see <a href="builtins.html#macro" title="macros manual">build-in macros</a>.
 </p>
 <a name="expression"></a><h3>expression</h3>
 <p>From above we learn expression probably approximate to 
@@ -110,18 +106,15 @@ such as "post.title|cut:'jinja'|length", composed by variable and multiple filte
 or said, composed by expression and a filter. Constant expression, indicated by 
 quotation marks, like "'post'", represent data for string "post" rather than the 
 variable 'post'. 
-<div class="code">
-<pre>
+<pre class="code">
 a|or:b|not|and:c,d   {\# equals  !(a or b) and c and d  #}
 {\% for view in viewList|reverse %}...{\%endfor%}  {\#  loop view list reverse  #}
 </pre>
-</div>
 </p>
 <a name="data-model"></a><h2>Data model</h2>
 <p>Data model is the data container where template variables obtain value from. 
 Most of template engines have the similar data model, it's accepted widely. 
-<div class="code">
-<pre>
+<pre class="code">
 (root)
   |
   +- views
@@ -163,8 +156,7 @@ Most of template engines have the similar data model, it's accepted widely.
           +- <span class="light">key1</span> = HashMap
           |
           +- key2 = Cache 
-</pre>
-</div><br />
+</pre><br />
 Here said model looks like above tree structure, doesn't mean it actually is 
 stored data in this way, but simply that we can retrieve whatever data this 
 way. The unification method to access is using dot '.' , no matter variable is
