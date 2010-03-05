@@ -7,108 +7,336 @@
 <a name="macro"></a><h2>Macros</h2>
 <a name="extends-macro"></a><h3>extends</h3>
 <p>
+It does same thing with tag "<a href='#extends-tag'>extends</a>", but it's quite
+different internally. Tags run every time rendering, macros just run first time (
+the result of new template elements structure will be cache up). Macro "extends" 
+mashups parent template and child template into a virtual template. Unlike tags, 
+all the macros can not use variable to help them doing thing, so macro "extends"
+is only used in a way : <span class="light">{\! extends 'base.html' !}</span>. 
+Also see template <a href="userguide.html#macro-inheritance" title="manual">
+inheritance</a> by macro.
 </p>
 <a name="block-macro"></a><h3>block</h3>
 <p>
+Tag "<a href='#block-tag'>block</a>" in the macro world, it works together with 
+"extends" macro.
 </p>
 <a name="include-macro"></a><h3>include</h3>
 <p>
+Does action like tag "<a href='#include-tag'>include</a>", runs like macro "extends".
+It mashups the embedded template and current template into a new virtual template.
 </p>
 <a name="define-macro"></a><h3>macro</h3>
 <p>
+coming soon.
 </p>
 <a name="call"></a><h3>call</h3>
 <p>
+coming soon.
 </p>
 <a name="tag"></a><h2>Tags</h2>
 <a name="extends-tag"></a><h3>extends</h3>
 <p>
+Tag "extends" indicates current template inherit from another template which is 
+so named parent template, current template is also called child template. 
+Inheritance is that parent template was divided into several blocks for some
+special section, then child template can just rewrite the content of blocks need
+override. The child templates inherited from same parent will have roughly 
+structure in common but special sections fill their own content. Also see template
+<a href="userguide.html#tag-inheritance" title="manual">inheritance</a> by tag.
+</p><p>This tag can be used in two ways :
+<ul>
+	<li><span class="light">{\% extends 'base.html' %}</span> uses the literal 
+	value "base.html" as the name of the parent template to extend.
+	</li>
+	<li><span class="light">{\% extends variable %}</span> uses the value of 
+	variable. The variable will be evaluated to a string, Jangod use that string 
+	as the name of the parent template.
+	</li>
+</ul>
 </p>
 <a name="block-tag"></a><h3>block</h3>
 <p>
+Define a block that can be overridden by child templates. Or, rewrite a block's 
+content by name which had been defined in the parent template. Usage likes this, 
+<span class="light">{\% block b_name %}</span>...{\% endblock %}, see Template 
+<a href="#extends-tag">inheritance</a> for more information. 
 </p>
 <a name="include-tag"></a><h3>include</h3>
 <p>
+Embedds content of another template into the position of current template, making 
+the embedded to be an integral part of current template. An included template is 
+rendered with the context of the template that's including it. Like <a href="#extends-tag">extends</a>, 
+it can be used in two ways, <span class="light">{\% include sidebar.html %}</span>.
 </p>
 <a name="if"></a><h3>if</h3>
 <p>
+To evaluate the boolean value of the expression tag attached, if "true" the contents 
+of tag body are rendered to output; if "false" render the "else" tag body (first of all 
+there is a else tag). Which value evaluated "false" may be a : null, zero of number, 
+empty string, empty collection, false. About how to construct complex logic conditions 
+see <a href="userguide.html#expression">expression</a> and <a href="#filter">filters</a>. 
+The "if" tag can be used nested to meet multi-branch case.
+<pre class="code">
+{\% set engine_num '1' %}
+<span class="light">{\% if engine_num %}</span>
+    expression is true,
+    <span class="light">{\% if engine_num|equal:'1' %}</span>
+        only an engine.
+    <span class="light">{\% else %}</span>
+        many engines.
+    <span class="light">{\% endif %}</span>
+<span class="light">{\% endif %}</span>		
+</pre>
+The output above is "expression is true,    only an engine.".
 </p>
 <a name="for"></a><h3>for</h3>
 <p>
+Loop over each item in a collection, render tag body content repeatedly with item variable.
+For example:
+<pre class="code">
+&lt;ul&gt;
+<span class="light">{\% for java_engine in template_engines %}</span>
+    &lt;li&gt;{\{java}}&lt;/li&gt;
+<span class="light">{\% endfor %}</span>
+&lt;/ul&gt;   
+</pre>
+This "for" loop causes the template_engines to be looped over for all of the engine (java_engine).
+If the template_engines was not a <a name="collection">collection</a> (Array, List, Set, Map, 
+Iterator), it will only loop once and will use template_engines as item varibale (java_engine).
+</p><p>
+The for loop sets a number of variables available within the loop:
+<pre>
+<u>Variable</u>          <u>Description</u> 
+loop.counter      The current iteration of the loop (starts from 1) 
+loop.index        The current index of the loop (starts from 0) 
+loop.revcounter   The current iteration count from the end of the loop (starts from 1) 
+loop.revindex     The current index from the end of the loop (starts from 0) 
+loop.first        True if this is the first time through the loop 
+loop.last         True if this is the last time through the loop
+</pre>
 </p>
 <a name="ifchanged"></a><h3>ifchanged</h3>
 <p>
+Used in a loop body, to check if a value has changed from the last iteration of the loop.
+If it's changed, the tag body content will be rendered. You can use code like this: 
+<pre class="code">
+&lt;ul&gt;
+{\% for java_engine in template_engines %}
+    <span class="light">{\% ifchanged java_engine %}</span>
+        &lt;li&gt;{\{loop.count}}.{\{java}}&lt;/li&gt;
+    <span class="light">{\% endif %}</span>
+{\% endfor %}
+&lt;/ul&gt; 
+</pre>
 </p>
 <a name="cycle"></a><h3>cycle</h3>
 <p>
+Cycle among the given strings or variables each time this tag is encountered.
+Is mainly used for a loop, according to the iteration of the loop, output the "cycle" item
+successively. You can do something like the following: 
+<pre class="code">
+&lt;table&gt;
+{\% for language in languages %}
+    &lt;tr class="<span class='light'>{\% cycle 'jangod','django','jinja','jinja2' %}</span>" &gt;
+        &lt;td&gt;{\{ language }}&lt;/td&gt;
+    &lt;/tr&gt;    
+{\% endfor %}
+&lt;/table&gt;
+</pre>
+</p><p>
+Another way to use "cycle" is defined it before using it. After defined cycle, we can use it  
+everywhere not only in a loop. Like this: 
+<pre class="code">
+<span class="light">{\% cycle 'tag','filter','macor', variable, expression as cy1 %}</span>
+...
+Now we are using <span class="light">{\% cycle cy1 %}</span>,
+use next time <span class="light">{\% cycle cy1 %}</span>, ...
+</pre>
 </p>
 <a name="set"></a><h3>set</h3>
 <p>
+Save the value of an expression to a new variable. Next time we can directly use the 
+variable to get the value without evaluating the expression again. It's especially 
+useful if you couldn't do an algorithm in an expression, then split it to more expression.
+For example: 
+<pre class="code">
+<span class="light">{\% set x a|or:b %}</span>
+{\% if <span class="light">c|or:d|and:x</span> %}
+    ...{\# the if test condition is "<span class='light'>(c or d) and (a or b)</span>" #}
+{\% endif %}
+</pre>
 </p>
 <a name="filter"></a><h2>Filters</h2>
 <a name="default"></a><h3>default</h3>
 <p>
+Usage :&nbsp;&nbsp;&nbsp;&nbsp;expression|default:'mvc'&nbsp;&nbsp;&nbsp;&nbsp;
+or&nbsp;&nbsp;&nbsp;&nbsp;expression|default:variable<br />
+If value of expression evaluates to "false", use the filter given parameter, 
+otherwise use the value of the expression.
 </p>
 <a name="date"></a><h3>date</h3>
 <p>
+Usage :&nbsp;&nbsp;&nbsp;&nbsp;expression|date:"yyyy-MM-dd hh:mm:ss"<br />
+This tag is for formatting a value of date or datetime, it will result a new string value.<br />
+Date and time patterns, for more see 
+<a href="http://java.sun.com/javase/6/docs/api/java/text/SimpleDateFormat.html">java date format</a>.
+<pre>
+<u>Letter</u>  <u>Date or Time Component</u>  <u>Presentation</u>       <u>Examples</u>
+G       Era designator          Text               AD
+y       Year                    Year               1996; 96
+M       Month in year           Month              July; Jul; 07
+w       Week in year            Number             27
+W       Week in month           Number             2
+D       Day in year             Number             189
+d       Day in month            Number             10
+F       Day of week in month    Number             2
+E       Day in week             Text               Tuesday; Tue
+a       Am/pm marker            Text               PM
+H       Hour in day (0-23)      Number             0
+k       Hour in day (1-24)      Number             24
+K       Hour in am/pm (0-11)    Number             0
+h       Hour in am/pm (1-12)    Number             12
+m       Minute in hour          Number             30
+s       Second in minute        Number             55
+S       Millisecond             Number             978
+z       Time zone               General time zone  Pacific Standard Time; PST; GMT-08:00
+Z       Time zone               RFC 822 time zone  -0800
+</pre>
 </p>
 <a name="contain"></a><h3>contain</h3>
 <p>
+Usage :&nbsp;&nbsp;&nbsp;&nbsp;expression|contain:'open'&nbsp;&nbsp;&nbsp;&nbsp;
+or&nbsp;&nbsp;&nbsp;&nbsp;expression|contain:variable<br />
+If the value of expression is a <a href="#collection">collection</a>, it will return
+the boolean value about whether "open" (or variable) is in the collection. If the 
+value of expression is a string, it will result true in case the string contained 
+"open" (or variable treated as string).
 </p>
 <a name="length"></a><h3>length</h3>
 <p>
+Usage :&nbsp;&nbsp;&nbsp;&nbsp;expression|length<br />
+The items count of a collection or the length of a string, returns an integer.
 </p>
 <a name="reverse"></a><h3>reverse</h3>
 <p>
+Usage :&nbsp;&nbsp;&nbsp;&nbsp;expression|reverse<br />
+Reverse the string or reverse sorted on the collection (the collection itself must be ordered).
 </p>
 <a name="random"></a><h3>random</h3>
 <p>
+Usage :&nbsp;&nbsp;&nbsp;&nbsp;expression|random<br />
+Retieve an item from the collection stochastically, or take a random integer number 
+less than the numerical value of expression . 
 </p>
 <a name="equal"></a><h3>equal</h3>
 <p>
+Usage :&nbsp;&nbsp;&nbsp;&nbsp;expression|equal:variable&nbsp;&nbsp;&nbsp;&nbsp;
+or&nbsp;&nbsp;&nbsp;&nbsp;expression|equal:'source'<br />
+Returns true if expression and variable have the same value.
 </p>
 <a name="not"></a><h3>not</h3>
 <p>
+Usage :&nbsp;&nbsp;&nbsp;&nbsp;expression|not&nbsp;&nbsp;&nbsp;&nbsp;<br />
+Makes the boolean value of expression upside down. If expression is true, return false.
 </p>
 <a name="and"></a><h3>and</h3>
 <p>
+Usage :&nbsp;&nbsp;&nbsp;&nbsp;expression|and:variable1,variable2,...<br />
+Do a logical "and" operation with the expression and the parameters(the number is not 
+limited, at least one parameter) filter carried. If expression and parameters are all
+true, return true, else false.
 </p>
 <a name="or"></a><h3>or</h3>
 <p>
+Usage :&nbsp;&nbsp;&nbsp;&nbsp;expression|or:variable1,variable2,...<br />
+Do a logical "or" operation with the expression and the parameters(the number is not 
+limited, at least one parameter) filter carried. If expression and parameters are all
+false, return false, else true.
 </p>
 <a name="abs"></a><h3>abs</h3>
 <p>
+Usage :&nbsp;&nbsp;&nbsp;&nbsp;expression|abs<br />
+Take absolute value of a number. Non-numerical expression itself is returned.
 </p>
 <a name="divisible"></a><h3>divisible</h3>
 <p>
+Usage :&nbsp;&nbsp;&nbsp;&nbsp;expression|divisible:variable&nbsp;&nbsp;&nbsp;&nbsp;
+or&nbsp;&nbsp;&nbsp;&nbsp;expression|divisible:'3'<br />
+Determine whether expression is divisible by variable, if so, result true. 
 </p>
 <a name="add"></a><h3>add</h3>
 <p>
+Usage :&nbsp;&nbsp;&nbsp;&nbsp;expression|add:variable&nbsp;&nbsp;&nbsp;&nbsp;
+or&nbsp;&nbsp;&nbsp;&nbsp;expression|add:'25'<br />
+Add variable to expression. The variable and expression must be numbers or 
+numerical string, else just do nothing.
 </p>
 <a name="multiply"></a><h3>multiply</h3>
 <p>
+Usage :&nbsp;&nbsp;&nbsp;&nbsp;expression|multiply:7<br />
+Multiply expression by variable. The variable and expression must be numbers 
+or numerical string, else just do nothing.
 </p>
 <a name="divide"></a><h3>divide</h3>
 <p>
+Usage :&nbsp;&nbsp;&nbsp;&nbsp;expression|divide:4<br />
+Makes expression divided by variable. The variable and expression must be 
+numbers or numerical string, else just do nothing.
 </p>
 <a name="escape"></a><h3>escape</h3>
 <p>
+Usage :&nbsp;&nbsp;&nbsp;&nbsp;expression|escape<br />
+Convert the characters &amp;, &lt;, &gt; in string value of expression to HTML-safe 
+sequences &amp;amp;, &amp;lt;, &amp;gt;. If the expression was not a string, return 
+itself without nothing changed.
 </p>
 <a name="lower"></a><h3>lower</h3>
 <p>
+Usage :&nbsp;&nbsp;&nbsp;&nbsp;expression|lower<br />
+Convert a value to lowercase. Non-string expression itself is returned.
 </p>
 <a name="upper"></a><h3>upper</h3>
 <p>
+Usage :&nbsp;&nbsp;&nbsp;&nbsp;expression|upper<br />
+Convert a value to uppercase. Non-string expression itself is returned.
 </p>
 <a name="truncate"></a><h3>truncate</h3>
 <p>
+Usage :&nbsp;&nbsp;&nbsp;&nbsp;expre|truncate:'300','more...'&nbsp;&nbsp;&nbsp;&nbsp;
+or&nbsp;&nbsp;&nbsp;&nbsp;expre|truncate:300&nbsp;&nbsp;&nbsp;&nbsp;
+or&nbsp;&nbsp;&nbsp;&nbsp;expre|truncate<br />
+Truncate a string to smaller length with an end sign to indicate it's truncated.
+The first parameter is the max length default 100, only if string is longer than max 
+it will be truncated. The second parameter is the end sign, default value is "..." .
+Non-string expression itself is returned.
 </p>
 <a name="cut"></a><h3>cut</h3>
 <p>
+Usage :&nbsp;&nbsp;&nbsp;&nbsp;expression|cut:'jinja'&nbsp;&nbsp;&nbsp;&nbsp;
+or&nbsp;&nbsp;&nbsp;&nbsp;expression|cut:variable<br />
+Removes all values of parameter from the given string. For example:
+<pre class="code">
+{\{ "viewable viewer viewfinder viewpoint"|cut:'view'}}
+</pre>
+The output above will be "able er finder point".
 </p>
 <a name="md5"></a><h3>md5</h3>
 <p>
+Usage :&nbsp;&nbsp;&nbsp;&nbsp;expression|md5<br />
+Encrypt the string value of expression with MD5 encryption. Non-string expression 
+itself is returned.
 </p>
+<a name="variable"></a><h2>Variables</h2>
+<p>
+There are some variables you can retrieve value without setting them in the data model.
+But if they were set, the value will be evaluated from data model first. Here is the 
+list for built-in variables.
+</p>
+<h4>now</h4>
+<p>Get the datetime of render, it's up to date every time rendering.</p>
+<h4>workspace</h4>
+<p>Get the directory of current template.</p>
 {!endblock!}
 
 {!block table !}
@@ -161,6 +389,7 @@
 			<li><a href="#upper">upper</a></li>
 		</ul>
 	</li>
+	<li><a href="#variable">variables</a></li>
 </ul>
 </div>
 {!endblock!}

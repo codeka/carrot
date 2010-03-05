@@ -68,7 +68,7 @@ end in the time of first encountered '#}'.
 <a name="macro-element"></a><h4>macro element</h4>
 <p>Macro defines a number of reusable components, which can contain regular text 
 and jangod elements. After definition, we can repeatedly use them where in need.
-Macro is aim to adjust elements' sequence and entire composition of the template.
+Macro is aim to adjust elements sequence and entire composition of the template.
 </p>
 <a name="library"></a><h3>Three libraries</h3>
 <p>Jangod elements may need to invoke objects to do some action, these object items 
@@ -169,8 +169,143 @@ create own data model to satisfy your desire, such as lazy-load, just-in-time,
 cachable and so on.
 </p>
 <a name="inheritance"></a><h2>Template inheritance</h2>
+<p>
+The most powerful and useful function of Jangod is template inheritance. 
+Template inheritance allows you to build a skeleton template framework that 
+contains all the common elements of your document and defines sub-blocks that 
+child templates can override them.<br />
+It's about to divide your document into several sections which can be replaced
+arbitrarily by tags or by macros. 
+</p>
 <a name="tag-inheritance"></a><h3>Inheritance with tags</h3>
+<pre class="code">
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;<span class="light">{\% block title %}</span>Jangod 模板引擎<span class="light">{\% endblock %}</span>&lt;/title&gt;
+    &lt;link rel="stylesheet" href="style.css" /&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div id="content"&gt;
+        <span class="light">{\% block content %}{\% endblock %}</span>
+    &lt;/div&gt;
+    &lt;div id="footer"&gt;
+        <span class="light">{\% block footer %}</span>
+        &copy; Copyright 2010
+        <span class="light">{\% endblock %}</span>
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre><p>
+This template, which we'll call "base.html", is a framework separating out three
+blocks (named title, content, footer). Its child templates can rewrite these 
+blocks as they need. One of its children can be like followed:
+</p><pre class="code">
+<span class="light">{\% extends "base.html" %}</span>
+<span class="light">{\% block title %}</span>Hello {\{user.name}}<span class="light">{\% endblock %}</span>
+<span class="light">{\% block content %}</span>
+    &lt;h1&gt;Recencies&lt;/h1&gt;
+    &lt;ul&gt;
+        {\% for post in posts %}
+            &lt;li&gt;{\{post.title}}&lt;/li&gt;
+        {\% endfor %}
+    &lt;/ul&gt;
+<span class="light">{\% endblock %}</span>
+</pre> 
+<p>
+The tag "<a href='builtins.html#extends-tag' title='tag extends description'>extends</a>" is 
+the key. It tells the template engine that this template use a document framework.
+Its extension framework is called parent template. When the template engine evaluates this 
+template, it locates and renders the parent first. The tag "<a href='builtins.html#block-tag' 
+title='tag block description'>block</a>" indicats sections to be overrided. The output might 
+look like:
+</p>
+<pre class="code">
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Hello Django&lt;/title&gt;
+    &lt;link rel="stylesheet" href="style.css" /&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div id="content"&gt;
+            &lt;h1&gt;Recencies&lt;/h1&gt;
+            &lt;ul&gt;
+                &lt;li&gt;open source&lt;/li&gt;
+                &lt;li&gt;spring mvc&lt;/li&gt;
+                &lt;li&gt;模板语言&lt;/li&gt;
+            &lt;/ul&gt;
+    &lt;/div&gt;
+    &lt;div id="footer"&gt;
+        &copy; Copyright 2010
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
 <a name="macro-inheritance"></a><h3>Inheritance with macros</h3>
+<p>
+Macro template inheritance do same purpose as tag did. But it uses macro elements, 
+and runs quickly. The parent template:
+</p>
+<pre class="code">
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;<span class="light">{\! block title !}</span>Jangod 模板引擎<span class="light">{\! endblock !}</span>&lt;/title&gt;
+    &lt;link rel="stylesheet" href="style.css" /&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div id="content"&gt;
+        <span class="light">{\! block content !}{\! endblock !}</span>
+    &lt;/div&gt;
+    &lt;div id="footer"&gt;
+        <span class="light">{\! block footer !}</span>
+        &copy; Copyright 2010
+        <span class="light">{\! endblock !}</span>
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+<p>The child may likes: </p>
+<pre class="code">
+<span class="light">{\! extends "base.html" !}</span>
+<span class="light">{\! block title !}</span>Hello {\{user.name}}<span class="light">{\! endblock !}</span>
+<span class="light">{\! block content !}</span>
+    &lt;h1&gt;Recencies&lt;/h1&gt;
+    &lt;ul&gt;
+        {\% for post in posts %}
+            &lt;li&gt;{\{post.title}}&lt;/li&gt;
+        {\% endfor %}
+    &lt;/ul&gt;
+<span class="light">{\! endblock !}</span>
+</pre>
+<p>
+The first time when the template engine evaluates this template, it will produce a new 
+template and cache it in memory, then use forever. The production template is:
+</p>
+<pre class="code">
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Hello {\{user.name}}&lt;/title&gt;
+    &lt;link rel="stylesheet" href="style.css" /&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div id="content"&gt;
+        &lt;h1&gt;Recencies&lt;/h1&gt;
+        &lt;ul&gt;
+            {\% for post in posts %}
+                &lt;li&gt;{\{post.title}}&lt;/li&gt;
+            {\% endfor %}
+        &lt;/ul&gt;
+    &lt;/div&gt;
+    &lt;div id="footer"&gt;
+        &copy; Copyright 2010
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+<p>
+Every child can have its production template cached. See about macro 
+<a href="builtins.html#extends-macro" title="macro extends description">extends</a> and 
+<a href="builtins.html#block-macro" title="macro block description">block</a>.
+</p>
 {!endblock!}
 
 {!block table !}
