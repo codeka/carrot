@@ -53,11 +53,11 @@ public class FileLocater implements ResourceLocater {
 
 	@Override
 	public String getFullName(String relativeName, String defaultDir) throws IOException {
-		File file = new File(relativeName);
+		File file = new File(defaultDir + File.separator + relativeName);
 		if (file.exists() && file.isFile()) {
 			return file.getCanonicalPath();
 		}
-		file = new File(defaultDir + File.separator + relativeName);
+		file = new File(relativeName);
 		if (file.exists() && file.isFile()) {
 			return file.getCanonicalPath();
 		}

@@ -26,24 +26,24 @@
 
 	<target name="compile" depends="init">
 		<echo>compile core source</echo>
-		<javac srcdir="${basedir}/core" destdir="${build.dir}/core" target="1.5">
+		<javac srcdir="${basedir}/core" destdir="${build.dir}/core" target="1.5" debug="on" debuglevel="lines,vars">
 			<include name="**/*.java" />
 			<classpath refid="classpath" />
 		</javac>
 		<copy file="${basedir}/core/jangod.config.properties" tofile="${build.dir}/core/jangod.config.properties" />
 		<echo>compile template source</echo>
-		<javac srcdir="${basedir}/template" destdir="${build.dir}/template" target="1.5">
+		<javac srcdir="${basedir}/template" destdir="${build.dir}/template" target="1.5"  debug="on" debuglevel="lines,vars">
 			<include name="**/*.java" />
 			<classpath refid="classpath" />
 		</javac>
 		<echo>compile script source</echo>
-		<javac srcdir="${basedir}/script" destdir="${build.dir}/script">
+		<javac srcdir="${basedir}/script" destdir="${build.dir}/script" debug="on" debuglevel="lines,vars">
 			<include name="**/*.java" />
 			<classpath refid="classpath" />
 		</javac>
 		<copy file="${basedir}/script/META-INF/services/javax.script.ScriptEngineFactory" tofile="${build.dir}/script/META-INF/services/javax.script.ScriptEngineFactory" />
 		<echo>compile spring-mvc source</echo>
-		<javac srcdir="${basedir}/spring-mvc" destdir="${build.dir}/spring-mvc" target="1.5">
+		<javac srcdir="${basedir}/spring-mvc" destdir="${build.dir}/spring-mvc" target="1.5"  debug="on" debuglevel="lines,vars">
 			<include name="**/*.java" />
 			<classpath refid="classpath" />
 		</javac>
