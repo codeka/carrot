@@ -35,11 +35,11 @@ public class FileLocater implements ResourceLocater {
 
 	@Override
 	public String getFullName(String relativeName, String relativeDir, String defaultDir) throws IOException {
-		File file = new File(relativeName);
+		File file = new File(relativeDir + File.separator + relativeName);
 		if (file.exists() && file.isFile()) {
 			return file.getCanonicalPath();
 		}
-		file = new File(relativeDir + File.separator + relativeName);
+		file = new File(relativeName);
 		if (file.exists() && file.isFile()) {
 			return file.getCanonicalPath();
 		}
@@ -53,11 +53,11 @@ public class FileLocater implements ResourceLocater {
 
 	@Override
 	public String getFullName(String relativeName, String defaultDir) throws IOException {
-		File file = new File(defaultDir + File.separator + relativeName);
+		File file = new File(relativeName);
 		if (file.exists() && file.isFile()) {
 			return file.getCanonicalPath();
 		}
-		file = new File(relativeName);
+		file = new File(defaultDir + File.separator + relativeName);
 		if (file.exists() && file.isFile()) {
 			return file.getCanonicalPath();
 		}

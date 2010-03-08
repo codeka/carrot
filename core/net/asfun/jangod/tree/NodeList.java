@@ -15,10 +15,13 @@ limitations under the License.
 **********************************************************************/
 package net.asfun.jangod.tree;
 
+import java.io.Serializable;
 import java.util.Iterator;
 
-public class NodeList implements Iterable<Node>, Cloneable{
+public class NodeList implements Iterable<Node>, Serializable, Cloneable{
 
+	private static final long serialVersionUID = -8672835620582591304L;
+	
 	Node head = null;
 	Node tail = null;
 	transient int size = 0;

@@ -113,11 +113,12 @@ public class Configuration implements Cloneable{
 	
 	@Override
 	public Configuration clone() {
-		Configuration config = new Configuration();
-		config.encoding = ConfigInitializer.getConfig(null).encoding;
-		config.locale = ConfigInitializer.getConfig(null).locale;
-		config.timezone = ConfigInitializer.getConfig(null).timezone;
-		config.workspace = ConfigInitializer.getConfig(null).workspace;
-		return config;
+		Configuration conf = new Configuration();
+		conf.encoding = config.encoding;
+		conf.locale = config.locale;
+		conf.timezone = config.timezone;
+		conf.workspace = config.workspace;
+		conf.properties = (Properties) config.properties.clone();
+		return conf;
 	}
 }
