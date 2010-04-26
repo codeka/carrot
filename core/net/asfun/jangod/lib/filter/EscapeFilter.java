@@ -15,6 +15,7 @@ limitations under the License.
 **********************************************************************/
 package net.asfun.jangod.lib.filter;
 
+import net.asfun.jangod.base.Constants;
 import net.asfun.jangod.interpret.InterpretException;
 import net.asfun.jangod.interpret.JangodInterpreter;
 import net.asfun.jangod.lib.Filter;
@@ -27,6 +28,8 @@ public class EscapeFilter implements Filter {
 	final String bgt = "&gt;";
 	final String slt = "<";
 	final String blt = "&lt;";
+	final String bsq = "&#39;";
+	final String bdq = "&quot;";
 	
 	@Override
 	public Object filter(Object object, JangodInterpreter interpreter, String... arg) throws InterpretException {
@@ -34,7 +37,9 @@ public class EscapeFilter implements Filter {
 			String value = object.toString();
 			return value.replaceAll(samp, bamp)
 				.replaceAll(sgt, bgt)
-				.replaceAll(slt, blt);
+				.replaceAll(slt, blt)
+				.replaceAll(Constants.STR_SINGLE_QUOTE, bsq)
+				.replaceAll(Constants.STR_DOUBLE_QUOTE, bdq);
 		}
 		return object;
 	}

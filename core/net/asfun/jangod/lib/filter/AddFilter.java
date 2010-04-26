@@ -69,7 +69,12 @@ public class AddFilter implements Filter{
 		}
 		if ( object instanceof String ) {
 			try {
-				return num.doubleValue() + Double.valueOf(object.toString());
+				String sv = (String) object;
+				if ( sv.contains(".") ) {
+					return num.doubleValue() + Double.valueOf(sv);
+				} else {
+					return num.longValue() + Long.valueOf(sv);
+				}
 			} catch (Exception e) {
 				throw new InterpretException(object + " can't be dealed with add filter");
 			}

@@ -24,6 +24,9 @@ public class ObjectValue {
 			return Constants.STR_BLANK;
 		}
 		//TODO if String , Integer, Float, boolean....
+		if ( variable instanceof Long ) {
+			return "" + ((Long) variable).longValue();
+		}
 		return variable.toString();
 	}
 }
