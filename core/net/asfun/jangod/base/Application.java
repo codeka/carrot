@@ -33,6 +33,15 @@ public class Application {
 	
 	public Application() {
 		config = Configuration.getDefault().clone();
+		init();
+	}
+	
+	public Application(String configFile) {
+		config = ConfigInitializer.getConfig(configFile);
+		init();
+	}
+	
+	private void init() {
 		String ima = config.getProperty("isMacroOn", Constants.STR_TRUE);
 		try {
 			isMacroOn = Boolean.parseBoolean(ima);
@@ -40,10 +49,6 @@ public class Application {
 			JangodLogger.warning("Config wrong boolean for isMacroOn(use default) >>> " + ima);
 		};
 		parseResultManager = new ParseResultManager(this);
-	}
-	
-	public Application(String configFile) {
-		config = ConfigInitializer.getConfig(configFile);
 	}
 	
 	public Map<String, Object> getGlobalBindings() {
