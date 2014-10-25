@@ -1,2 +1,8 @@
 
 dist/
+
+*.class
+
+.classpath
+.project
+
