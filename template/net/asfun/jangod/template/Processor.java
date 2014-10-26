@@ -26,15 +26,15 @@ import net.asfun.jangod.base.ResourceManager;
 import net.asfun.jangod.interpret.JangodInterpreter;
 
 /**
- * DON'T run in multi-thread
- * @author anysome
- *
+ * Processor for processing a template. Can only be used once and must be re-created each time.
  */
 public class Processor {
 
 	protected Context context;
 	protected Application application;
 	JangodInterpreter interpreter;
+
+	private boolean used;
 	
 	public Processor(Application application) {
 		this.application = application;
@@ -45,25 +45,18 @@ public class Processor {
 	public Configuration getConfiguration() {
 		return context.getConfiguration();
 	}
-	
-	public void setCommonBindings(Map<String, Object> bindings) {
-		if (bindings == null ) {
-			application.getGlobalBindings().clear();
-		} else {
-			application.setGlobalBindings(bindings);
-		}
-	}
-	
+
 	public String render(String templateFile, Map<String, Object> bindings) throws IOException {
 		return render(templateFile, bindings, context.getConfiguration().getEncoding());
 	}
-	
+
 	public String render(String templateFile, Map<String, Object> bindings, String encoding) throws IOException {
-		if ( bindings == null ) {
-			context.reset(Context.SCOPE_SESSION);
-		} else {
-			context.initBindings(bindings, Context.SCOPE_SESSION);
+		if (used) {
+			throw new IllegalStateException("Cannot use Processor more than once.");
 		}
+		used = true;
+
+		context.initBindings(bindings, Context.SCOPE_SESSION);
 		String fullName = ResourceManager.getFullName(templateFile, application.getConfiguration().getWorkspace());
 		interpreter.setFile(fullName);
 		try {
@@ -73,11 +66,11 @@ public class Processor {
 			throw new IOException(e.getMessage(), e.getCause());
 		}
 	}
-	
+
 	public void render(String templateFile, Map<String, Object> bindings, Writer out, String encoding) throws IOException {
 		out.write( render(templateFile, bindings, encoding) );
 	}
-	
+
 	public void render(String templateFile, Map<String, Object> bindings, Writer out) throws IOException {
 		out.write( render(templateFile, bindings) );
 	}
