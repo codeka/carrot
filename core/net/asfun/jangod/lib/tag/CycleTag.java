@@ -16,7 +16,9 @@ limitations under the License.
 package net.asfun.jangod.lib.tag;
 
 
-import net.asfun.jangod.base.Constants;
+import java.io.IOException;
+import java.io.Writer;
+
 import net.asfun.jangod.interpret.InterpretException;
 import net.asfun.jangod.interpret.JangodInterpreter;
 import net.asfun.jangod.lib.Tag;
@@ -36,8 +38,8 @@ public class CycleTag implements Tag{
 	final String TAGNAME = "cycle";
 
 	@Override
-	public String interpreter(NodeList carries, String helpers, JangodInterpreter interpreter)
-			throws InterpretException {
+	public void interpreter(NodeList carries, String helpers, JangodInterpreter interpreter,
+			Writer writer) throws InterpretException, IOException {
 		String[] values;
 		String var = null;
 		HelperStringTokenizer tk = new HelperStringTokenizer(helpers);
@@ -55,14 +57,14 @@ public class CycleTag implements Tag{
 				var = values[0];
 				values = (String[]) interpreter.retraceVariable(var);
 				if ( values == null ) {
-					return interpreter.resolveString(var);
+					writer.write(interpreter.resolveString(var));
 				}
 			} else {
 				for(int i=0; i<values.length; i++) {
 					values[i] = interpreter.resolveString(values[i]);
 				}
 			}
-			return values[forindex % values.length];
+			writer.write(values[forindex % values.length]);
 		} else if (helper.length == 3) {
 			HelperStringTokenizer items = new HelperStringTokenizer(helper[0]);
 			items.splitComma(true);
@@ -72,7 +74,6 @@ public class CycleTag implements Tag{
 			}
 			var = helper[2];
 			interpreter.assignRuntimeScope(var, values);
-			return Constants.STR_BLANK;
 		} else {
 			throw new InterpretException("Tag 'cycle' expects 1 or 3 helper(s) >>> " + helper.length);
 		}

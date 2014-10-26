@@ -16,6 +16,9 @@ limitations under the License.
 package net.asfun.jangod.lib.tag;
 
 
+import java.io.IOException;
+import java.io.Writer;
+
 import net.asfun.jangod.interpret.InterpretException;
 import net.asfun.jangod.interpret.JangodInterpreter;
 import net.asfun.jangod.interpret.VariableFilter;
@@ -38,7 +41,8 @@ public class ForTag implements Tag {
 	final String ENDTAGNAME = "endfor";
 	
 	@Override
-	public String interpreter(NodeList carries, String helpers, JangodInterpreter interpreter) throws InterpretException {
+	public void interpreter(NodeList carries, String helpers, JangodInterpreter interpreter,
+			Writer writer) throws InterpretException, IOException {
 		String[] helper = new HelperStringTokenizer(helpers).allTokens();
 		if ( helper.length != 3 ) {
 			throw new InterpretException("Tag 'for' expects 3 helpers >>> " + helper.length);
@@ -49,15 +53,13 @@ public class ForTag implements Tag {
 		
 		int level = interpreter.getLevel() + 1;
 		interpreter.assignRuntimeScope(LOOP, loop, level);
-		StringBuffer buff = new StringBuffer();
 		while ( loop.hasNext() ) {
 			//set item variable
 			interpreter.assignRuntimeScope(item, loop.next(), level);
 			for(Node node : carries) {
-				buff.append(node.render(interpreter));
+				node.render(interpreter, writer);
 			}
 		}
-		return buff.toString();
 	}
 
 	@Override

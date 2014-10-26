@@ -15,11 +15,14 @@ limitations under the License.
 **********************************************************************/
 package net.asfun.jangod.tree;
 
+import java.io.IOException;
+import java.io.Writer;
+
 import net.asfun.jangod.interpret.InterpretException;
 import net.asfun.jangod.interpret.JangodInterpreter;
 import net.asfun.jangod.parse.FixedToken;
 
-public class TextNode extends Node{
+public class TextNode extends Node {
 
 	private static final long serialVersionUID = 8488738480534354216L;
 	private FixedToken master;
@@ -31,8 +34,9 @@ public class TextNode extends Node{
 	}
 
 	@Override
-	public String render(JangodInterpreter interpreter) throws InterpretException {
-		return master.output();
+	public void render(JangodInterpreter interpreter, Writer writer)
+			throws InterpretException, IOException {
+		master.output(writer);
 	}
 
 	@Override

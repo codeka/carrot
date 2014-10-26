@@ -15,6 +15,9 @@ limitations under the License.
 **********************************************************************/
 package net.asfun.jangod.tree;
 
+import java.io.IOException;
+import java.io.Writer;
+
 import net.asfun.jangod.interpret.InterpretException;
 import net.asfun.jangod.interpret.JangodInterpreter;
 import net.asfun.jangod.lib.Tag;
@@ -40,11 +43,11 @@ public class TagNode extends Node{
 	}
 
 	@Override
-	public String render(JangodInterpreter interpreter)
-			throws InterpretException {
+	public void render(JangodInterpreter interpreter, Writer writer)
+			throws InterpretException, IOException {
 		interpreter.setLevel(level);
 		Tag tag = TagLibrary.getTag(master.getTagName());
-		return tag.interpreter(children(), master.getHelpers(), interpreter);
+		tag.interpreter(children(), master.getHelpers(), interpreter, writer);
 	}
 
 	@Override

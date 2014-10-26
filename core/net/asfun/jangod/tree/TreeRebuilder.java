@@ -64,7 +64,7 @@ public class TreeRebuilder{
 	
 	public String resolveString(String string) {
 		if ( string == null || string.trim().length() == 0 ) {
-			return Constants.STR_BLANK;
+			return "";
 		}
 		if ( string.startsWith(Constants.STR_DOUBLE_QUOTE) || 
 				string.startsWith(Constants.STR_SINGLE_QUOTE) ) {

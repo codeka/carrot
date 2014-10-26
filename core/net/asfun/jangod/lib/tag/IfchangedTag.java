@@ -16,7 +16,9 @@ limitations under the License.
 package net.asfun.jangod.lib.tag;
 
 
-import net.asfun.jangod.base.Constants;
+import java.io.IOException;
+import java.io.Writer;
+
 import net.asfun.jangod.interpret.InterpretException;
 import net.asfun.jangod.interpret.JangodInterpreter;
 import net.asfun.jangod.lib.Tag;
@@ -35,8 +37,8 @@ public class IfchangedTag implements Tag{
 	final String ENDTAGNAME = "endif";
 
 	@Override
-	public String interpreter(NodeList carries, String helpers, JangodInterpreter interpreter)
-			throws InterpretException {
+	public void interpreter(NodeList carries, String helpers, JangodInterpreter interpreter,
+			Writer writer) throws InterpretException, IOException {
 		if ( helpers.length() == 0 ) {
 			throw new InterpretException("Tag 'ifchanged' expects 1 helper >>> 0");
 		}
@@ -55,11 +57,9 @@ public class IfchangedTag implements Tag{
 		if ( isChanged ) {
 			StringBuffer sb = new StringBuffer();
 			for(Node node : carries) {
-				sb.append(node.render(interpreter));
+				node.render(interpreter, writer);
 			}
-			return sb.toString();
 		}
-		return Constants.STR_BLANK;
 	}
 
 	@Override

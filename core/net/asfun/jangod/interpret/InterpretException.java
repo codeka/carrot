@@ -15,7 +15,7 @@ limitations under the License.
 **********************************************************************/
 package net.asfun.jangod.interpret;
 
-public class InterpretException extends Exception{
+public class InterpretException extends Exception {
 
 	private static final long serialVersionUID = -3471306977643116138L;
 

@@ -40,7 +40,7 @@ public class ObjectTruthValue {
 		}
 		
 		if ( object instanceof String ) {
-			return !object.toString().equals(Constants.STR_BLANK);
+			return !object.toString().equals("");
 		}
 		
 		if ( object.getClass().isArray() ) {

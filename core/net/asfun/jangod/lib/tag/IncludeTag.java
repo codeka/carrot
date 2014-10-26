@@ -16,6 +16,7 @@ limitations under the License.
 package net.asfun.jangod.lib.tag;
 
 import java.io.IOException;
+import java.io.Writer;
 
 import net.asfun.jangod.base.ResourceManager;
 import net.asfun.jangod.interpret.InterpretException;
@@ -36,24 +37,20 @@ public class IncludeTag implements Tag{
 	final String TAGNAME = "include";
 	
 	@Override
-	public String interpreter(NodeList carries, String helpers, JangodInterpreter interpreter)
-			throws InterpretException {
+	public void interpreter(NodeList carries, String helpers, JangodInterpreter interpreter,
+			Writer writer) throws InterpretException, IOException {
 		String[] helper = new HelperStringTokenizer(helpers).allTokens();
 		if( helper.length != 1) {
 			throw new InterpretException("Tag 'include' expects 1 helper >>> " + helper.length);
 		}
 		String templateFile = interpreter.resolveString(helper[0]);
-		try {
-			String fullName = ResourceManager.getFullName(templateFile, 
-					interpreter.getWorkspace(), interpreter.getConfiguration().getWorkspace());
-			Node node = interpreter.getApplication().getParseResult(
-					fullName, interpreter.getConfiguration().getEncoding() );
-			JangodInterpreter child = interpreter.clone();
-			child.assignRuntimeScope(JangodInterpreter.INSERT_FLAG, true, 1);
-			return child.render(node);
-		} catch (IOException e) {
-			throw new InterpretException(e.getMessage());
-		}
+		String fullName = ResourceManager.getFullName(templateFile, 
+				interpreter.getWorkspace(), interpreter.getConfiguration().getWorkspace());
+		Node node = interpreter.getApplication().getParseResult(
+				fullName, interpreter.getConfiguration().getEncoding() );
+		JangodInterpreter child = interpreter.clone();
+		child.assignRuntimeScope(JangodInterpreter.INSERT_FLAG, true, 1);
+		child.render(node, writer);
 	}
 
 	@Override

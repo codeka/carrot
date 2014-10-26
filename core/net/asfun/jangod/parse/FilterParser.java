@@ -91,7 +91,7 @@ public class FilterParser implements Serializable{
 		if ( postColon == postPipe ) {
 			filters.add(filterString);
 			argss.add(null);
-			content = Constants.STR_BLANK;
+			content = "";
 		}
 		//filterString = filter1:argString|filter2
 		if ( postColon > 0 && ( postColon < postPipe || postPipe < 0 )) {
@@ -195,7 +195,7 @@ public class FilterParser implements Serializable{
 				args.add(argString);
 			}
 		}
-		content = Constants.STR_BLANK;
+		content = "";
 		return null;
 	}
 }

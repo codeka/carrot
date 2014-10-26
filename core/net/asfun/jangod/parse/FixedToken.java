@@ -17,6 +17,9 @@ package net.asfun.jangod.parse;
 
 import static net.asfun.jangod.parse.ParserConstants.*;
 
+import java.io.IOException;
+import java.io.Writer;
+
 public class FixedToken extends Token{
 	
 
@@ -52,8 +55,8 @@ public class FixedToken extends Token{
 		return content.trim();
 	}
 	
-	public String output() {
-		return content;
+	public void output(Writer writer) throws IOException {
+		writer.write(content);
 	}
 	
 	@Override

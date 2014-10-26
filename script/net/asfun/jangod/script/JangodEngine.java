@@ -15,7 +15,9 @@ limitations under the License.
 **********************************************************************/
 package net.asfun.jangod.script;
 
+import java.io.IOException;
 import java.io.Reader;
+import java.io.StringWriter;
 
 import javax.script.Bindings;
 import javax.script.ScriptContext;
@@ -29,7 +31,6 @@ import net.asfun.jangod.interpret.InterpretException;
 import net.asfun.jangod.interpret.JangodInterpreter;
 import net.asfun.jangod.parse.TokenParser;
 import net.asfun.jangod.parse.ParseException;
-
 import static net.asfun.jangod.util.logging.*;
 
 public class JangodEngine implements ScriptEngine {
@@ -75,8 +76,8 @@ public class JangodEngine implements ScriptEngine {
 		TokenParser parser = new TokenParser(script);
 		JangodInterpreter interpreter = new JangodInterpreter((Context) ctx);
 		try {
-			return interpreter.render(parser);
-		} catch (InterpretException e) {
+			return render(interpreter, parser);
+		} catch (Exception e) {
 			throw new ScriptException(e.getMessage());
 		}
 	}
@@ -91,8 +92,8 @@ public class JangodEngine implements ScriptEngine {
 		}
 		JangodInterpreter interpreter = new JangodInterpreter((Context) ctx);
 		try {
-			return interpreter.render(parser);
-		} catch (InterpretException e) {
+			return render(interpreter, parser);
+		} catch (Exception e) {
 			throw new ScriptException(e.getMessage());
 		}
 	}
@@ -107,8 +108,8 @@ public class JangodEngine implements ScriptEngine {
 		TokenParser parser = new TokenParser(script);
 		JangodInterpreter interpreter = new JangodInterpreter((Context) context);
 		try {
-			return interpreter.render(parser);
-		} catch (InterpretException e) {
+			return render(interpreter, parser);
+		} catch (Exception e) {
 			throw new ScriptException(e.getMessage());
 		}
 	}
@@ -123,8 +124,8 @@ public class JangodEngine implements ScriptEngine {
 		}
 		JangodInterpreter interpreter = new JangodInterpreter((Context) context);
 		try {
-			return interpreter.render(parser);
-		} catch (InterpretException e) {
+			return render(interpreter, parser);
+		} catch (Exception e) {
 			throw new ScriptException(e.getMessage());
 		}
 	}
@@ -136,8 +137,8 @@ public class JangodEngine implements ScriptEngine {
 		ctx.setBindings(n, ScriptContext.ENGINE_SCOPE);
 		JangodInterpreter interpreter = new JangodInterpreter((Context) ctx);
 		try {
-			return interpreter.render(parser);
-		} catch (InterpretException e) {
+			return render(interpreter, parser);
+		} catch (Exception e) {
 			throw new ScriptException(e.getMessage());
 		}
 	}
@@ -155,10 +156,17 @@ public class JangodEngine implements ScriptEngine {
 		ctx.setBindings(n, ScriptContext.ENGINE_SCOPE);
 		JangodInterpreter interpreter = new JangodInterpreter((Context) ctx);
 		try {
-			return interpreter.render(parser);
-		} catch (InterpretException e) {
+			return render(interpreter, parser);
+		} catch (Exception e) {
 			throw new ScriptException(e.getMessage());
 		}
+	}
+
+	private static String render(JangodInterpreter interpreter, TokenParser parser)
+			throws InterpretException, IOException {
+		StringWriter writer = new StringWriter();
+		interpreter.render(parser, writer);
+		return writer.toString();
 	}
 
 	@Override

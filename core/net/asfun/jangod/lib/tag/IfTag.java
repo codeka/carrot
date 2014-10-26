@@ -16,13 +16,15 @@ limitations under the License.
 package net.asfun.jangod.lib.tag;
 
 
+import java.io.IOException;
+import java.io.Writer;
+
 import net.asfun.jangod.interpret.InterpretException;
 import net.asfun.jangod.interpret.JangodInterpreter;
 import net.asfun.jangod.interpret.VariableFilter;
 import net.asfun.jangod.lib.Tag;
 import net.asfun.jangod.tree.Node;
 import net.asfun.jangod.tree.NodeList;
-//import net.asfun.template.util.HelperStringTokenizer;
 import net.asfun.jangod.util.ObjectTruthValue;
 
 /**
@@ -36,32 +38,30 @@ public class IfTag implements Tag {
 	final String ENDTAGNAME = "endif";
 
 	@Override
-	public String interpreter(NodeList carries, String helpers, JangodInterpreter interpreter)
-			throws InterpretException {
+	public void interpreter(NodeList carries, String helpers, JangodInterpreter interpreter,
+			Writer writer) throws InterpretException, IOException {
 		if ( helpers.length() == 0 ) {
 			throw new InterpretException("Tag 'if' expects 1 helper >>> 0");
 		}
 		Object test = VariableFilter.compute(helpers, interpreter);
-		StringBuffer sb = new StringBuffer();
 		if ( ObjectTruthValue.evaluate(test) ) {
 			for(Node node : carries) {
 				if ( ElseTag.ELSE.equals(node.getName()) ) {
 					break;
 				}
-				sb.append(node.render(interpreter));
+				node.render(interpreter, writer);
 			}
 		} else {
 			boolean inElse = false;
 			for(Node node : carries) {
 				if (inElse) {
-					sb.append(node.render(interpreter));
+					node.render(interpreter, writer);
 				}
 				if (  ElseTag.ELSE.equals(node.getName()) ) {
 					inElse = true;
 				}
 			}
 		}
-		return sb.toString();
 	}
 
 	@Override

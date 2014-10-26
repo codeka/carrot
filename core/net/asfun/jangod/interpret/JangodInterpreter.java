@@ -18,6 +18,7 @@ package net.asfun.jangod.interpret;
 import static net.asfun.jangod.util.logging.JangodLogger;
 
 import java.io.IOException;
+import java.io.Writer;
 import java.util.Iterator;
 
 import net.asfun.jangod.base.Application;
@@ -73,14 +74,13 @@ public class JangodInterpreter implements Cloneable{
 		level = 1;
 	}
 	
-	public String render(TokenParser parser) throws InterpretException {
-		return render(TreeParser.parser(parser));
+	public void render(TokenParser parser, Writer writer) throws InterpretException, IOException {
+		render(TreeParser.parser(parser), writer);
 	}
 	
-	public String render(Node root) throws InterpretException {
-		StringBuffer buff = new StringBuffer();
+	public void render(Node root, Writer writer) throws InterpretException, IOException {
 		for (Node node : root.children() ) {
-			buff.append(node.render(this));
+			node.render(this, writer);
 		}
 		if ( runtime.get(CHILD_FLAG, 1) != null && 
 				runtime.get(INSERT_FLAG, 1) == null) {
@@ -99,15 +99,14 @@ public class JangodInterpreter implements Cloneable{
 					sb.insert(index, item.getValue());
 				}
 			}
-			return sb.toString();
+			writer.write(sb.toString());
 		}
-		return buff.toString();
 	}
 
 	public Object retraceVariable(String variable) {
 		if ( variable == null || variable.trim().length() == 0 ) {
 			JangodLogger.severe("variable name is required.");
-			return Constants.STR_BLANK;
+			return "";
 		}
 		Variable var = new Variable(variable);
 		String varName = var.getName();
@@ -142,7 +141,7 @@ public class JangodInterpreter implements Cloneable{
 	public String resolveString(String variable) {
 		if ( variable == null || variable.trim().length() == 0 ) {
 			JangodLogger.severe("variable name is required.");
-			return Constants.STR_BLANK;
+			return "";
 		}
 		if ( variable.startsWith(Constants.STR_DOUBLE_QUOTE) ||
 				variable.startsWith(Constants.STR_SINGLE_QUOTE) ) {
@@ -157,7 +156,7 @@ public class JangodInterpreter implements Cloneable{
 	public Object resolveObject(String variable) {
 		if ( variable == null || variable.trim().length() == 0 ) {
 			JangodLogger.severe("variable name is required.");
-			return Constants.STR_BLANK;
+			return "";
 		}
 		if ( variable.startsWith(Constants.STR_DOUBLE_QUOTE) ||
 				variable.startsWith(Constants.STR_SINGLE_QUOTE) ) {

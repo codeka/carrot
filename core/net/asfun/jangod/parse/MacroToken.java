@@ -49,7 +49,7 @@ public class MacroToken extends Token {
 		}
 		else {
 			macroName = content;
-			helpers = Constants.STR_BLANK;
+			helpers = "";
 		}	
 	}
 

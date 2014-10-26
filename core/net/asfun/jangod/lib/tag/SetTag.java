@@ -16,6 +16,9 @@ limitations under the License.
 package net.asfun.jangod.lib.tag;
 
 
+import java.io.IOException;
+import java.io.Writer;
+
 import net.asfun.jangod.base.Constants;
 import net.asfun.jangod.interpret.InterpretException;
 import net.asfun.jangod.interpret.JangodInterpreter;
@@ -29,7 +32,7 @@ import net.asfun.jangod.util.HelperStringTokenizer;
  * @author anysome
  *
  */
-public class SetTag implements Tag{
+public class SetTag implements Tag {
 
 	final String TAGNAME = "set";
 	final String SCOPE_TOP = "top";
@@ -40,7 +43,8 @@ public class SetTag implements Tag{
 	}
 
 	@Override
-	public String interpreter(NodeList carries, String helpers, JangodInterpreter interpreter) throws InterpretException {
+	public void interpreter(NodeList carries, String helpers, JangodInterpreter interpreter,
+			Writer writer) throws InterpretException, IOException {
 		String[] helper = new HelperStringTokenizer(helpers).allTokens();
 		if ( helper.length < 2 || helper.length > 3 ) {
 			throw new InterpretException("Tag 'set' expects 2 or 3 helper >>> " + helper.length);
@@ -55,7 +59,6 @@ public class SetTag implements Tag{
 		} else {
 			interpreter.assignRuntimeScope(helper[0], value);
 		}
-		return Constants.STR_BLANK;
 	}
 
 	@Override

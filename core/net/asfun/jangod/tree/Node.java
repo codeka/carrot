@@ -15,7 +15,9 @@ limitations under the License.
 **********************************************************************/
 package net.asfun.jangod.tree;
 
+import java.io.IOException;
 import java.io.Serializable;
+import java.io.Writer;
 
 import net.asfun.jangod.interpret.InterpretException;
 import net.asfun.jangod.interpret.JangodInterpreter;
@@ -163,7 +165,8 @@ public abstract class Node implements Serializable, Cloneable{
 		}
 	}
 	
-	public abstract String render(JangodInterpreter interpreter) throws InterpretException;
+	public abstract void render(JangodInterpreter interpreter, Writer writer)
+			throws InterpretException, IOException;
 
 	public abstract String getName();
 	

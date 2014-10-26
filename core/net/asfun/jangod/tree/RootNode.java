@@ -15,6 +15,8 @@ limitations under the License.
 **********************************************************************/
 package net.asfun.jangod.tree;
 
+import java.io.Writer;
+
 import net.asfun.jangod.interpret.InterpretException;
 import net.asfun.jangod.interpret.JangodInterpreter;
 
@@ -26,7 +28,7 @@ public class RootNode extends Node{
 	RootNode() {}
 
 	@Override
-	public String render(JangodInterpreter interpreter) throws InterpretException {
+	public void render(JangodInterpreter interpreter, Writer writer) throws InterpretException {
 		throw new UnsupportedOperationException("Please render RootNode by interpreter");
 	}
 	

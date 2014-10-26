@@ -16,6 +16,9 @@ limitations under the License.
 package net.asfun.jangod.lib.tag;
 
 
+import java.io.IOException;
+import java.io.Writer;
+
 import net.asfun.jangod.base.Constants;
 import net.asfun.jangod.interpret.InterpretException;
 import net.asfun.jangod.interpret.JangodInterpreter;
@@ -32,9 +35,8 @@ public class ElseTag implements Tag{
 	static final String ELSE = "else";
 	
 	@Override
-	public String interpreter(NodeList carries, String helpers, JangodInterpreter interpreter)
-			throws InterpretException {
-		return Constants.STR_BLANK;
+	public void interpreter(NodeList carries, String helpers, JangodInterpreter interpreter,
+			Writer writer) throws InterpretException, IOException {
 	}
 
 	@Override

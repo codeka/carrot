@@ -16,8 +16,9 @@ limitations under the License.
 package net.asfun.jangod.lib.tag;
 
 import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
 
-import net.asfun.jangod.base.Constants;
 import net.asfun.jangod.base.ResourceManager;
 import net.asfun.jangod.interpret.InterpretException;
 import net.asfun.jangod.interpret.JangodInterpreter;
@@ -38,31 +39,26 @@ public class ExtendsTag implements Tag{
 	final String TAGNAME = "extends";
 
 	@Override
-	public String interpreter(NodeList carries, String helpers, JangodInterpreter interpreter)
-			throws InterpretException {
+	public void interpreter(NodeList carries, String helpers, JangodInterpreter interpreter,
+			Writer writer) throws InterpretException, IOException {
 		String[] helper = new HelperStringTokenizer(helpers).allTokens();
 		if( helper.length != 1) {
 			throw new InterpretException("Tag 'extends' expects 1 helper >>> " + helper.length);
 		}
 		String templateFile = interpreter.resolveString(helper[0]);
-		try {
-			String fullName = ResourceManager.getFullName(templateFile, 
-					interpreter.getWorkspace(), interpreter.getConfiguration().getWorkspace());
-			Node node = interpreter.getContext().getApplication().getParseResult(
-					fullName, interpreter.getConfiguration().getEncoding() );
-			
-			
-			ListOrderedMap blockList = new ListOrderedMap();
-			interpreter.assignRuntimeScope(JangodInterpreter.BLOCK_LIST, blockList, 1);
-			JangodInterpreter parent = interpreter.clone();
-			interpreter.assignRuntimeScope(JangodInterpreter.CHILD_FLAG, true, 1);
-			parent.assignRuntimeScope(JangodInterpreter.PARENT_FLAG, true, 1);
-			String semi = parent.render(node);
-			interpreter.assignRuntimeScope(JangodInterpreter.SEMI_RENDER, semi, 1);
-			return Constants.STR_BLANK;
-		} catch (IOException e) {
-			throw new InterpretException(e.getMessage());
-		}
+		String fullName = ResourceManager.getFullName(templateFile, 
+				interpreter.getWorkspace(), interpreter.getConfiguration().getWorkspace());
+		Node node = interpreter.getContext().getApplication().getParseResult(
+				fullName, interpreter.getConfiguration().getEncoding() );
+
+		ListOrderedMap blockList = new ListOrderedMap();
+		interpreter.assignRuntimeScope(JangodInterpreter.BLOCK_LIST, blockList, 1);
+		JangodInterpreter parent = interpreter.clone();
+		interpreter.assignRuntimeScope(JangodInterpreter.CHILD_FLAG, true, 1);
+		parent.assignRuntimeScope(JangodInterpreter.PARENT_FLAG, true, 1);
+		StringWriter child = new StringWriter();
+		parent.render(node, child);
+		interpreter.assignRuntimeScope(JangodInterpreter.SEMI_RENDER, child.toString(), 1);
 	}
 
 	@Override

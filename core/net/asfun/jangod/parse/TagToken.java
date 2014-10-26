@@ -47,7 +47,7 @@ public class TagToken extends Token {
 		}
 		else {
 			tagName = content.toLowerCase();
-			helpers = Constants.STR_BLANK;
+			helpers = "";
 		}
 	}
 	

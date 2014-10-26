@@ -16,6 +16,7 @@ limitations under the License.
 package net.asfun.jangod.template;
 
 import java.io.IOException;
+import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Map;
 
@@ -50,28 +51,34 @@ public class Processor {
 		return render(templateFile, bindings, context.getConfiguration().getEncoding());
 	}
 
-	public String render(String templateFile, Map<String, Object> bindings, String encoding) throws IOException {
+	public String render(String templateFile, Map<String, Object> bindings, String encoding)
+			throws IOException {
+		StringWriter writer = new StringWriter();
+		render(templateFile, bindings, writer, encoding);
+		return writer.getBuffer().toString();
+	}
+
+	public void render(String templateFile, Map<String, Object> bindings, Writer writer)
+			throws IOException {
+		render(templateFile, bindings, writer, context.getConfiguration().getEncoding());
+	}
+
+	public void render(String templateFile, Map<String, Object> bindings, Writer writer,
+			String encoding) throws IOException {
 		if (used) {
 			throw new IllegalStateException("Cannot use Processor more than once.");
 		}
 		used = true;
 
 		context.initBindings(bindings, Context.SCOPE_SESSION);
-		String fullName = ResourceManager.getFullName(templateFile, application.getConfiguration().getWorkspace());
+		String fullName = ResourceManager.getFullName(
+				templateFile, application.getConfiguration().getWorkspace());
 		interpreter.setFile(fullName);
 		try {
 			interpreter.init();
-			return interpreter.render(application.getParseResult(fullName, encoding));
-		} catch ( Exception e) {
+			interpreter.render(application.getParseResult(fullName, encoding), writer);
+		} catch (Exception e) {
 			throw new IOException(e.getMessage(), e.getCause());
 		}
-	}
-
-	public void render(String templateFile, Map<String, Object> bindings, Writer out, String encoding) throws IOException {
-		out.write( render(templateFile, bindings, encoding) );
-	}
-
-	public void render(String templateFile, Map<String, Object> bindings, Writer out) throws IOException {
-		out.write( render(templateFile, bindings) );
 	}
 }

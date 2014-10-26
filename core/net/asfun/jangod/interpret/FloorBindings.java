@@ -78,7 +78,7 @@ public class FloorBindings implements Cloneable{
         if (key == null) {
             throw new NullPointerException("key can not be null");
         }
-        if (key.equals(Constants.STR_BLANK)) {
+        if (key.equals("")) {
             throw new IllegalArgumentException("key can not be empty");
         }
     }

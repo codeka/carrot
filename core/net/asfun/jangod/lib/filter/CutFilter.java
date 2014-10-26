@@ -31,7 +31,7 @@ public class CutFilter implements Filter{
 		}
 		String cutee = interpreter.resolveString(arg[0]);
 		String origin = ObjectValue.printable(object);
-		return origin.replace(cutee, Constants.STR_BLANK);
+		return origin.replace(cutee, "");
 	}
 
 	@Override

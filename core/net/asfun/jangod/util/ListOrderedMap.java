@@ -73,7 +73,7 @@ public class ListOrderedMap implements Map<String, Object>, Iterable<ListOrdered
         if (!(key instanceof String)) {
             throw new ClassCastException("key should be a String");
         }
-        if (key.equals(Constants.STR_BLANK)) {
+        if (key.equals("")) {
             throw new IllegalArgumentException("key can not be empty");
         }
         keys.add(key);

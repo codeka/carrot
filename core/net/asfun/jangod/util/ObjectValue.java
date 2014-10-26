@@ -21,7 +21,7 @@ public class ObjectValue {
 
 	public static String printable(Object variable) {
 		if ( variable == null ) {
-			return Constants.STR_BLANK;
+			return "";
 		}
 		//TODO if String , Integer, Float, boolean....
 		if ( variable instanceof Long ) {

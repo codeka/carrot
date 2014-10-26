@@ -15,6 +15,9 @@ limitations under the License.
 **********************************************************************/
 package net.asfun.jangod.lib.tag;
 
+import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,8 +43,8 @@ public class BlockTag implements Tag{
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public String interpreter(NodeList carries, String helpers, JangodInterpreter interpreter)
-			throws InterpretException {
+	public void interpreter(NodeList carries, String helpers, JangodInterpreter interpreter,
+			Writer writer) throws InterpretException, IOException {
 		String[] helper = new HelperStringTokenizer(helpers).allTokens();
 		if( helper.length != 1) {
 			throw new InterpretException("Tag 'block' expects 1 helper >>> " + helper.length);
@@ -67,24 +70,29 @@ public class BlockTag implements Tag{
 			}
 			//cover parent block content with child's.
 			blockList.put(blockName, getBlockContent(carries, interpreter));
-			return "";
 		}
 		Object isParent = interpreter.fetchRuntimeScope(JangodInterpreter.PARENT_FLAG, 1);
 		if ( isParent != null) {
 			//save block content to engine, and return identify
 			ListOrderedMap blockList = (ListOrderedMap) interpreter.fetchRuntimeScope(JangodInterpreter.BLOCK_LIST, 1);
 			blockList.put(blockName, getBlockContent(carries, interpreter));
-			return JangodInterpreter.SEMI_BLOCK + blockName;
+			writer.write(JangodInterpreter.SEMI_BLOCK + blockName);
 		}
-		return getBlockContent(carries, interpreter);
+		writeBlockContent(carries, interpreter, writer);
 	}
 	
-	private String getBlockContent(NodeList carries, JangodInterpreter interpreter) throws InterpretException {
-		StringBuffer sb = new StringBuffer();
+	private void writeBlockContent(NodeList carries, JangodInterpreter interpreter, Writer writer)
+			throws InterpretException, IOException {
 		for(Node node : carries) {
-			sb.append(node.render(interpreter));
+			node.render(interpreter, writer);
 		}
-		return sb.toString();
+	}
+
+	private String getBlockContent(NodeList carrier, JangodInterpreter interpreter)
+			throws InterpretException, IOException {
+		StringWriter writer = new StringWriter();
+		writeBlockContent(carrier, interpreter, writer);
+		return writer.toString();
 	}
 
 	@Override

@@ -16,6 +16,10 @@ limitations under the License.
 package net.asfun.jangod.tree;
 
 import static net.asfun.jangod.util.logging.JangodLogger;
+
+import java.io.IOException;
+import java.io.Writer;
+
 import net.asfun.jangod.base.Constants;
 import net.asfun.jangod.interpret.InterpretException;
 import net.asfun.jangod.interpret.JangodInterpreter;
@@ -26,7 +30,7 @@ import net.asfun.jangod.lib.TagLibrary;
 import net.asfun.jangod.parse.MacroToken;
 import net.asfun.jangod.parse.ParseException;
 
-public class MacroNode extends Node{
+public class MacroNode extends Node {
 
 	private static final long serialVersionUID = 5037873030399458427L;
 	private MacroToken master;
@@ -43,15 +47,15 @@ public class MacroNode extends Node{
 	}
 
 	@Override
-	public String render(JangodInterpreter interpreter) throws InterpretException {
+	public void render(JangodInterpreter interpreter, Writer writer)
+			throws InterpretException, IOException {
 		Tag tag = TagLibrary.getTag(master.getMacroName());
 		if ( tag != null ) {
 			JangodLogger.fine("Treat macro as tag with same name >>> " + master.getMacroName());
 			interpreter.setLevel(level);
-			return tag.interpreter(children(), master.getHelpers(), interpreter);
+			tag.interpreter(children(), master.getHelpers(), interpreter, writer);
 		} else {
 			JangodLogger.warning("Skiping handless macro while rendering >>> " + master.getMacroName());
-			return Constants.STR_BLANK;
 		}
 	}
 

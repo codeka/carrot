@@ -17,6 +17,8 @@ package net.asfun.jangod.tree;
 
 import static net.asfun.jangod.util.logging.JangodLogger;
 
+import java.io.IOException;
+import java.io.Writer;
 import java.util.List;
 
 import net.asfun.jangod.interpret.InterpretException;
@@ -38,14 +40,15 @@ public class VariableNode extends Node{
 	}
 
 	@Override
-	public String render(JangodInterpreter interpreter)
-			throws InterpretException {
+	public void render(JangodInterpreter interpreter, Writer writer)
+			throws InterpretException, IOException {
 		interpreter.setLevel(level);
 		Object var = interpreter.retraceVariable(master.getVariable());
 		//filters
 		List<String> filters = master.getFilters();
 		if ( filters.isEmpty() ) {
-			return ObjectValue.printable(var);
+			writer.write(ObjectValue.printable(var));
+			return;
 		}
 		List<String[]> argss = master.getArgss();
 		String[] args;
@@ -63,7 +66,7 @@ public class VariableNode extends Node{
 				var = filter.filter(var, interpreter, args);
 			}
 		}
-		return ObjectValue.printable(var);
+		writer.write(ObjectValue.printable(var));
 	}
 
 	@Override

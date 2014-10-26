@@ -16,6 +16,9 @@ limitations under the License.
 package net.asfun.jangod.lib;
 
 
+import java.io.IOException;
+import java.io.Writer;
+
 import net.asfun.jangod.interpret.InterpretException;
 import net.asfun.jangod.interpret.JangodInterpreter;
 import net.asfun.jangod.tree.NodeList;
@@ -23,7 +26,8 @@ import net.asfun.jangod.tree.NodeList;
 
 public interface Tag extends Importable{
 
-	public String interpreter(NodeList carries, String helpers, JangodInterpreter interpreter) throws InterpretException;
+	public void interpreter(NodeList carries, String helpers,
+			JangodInterpreter interpreter, Writer writer) throws InterpretException, IOException;
 
 	/**
 	 * Get name of end tag
