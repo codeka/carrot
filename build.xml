@@ -13,6 +13,11 @@
 		<pathelement location="${build.dir}/template" />
 	</path>
 
+	<path id="testclasspath">
+		<path refid="classpath" />
+		<pathelement location="${build.dir}/script" />
+	</path>
+
 	<target name="init">
 		<delete dir="${dist.dir}" quiet="true"/>
 		<mkdir dir="${build.dir}" />
@@ -20,36 +25,56 @@
 		<mkdir dir="${build.dir}/template" />
 		<mkdir dir="${build.dir}/script" />
 		<mkdir dir="${build.dir}/spring-mvc" />
+		<mkdir dir="${build.dir}/test" />
 		<mkdir dir="${dist.dir}" />
 	</target>
 
 
 	<target name="compile" depends="init">
 		<echo>compile core source</echo>
-		<javac srcdir="${basedir}/core" destdir="${build.dir}/core" target="1.5" debug="on" debuglevel="lines,vars,source">
+		<javac srcdir="${basedir}/core" destdir="${build.dir}/core" target="1.7" debug="on" includeantruntime="false">
 			<include name="**/*.java" />
 			<classpath refid="classpath" />
 		</javac>
 		<copy file="${basedir}/core/jangod.config.properties" tofile="${build.dir}/core/jangod.config.properties" />
 		<echo>compile template source</echo>
-		<javac srcdir="${basedir}/template" destdir="${build.dir}/template" target="1.5"  debug="on" debuglevel="lines,vars,source">
+		<javac srcdir="${basedir}/template" destdir="${build.dir}/template" target="1.7"  debug="on" includeantruntime="false">
 			<include name="**/*.java" />
 			<classpath refid="classpath" />
 		</javac>
 		<echo>compile script source</echo>
-		<javac srcdir="${basedir}/script" destdir="${build.dir}/script" debug="on" debuglevel="lines,vars,source">
+		<javac srcdir="${basedir}/script" destdir="${build.dir}/script" target="1.7" debug="on" includeantruntime="false">
 			<include name="**/*.java" />
 			<classpath refid="classpath" />
 		</javac>
 		<copy file="${basedir}/script/META-INF/services/javax.script.ScriptEngineFactory" tofile="${build.dir}/script/META-INF/services/javax.script.ScriptEngineFactory" />
 		<echo>compile spring-mvc source</echo>
-		<javac srcdir="${basedir}/spring-mvc" destdir="${build.dir}/spring-mvc" target="1.5"  debug="on" debuglevel="lines,vars,source">
+		<javac srcdir="${basedir}/spring-mvc" destdir="${build.dir}/spring-mvc" target="1.7"  debug="on" includeantruntime="false">
 			<include name="**/*.java" />
 			<classpath refid="classpath" />
 		</javac>
+		<echo>compile test source</echo>
+		<javac srcdir="${basedir}/test" destdir="${build.dir}/test" target="1.7"  debug="on" includeantruntime="false">
+			<include name="**/*.java" />
+			<classpath refid="testclasspath" />
+		</javac>
 	</target>
 
-	<target name="jar" depends="compile">
+	<target name="test" depends="compile">
+		<echo>running tests...</echo>
+		<junit printsummary="yes" haltonfailure="yes">
+			<classpath>
+				<path refid="testclasspath" />
+				<pathelement location="${build.dir}/test" />
+			</classpath>
+			<batchtest todir="${build.dir}/test">
+				<fileset dir="${build.dir}/test" includes="**/*Test.class" />
+				<formatter type="plain" usefile="false"/>
+			</batchtest>
+		</junit>
+	</target>
+
+	<target name="jar" depends="test">
 		<jar destfile="${dist.dir}/${product}-core.jar">
 			<fileset dir="${build.dir}/core">
 				<include name="**/*.*" />
@@ -121,4 +146,5 @@
 		</jar>
 		<delete dir="${build.dir}" quiet="true"/>
 	</target>
+
 </project>

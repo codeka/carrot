@@ -44,16 +44,16 @@ public class AddFilter implements Filter{
 			return object;
 		}
 		if ( object instanceof Integer ) {
-			return 0L + num.intValue() + (Integer)object;
+			return num.intValue() + (Integer)object;
 		}
 		if ( object instanceof Float ) {
-			return 0D + num.floatValue() + (Float)object;
+			return num.floatValue() + (Float)object;
 		}
 		if ( object instanceof Long ) {
 			return num.longValue() + (Long)object;
 		}
 		if ( object instanceof Short ) {
-			return 0 + num.shortValue() + (Short)object;
+			return num.shortValue() + (Short)object;
 		}
 		if ( object instanceof Double ) {
 			return num.doubleValue() + (Double)object;

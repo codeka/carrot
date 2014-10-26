@@ -63,19 +63,19 @@ public class AddFilterTest extends ZzzBase{
 	@Test
 	public void testLong() throws InterpretException {
 		Object res = filter.filter(new Long(-0), compiler, new String[]{"2"});
-		assertEquals(2, res);
+		assertEquals(2L, res);
 	}
 	
 	@Test
 	public void testShort() throws InterpretException {
 		Object res = filter.filter(new Short((short) -22222222), compiler, "'2'");
-		assertEquals((short)-22222220, res);
+		assertEquals((int) (short)-22222220, res); // short + short = int
 	}
 	
 	@Test
 	public void testByte() throws InterpretException {
 		Object res = filter.filter(new Byte((byte) 222), compiler, "-3");
-		assertEquals((byte)219, res);
+		assertEquals((int) (byte)219, res); // byte + byte = int
 	}
 	
 	@Test

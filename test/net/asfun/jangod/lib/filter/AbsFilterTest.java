@@ -56,7 +56,7 @@ public class AbsFilterTest extends ZzzBase{
 	@Test
 	public void testLong() throws InterpretException {
 		Object res = filter.filter(new Long(-0), compiler);
-		assertEquals(0, res);
+		assertEquals(0L, res);
 	}
 	
 	@Test
