@@ -70,6 +70,7 @@ public class BlockTag implements Tag{
 			}
 			//cover parent block content with child's.
 			blockList.put(blockName, getBlockContent(carries, interpreter));
+			return;
 		}
 		Object isParent = interpreter.fetchRuntimeScope(JangodInterpreter.PARENT_FLAG, 1);
 		if ( isParent != null) {
@@ -77,6 +78,7 @@ public class BlockTag implements Tag{
 			ListOrderedMap blockList = (ListOrderedMap) interpreter.fetchRuntimeScope(JangodInterpreter.BLOCK_LIST, 1);
 			blockList.put(blockName, getBlockContent(carries, interpreter));
 			writer.write(JangodInterpreter.SEMI_BLOCK + blockName);
+			return;
 		}
 		writeBlockContent(carries, interpreter, writer);
 	}
