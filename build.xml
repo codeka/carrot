@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE project>
 <project name="jangod" default="jar" basedir=".">
-	<property name="product" value="jangod" />
+	<property name="product" value="carrot" />
 	<property name="build.dir" value="${basedir}/build" />
 	<property name="dist.dir" value="${basedir}/dist" />
 
@@ -24,7 +24,6 @@
 		<mkdir dir="${build.dir}/core" />
 		<mkdir dir="${build.dir}/template" />
 		<mkdir dir="${build.dir}/script" />
-		<mkdir dir="${build.dir}/spring-mvc" />
 		<mkdir dir="${build.dir}/test" />
 		<mkdir dir="${dist.dir}" />
 	</target>
@@ -36,7 +35,6 @@
 			<include name="**/*.java" />
 			<classpath refid="classpath" />
 		</javac>
-		<copy file="${basedir}/core/jangod.config.properties" tofile="${build.dir}/core/jangod.config.properties" />
 		<echo>compile template source</echo>
 		<javac srcdir="${basedir}/template" destdir="${build.dir}/template" target="1.7"  debug="on" includeantruntime="false">
 			<include name="**/*.java" />
@@ -48,11 +46,6 @@
 			<classpath refid="classpath" />
 		</javac>
 		<copy file="${basedir}/script/META-INF/services/javax.script.ScriptEngineFactory" tofile="${build.dir}/script/META-INF/services/javax.script.ScriptEngineFactory" />
-		<echo>compile spring-mvc source</echo>
-		<javac srcdir="${basedir}/spring-mvc" destdir="${build.dir}/spring-mvc" target="1.7"  debug="on" includeantruntime="false">
-			<include name="**/*.java" />
-			<classpath refid="classpath" />
-		</javac>
 		<echo>compile test source</echo>
 		<javac srcdir="${basedir}/test" destdir="${build.dir}/test" target="1.7"  debug="on" includeantruntime="false">
 			<include name="**/*.java" />
@@ -105,36 +98,11 @@
 				<attribute name="Class-Path" value=" " />
 			</manifest>
 		</jar>
-		<jar destfile="${dist.dir}/${product}-spring-mvc.jar">
-			<fileset dir="${build.dir}/spring-mvc">
-				<include name="**/*.*" />
-			</fileset>	
-			<manifest>
-				<attribute name="Class-Path" value="${product}-template.jar" />
-			</manifest>
-		</jar>
-		<jar destfile="${dist.dir}/spring-${product}.jar">
-			<fileset dir="${build.dir}/core">
-				<include name="**/*.*" />
-			</fileset>
-			<fileset dir="${build.dir}/template">
-				<include name="**/*.*" />
-			</fileset>
-			<fileset dir="${build.dir}/spring-mvc">
-				<include name="**/*.*" />
-			</fileset>
-			<manifest>
-				<attribute name="Class-Path" value=" " />
-			</manifest>
-		</jar>
 		<jar destfile="${dist.dir}/${product}.jar">
 			<fileset dir="${build.dir}/core">
 				<include name="**/*.*" />
 			</fileset>
 			<fileset dir="${build.dir}/template">
-				<include name="**/*.*" />
-			</fileset>
-			<fileset dir="${build.dir}/spring-mvc">
 				<include name="**/*.*" />
 			</fileset>
 			<fileset dir="${build.dir}/script">
@@ -146,5 +114,4 @@
 		</jar>
 		<delete dir="${build.dir}" quiet="true"/>
 	</target>
-
 </project>
