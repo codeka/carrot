@@ -17,7 +17,7 @@ public class TagTest {
 
   @BeforeClass
   public static void init() {
-    engine = new ScriptEngineManager().getEngineByName("Jangod");
+    engine = new ScriptEngineManager().getEngineByName("Carrot");
     engine.put("var1", new Integer[] { 23, 45, 45, 689 });
     engine.put("var2", "45");
     engine.put("var3", 12);

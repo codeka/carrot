@@ -18,23 +18,23 @@ import au.com.codeka.carrot.parse.ParseException;
 import au.com.codeka.carrot.parse.TokenParser;
 import au.com.codeka.carrot.util.Log;
 
-public class JangodEngine implements ScriptEngine {
+public class CarrotEngine implements ScriptEngine {
 
   private String defaultBindings = "javax.script.SimpleBindings";
-  private JangodEngineFactory factory;
-  private JangodContext context;
+  private CarrotEngineFactory factory;
+  private CarrotContext context;
   private Log log;
 
-  public JangodEngine() {
-    factory = new JangodEngineFactory();
-    context = new JangodContext(factory.globalBindings);
+  public CarrotEngine() {
+    factory = new CarrotEngineFactory();
+    context = new CarrotContext(factory.globalBindings);
     log = new Log(context.getApplication().getConfiguration());
     initGlobalData();
   }
 
-  public JangodEngine(JangodEngineFactory fac) {
+  public CarrotEngine(CarrotEngineFactory fac) {
     factory = fac;
-    context = new JangodContext(factory.globalBindings);
+    context = new CarrotContext(factory.globalBindings);
     initGlobalData();
   }
 
@@ -114,7 +114,7 @@ public class JangodEngine implements ScriptEngine {
   @Override
   public Object eval(String script, Bindings n) throws ScriptException {
     TokenParser parser = new TokenParser(script);
-    ScriptContext ctx = new JangodContext(factory.globalBindings);
+    ScriptContext ctx = new CarrotContext(factory.globalBindings);
     ctx.setBindings(n, ScriptContext.ENGINE_SCOPE);
     CarrotInterpreter interpreter = new CarrotInterpreter((Context) ctx);
     try {
@@ -133,7 +133,7 @@ public class JangodEngine implements ScriptEngine {
       throw new ScriptException(e.getMessage());
     }
 
-    ScriptContext ctx = new JangodContext(factory.globalBindings);
+    ScriptContext ctx = new CarrotContext(factory.globalBindings);
     ctx.setBindings(n, ScriptContext.ENGINE_SCOPE);
     CarrotInterpreter interpreter = new CarrotInterpreter((Context) ctx);
     try {
@@ -177,7 +177,7 @@ public class JangodEngine implements ScriptEngine {
 
   @Override
   public void setContext(ScriptContext scontext) {
-    context = (JangodContext) scontext;
+    context = (CarrotContext) scontext;
   }
 
 }

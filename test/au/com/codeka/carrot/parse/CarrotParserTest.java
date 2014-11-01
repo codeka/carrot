@@ -5,7 +5,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-public class JangodParserTest {
+public class CarrotParserTest {
 
   TokenParser parser;
   String script;

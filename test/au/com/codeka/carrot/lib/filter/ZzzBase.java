@@ -8,7 +8,7 @@ import org.junit.BeforeClass;
 import au.com.codeka.carrot.base.Context;
 import au.com.codeka.carrot.interpret.CarrotInterpreter;
 import au.com.codeka.carrot.lib.Filter;
-import au.com.codeka.carrot.script.JangodContext;
+import au.com.codeka.carrot.script.CarrotContext;
 
 public class ZzzBase {
 
@@ -18,7 +18,7 @@ public class ZzzBase {
   @BeforeClass
   public static void setUpClass() throws Exception {
     SimpleBindings bindings = new SimpleBindings();
-    ScriptContext context = new JangodContext(bindings);
+    ScriptContext context = new CarrotContext(bindings);
     compiler = new CarrotInterpreter((Context) context);
   }
 }

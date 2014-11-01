@@ -11,13 +11,13 @@ import javax.script.SimpleBindings;
 
 import au.com.codeka.carrot.base.Context;
 
-public class JangodContext extends Context implements ScriptContext {
+public class CarrotContext extends Context implements ScriptContext {
 
   private Writer errw;
   private Writer wtr;
   private Reader rd;
 
-  public JangodContext(Bindings global) {
+  public CarrotContext(Bindings global) {
     super();
     application.setGlobalBindings(global);
     sessionBindings = new SimpleBindings();

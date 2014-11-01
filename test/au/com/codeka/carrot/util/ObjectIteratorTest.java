@@ -58,8 +58,8 @@ public class ObjectIteratorTest {
     List<String> items = new ArrayList<String>();
     items.add("hello");
     items.add("world");
-    items.add("jangod");
-    items.add("asfun");
+    items.add("carrot");
+    items.add("codeka");
     loop = ObjectIterator.getLoop(items);
     assertEquals(4, loop.getLength());
     assertEquals("hello", loop.next());

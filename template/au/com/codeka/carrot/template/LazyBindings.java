@@ -29,7 +29,7 @@ public class LazyBindings implements Map<String, Object> {
    * set up lazy load bindings
    * 
    * @param props
-   *          like recentPosts => net.asfun.jvalog.misc.AutoLoader.getPosts
+   *          like recentPosts => AutoLoader.getPosts
    * @throws ScriptException
    */
   public void config(Map<String, String> props) {

@@ -10,7 +10,7 @@ import javax.script.SimpleBindings;
 
 import au.com.codeka.carrot.base.Constants;
 
-public class JangodEngineFactory implements ScriptEngineFactory {
+public class CarrotEngineFactory implements ScriptEngineFactory {
 
   protected Bindings globalBindings = new SimpleBindings();
 
@@ -20,7 +20,7 @@ public class JangodEngineFactory implements ScriptEngineFactory {
 
   @Override
   public String getEngineName() {
-    return "ASFUN Jangod template engine";
+    return "Carrot template engine";
   }
 
   @Override
@@ -34,13 +34,13 @@ public class JangodEngineFactory implements ScriptEngineFactory {
     ext.add("god");
     ext.add("tpl");
     ext.add("html");
-    ext.add("jangod");
+    ext.add("carrot");
     return ext;
   }
 
   @Override
   public String getLanguageName() {
-    return "Jangod";
+    return "Carrot";
   }
 
   @Override
@@ -61,7 +61,7 @@ public class JangodEngineFactory implements ScriptEngineFactory {
   @Override
   public List<String> getNames() {
     List<String> names = new ArrayList<String>();
-    names.add("Jangod");
+    names.add("Carrot");
     names.add("Django");
     names.add("Jinja");
     return names;
@@ -101,7 +101,7 @@ public class JangodEngineFactory implements ScriptEngineFactory {
 
   @Override
   public ScriptEngine getScriptEngine() {
-    return new JangodEngine(this);
+    return new CarrotEngine(this);
   }
 
   @Override
