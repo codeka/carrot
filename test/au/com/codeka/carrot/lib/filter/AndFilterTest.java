@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Test;
 
-import au.com.codeka.carrot.interpret.InterpretException;
+import au.com.codeka.carrot.base.CarrotException;
 
 public class AndFilterTest extends ZzzBase {
 
@@ -26,31 +26,31 @@ public class AndFilterTest extends ZzzBase {
   }
 
   @Test
-  public void test1() throws InterpretException {
+  public void test1() throws CarrotException {
     Boolean res = (Boolean) filter.filter(1, compiler);
     assertEquals(true, res);
   }
 
   @Test
-  public void test2() throws InterpretException {
+  public void test2() throws CarrotException {
     Boolean res = (Boolean) filter.filter(12, compiler, "var1", "var3");
     assertEquals(false, res);
   }
 
   @Test
-  public void test3() throws InterpretException {
+  public void test3() throws CarrotException {
     Boolean res = (Boolean) filter.filter(-78, compiler, "var1", "var4");
     assertEquals(false, res);
   }
 
   @Test
-  public void test4() throws InterpretException {
+  public void test4() throws CarrotException {
     Boolean res = (Boolean) filter.filter(-56l, compiler, "var5", "var9");
     assertEquals(false, res);
   }
 
   @Test
-  public void test5() throws InterpretException {
+  public void test5() throws CarrotException {
     Boolean res = (Boolean) filter.filter(-0l, compiler, "var8", "var9");
     assertEquals(false, res);
   }

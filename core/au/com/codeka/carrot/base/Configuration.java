@@ -1,7 +1,5 @@
 package au.com.codeka.carrot.base;
 
-import static au.com.codeka.carrot.util.logging.JangodLogger;
-
 import java.io.File;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -14,6 +12,7 @@ import au.com.codeka.carrot.lib.Macro;
 import au.com.codeka.carrot.lib.MacroLibrary;
 import au.com.codeka.carrot.lib.Tag;
 import au.com.codeka.carrot.lib.TagLibrary;
+import au.com.codeka.carrot.util.Log;
 
 public class Configuration {
   private String encoding;
@@ -22,10 +21,12 @@ public class Configuration {
   private String workspace;
   private ResourceLocater resourceLocater;
   private Class<?> parseCacheClass;
+  private Logger logger;
 
   protected Configuration() {
     resourceLocater = new FileLocater();
     parseCacheClass = SynchronousStorage.class;
+    logger = new Log.DefaultLogger();
   };
 
   public static void addImport(Importable importee) {
@@ -36,11 +37,7 @@ public class Configuration {
     } else if (importee instanceof Macro) {
       MacroLibrary.addMacro((Macro) importee);
     } else {
-      if (importee != null)
-        JangodLogger.warning("Can't recognize the importing object >>> "
-            + importee.getClass().getName());
-      else
-        JangodLogger.warning("Can't import null object");
+      // TODO: this method shouldn't be static and it should be on the Application class anyway.
     }
   }
 
@@ -96,5 +93,21 @@ public class Configuration {
 
   public Class<?> getParseCacheClass() {
     return parseCacheClass;
+  }
+
+  public void setLogger(Logger logger) {
+    this.logger = logger;
+  }
+
+  public Logger getLogger() {
+    return logger;
+  }
+
+  public interface Logger {
+    public static final int WARNING = 2;
+    public static final int INFO = 1;
+    public static final int DEBUG = 0;
+
+    void write (int level, String msg);
   }
 }

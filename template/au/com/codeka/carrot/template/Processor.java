@@ -6,6 +6,7 @@ import java.io.Writer;
 import java.util.Map;
 
 import au.com.codeka.carrot.base.Application;
+import au.com.codeka.carrot.base.CarrotException;
 import au.com.codeka.carrot.base.Configuration;
 import au.com.codeka.carrot.base.Context;
 import au.com.codeka.carrot.interpret.JangodInterpreter;
@@ -32,38 +33,38 @@ public class Processor {
     return context.getConfiguration();
   }
 
-  public String render(String templateFile, Map<String, Object> bindings) throws IOException {
+  public String render(String templateFile, Map<String, Object> bindings) throws CarrotException {
     return render(templateFile, bindings, context.getConfiguration().getEncoding());
   }
 
   public String render(String templateFile, Map<String, Object> bindings, String encoding)
-      throws IOException {
+      throws CarrotException {
     StringWriter writer = new StringWriter();
     render(templateFile, bindings, writer, encoding);
     return writer.getBuffer().toString();
   }
 
   public void render(String templateFile, Map<String, Object> bindings, Writer writer)
-      throws IOException {
+      throws CarrotException {
     render(templateFile, bindings, writer, context.getConfiguration().getEncoding());
   }
 
   public void render(String templateFile, Map<String, Object> bindings, Writer writer,
-      String encoding) throws IOException {
+      String encoding) throws CarrotException {
     if (used) {
       throw new IllegalStateException("Cannot use Processor more than once.");
     }
     used = true;
 
     context.initBindings(bindings, Context.SCOPE_SESSION);
-    String fullName = application.getConfiguration().getResourceLocater().getFullName(
-        templateFile, application.getConfiguration().getWorkspace());
-    interpreter.setFile(fullName);
     try {
+      String fullName = application.getConfiguration().getResourceLocater().getFullName(
+        templateFile, application.getConfiguration().getWorkspace());
+      interpreter.setFile(fullName);
       interpreter.init();
       interpreter.render(application.getParseResult(fullName, encoding), writer);
-    } catch (Exception e) {
-      throw new IOException(e.getMessage(), e.getCause());
+    } catch (IOException e) {
+      throw new CarrotException(e);
     }
   }
 }

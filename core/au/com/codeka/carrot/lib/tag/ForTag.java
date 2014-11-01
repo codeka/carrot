@@ -3,6 +3,7 @@ package au.com.codeka.carrot.lib.tag;
 import java.io.IOException;
 import java.io.Writer;
 
+import au.com.codeka.carrot.base.CarrotException;
 import au.com.codeka.carrot.interpret.InterpretException;
 import au.com.codeka.carrot.interpret.JangodInterpreter;
 import au.com.codeka.carrot.interpret.VariableFilter;
@@ -27,14 +28,14 @@ public class ForTag implements Tag {
 
   @Override
   public void interpreter(NodeList carries, String helpers, JangodInterpreter interpreter,
-      Writer writer) throws InterpretException, IOException {
+      Writer writer) throws CarrotException, IOException {
     String[] helper = new HelperStringTokenizer(helpers).allTokens();
     if (helper.length != 3) {
       throw new InterpretException("Tag 'for' expects 3 helpers >>> " + helper.length);
     }
     String item = helper[0];
     Object collection = VariableFilter.compute(helper[2], interpreter);
-    ForLoop loop = ObjectIterator.getLoop(collection);
+    ForLoop<Object> loop = ObjectIterator.getLoop(collection);
 
     int level = interpreter.getLevel() + 1;
     interpreter.assignRuntimeScope(LOOP, loop, level);

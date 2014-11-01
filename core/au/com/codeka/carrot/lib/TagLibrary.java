@@ -1,7 +1,5 @@
 package au.com.codeka.carrot.lib;
 
-import static au.com.codeka.carrot.util.logging.JangodLogger;
-
 import au.com.codeka.carrot.lib.tag.BlockTag;
 import au.com.codeka.carrot.lib.tag.CycleTag;
 import au.com.codeka.carrot.lib.tag.ElseTag;
@@ -12,7 +10,6 @@ import au.com.codeka.carrot.lib.tag.IfchangedTag;
 import au.com.codeka.carrot.lib.tag.IncludeTag;
 
 public class TagLibrary extends SimpleLibrary<Tag> {
-
   private static TagLibrary lib;
 
   static {
@@ -47,6 +44,6 @@ public class TagLibrary extends SimpleLibrary<Tag> {
 
   public static void addTag(Tag tag) {
     lib.register(tag.getName(), tag);
-    JangodLogger.fine("Imported tag >>>" + tag.getName());
+    //JangodLogger.fine("Imported tag >>>" + tag.getName());
   }
 }

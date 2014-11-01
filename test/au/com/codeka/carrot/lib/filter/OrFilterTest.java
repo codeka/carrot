@@ -7,12 +7,12 @@ import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Test;
 
-import au.com.codeka.carrot.interpret.InterpretException;
+import au.com.codeka.carrot.base.CarrotException;
 
 public class OrFilterTest extends ZzzBase {
 
   @Before
-  public void setUp() throws Exception {
+  public void setUp() {
     filter = new OrFilter();
     compiler.assignRuntimeScope("var1", "hello");
     compiler.assignRuntimeScope("var2", "");
@@ -26,31 +26,31 @@ public class OrFilterTest extends ZzzBase {
   }
 
   @Test
-  public void test1() throws InterpretException {
+  public void test1() throws CarrotException {
     Boolean res = (Boolean) filter.filter(1, compiler);
     assertEquals(true, res);
   }
 
   @Test
-  public void test2() throws InterpretException {
+  public void test2() throws CarrotException {
     Boolean res = (Boolean) filter.filter("", compiler, "var1", "var3");
     assertEquals(true, res);
   }
 
   @Test
-  public void test3() throws InterpretException {
+  public void test3() throws CarrotException {
     Boolean res = (Boolean) filter.filter("", compiler, "var3", "var8");
     assertEquals(true, res);
   }
 
   @Test
-  public void test4() throws InterpretException {
+  public void test4() throws CarrotException {
     Boolean res = (Boolean) filter.filter(-0l, compiler, "var5", "var4");
     assertEquals(false, res);
   }
 
   @Test
-  public void test5() throws InterpretException {
+  public void test5() throws CarrotException {
     Boolean res = (Boolean) filter.filter(-02l, compiler, "var8", "var9");
     assertEquals(true, res);
   }

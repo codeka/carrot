@@ -3,6 +3,7 @@ package au.com.codeka.carrot.lib.tag;
 import java.io.IOException;
 import java.io.Writer;
 
+import au.com.codeka.carrot.base.CarrotException;
 import au.com.codeka.carrot.interpret.InterpretException;
 import au.com.codeka.carrot.interpret.JangodInterpreter;
 import au.com.codeka.carrot.lib.Tag;
@@ -23,7 +24,7 @@ public class IfchangedTag implements Tag {
 
   @Override
   public void interpreter(NodeList carries, String helpers, JangodInterpreter interpreter,
-      Writer writer) throws InterpretException, IOException {
+      Writer writer) throws CarrotException, IOException {
     if (helpers.length() == 0) {
       throw new InterpretException("Tag 'ifchanged' expects 1 helper >>> 0");
     }

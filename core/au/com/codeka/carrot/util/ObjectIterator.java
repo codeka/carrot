@@ -8,10 +8,10 @@ import java.util.Map;
 
 public class ObjectIterator {
 
-  @SuppressWarnings("unchecked")
-  public static ForLoop getLoop(Object obj) {
+  @SuppressWarnings({ "rawtypes", "unchecked" })
+  public static ForLoop<Object> getLoop(Object obj) {
     if (obj == null) {
-      return new ForLoop(new ArrayList<Object>().iterator(), 0);
+      return new ForLoop<Object>(new ArrayList<Object>().iterator(), 0);
     }
     // collection
     if (obj instanceof Collection) {
@@ -41,5 +41,4 @@ public class ObjectIterator {
     res.add(obj);
     return new ForLoop(res.iterator(), 1);
   }
-
 }

@@ -1,7 +1,5 @@
 package au.com.codeka.carrot.lib.filter;
 
-import static au.com.codeka.carrot.util.logging.JangodLogger;
-
 import java.lang.reflect.Array;
 import java.util.Collection;
 
@@ -11,7 +9,6 @@ import au.com.codeka.carrot.lib.Filter;
 
 public class ReverseFilter implements Filter {
 
-  @SuppressWarnings("unchecked")
   @Override
   public Object filter(Object object, JangodInterpreter interpreter, String... arg)
       throws InterpretException {
@@ -50,8 +47,8 @@ public class ReverseFilter implements Filter {
       }
       return String.valueOf(res);
     }
-    JangodLogger.warning("filter contain can't be applied to >>> " + object.getClass().getName());
-    return object;
+
+    throw new InterpretException("Filter cannot be applied to " + object.getClass().getName());
   }
 
   @Override

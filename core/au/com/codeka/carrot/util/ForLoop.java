@@ -1,11 +1,9 @@
 package au.com.codeka.carrot.util;
 
-import static au.com.codeka.carrot.util.logging.JangodLogger;
-
 import java.util.Iterator;
 
-@SuppressWarnings("unchecked")
-public class ForLoop implements Iterator {
+/** An 'enhanced' iterator which keeps track of various state about the loop. */
+public class ForLoop<T> implements Iterator<T> {
 
   private int index = -1;
   private int counter = 0;
@@ -15,9 +13,9 @@ public class ForLoop implements Iterator {
   private boolean first = true;
   private boolean last;
 
-  private Iterator<Object> it;
+  private Iterator<T> it;
 
-  public ForLoop(Iterator ite, int len) {
+  public ForLoop(Iterator<T> ite, int len) {
     length = len;
     if (len < 2) {
       revindex = 1;
@@ -31,7 +29,7 @@ public class ForLoop implements Iterator {
     it = ite;
   }
 
-  public ForLoop(Iterator ite) {
+  public ForLoop(Iterator<T> ite) {
     it = ite;
     if (it.hasNext()) {
       last = false;
@@ -43,8 +41,9 @@ public class ForLoop implements Iterator {
     }
   }
 
-  public Object next() {
-    Object res;
+  @Override
+  public T next() {
+    T res;
     if (it.hasNext()) {
       index++;
       counter++;
@@ -78,21 +77,21 @@ public class ForLoop implements Iterator {
 
   public int getRevindex() {
     if (revindex == -9) {
-      JangodLogger.warning("can't compute items' length while looping.");
+      // TODO: log?
     }
     return revindex;
   }
 
   public int getRevcounter() {
     if (revcounter == -9) {
-      JangodLogger.warning("can't compute items' length while looping.");
+      // TODO: log?
     }
     return revcounter;
   }
 
   public int getLength() {
     if (revcounter == -9) {
-      JangodLogger.warning("can't compute items' length while looping.");
+      // TODO: log?
     }
     return length;
   }

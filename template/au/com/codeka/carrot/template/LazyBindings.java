@@ -1,7 +1,5 @@
 package au.com.codeka.carrot.template;
 
-import static au.com.codeka.carrot.util.logging.JangodLogger;
-
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.HashMap;
@@ -11,7 +9,7 @@ import java.util.Set;
 
 import javax.script.ScriptException;
 
-import au.com.codeka.carrot.util.logging.Level;
+import au.com.codeka.carrot.base.CarrotException;
 
 public class LazyBindings implements Map<String, Object> {
 
@@ -51,7 +49,11 @@ public class LazyBindings implements Map<String, Object> {
     if (keys.contains(key)) {
       Object value = bins.get(key);
       if (value == null) {
-        value = getFromDataSource(key);
+        try {
+          value = getFromDataSource(key);
+        } catch (CarrotException e) {
+          // TODO??
+        }
         // bins.put(key.toString(), value);
       }
       return value;
@@ -59,21 +61,19 @@ public class LazyBindings implements Map<String, Object> {
     return null;
   }
 
-  @SuppressWarnings("unchecked")
-  private Object getFromDataSource(Object key) {
+  private Object getFromDataSource(Object key) throws CarrotException {
     try {
       String lazy = lazies.get(key);
       if (!methods.containsKey(lazy)) {
         int sep = lazy.lastIndexOf('.');
-        Class c = Class.forName(lazy.substring(0, sep));
+        Class<?> c = Class.forName(lazy.substring(0, sep));
         Method method = c.getDeclaredMethod(lazy.substring(sep + 1), new Class[] {});
         methods.put(lazy, method);
       }
       return methods.get(lazy).invoke(null, new Object[] {});
     } catch (Exception e) {
-      JangodLogger.log(Level.SEVERE, e.getMessage(), e.getCause());
+      throw new CarrotException(e);
     }
-    return null;
   }
 
   @Override
@@ -100,9 +100,13 @@ public class LazyBindings implements Map<String, Object> {
       lazies.remove(key);
       return bins.remove(key);
     } else {
-      Object value = getFromDataSource(key);
-      lazies.remove(key);
-      return value;
+      try {
+        Object value = getFromDataSource(key);
+        lazies.remove(key);
+        return value;
+      } catch(CarrotException e) {
+        return null;
+      }
     }
   }
 
@@ -141,7 +145,11 @@ public class LazyBindings implements Map<String, Object> {
   @Override
   public Collection<Object> values() {
     for (String key : lazies.keySet()) {
-      bins.put(key, getFromDataSource(key));
+      try {
+        bins.put(key, getFromDataSource(key));
+      } catch (CarrotException e) {
+        // TODO??
+      }
     }
     return bins.values();
   }

@@ -1,10 +1,10 @@
 package au.com.codeka.carrot.template;
 
-import java.io.IOException;
 import java.io.Writer;
 import java.util.Map;
 
 import au.com.codeka.carrot.base.Application;
+import au.com.codeka.carrot.base.CarrotException;
 import au.com.codeka.carrot.base.Configuration;
 
 public class TemplateEngine {
@@ -26,12 +26,12 @@ public class TemplateEngine {
     }
   }
 
-  public String process(String templateFile, Map<String, Object> bindings) throws IOException {
+  public String process(String templateFile, Map<String, Object> bindings) throws CarrotException {
     return new Processor(application).render(templateFile, bindings);
   }
 
   public void process(String templateFile, Map<String, Object> bindings, Writer out)
-      throws IOException {
+      throws CarrotException {
     new Processor(application).render(templateFile, bindings, out);
   }
 

@@ -12,7 +12,7 @@ import org.junit.Test;
 public class ObjectIteratorTest {
 
   private Object items = null;
-  private ForLoop loop = null;
+  private ForLoop<Object> loop = null;
 
   @Test
   public void test1() {
@@ -65,10 +65,9 @@ public class ObjectIteratorTest {
     assertEquals("hello", loop.next());
   }
 
-  @SuppressWarnings("unchecked")
   @Test
   public void test7() {
-    Map items = new HashMap();
+    Map<Object, Object> items = new HashMap<Object, Object>();
     items.put("ok", 1);
     items.put(1, "ok");
     items.put(2, 2);

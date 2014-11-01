@@ -39,7 +39,7 @@ public class Application {
   }
 
   public Node getParseResult(String fullName, String encoding)
-      throws IOException {
+      throws CarrotException, IOException {
     return parseResultManager.getParseResult(fullName, encoding);
   }
 }

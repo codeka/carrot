@@ -1,8 +1,10 @@
 package au.com.codeka.carrot.tree;
 
-import static au.com.codeka.carrot.parse.ParserConstants.*;
-import static au.com.codeka.carrot.util.logging.JangodLogger;
-
+import static au.com.codeka.carrot.parse.ParserConstants.TOKEN_ECHO;
+import static au.com.codeka.carrot.parse.ParserConstants.TOKEN_FIXED;
+import static au.com.codeka.carrot.parse.ParserConstants.TOKEN_MACRO;
+import static au.com.codeka.carrot.parse.ParserConstants.TOKEN_NOTE;
+import static au.com.codeka.carrot.parse.ParserConstants.TOKEN_TAG;
 import au.com.codeka.carrot.base.Application;
 import au.com.codeka.carrot.parse.EchoToken;
 import au.com.codeka.carrot.parse.FixedToken;
@@ -11,7 +13,6 @@ import au.com.codeka.carrot.parse.ParseException;
 import au.com.codeka.carrot.parse.TagToken;
 import au.com.codeka.carrot.parse.Token;
 import au.com.codeka.carrot.parse.TokenParser;
-import au.com.codeka.carrot.util.logging.Level;
 
 public class TreeParser {
   private Application app;
@@ -20,13 +21,13 @@ public class TreeParser {
     this.app = app;
   }
 
-  public Node parse(TokenParser parser) {
+  public Node parse(TokenParser parser) throws ParseException {
     Node root = new RootNode(app);
     tree(root, parser, RootNode.TREE_ROOT_END);
     return root;
   }
 
-  void tree(Node node, TokenParser parser, String endName) {
+  void tree(Node node, TokenParser parser, String endName) throws ParseException {
     Token token;
     TagToken tag;
     MacroToken macro;
@@ -44,15 +45,10 @@ public class TreeParser {
         if (macro.getMacroName().equalsIgnoreCase(endName)) {
           return;
         }
-        try {
-          MacroNode mn = new MacroNode(app, (MacroToken) token);
-          node.add(mn);
-          if (mn.endName != null) {
-            tree(mn, parser, mn.endName);
-          }
-        } catch (ParseException e) {
-          JangodLogger
-              .log(Level.WARNING, "can't create node with token >>> " + token, e.getCause());
+        MacroNode mn = new MacroNode(app, (MacroToken) token);
+        node.add(mn);
+        if (mn.endName != null) {
+          tree(mn, parser, mn.endName);
         }
         break;
       case TOKEN_ECHO:
@@ -64,24 +60,19 @@ public class TreeParser {
         if (tag.getTagName().equalsIgnoreCase(endName)) {
           return;
         }
-        try {
-          TagNode tg = new TagNode(app, (TagToken) token);
-          node.add(tg);
-          if (tg.endName != null) {
-            tree(tg, parser, tg.endName);
-          }
-        } catch (ParseException e) {
-          JangodLogger
-              .log(Level.WARNING, "can't create node with token >>> " + token, e.getCause());
+        TagNode tg = new TagNode(app, (TagToken) token);
+        node.add(tg);
+        if (tg.endName != null) {
+          tree(tg, parser, tg.endName);
         }
         break;
       default:
-        JangodLogger.warning("unknown type token >>> " + token);
+        throw new ParseException("Unknown token: " + token);
       }
     }
     // can't reach end tag
     if (endName != null && !endName.equals(RootNode.TREE_ROOT_END)) {
-      JangodLogger.severe("lost end for tag or macro >>> " + endName);
+      throw new ParseException("Unexpected end of file, looking for " + endName);
     }
   }
 }

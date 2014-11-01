@@ -1,5 +1,6 @@
 package au.com.codeka.carrot.lib.filter;
 
+import au.com.codeka.carrot.base.CarrotException;
 import au.com.codeka.carrot.base.Constants;
 import au.com.codeka.carrot.interpret.InterpretException;
 import au.com.codeka.carrot.interpret.JangodInterpreter;
@@ -10,7 +11,7 @@ public class EqualFilter implements Filter {
 
   @Override
   public Object filter(Object object, JangodInterpreter interpreter, String... arg)
-      throws InterpretException {
+      throws CarrotException {
     if (arg.length != 1) {
       throw new InterpretException("filter equal expects 1 arg >>> " + arg.length);
     }

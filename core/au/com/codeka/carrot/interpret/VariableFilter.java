@@ -1,9 +1,8 @@
 package au.com.codeka.carrot.interpret;
 
-import static au.com.codeka.carrot.util.logging.JangodLogger;
-
 import java.util.List;
 
+import au.com.codeka.carrot.base.CarrotException;
 import au.com.codeka.carrot.base.Constants;
 import au.com.codeka.carrot.lib.Filter;
 import au.com.codeka.carrot.lib.FilterLibrary;
@@ -13,7 +12,7 @@ import au.com.codeka.carrot.parse.ParseException;
 public class VariableFilter {
 
   public static Object compute(String varString, JangodInterpreter interpreter)
-      throws InterpretException {
+      throws CarrotException {
     if ((varString.startsWith(Constants.STR_SINGLE_QUOTE) && varString
         .endsWith(Constants.STR_SINGLE_QUOTE))
         ||
@@ -37,10 +36,6 @@ public class VariableFilter {
     Filter filter;
     for (int i = 0; i < filters.size(); i++) {
       filter = FilterLibrary.getFilter(filters.get(i));
-      if (filter == null) {
-        JangodLogger.warning("skipping an unregistered filter >>> " + filters.get(i));
-        continue;
-      }
       args = argss.get(i);
       if (args == null) {
         var = filter.filter(var, interpreter);

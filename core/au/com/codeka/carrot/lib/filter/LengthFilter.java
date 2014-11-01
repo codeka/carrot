@@ -10,8 +10,6 @@ import au.com.codeka.carrot.interpret.JangodInterpreter;
 import au.com.codeka.carrot.lib.Filter;
 
 public class LengthFilter implements Filter {
-
-  @SuppressWarnings("unchecked")
   @Override
   public Object filter(Object object, JangodInterpreter interpreter, String... arg)
       throws InterpretException {

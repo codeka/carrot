@@ -12,7 +12,6 @@ import au.com.codeka.carrot.lib.Filter;
 
 public class RandomFilter implements Filter {
 
-  @SuppressWarnings("unchecked")
   @Override
   public Object filter(Object object, JangodInterpreter interpreter, String... arg)
       throws InterpretException {
@@ -75,9 +74,8 @@ public class RandomFilter implements Filter {
         return 0;
       }
     }
-    // TODO iterable
-    // TODO iterator
-    return object;
+
+    throw new InterpretException("Filter cannot be applied to " + object.getClass().getName());
   }
 
   @Override

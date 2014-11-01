@@ -3,6 +3,8 @@ package au.com.codeka.carrot.util;
 import java.util.Arrays;
 import java.util.List;
 
+import au.com.codeka.carrot.base.CarrotException;
+
 public class Variable {
 
   static final String DOT = ".";
@@ -33,7 +35,7 @@ public class Variable {
     return name;
   }
 
-  public Object resolve(Object value) {
+  public Object resolve(Object value) throws CarrotException {
     if (chainList != null) {
       return new VariableChain(chainList, value).resolve();
     } else {

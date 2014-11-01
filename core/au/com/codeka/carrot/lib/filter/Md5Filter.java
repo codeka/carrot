@@ -1,7 +1,5 @@
 package au.com.codeka.carrot.lib.filter;
 
-import static au.com.codeka.carrot.util.logging.JangodLogger;
-
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -33,24 +31,20 @@ public class Md5Filter implements Filter {
     return sBuffer.toString();
   }
 
-  public String md5(String str) {
-    String result = null;
-    MessageDigest md;
-    try {
-      md = MessageDigest.getInstance(md5);
-      result = byteToString(md.digest(str.getBytes()));
-    } catch (NoSuchAlgorithmException ex) {
-      JangodLogger.severe(ex.getMessage());
-    }
-
-    return result;
+  public String md5(String str) throws NoSuchAlgorithmException {
+    MessageDigest md = MessageDigest.getInstance(md5);
+    return byteToString(md.digest(str.getBytes()));
   }
 
   @Override
   public Object filter(Object object, JangodInterpreter interpreter, String... arg)
       throws InterpretException {
-    if (object instanceof String) {
-      return md5((String) object);
+    try {
+      if (object instanceof String) {
+        return md5((String) object);
+      }
+    } catch (NoSuchAlgorithmException e) {
+      throw new InterpretException(e);
     }
     return object;
   }

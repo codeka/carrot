@@ -1,12 +1,11 @@
 package au.com.codeka.carrot.interpret;
 
-import static au.com.codeka.carrot.util.logging.JangodLogger;
-
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Iterator;
 
 import au.com.codeka.carrot.base.Application;
+import au.com.codeka.carrot.base.CarrotException;
 import au.com.codeka.carrot.base.Configuration;
 import au.com.codeka.carrot.base.Constants;
 import au.com.codeka.carrot.base.Context;
@@ -15,6 +14,7 @@ import au.com.codeka.carrot.tree.Node;
 import au.com.codeka.carrot.tree.TreeParser;
 import au.com.codeka.carrot.util.ListOrderedMap;
 import au.com.codeka.carrot.util.ListOrderedMap.Item;
+import au.com.codeka.carrot.util.Log;
 import au.com.codeka.carrot.util.Variable;
 
 public class JangodInterpreter implements Cloneable {
@@ -32,11 +32,13 @@ public class JangodInterpreter implements Cloneable {
   private int level = 1;
   private FloorBindings runtime;
   private Context context;
+  private Log log;
   String file = null;
 
   public JangodInterpreter(Context context) {
     this.context = context;
     runtime = new FloorBindings();
+    log = new Log(context.getApplication().getConfiguration());
   }
 
   private JangodInterpreter() {
@@ -51,6 +53,7 @@ public class JangodInterpreter implements Cloneable {
     JangodInterpreter compiler = new JangodInterpreter();
     compiler.context = context;
     compiler.runtime = runtime.clone();
+    compiler.log = log;
     return compiler;
   }
 
@@ -59,11 +62,11 @@ public class JangodInterpreter implements Cloneable {
     level = 1;
   }
 
-  public void render(TokenParser parser, Writer writer) throws InterpretException, IOException {
+  public void render(TokenParser parser, Writer writer) throws CarrotException, IOException {
     render(new TreeParser(context.getApplication()).parse(parser), writer);
   }
 
-  public void render(Node root, Writer writer) throws InterpretException, IOException {
+  public void render(Node root, Writer writer) throws CarrotException, IOException {
     for (Node node : root.children()) {
       node.render(this, writer);
     }
@@ -88,9 +91,9 @@ public class JangodInterpreter implements Cloneable {
     }
   }
 
-  public Object retraceVariable(String variable) {
+  public Object retraceVariable(String variable) throws CarrotException {
     if (variable == null || variable.trim().length() == 0) {
-      JangodLogger.severe("variable name is required.");
+      // No variable, just return empty string.
       return "";
     }
     Variable var = new Variable(variable);
@@ -115,18 +118,17 @@ public class JangodInterpreter implements Cloneable {
     if (obj != null) {
       obj = var.resolve(obj);
       if (obj == null) {
-        JangodLogger.fine(varName + " can't resolve member >>> " + variable);
+        log.warn("%s can't resolve member '%s'", varName, variable);
       }
     } else {
-      JangodLogger.finer(variable + " can't resolve variable >>> " + varName);
+      log.warn("%s can't resolve variable '%s'", variable, varName);
     }
     return obj;
   }
 
-  public String resolveString(String variable) {
+  public String resolveString(String variable) throws CarrotException {
     if (variable == null || variable.trim().length() == 0) {
-      JangodLogger.severe("variable name is required.");
-      return "";
+      throw new InterpretException("Variable name is required.");
     }
     if (variable.startsWith(Constants.STR_DOUBLE_QUOTE) ||
         variable.startsWith(Constants.STR_SINGLE_QUOTE)) {
@@ -139,10 +141,9 @@ public class JangodInterpreter implements Cloneable {
     }
   }
 
-  public Object resolveObject(String variable) {
+  public Object resolveObject(String variable) throws CarrotException {
     if (variable == null || variable.trim().length() == 0) {
-      JangodLogger.severe("variable name is required.");
-      return "";
+      throw new InterpretException("Variable name is required.");
     }
     if (variable.startsWith(Constants.STR_DOUBLE_QUOTE) ||
         variable.startsWith(Constants.STR_SINGLE_QUOTE)) {

@@ -1,20 +1,18 @@
 package au.com.codeka.carrot.lib.filter;
 
-import static au.com.codeka.carrot.util.logging.JangodLogger;
-
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
 
+import au.com.codeka.carrot.base.CarrotException;
 import au.com.codeka.carrot.interpret.InterpretException;
 import au.com.codeka.carrot.interpret.JangodInterpreter;
 import au.com.codeka.carrot.lib.Filter;
-import au.com.codeka.carrot.util.logging.Level;
 
 public class DatetimeFilter implements Filter {
 
   @Override
   public Object filter(Object object, JangodInterpreter interpreter, String... arg)
-      throws InterpretException {
+      throws CarrotException {
     if (object == null) {
       return object;
     }
@@ -31,10 +29,8 @@ public class DatetimeFilter implements Filter {
     try {
       return sdf.format(object);
     } catch (Exception e) {
-      JangodLogger.log(Level.SEVERE, "filter date can't format a datetime >>> " + object,
-          e.getCause());
+      throw new InterpretException("Filter date can't format a datetime: " + object, e);
     }
-    return object;
   }
 
   @Override

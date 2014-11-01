@@ -1,7 +1,5 @@
 package au.com.codeka.carrot.script;
 
-import static au.com.codeka.carrot.util.logging.JangodLogger;
-
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringWriter;
@@ -13,22 +11,24 @@ import javax.script.ScriptEngineFactory;
 import javax.script.ScriptException;
 import javax.script.SimpleBindings;
 
+import au.com.codeka.carrot.base.CarrotException;
 import au.com.codeka.carrot.base.Context;
-import au.com.codeka.carrot.interpret.InterpretException;
 import au.com.codeka.carrot.interpret.JangodInterpreter;
 import au.com.codeka.carrot.parse.ParseException;
 import au.com.codeka.carrot.parse.TokenParser;
-import au.com.codeka.carrot.util.logging.Level;
+import au.com.codeka.carrot.util.Log;
 
 public class JangodEngine implements ScriptEngine {
 
   private String defaultBindings = "javax.script.SimpleBindings";
   private JangodEngineFactory factory;
-  private ScriptContext context;
+  private JangodContext context;
+  private Log log;
 
   public JangodEngine() {
     factory = new JangodEngineFactory();
     context = new JangodContext(factory.globalBindings);
+    log = new Log(context.getApplication().getConfiguration());
     initGlobalData();
   }
 
@@ -46,14 +46,8 @@ public class JangodEngine implements ScriptEngine {
   public Bindings createBindings() {
     try {
       return (Bindings) Class.forName(defaultBindings).newInstance();
-    } catch (InstantiationException e) {
-      JangodLogger.log(Level.SEVERE, e.getMessage(), e.getCause());
-    } catch (IllegalAccessException e) {
-      JangodLogger.log(Level.SEVERE, e.getMessage(), e.getCause());
-    } catch (ClassNotFoundException e) {
-      JangodLogger.log(Level.SEVERE, e.getMessage(), e.getCause());
     } catch (Exception e) {
-      JangodLogger.log(Level.SEVERE, e.getMessage(), e.getCause());
+      log.warn("Could not create bindings, using defaults: ", e);
     }
     return new SimpleBindings();
   }
@@ -150,7 +144,7 @@ public class JangodEngine implements ScriptEngine {
   }
 
   private static String render(JangodInterpreter interpreter, TokenParser parser)
-      throws InterpretException, IOException {
+      throws CarrotException, IOException {
     StringWriter writer = new StringWriter();
     interpreter.render(parser, writer);
     return writer.toString();
@@ -183,7 +177,7 @@ public class JangodEngine implements ScriptEngine {
 
   @Override
   public void setContext(ScriptContext scontext) {
-    context = scontext;
+    context = (JangodContext) scontext;
   }
 
 }

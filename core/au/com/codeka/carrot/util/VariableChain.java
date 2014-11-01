@@ -1,7 +1,5 @@
 package au.com.codeka.carrot.util;
 
-import static au.com.codeka.carrot.util.logging.JangodLogger;
-
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -9,7 +7,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import au.com.codeka.carrot.util.logging.Level;
+import au.com.codeka.carrot.base.CarrotException;
 
 public class VariableChain {
 
@@ -24,7 +22,7 @@ public class VariableChain {
     this.value = value;
   }
 
-  public Object resolve() {
+  public Object resolve() throws CarrotException {
     for (String name : chain) {
       if (value == null) {
         return null;
@@ -35,8 +33,7 @@ public class VariableChain {
     return value;
   }
 
-  @SuppressWarnings("unchecked")
-  private Object resolveInternal(String name) {
+  private Object resolveInternal(String name) throws CarrotException {
     // field
     Class<?> clazz = value.getClass();
     try {
@@ -66,7 +63,7 @@ public class VariableChain {
         try {
           return mth1.invoke(value);
         } catch (Exception e) {
-          JangodLogger.log(Level.SEVERE, "resolve variable trigger error.", e.getCause());
+          throw new CarrotException("Could not resolve variable.", e);
         }
       }
     }

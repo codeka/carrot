@@ -1,12 +1,11 @@
 package au.com.codeka.carrot.tree;
 
-import static au.com.codeka.carrot.util.logging.JangodLogger;
-
 import java.io.IOException;
 
 import au.com.codeka.carrot.base.Application;
 import au.com.codeka.carrot.base.Configuration;
 import au.com.codeka.carrot.cache.StatelessObjectStorage;
+import au.com.codeka.carrot.parse.ParseException;
 import au.com.codeka.carrot.parse.TokenParser;
 
 public class ParseResultManager {
@@ -25,11 +24,11 @@ public class ParseResultManager {
     try {
       cache = (StatelessObjectStorage<String, Node>) config.getParseCacheClass().newInstance();
     } catch (Exception e) {
-      JangodLogger.warning(e.toString());
+      throw new RuntimeException(e);
     }
   }
 
-  public Node getParseResult(String file, String encoding) throws IOException {
+  public Node getParseResult(String file, String encoding) throws IOException, ParseException {
     String key = file + join + encoding;
     Node root = cache.get(key);
     if (root == null) {

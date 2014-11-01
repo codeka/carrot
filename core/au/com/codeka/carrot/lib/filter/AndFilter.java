@@ -1,6 +1,6 @@
 package au.com.codeka.carrot.lib.filter;
 
-import au.com.codeka.carrot.interpret.InterpretException;
+import au.com.codeka.carrot.base.CarrotException;
 import au.com.codeka.carrot.interpret.JangodInterpreter;
 import au.com.codeka.carrot.lib.Filter;
 import au.com.codeka.carrot.util.ObjectTruthValue;
@@ -9,7 +9,7 @@ public class AndFilter implements Filter {
 
   @Override
   public Object filter(Object object, JangodInterpreter interpreter, String... arg)
-      throws InterpretException {
+      throws CarrotException {
     if (!ObjectTruthValue.evaluate(object)) {
       return false;
     } else {

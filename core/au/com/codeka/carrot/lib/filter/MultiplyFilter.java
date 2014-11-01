@@ -3,6 +3,7 @@ package au.com.codeka.carrot.lib.filter;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
+import au.com.codeka.carrot.base.CarrotException;
 import au.com.codeka.carrot.interpret.InterpretException;
 import au.com.codeka.carrot.interpret.JangodInterpreter;
 import au.com.codeka.carrot.lib.Filter;
@@ -11,7 +12,7 @@ public class MultiplyFilter implements Filter {
 
   @Override
   public Object filter(Object object, JangodInterpreter interpreter, String... arg)
-      throws InterpretException {
+      throws CarrotException {
     if (arg.length != 1) {
       throw new InterpretException("filter multiply expects 1 arg >>> " + arg.length);
     }

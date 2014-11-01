@@ -1,11 +1,16 @@
 package au.com.codeka.carrot.parse;
 
-public class ParseException extends Exception {
+import au.com.codeka.carrot.base.CarrotException;
 
-  private static final long serialVersionUID = -2348219592540572520L;
+public class ParseException extends CarrotException {
+  private static final long serialVersionUID = 1;
 
   public ParseException(String msg) {
     super(msg);
+  }
+
+  public ParseException(Throwable e) {
+    super(e);
   }
 
   public ParseException(String msg, Throwable e) {

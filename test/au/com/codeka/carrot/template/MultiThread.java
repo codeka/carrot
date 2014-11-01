@@ -1,7 +1,8 @@
 package au.com.codeka.carrot.template;
 
-import java.io.IOException;
 import java.util.HashMap;
+
+import au.com.codeka.carrot.base.CarrotException;
 
 public class MultiThread {
 
@@ -40,7 +41,7 @@ public class MultiThread {
       try {
         System.out.println(engine.process("D:\\log\\index.html", bindings));
         System.out.println("=========================================");
-      } catch (IOException e) {
+      } catch (CarrotException e) {
         e.printStackTrace();
       }
     }

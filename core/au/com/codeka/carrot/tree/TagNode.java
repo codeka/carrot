@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.Writer;
 
 import au.com.codeka.carrot.base.Application;
-import au.com.codeka.carrot.interpret.InterpretException;
+import au.com.codeka.carrot.base.CarrotException;
 import au.com.codeka.carrot.interpret.JangodInterpreter;
 import au.com.codeka.carrot.lib.Tag;
 import au.com.codeka.carrot.lib.TagLibrary;
@@ -30,7 +30,7 @@ public class TagNode extends Node {
 
   @Override
   public void render(JangodInterpreter interpreter, Writer writer)
-      throws InterpretException, IOException {
+      throws CarrotException, IOException {
     interpreter.setLevel(level);
     Tag tag = TagLibrary.getTag(master.getTagName());
     tag.interpreter(children(), master.getHelpers(), interpreter, writer);

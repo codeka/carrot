@@ -1,17 +1,14 @@
 package au.com.codeka.carrot.parse;
 
-import static au.com.codeka.carrot.util.logging.JangodLogger;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
-import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import au.com.codeka.carrot.base.Constants;
-import au.com.codeka.carrot.util.logging.Level;
 
-public class TokenParser implements Iterator<Token> {
+/** Essentially an iterator for iterating over tokens in the input stream. */
+public class TokenParser {
 
   private Tokenizer tm = new Tokenizer();
   private Token token;
@@ -54,42 +51,28 @@ public class TokenParser implements Iterator<Token> {
     proceeding = true;
   }
 
-  @Override
-  public boolean hasNext() {
+  public boolean hasNext() throws ParseException {
     if (proceeding) {
-      try {
-        token = tm.getNextToken();
-        if (token != null) {
-          return true;
-        } else {
-          proceeding = false;
-          return false;
-        }
-      } catch (ParseException e) {
-        JangodLogger.log(Level.SEVERE, e.getMessage(), e.getCause());
-        token = null;
-        // TODO go on proceeding or not
+      token = tm.getNextToken();
+      if (token != null) {
+        return true;
+      } else {
+        proceeding = false;
+        return false;
       }
     }
     return false;
   }
 
-  @Override
-  public Token next() {
+  public Token next() throws ParseException {
     if (proceeding) {
       if (token == null) {
-        try {
-          Token tk = tm.getNextToken();
-          if (tk == null) {
-            proceeding = false;
-            throw new NoSuchElementException();
-          }
-          return tk;
-        } catch (ParseException e) {
-          JangodLogger.log(Level.SEVERE, e.getMessage(), e.getCause());
-          // TODO go on proceeding or not
+        Token tk = tm.getNextToken();
+        if (tk == null) {
+          proceeding = false;
           throw new NoSuchElementException();
         }
+        return tk;
       } else {
         Token last = token;
         token = null;
@@ -97,10 +80,5 @@ public class TokenParser implements Iterator<Token> {
       }
     }
     throw new NoSuchElementException();
-  }
-
-  @Override
-  public void remove() {
-    throw new UnsupportedOperationException();
   }
 }

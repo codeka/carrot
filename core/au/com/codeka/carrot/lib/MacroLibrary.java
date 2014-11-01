@@ -1,13 +1,10 @@
 package au.com.codeka.carrot.lib;
 
-import static au.com.codeka.carrot.util.logging.JangodLogger;
-
 import au.com.codeka.carrot.lib.macro.BlockMacro;
 import au.com.codeka.carrot.lib.macro.ExtendsMacro;
 import au.com.codeka.carrot.lib.macro.IncludeMacro;
 
 public class MacroLibrary extends SimpleLibrary<Macro> {
-
   private static MacroLibrary lib;
 
   static {
@@ -30,7 +27,6 @@ public class MacroLibrary extends SimpleLibrary<Macro> {
 
   public static void addMacro(Macro macro) {
     lib.register(macro.getName(), macro);
-    JangodLogger.fine("Imported macro >>>" + macro.getName());
+    //JangodLogger.fine("Imported macro >>>" + macro.getName());
   }
-
 }

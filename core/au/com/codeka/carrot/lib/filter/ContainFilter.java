@@ -4,6 +4,7 @@ import java.lang.reflect.Array;
 import java.util.Iterator;
 import java.util.Map;
 
+import au.com.codeka.carrot.base.CarrotException;
 import au.com.codeka.carrot.base.Constants;
 import au.com.codeka.carrot.interpret.InterpretException;
 import au.com.codeka.carrot.interpret.JangodInterpreter;
@@ -11,11 +12,9 @@ import au.com.codeka.carrot.lib.Filter;
 import au.com.codeka.carrot.util.ObjectStringEqual;
 
 public class ContainFilter implements Filter {
-
-  @SuppressWarnings("unchecked")
   @Override
   public Object filter(Object object, JangodInterpreter interpreter, String... arg)
-      throws InterpretException {
+      throws CarrotException {
     if (object == null) {
       return false;
     }
@@ -66,7 +65,7 @@ public class ContainFilter implements Filter {
     if (object instanceof Iterator) {
       return iteratorContain((Iterator<?>) object, isNull, argObj);
     }
-    throw new InterpretException("filter contain can't be applied to >>> "
+    throw new InterpretException("Filter contain can't be applied to: "
         + object.getClass().getName());
   }
 

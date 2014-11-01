@@ -33,19 +33,18 @@ public class ForLoopTest {
 
   }
 
-  private ForLoop loop;
+  private ForLoop<Object> loop;
 
-  @SuppressWarnings("unchecked")
   @Before
   public void setUp() throws Exception {
-    ArrayList al = new ArrayList();
+    ArrayList<Object> al = new ArrayList<Object>();
     al.add("String");
     al.add("true1");
     al.add(Boolean.TRUE);
     al.add(1);
     al.add(1.23);
     al.add(new java.util.Date());
-    loop = new ForLoop(al.iterator(), al.size());
+    loop = new ForLoop<Object>(al.iterator(), al.size());
   }
 
   @Test
@@ -119,7 +118,7 @@ public class ForLoopTest {
 
   @Test
   public void test6() {
-    loop = new ForLoop(new AIterator());
+    ForLoop<String> loop = new ForLoop<String>(new AIterator());
     loop.next();
     assertEquals(0, loop.getIndex());
     assertEquals(true, loop.isFirst());
@@ -132,7 +131,7 @@ public class ForLoopTest {
 
   @Test
   public void test7() {
-    loop = new ForLoop(new AIterator());
+    ForLoop<String> loop = new ForLoop<String>(new AIterator());
     loop.next();
     loop.next();
     loop.next();
@@ -147,7 +146,7 @@ public class ForLoopTest {
 
   @Test
   public void test8() {
-    loop = new ForLoop(new AIterator());
+    ForLoop<String> loop = new ForLoop<String>(new AIterator());
     while (loop.hasNext()) {
       loop.next();
     }
@@ -162,7 +161,7 @@ public class ForLoopTest {
 
   @Test
   public void test9() {
-    loop = new ForLoop(new AIterator());
+    ForLoop<String> loop = new ForLoop<String>(new AIterator());
     loop.next();
     loop.next();
     loop.next();
@@ -179,7 +178,7 @@ public class ForLoopTest {
 
   @Test
   public void test10() {
-    loop = new ForLoop(new AIterator());
+    ForLoop<String> loop = new ForLoop<String>(new AIterator());
     loop.next();
     loop.next();
     assertEquals(1, loop.getIndex());

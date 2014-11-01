@@ -1,16 +1,20 @@
 package au.com.codeka.carrot.lib;
 
-import static au.com.codeka.carrot.util.logging.JangodLogger;
-
+import au.com.codeka.carrot.lib.filter.AbsFilter;
+import au.com.codeka.carrot.lib.filter.AddFilter;
 import au.com.codeka.carrot.lib.filter.AndFilter;
 import au.com.codeka.carrot.lib.filter.ContainFilter;
+import au.com.codeka.carrot.lib.filter.CutFilter;
 import au.com.codeka.carrot.lib.filter.DatetimeFilter;
 import au.com.codeka.carrot.lib.filter.DefaultFilter;
+import au.com.codeka.carrot.lib.filter.DivideFilter;
 import au.com.codeka.carrot.lib.filter.DivisibleFilter;
 import au.com.codeka.carrot.lib.filter.EqualFilter;
 import au.com.codeka.carrot.lib.filter.EscapeFilter;
 import au.com.codeka.carrot.lib.filter.LengthFilter;
 import au.com.codeka.carrot.lib.filter.LowerFilter;
+import au.com.codeka.carrot.lib.filter.Md5Filter;
+import au.com.codeka.carrot.lib.filter.MultiplyFilter;
 import au.com.codeka.carrot.lib.filter.NotFilter;
 import au.com.codeka.carrot.lib.filter.OrFilter;
 import au.com.codeka.carrot.lib.filter.ReverseFilter;
@@ -57,14 +61,14 @@ public class FilterLibrary extends SimpleLibrary<Filter> {
     // number
     Filter diaf = new DivisibleFilter();
     register(diaf.getName(), diaf);
-    // Filter absf = new AbsFilter();
-    // register(absf.getName(), absf);
-    // Filter addf = new AddFilter();
-    // register(addf.getName(), addf);
-    // Filter mulf = new MultiplyFilter();
-    // register(mulf.getName(), mulf);
-    // Filter divf = new DivideFilter();
-    // register(divf.getName(), divf);
+    Filter absf = new AbsFilter();
+    register(absf.getName(), absf);
+    Filter addf = new AddFilter();
+    register(addf.getName(), addf);
+    Filter mulf = new MultiplyFilter();
+    register(mulf.getName(), mulf);
+    Filter divf = new DivideFilter();
+    register(divf.getName(), divf);
 
     // string
     Filter escf = new EscapeFilter();
@@ -75,10 +79,10 @@ public class FilterLibrary extends SimpleLibrary<Filter> {
     register(truf.getName(), truf);
     Filter upcf = new UpperFilter();
     register(upcf.getName(), upcf);
-    // Filter cutf = new CutFilter();
-    // register(cutf.getName(), cutf);
-    // Filter md5f = new Md5Filter();
-    // register(md5f.getName(), md5f);
+    Filter cutf = new CutFilter();
+    register(cutf.getName(), cutf);
+    Filter md5f = new Md5Filter();
+    register(md5f.getName(), md5f);
   }
 
   public static Filter getFilter(String filterName) {
@@ -87,6 +91,6 @@ public class FilterLibrary extends SimpleLibrary<Filter> {
 
   public static void addFilter(Filter filter) {
     lib.register(filter.getName(), filter);
-    JangodLogger.fine("Imported filter >>>" + filter.getName());
+    //JangodLogger.fine("Imported filter >>>" + filter.getName());
   }
 }

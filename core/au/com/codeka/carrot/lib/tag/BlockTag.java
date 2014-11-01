@@ -6,6 +6,7 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
+import au.com.codeka.carrot.base.CarrotException;
 import au.com.codeka.carrot.interpret.InterpretException;
 import au.com.codeka.carrot.interpret.JangodInterpreter;
 import au.com.codeka.carrot.lib.Tag;
@@ -29,7 +30,7 @@ public class BlockTag implements Tag {
   @SuppressWarnings("unchecked")
   @Override
   public void interpreter(NodeList carries, String helpers, JangodInterpreter interpreter,
-      Writer writer) throws InterpretException, IOException {
+      Writer writer) throws CarrotException, IOException {
     String[] helper = new HelperStringTokenizer(helpers).allTokens();
     if (helper.length != 1) {
       throw new InterpretException("Tag 'block' expects 1 helper >>> " + helper.length);
@@ -72,14 +73,14 @@ public class BlockTag implements Tag {
   }
 
   private void writeBlockContent(NodeList carries, JangodInterpreter interpreter, Writer writer)
-      throws InterpretException, IOException {
+      throws CarrotException, IOException {
     for (Node node : carries) {
       node.render(interpreter, writer);
     }
   }
 
   private String getBlockContent(NodeList carrier, JangodInterpreter interpreter)
-      throws InterpretException, IOException {
+      throws CarrotException, IOException {
     StringWriter writer = new StringWriter();
     writeBlockContent(carrier, interpreter, writer);
     return writer.toString();

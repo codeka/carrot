@@ -222,7 +222,7 @@ public class TagTest {
 
   @Test
   public void block1() throws ScriptException {
-    script = "{%block a	%}";
+    script = "{%block a	%}{% endblock %}";
     res = engine.eval(script);
     assertEquals("", res);
   }

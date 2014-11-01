@@ -1,8 +1,6 @@
 package au.com.codeka.carrot.lib.filter;
 
-import static au.com.codeka.carrot.util.logging.JangodLogger;
-
-import au.com.codeka.carrot.interpret.InterpretException;
+import au.com.codeka.carrot.base.CarrotException;
 import au.com.codeka.carrot.interpret.JangodInterpreter;
 import au.com.codeka.carrot.lib.Filter;
 
@@ -12,16 +10,12 @@ public class TruncateFilter implements Filter {
 
   @Override
   public Object filter(Object object, JangodInterpreter interpreter, String... arg)
-      throws InterpretException {
+      throws CarrotException {
     if (object instanceof String) {
       int length = 100;
       String ends = ENDS;
       if (arg.length > 0) {
-        try {
-          length = Integer.valueOf(interpreter.resolveString(arg[0]));
-        } catch (Exception e) {
-          JangodLogger.warning("filter truncate get length error use default >>> 100");
-        }
+        length = Integer.valueOf(interpreter.resolveString(arg[0]));
       }
       if (arg.length > 1) {
         ends = interpreter.resolveString(arg[1]);

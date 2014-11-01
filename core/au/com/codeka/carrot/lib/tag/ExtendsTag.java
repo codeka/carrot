@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 
+import au.com.codeka.carrot.base.CarrotException;
 import au.com.codeka.carrot.interpret.InterpretException;
 import au.com.codeka.carrot.interpret.JangodInterpreter;
 import au.com.codeka.carrot.lib.Tag;
@@ -23,7 +24,7 @@ public class ExtendsTag implements Tag {
 
   @Override
   public void interpreter(NodeList carries, String helpers, JangodInterpreter interpreter,
-      Writer writer) throws InterpretException, IOException {
+      Writer writer) throws CarrotException, IOException {
     String[] helper = new HelperStringTokenizer(helpers).allTokens();
     if (helper.length != 1) {
       throw new InterpretException("Tag 'extends' expects 1 helper >>> " + helper.length);

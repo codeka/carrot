@@ -6,9 +6,7 @@ import java.util.Map;
 
 public class ObjectTruthValue {
 
-  @SuppressWarnings("unchecked")
   public static boolean evaluate(Object object) {
-
     if (object == null) {
       return false;
     }
@@ -40,5 +38,4 @@ public class ObjectTruthValue {
 
     return true;
   }
-
 }

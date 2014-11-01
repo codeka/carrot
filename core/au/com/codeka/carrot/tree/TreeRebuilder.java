@@ -1,7 +1,5 @@
 package au.com.codeka.carrot.tree;
 
-import static au.com.codeka.carrot.util.logging.JangodLogger;
-
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -98,18 +96,14 @@ public class TreeRebuilder {
     return application;
   }
 
-  public Node refactor(Node root) {
+  public Node refactor(Node root) throws ParseException {
     boolean needRelevel = false;
     TreeIterator nit = new TreeIterator(root);
     Node temp = null;
     while (nit.hasNext()) {
       temp = nit.next();
       if (temp instanceof MacroNode) {
-        try {
-          ((MacroNode) temp).refactor(this);
-        } catch (ParseException e) {
-          JangodLogger.warning(e.getMessage());
-        }
+        ((MacroNode) temp).refactor(this);
         needRelevel = true;
       }
     }
@@ -122,7 +116,7 @@ public class TreeRebuilder {
           action.invoke(null, msg);
         }
       } catch (Exception e) {
-        JangodLogger.severe(e.getMessage());
+        throw new ParseException(e);
       }
     }
     if (parent != null) {
@@ -143,7 +137,7 @@ public class TreeRebuilder {
    * @param with
    *          The new nodelist instead of old node
    */
-  public void nodeReplace(Node tobe, NodeList with) {
+  public void nodeReplace(Node tobe, NodeList with) throws ParseException {
     if (tobe != null) {
       try {
         // keep fresh, don't use node.parent, node.predecessor, node.successor
@@ -154,12 +148,12 @@ public class TreeRebuilder {
         actions.add(action);
         msgs.add(msg);
       } catch (Exception e) {
-        JangodLogger.severe(e.getMessage());
+        throw new ParseException(e);
       }
     }
   }
 
-  public void nodeReplace(Node tobe, Node with) {
+  public void nodeReplace(Node tobe, Node with) throws ParseException {
     if (tobe != null) {
       try {
         Method action = NodeAction.class.getDeclaredMethod("replace",
@@ -168,12 +162,12 @@ public class TreeRebuilder {
         actions.add(action);
         msgs.add(msg);
       } catch (Exception e) {
-        JangodLogger.severe(e.getMessage());
+        throw new ParseException(e);
       }
     }
   }
 
-  public void nodeRemove(Node node) {
+  public void nodeRemove(Node node) throws ParseException {
     if (node != null) {
       try {
         Method action = NodeAction.class.getDeclaredMethod("remove",
@@ -182,12 +176,12 @@ public class TreeRebuilder {
         actions.add(action);
         msgs.add(msg);
       } catch (Exception e) {
-        JangodLogger.severe(e.getMessage());
+        throw new ParseException(e);
       }
     }
   }
 
-  public void nodeInsertAfter(Node node, Node toAdd) {
+  public void nodeInsertAfter(Node node, Node toAdd) throws ParseException {
     if (node != null && toAdd != null) {
       try {
         Method action = NodeAction.class.getDeclaredMethod("insertAfter",
@@ -196,12 +190,12 @@ public class TreeRebuilder {
         actions.add(action);
         msgs.add(msg);
       } catch (Exception e) {
-        JangodLogger.severe(e.getMessage());
+        throw new ParseException(e);
       }
     }
   }
 
-  public void nodeInsertBefore(Node node, Node toAdd) {
+  public void nodeInsertBefore(Node node, Node toAdd) throws ParseException {
     if (node != null && toAdd != null) {
       try {
         Method action = NodeAction.class.getDeclaredMethod("insertBefore",
@@ -210,12 +204,12 @@ public class TreeRebuilder {
         actions.add(action);
         msgs.add(msg);
       } catch (Exception e) {
-        JangodLogger.severe(e.getMessage());
+        throw new ParseException(e);
       }
     }
   }
 
-  public void nodeAddChildLast(Node parent, Node toAdd) {
+  public void nodeAddChildLast(Node parent, Node toAdd) throws ParseException {
     if (parent != null && toAdd != null) {
       try {
         Method action = NodeAction.class.getDeclaredMethod("addChildLast",
@@ -224,12 +218,12 @@ public class TreeRebuilder {
         actions.add(action);
         msgs.add(msg);
       } catch (Exception e) {
-        JangodLogger.severe(e.getMessage());
+        throw new ParseException(e);
       }
     }
   }
 
-  public void nodeAddChildFirst(Node parent, Node toAdd) {
+  public void nodeAddChildFirst(Node parent, Node toAdd) throws ParseException {
     if (parent != null && toAdd != null) {
       try {
         Method action = NodeAction.class.getDeclaredMethod("addChildFirst",
@@ -238,12 +232,12 @@ public class TreeRebuilder {
         actions.add(action);
         msgs.add(msg);
       } catch (Exception e) {
-        JangodLogger.severe(e.getMessage());
+        throw new ParseException(e);
       }
     }
   }
 
-  public void nodeExchange(Node node1, Node node2) {
+  public void nodeExchange(Node node1, Node node2) throws ParseException {
     if (node1 != null && node2 != null) {
       try {
         Method action = NodeAction.class.getDeclaredMethod("exchange",
@@ -252,7 +246,7 @@ public class TreeRebuilder {
         actions.add(action);
         msgs.add(msg);
       } catch (Exception e) {
-        JangodLogger.severe(e.getMessage());
+        throw new ParseException(e);
       }
     }
   }

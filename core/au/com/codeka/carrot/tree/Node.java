@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.io.Writer;
 
 import au.com.codeka.carrot.base.Application;
-import au.com.codeka.carrot.interpret.InterpretException;
+import au.com.codeka.carrot.base.CarrotException;
 import au.com.codeka.carrot.interpret.JangodInterpreter;
 
 public abstract class Node implements Serializable, Cloneable {
@@ -162,7 +162,7 @@ public abstract class Node implements Serializable, Cloneable {
   }
 
   public abstract void render(JangodInterpreter interpreter, Writer writer)
-      throws InterpretException, IOException;
+      throws CarrotException, IOException;
 
   public abstract String getName();
 
