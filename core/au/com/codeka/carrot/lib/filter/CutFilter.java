@@ -2,14 +2,14 @@ package au.com.codeka.carrot.lib.filter;
 
 import au.com.codeka.carrot.base.CarrotException;
 import au.com.codeka.carrot.interpret.InterpretException;
-import au.com.codeka.carrot.interpret.JangodInterpreter;
+import au.com.codeka.carrot.interpret.CarrotInterpreter;
 import au.com.codeka.carrot.lib.Filter;
 import au.com.codeka.carrot.util.ObjectValue;
 
 public class CutFilter implements Filter {
 
   @Override
-  public Object filter(Object object, JangodInterpreter interpreter, String... arg)
+  public Object filter(Object object, CarrotInterpreter interpreter, String... arg)
       throws CarrotException {
     if (arg.length != 1) {
       throw new InterpretException("filter cut expects 1 arg >>> " + arg.length);

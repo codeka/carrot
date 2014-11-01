@@ -5,7 +5,7 @@ import java.io.Writer;
 
 import au.com.codeka.carrot.base.Application;
 import au.com.codeka.carrot.interpret.InterpretException;
-import au.com.codeka.carrot.interpret.JangodInterpreter;
+import au.com.codeka.carrot.interpret.CarrotInterpreter;
 import au.com.codeka.carrot.parse.FixedToken;
 
 public class TextNode extends Node {
@@ -20,7 +20,7 @@ public class TextNode extends Node {
   }
 
   @Override
-  public void render(JangodInterpreter interpreter, Writer writer)
+  public void render(CarrotInterpreter interpreter, Writer writer)
       throws InterpretException, IOException {
     master.output(writer);
   }

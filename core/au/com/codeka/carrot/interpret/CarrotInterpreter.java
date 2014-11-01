@@ -17,7 +17,7 @@ import au.com.codeka.carrot.util.ListOrderedMap.Item;
 import au.com.codeka.carrot.util.Log;
 import au.com.codeka.carrot.util.Variable;
 
-public class JangodInterpreter implements Cloneable {
+public class CarrotInterpreter implements Cloneable {
 
   public static final String CHILD_FLAG = "'IS\"CHILD";
   public static final String PARENT_FLAG = "'IS\"PARENT";
@@ -35,13 +35,13 @@ public class JangodInterpreter implements Cloneable {
   private Log log;
   String file = null;
 
-  public JangodInterpreter(Context context) {
+  public CarrotInterpreter(Context context) {
     this.context = context;
     runtime = new FloorBindings();
     log = new Log(context.getApplication().getConfiguration());
   }
 
-  private JangodInterpreter() {
+  private CarrotInterpreter() {
   }
 
   public Configuration getConfiguration() {
@@ -49,8 +49,8 @@ public class JangodInterpreter implements Cloneable {
   }
 
   @Override
-  public JangodInterpreter clone() {
-    JangodInterpreter compiler = new JangodInterpreter();
+  public CarrotInterpreter clone() {
+    CarrotInterpreter compiler = new CarrotInterpreter();
     compiler.context = context;
     compiler.runtime = runtime.clone();
     compiler.log = log;

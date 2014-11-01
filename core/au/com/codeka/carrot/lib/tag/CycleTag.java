@@ -5,7 +5,7 @@ import java.io.Writer;
 
 import au.com.codeka.carrot.base.CarrotException;
 import au.com.codeka.carrot.interpret.InterpretException;
-import au.com.codeka.carrot.interpret.JangodInterpreter;
+import au.com.codeka.carrot.interpret.CarrotInterpreter;
 import au.com.codeka.carrot.lib.Tag;
 import au.com.codeka.carrot.tree.NodeList;
 import au.com.codeka.carrot.util.HelperStringTokenizer;
@@ -22,7 +22,7 @@ public class CycleTag implements Tag {
   final String TAGNAME = "cycle";
 
   @Override
-  public void interpreter(NodeList carries, String helpers, JangodInterpreter interpreter,
+  public void interpreter(NodeList carries, String helpers, CarrotInterpreter interpreter,
       Writer writer) throws CarrotException, IOException {
     String[] values;
     String var = null;

@@ -6,7 +6,7 @@ import java.io.Writer;
 
 import au.com.codeka.carrot.base.CarrotException;
 import au.com.codeka.carrot.interpret.InterpretException;
-import au.com.codeka.carrot.interpret.JangodInterpreter;
+import au.com.codeka.carrot.interpret.CarrotInterpreter;
 import au.com.codeka.carrot.lib.Tag;
 import au.com.codeka.carrot.tree.Node;
 import au.com.codeka.carrot.tree.NodeList;
@@ -23,7 +23,7 @@ public class ExtendsTag implements Tag {
   final String TAGNAME = "extends";
 
   @Override
-  public void interpreter(NodeList carries, String helpers, JangodInterpreter interpreter,
+  public void interpreter(NodeList carries, String helpers, CarrotInterpreter interpreter,
       Writer writer) throws CarrotException, IOException {
     String[] helper = new HelperStringTokenizer(helpers).allTokens();
     if (helper.length != 1) {
@@ -37,13 +37,13 @@ public class ExtendsTag implements Tag {
         fullName, interpreter.getConfiguration().getEncoding());
 
     ListOrderedMap blockList = new ListOrderedMap();
-    interpreter.assignRuntimeScope(JangodInterpreter.BLOCK_LIST, blockList, 1);
-    JangodInterpreter parent = interpreter.clone();
-    interpreter.assignRuntimeScope(JangodInterpreter.CHILD_FLAG, true, 1);
-    parent.assignRuntimeScope(JangodInterpreter.PARENT_FLAG, true, 1);
+    interpreter.assignRuntimeScope(CarrotInterpreter.BLOCK_LIST, blockList, 1);
+    CarrotInterpreter parent = interpreter.clone();
+    interpreter.assignRuntimeScope(CarrotInterpreter.CHILD_FLAG, true, 1);
+    parent.assignRuntimeScope(CarrotInterpreter.PARENT_FLAG, true, 1);
     StringWriter child = new StringWriter();
     parent.render(node, child);
-    interpreter.assignRuntimeScope(JangodInterpreter.SEMI_RENDER, child.toString(), 1);
+    interpreter.assignRuntimeScope(CarrotInterpreter.SEMI_RENDER, child.toString(), 1);
   }
 
   @Override

@@ -7,13 +7,13 @@ import java.util.Map;
 import au.com.codeka.carrot.base.CarrotException;
 import au.com.codeka.carrot.base.Constants;
 import au.com.codeka.carrot.interpret.InterpretException;
-import au.com.codeka.carrot.interpret.JangodInterpreter;
+import au.com.codeka.carrot.interpret.CarrotInterpreter;
 import au.com.codeka.carrot.lib.Filter;
 import au.com.codeka.carrot.util.ObjectStringEqual;
 
 public class ContainFilter implements Filter {
   @Override
-  public Object filter(Object object, JangodInterpreter interpreter, String... arg)
+  public Object filter(Object object, CarrotInterpreter interpreter, String... arg)
       throws CarrotException {
     if (object == null) {
       return false;

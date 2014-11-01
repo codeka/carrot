@@ -1,7 +1,7 @@
 package au.com.codeka.carrot.lib.filter;
 
 import au.com.codeka.carrot.base.CarrotException;
-import au.com.codeka.carrot.interpret.JangodInterpreter;
+import au.com.codeka.carrot.interpret.CarrotInterpreter;
 import au.com.codeka.carrot.lib.Filter;
 
 public class TruncateFilter implements Filter {
@@ -9,7 +9,7 @@ public class TruncateFilter implements Filter {
   final String ENDS = "...";
 
   @Override
-  public Object filter(Object object, JangodInterpreter interpreter, String... arg)
+  public Object filter(Object object, CarrotInterpreter interpreter, String... arg)
       throws CarrotException {
     if (object instanceof String) {
       int length = 100;

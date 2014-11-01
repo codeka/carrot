@@ -5,13 +5,13 @@ import java.util.TimeZone;
 
 import au.com.codeka.carrot.base.CarrotException;
 import au.com.codeka.carrot.interpret.InterpretException;
-import au.com.codeka.carrot.interpret.JangodInterpreter;
+import au.com.codeka.carrot.interpret.CarrotInterpreter;
 import au.com.codeka.carrot.lib.Filter;
 
 public class DatetimeFilter implements Filter {
 
   @Override
-  public Object filter(Object object, JangodInterpreter interpreter, String... arg)
+  public Object filter(Object object, CarrotInterpreter interpreter, String... arg)
       throws CarrotException {
     if (object == null) {
       return object;

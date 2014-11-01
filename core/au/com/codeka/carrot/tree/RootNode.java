@@ -4,7 +4,7 @@ import java.io.Writer;
 
 import au.com.codeka.carrot.base.Application;
 import au.com.codeka.carrot.interpret.InterpretException;
-import au.com.codeka.carrot.interpret.JangodInterpreter;
+import au.com.codeka.carrot.interpret.CarrotInterpreter;
 
 public class RootNode extends Node {
 
@@ -16,7 +16,7 @@ public class RootNode extends Node {
   }
 
   @Override
-  public void render(JangodInterpreter interpreter, Writer writer) throws InterpretException {
+  public void render(CarrotInterpreter interpreter, Writer writer) throws InterpretException {
     throw new UnsupportedOperationException("Please render RootNode by interpreter");
   }
 

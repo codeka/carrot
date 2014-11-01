@@ -5,7 +5,7 @@ import java.io.Writer;
 
 import au.com.codeka.carrot.base.CarrotException;
 import au.com.codeka.carrot.interpret.InterpretException;
-import au.com.codeka.carrot.interpret.JangodInterpreter;
+import au.com.codeka.carrot.interpret.CarrotInterpreter;
 import au.com.codeka.carrot.interpret.VariableFilter;
 import au.com.codeka.carrot.lib.Tag;
 import au.com.codeka.carrot.tree.Node;
@@ -24,7 +24,7 @@ public class IfTag implements Tag {
   final String ENDTAGNAME = "endif";
 
   @Override
-  public void interpreter(NodeList carries, String helpers, JangodInterpreter interpreter,
+  public void interpreter(NodeList carries, String helpers, CarrotInterpreter interpreter,
       Writer writer) throws CarrotException, IOException {
     if (helpers.length() == 0) {
       throw new InterpretException("Tag 'if' expects 1 helper >>> 0");

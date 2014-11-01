@@ -5,7 +5,7 @@ import java.io.Writer;
 
 import au.com.codeka.carrot.base.Application;
 import au.com.codeka.carrot.base.CarrotException;
-import au.com.codeka.carrot.interpret.JangodInterpreter;
+import au.com.codeka.carrot.interpret.CarrotInterpreter;
 import au.com.codeka.carrot.lib.Macro;
 import au.com.codeka.carrot.lib.MacroLibrary;
 import au.com.codeka.carrot.lib.Tag;
@@ -33,7 +33,7 @@ public class MacroNode extends Node {
   }
 
   @Override
-  public void render(JangodInterpreter interpreter, Writer writer)
+  public void render(CarrotInterpreter interpreter, Writer writer)
       throws CarrotException, IOException {
     Tag tag = TagLibrary.getTag(master.getMacroName());
     if (tag != null) {

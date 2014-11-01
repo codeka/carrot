@@ -4,7 +4,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 import au.com.codeka.carrot.interpret.InterpretException;
-import au.com.codeka.carrot.interpret.JangodInterpreter;
+import au.com.codeka.carrot.interpret.CarrotInterpreter;
 import au.com.codeka.carrot.lib.Filter;
 
 public class Md5Filter implements Filter {
@@ -37,7 +37,7 @@ public class Md5Filter implements Filter {
   }
 
   @Override
-  public Object filter(Object object, JangodInterpreter interpreter, String... arg)
+  public Object filter(Object object, CarrotInterpreter interpreter, String... arg)
       throws InterpretException {
     try {
       if (object instanceof String) {

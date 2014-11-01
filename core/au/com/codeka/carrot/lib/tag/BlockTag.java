@@ -8,7 +8,7 @@ import java.util.List;
 
 import au.com.codeka.carrot.base.CarrotException;
 import au.com.codeka.carrot.interpret.InterpretException;
-import au.com.codeka.carrot.interpret.JangodInterpreter;
+import au.com.codeka.carrot.interpret.CarrotInterpreter;
 import au.com.codeka.carrot.lib.Tag;
 import au.com.codeka.carrot.tree.Node;
 import au.com.codeka.carrot.tree.NodeList;
@@ -29,7 +29,7 @@ public class BlockTag implements Tag {
 
   @SuppressWarnings("unchecked")
   @Override
-  public void interpreter(NodeList carries, String helpers, JangodInterpreter interpreter,
+  public void interpreter(NodeList carries, String helpers, CarrotInterpreter interpreter,
       Writer writer) throws CarrotException, IOException {
     String[] helper = new HelperStringTokenizer(helpers).allTokens();
     if (helper.length != 1) {
@@ -47,10 +47,10 @@ public class BlockTag implements Tag {
       blockNames.add(blockName);
       interpreter.assignRuntimeScope(BLOCKNAMES, blockNames, 1);
     }
-    Object isChild = interpreter.fetchRuntimeScope(JangodInterpreter.CHILD_FLAG, 1);
+    Object isChild = interpreter.fetchRuntimeScope(CarrotInterpreter.CHILD_FLAG, 1);
     if (isChild != null) {
       ListOrderedMap blockList = (ListOrderedMap) interpreter.fetchRuntimeScope(
-          JangodInterpreter.BLOCK_LIST, 1);
+          CarrotInterpreter.BLOCK_LIST, 1);
       // check block was defined in parent
       if (!blockList.containsKey(blockName)) {
         throw new InterpretException("Dosen't define block in extends parent with name >>> "
@@ -60,26 +60,26 @@ public class BlockTag implements Tag {
       blockList.put(blockName, getBlockContent(carries, interpreter));
       return;
     }
-    Object isParent = interpreter.fetchRuntimeScope(JangodInterpreter.PARENT_FLAG, 1);
+    Object isParent = interpreter.fetchRuntimeScope(CarrotInterpreter.PARENT_FLAG, 1);
     if (isParent != null) {
       // save block content to engine, and return identify
       ListOrderedMap blockList = (ListOrderedMap) interpreter.fetchRuntimeScope(
-          JangodInterpreter.BLOCK_LIST, 1);
+          CarrotInterpreter.BLOCK_LIST, 1);
       blockList.put(blockName, getBlockContent(carries, interpreter));
-      writer.write(JangodInterpreter.SEMI_BLOCK + blockName);
+      writer.write(CarrotInterpreter.SEMI_BLOCK + blockName);
       return;
     }
     writeBlockContent(carries, interpreter, writer);
   }
 
-  private void writeBlockContent(NodeList carries, JangodInterpreter interpreter, Writer writer)
+  private void writeBlockContent(NodeList carries, CarrotInterpreter interpreter, Writer writer)
       throws CarrotException, IOException {
     for (Node node : carries) {
       node.render(interpreter, writer);
     }
   }
 
-  private String getBlockContent(NodeList carrier, JangodInterpreter interpreter)
+  private String getBlockContent(NodeList carrier, CarrotInterpreter interpreter)
       throws CarrotException, IOException {
     StringWriter writer = new StringWriter();
     writeBlockContent(carrier, interpreter, writer);

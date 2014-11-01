@@ -5,7 +5,7 @@ import java.io.Writer;
 
 import au.com.codeka.carrot.base.CarrotException;
 import au.com.codeka.carrot.interpret.InterpretException;
-import au.com.codeka.carrot.interpret.JangodInterpreter;
+import au.com.codeka.carrot.interpret.CarrotInterpreter;
 import au.com.codeka.carrot.lib.Tag;
 import au.com.codeka.carrot.tree.Node;
 import au.com.codeka.carrot.tree.NodeList;
@@ -22,7 +22,7 @@ public class IncludeTag implements Tag {
   final String TAGNAME = "include";
 
   @Override
-  public void interpreter(NodeList carries, String helpers, JangodInterpreter interpreter,
+  public void interpreter(NodeList carries, String helpers, CarrotInterpreter interpreter,
       Writer writer) throws CarrotException, IOException {
     String[] helper = new HelperStringTokenizer(helpers).allTokens();
     if (helper.length != 1) {
@@ -34,8 +34,8 @@ public class IncludeTag implements Tag {
             interpreter.getConfiguration().getWorkspace());
     Node node = interpreter.getApplication().getParseResult(
         fullName, interpreter.getConfiguration().getEncoding());
-    JangodInterpreter child = interpreter.clone();
-    child.assignRuntimeScope(JangodInterpreter.INSERT_FLAG, true, 1);
+    CarrotInterpreter child = interpreter.clone();
+    child.assignRuntimeScope(CarrotInterpreter.INSERT_FLAG, true, 1);
     child.render(node, writer);
   }
 

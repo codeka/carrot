@@ -9,7 +9,7 @@ import au.com.codeka.carrot.base.Application;
 import au.com.codeka.carrot.base.CarrotException;
 import au.com.codeka.carrot.base.Configuration;
 import au.com.codeka.carrot.base.Context;
-import au.com.codeka.carrot.interpret.JangodInterpreter;
+import au.com.codeka.carrot.interpret.CarrotInterpreter;
 
 /**
  * Processor for processing a template. Can only be used once and must be
@@ -19,14 +19,14 @@ public class Processor {
 
   protected Context context;
   protected Application application;
-  JangodInterpreter interpreter;
+  CarrotInterpreter interpreter;
 
   private boolean used;
 
   public Processor(Application application) {
     this.application = application;
     context = new Context(application);
-    interpreter = new JangodInterpreter(context);
+    interpreter = new CarrotInterpreter(context);
   }
 
   public Configuration getConfiguration() {

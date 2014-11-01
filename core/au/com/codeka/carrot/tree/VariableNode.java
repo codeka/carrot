@@ -6,7 +6,7 @@ import java.util.List;
 
 import au.com.codeka.carrot.base.Application;
 import au.com.codeka.carrot.base.CarrotException;
-import au.com.codeka.carrot.interpret.JangodInterpreter;
+import au.com.codeka.carrot.interpret.CarrotInterpreter;
 import au.com.codeka.carrot.lib.Filter;
 import au.com.codeka.carrot.lib.FilterLibrary;
 import au.com.codeka.carrot.parse.EchoToken;
@@ -27,7 +27,7 @@ public class VariableNode extends Node {
   }
 
   @Override
-  public void render(JangodInterpreter interpreter, Writer writer)
+  public void render(CarrotInterpreter interpreter, Writer writer)
       throws CarrotException, IOException {
     interpreter.setLevel(level);
     Object var = interpreter.retraceVariable(master.getVariable());

@@ -13,7 +13,7 @@ import javax.script.SimpleBindings;
 
 import au.com.codeka.carrot.base.CarrotException;
 import au.com.codeka.carrot.base.Context;
-import au.com.codeka.carrot.interpret.JangodInterpreter;
+import au.com.codeka.carrot.interpret.CarrotInterpreter;
 import au.com.codeka.carrot.parse.ParseException;
 import au.com.codeka.carrot.parse.TokenParser;
 import au.com.codeka.carrot.util.Log;
@@ -55,7 +55,7 @@ public class JangodEngine implements ScriptEngine {
   @Override
   public Object eval(String script, ScriptContext ctx) throws ScriptException {
     TokenParser parser = new TokenParser(script);
-    JangodInterpreter interpreter = new JangodInterpreter((Context) ctx);
+    CarrotInterpreter interpreter = new CarrotInterpreter((Context) ctx);
     try {
       return render(interpreter, parser);
     } catch (Exception e) {
@@ -71,7 +71,7 @@ public class JangodEngine implements ScriptEngine {
     } catch (ParseException e) {
       throw new ScriptException(e.getMessage());
     }
-    JangodInterpreter interpreter = new JangodInterpreter((Context) ctx);
+    CarrotInterpreter interpreter = new CarrotInterpreter((Context) ctx);
     try {
       return render(interpreter, parser);
     } catch (Exception e) {
@@ -87,7 +87,7 @@ public class JangodEngine implements ScriptEngine {
   @Override
   public Object eval(String script) throws ScriptException {
     TokenParser parser = new TokenParser(script);
-    JangodInterpreter interpreter = new JangodInterpreter((Context) context);
+    CarrotInterpreter interpreter = new CarrotInterpreter((Context) context);
     try {
       return render(interpreter, parser);
     } catch (Exception e) {
@@ -103,7 +103,7 @@ public class JangodEngine implements ScriptEngine {
     } catch (ParseException e) {
       throw new ScriptException(e.getMessage());
     }
-    JangodInterpreter interpreter = new JangodInterpreter((Context) context);
+    CarrotInterpreter interpreter = new CarrotInterpreter((Context) context);
     try {
       return render(interpreter, parser);
     } catch (Exception e) {
@@ -116,7 +116,7 @@ public class JangodEngine implements ScriptEngine {
     TokenParser parser = new TokenParser(script);
     ScriptContext ctx = new JangodContext(factory.globalBindings);
     ctx.setBindings(n, ScriptContext.ENGINE_SCOPE);
-    JangodInterpreter interpreter = new JangodInterpreter((Context) ctx);
+    CarrotInterpreter interpreter = new CarrotInterpreter((Context) ctx);
     try {
       return render(interpreter, parser);
     } catch (Exception e) {
@@ -135,7 +135,7 @@ public class JangodEngine implements ScriptEngine {
 
     ScriptContext ctx = new JangodContext(factory.globalBindings);
     ctx.setBindings(n, ScriptContext.ENGINE_SCOPE);
-    JangodInterpreter interpreter = new JangodInterpreter((Context) ctx);
+    CarrotInterpreter interpreter = new CarrotInterpreter((Context) ctx);
     try {
       return render(interpreter, parser);
     } catch (Exception e) {
@@ -143,7 +143,7 @@ public class JangodEngine implements ScriptEngine {
     }
   }
 
-  private static String render(JangodInterpreter interpreter, TokenParser parser)
+  private static String render(CarrotInterpreter interpreter, TokenParser parser)
       throws CarrotException, IOException {
     StringWriter writer = new StringWriter();
     interpreter.render(parser, writer);

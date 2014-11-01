@@ -11,7 +11,7 @@ import au.com.codeka.carrot.parse.ParseException;
 
 public class VariableFilter {
 
-  public static Object compute(String varString, JangodInterpreter interpreter)
+  public static Object compute(String varString, CarrotInterpreter interpreter)
       throws CarrotException {
     if ((varString.startsWith(Constants.STR_SINGLE_QUOTE) && varString
         .endsWith(Constants.STR_SINGLE_QUOTE))

@@ -7,13 +7,13 @@ import java.util.Iterator;
 import java.util.Map;
 
 import au.com.codeka.carrot.interpret.InterpretException;
-import au.com.codeka.carrot.interpret.JangodInterpreter;
+import au.com.codeka.carrot.interpret.CarrotInterpreter;
 import au.com.codeka.carrot.lib.Filter;
 
 public class RandomFilter implements Filter {
 
   @Override
-  public Object filter(Object object, JangodInterpreter interpreter, String... arg)
+  public Object filter(Object object, CarrotInterpreter interpreter, String... arg)
       throws InterpretException {
     if (object == null) {
       return null;
