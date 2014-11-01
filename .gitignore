@@ -4,6 +4,8 @@ dist/
 
 *.class
 
-.classpath
-.project
+# don't ignore these because we want to delete them first...
+#.settings
+#.classpath
+#.project
 
