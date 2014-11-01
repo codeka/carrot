@@ -23,7 +23,6 @@ import java.util.Map;
 import net.asfun.jangod.base.Application;
 import net.asfun.jangod.base.Configuration;
 import net.asfun.jangod.base.Context;
-import net.asfun.jangod.base.ResourceManager;
 import net.asfun.jangod.interpret.JangodInterpreter;
 
 /**
@@ -71,7 +70,7 @@ public class Processor {
 		used = true;
 
 		context.initBindings(bindings, Context.SCOPE_SESSION);
-		String fullName = ResourceManager.getFullName(
+		String fullName = application.getConfiguration().getResourceLocater().getFullName(
 				templateFile, application.getConfiguration().getWorkspace());
 		interpreter.setFile(fullName);
 		try {

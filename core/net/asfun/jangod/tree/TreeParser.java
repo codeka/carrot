@@ -21,7 +21,7 @@ import static net.asfun.jangod.parse.ParserConstants.TOKEN_MACRO;
 import static net.asfun.jangod.parse.ParserConstants.TOKEN_NOTE;
 import static net.asfun.jangod.parse.ParserConstants.TOKEN_TAG;
 import static net.asfun.jangod.util.logging.JangodLogger;
-
+import net.asfun.jangod.base.Application;
 import net.asfun.jangod.parse.EchoToken;
 import net.asfun.jangod.parse.FixedToken;
 import net.asfun.jangod.parse.MacroToken;
@@ -32,14 +32,19 @@ import net.asfun.jangod.parse.TokenParser;
 import net.asfun.jangod.util.logging.Level;
 
 public class TreeParser {
+	private Application app;
 
-	public static Node parser(TokenParser parser) {
-		Node root = new RootNode();
+	public TreeParser(Application app) {
+		this.app = app;
+	}
+
+	public Node parse(TokenParser parser) {
+		Node root = new RootNode(app);
 		tree(root, parser, RootNode.TREE_ROOT_END);
 		return root;
 	}
 	
-	static void tree(Node node, TokenParser parser, String endName) {
+	void tree(Node node, TokenParser parser, String endName) {
 		Token token;
 		TagToken tag;
 		MacroToken macro;
@@ -47,7 +52,7 @@ public class TreeParser {
 			token = parser.next();
 			switch(token.getType()) {
 				case TOKEN_FIXED :
-					TextNode tn = new TextNode((FixedToken)token);
+					TextNode tn = new TextNode(app, (FixedToken)token);
 					node.add(tn);
 					break;
 				case TOKEN_NOTE :
@@ -58,7 +63,7 @@ public class TreeParser {
 						return;
 					}
 					try {
-						MacroNode mn = new MacroNode((MacroToken) token);
+						MacroNode mn = new MacroNode(app, (MacroToken) token);
 						node.add(mn);
 						if ( mn.endName != null ) {
 							tree(mn, parser, mn.endName);
@@ -68,7 +73,7 @@ public class TreeParser {
 					}	
 					break;
 				case TOKEN_ECHO :
-					VariableNode vn = new VariableNode((EchoToken) token);
+					VariableNode vn = new VariableNode(app, (EchoToken) token);
 					node.add(vn);
 					break;
 				case TOKEN_TAG :
@@ -77,7 +82,7 @@ public class TreeParser {
 						return;
 					}
 					try {
-						TagNode tg = new TagNode((TagToken) token);
+						TagNode tg = new TagNode(app, (TagToken) token);
 						node.add(tg);
 						if ( tg.endName != null ) {
 							tree(tg, parser, tg.endName);

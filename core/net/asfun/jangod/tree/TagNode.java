@@ -18,6 +18,7 @@ package net.asfun.jangod.tree;
 import java.io.IOException;
 import java.io.Writer;
 
+import net.asfun.jangod.base.Application;
 import net.asfun.jangod.interpret.InterpretException;
 import net.asfun.jangod.interpret.JangodInterpreter;
 import net.asfun.jangod.lib.Tag;
@@ -32,8 +33,8 @@ public class TagNode extends Node{
 	private TagToken master;
 	String endName = null;
 	
-	public TagNode(TagToken token) throws ParseException{
-		super();
+	public TagNode(Application app, TagToken token) throws ParseException{
+		super(app);
 		master = token;
 		Tag tag = TagLibrary.getTag(master.getTagName());
 		if ( tag == null ) {
@@ -63,7 +64,7 @@ public class TagNode extends Node{
 	@Override
 	public Node clone() {
 		try {
-			Node clone = new TagNode(master);
+			Node clone = new TagNode(app, master);
 			clone.children = this.children.clone(clone);
 			return clone;
 		} catch (ParseException e) {

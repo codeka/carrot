@@ -28,7 +28,6 @@ import java.util.Map;
 import net.asfun.jangod.base.Application;
 import net.asfun.jangod.base.Configuration;
 import net.asfun.jangod.base.Constants;
-import net.asfun.jangod.base.ResourceManager;
 import net.asfun.jangod.parse.ParseException;
 
 public class TreeRebuilder{
@@ -76,7 +75,7 @@ public class TreeRebuilder{
 	public String getWorkspace() {
 		if ( file != null ) {
 			try {
-				return ResourceManager.getDirectory(file);
+				return application.getConfiguration().getResourceLocater().getDirectory(file);
 			} catch ( IOException e) {
 				return application.getConfiguration().getWorkspace();
 			}
@@ -115,35 +114,33 @@ public class TreeRebuilder{
 	
 	public Node refactor(Node root) {
 		boolean needRelevel = false;
-		if ( application.isMacroOn() ) {
-			TreeIterator nit = new TreeIterator(root);
-			Node temp = null;
-			while( nit.hasNext() ) {
-				temp = nit.next();
-				if ( temp instanceof MacroNode ) {
-					try {
-						((MacroNode)temp).refactor(this);
-					} catch (ParseException e) {
-						JangodLogger.warning(e.getMessage());
-					}
-					needRelevel = true;
-				}
-			}
-			//real refactor must run after iterated to make sure iterator correct
-			if ( ! actions.isEmpty() ) {
-				Iterator<Object[]> it = msgs.iterator();
+		TreeIterator nit = new TreeIterator(root);
+		Node temp = null;
+		while( nit.hasNext() ) {
+			temp = nit.next();
+			if ( temp instanceof MacroNode ) {
 				try {
-					for(Method action : actions) {
-						Object[] msg = it.next();
-						action.invoke(null, msg);
-					}
-				} catch (Exception e) {
-					JangodLogger.severe(e.getMessage());
+					((MacroNode)temp).refactor(this);
+				} catch (ParseException e) {
+					JangodLogger.warning(e.getMessage());
 				}
+				needRelevel = true;
 			}
-			if ( parent != null ) {
-				root = parent;
+		}
+		//real refactor must run after iterated to make sure iterator correct
+		if ( ! actions.isEmpty() ) {
+			Iterator<Object[]> it = msgs.iterator();
+			try {
+				for(Method action : actions) {
+					Object[] msg = it.next();
+					action.invoke(null, msg);
+				}
+			} catch (Exception e) {
+				JangodLogger.severe(e.getMessage());
 			}
+		}
+		if ( parent != null ) {
+			root = parent;
 		}
 		if ( needRelevel ) {
 			root.computeLevel(0);

@@ -17,7 +17,6 @@ package net.asfun.jangod.lib.macro;
 
 import java.io.IOException;
 
-import net.asfun.jangod.base.ResourceManager;
 import net.asfun.jangod.lib.Macro;
 import net.asfun.jangod.parse.ParseException;
 import net.asfun.jangod.parse.TokenParser;
@@ -43,13 +42,14 @@ public class IncludeMacro implements Macro{
 		}
 		String templateFile = rebuilder.resolveString(helper[0]);
 		try {
-			String fullName = ResourceManager.getFullName(templateFile, 
-					rebuilder.getWorkspace(), rebuilder.getConfiguration().getWorkspace());
+			String fullName = rebuilder.getConfiguration().getResourceLocater().getFullName(
+					templateFile, rebuilder.getWorkspace(),
+					rebuilder.getConfiguration().getWorkspace());
 			//TODO STOP LOOP INCLUDE
-			Node includeRoot = TreeParser.parser( new TokenParser( ResourceManager.getResource(
+			Node includeRoot = new TreeParser(current.application()).parse(
+					new TokenParser( rebuilder.getConfiguration().getResourceLocater().getString(
 					fullName, rebuilder.getConfiguration().getEncoding())));
-			
-//			includeRoot.replaceWithChildren(current);
+
 			rebuilder.nodeReplace(current, includeRoot.children());
 		} catch (IOException e) {
 			throw new ParseException(e.getMessage());

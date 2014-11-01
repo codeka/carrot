@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.io.Writer;
 
+import net.asfun.jangod.base.Application;
 import net.asfun.jangod.interpret.InterpretException;
 import net.asfun.jangod.interpret.JangodInterpreter;
 
@@ -26,12 +27,17 @@ public abstract class Node implements Serializable, Cloneable{
 
 	private static final long serialVersionUID = 7323842986596895498L;
 	
+	Application app;
 	int level = 0;
 	Node parent = null;
 	Node predecessor = null;
 	Node successor = null;
 	NodeList children = new NodeList();
 	
+	protected Node(Application app) {
+		this.app = app;
+	}
+
 	public Node parent() {
 		return parent;
 	}
@@ -43,7 +49,11 @@ public abstract class Node implements Serializable, Cloneable{
 	public Node successor() {
 		return successor;
 	}
-	
+
+	public Application application() {
+		return this.app;
+	}
+
 	boolean replaceWithChildren(Node tobeReplace) {
 		if ( tobeReplace.parent == null ) {
 			return false;

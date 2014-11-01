@@ -18,21 +18,22 @@ package org.springframework.web.servlet.view.jangod;
 import org.springframework.beans.factory.InitializingBean;
 
 import net.asfun.jangod.base.Application;
+import net.asfun.jangod.base.Configuration;
 import net.asfun.jangod.template.TemplateEngine;
 
 public class JangodConfigurer implements JangodConfig, InitializingBean{
 
 	boolean useTheme = false;
-	String configurationFile;
 	String root;
+	Configuration config;
 	TemplateEngine engine;
 	
 	public void setUseTheme(boolean tof) {
 		this.useTheme = tof;
 	}
-	
-	public void setConfigurationFile(String configurationFile) {
-		this.configurationFile = configurationFile;
+
+	public void setConfiguration(Configuration config) {
+		this.config = config;
 	}
 
 	@Override
@@ -47,12 +48,8 @@ public class JangodConfigurer implements JangodConfig, InitializingBean{
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		if ( configurationFile != null ) {
-			Application application = new Application(configurationFile);
-			engine = new TemplateEngine(application);
-		} else {
-			engine = new TemplateEngine();
-		}
+		Application application = new Application(config);
+		engine = new TemplateEngine(application);
 		if ( root != null ) {
 			engine.getConfiguration().setWorkspace(root);
 		}

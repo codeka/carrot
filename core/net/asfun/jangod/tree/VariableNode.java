@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.List;
 
+import net.asfun.jangod.base.Application;
 import net.asfun.jangod.interpret.InterpretException;
 import net.asfun.jangod.interpret.JangodInterpreter;
 import net.asfun.jangod.lib.Filter;
@@ -34,8 +35,8 @@ public class VariableNode extends Node{
 	private EchoToken master;
 	static final String name = "Variable_Node";
 	
-	public VariableNode(EchoToken token) {
-		super();
+	public VariableNode(Application app, EchoToken token) {
+		super(app);
 		master = token;
 	}
 
@@ -81,7 +82,7 @@ public class VariableNode extends Node{
 	
 	@Override
 	public Node clone() {
-		Node clone = new VariableNode(master);
+		Node clone = new VariableNode(app, master);
 		clone.children = this.children.clone(clone);
 		return clone;
 	}

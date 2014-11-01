@@ -36,8 +36,9 @@ public abstract class SimpleLibrary<T> {
 		if ( lib.containsKey(key) ) {
 			return lib.get(key);
 		}
-		JangodLogger.fine("Library doesn't contain >>> " + item);
-		return null;
+		throw new RuntimeException("No filter: " + item);
+//		JangodLogger.fine("Library doesn't contain >>> " + item);
+//		return null;
 	}
 	
 	public void register(String item, T obj) {

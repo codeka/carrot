@@ -18,6 +18,7 @@ package net.asfun.jangod.tree;
 import java.io.IOException;
 import java.io.Writer;
 
+import net.asfun.jangod.base.Application;
 import net.asfun.jangod.interpret.InterpretException;
 import net.asfun.jangod.interpret.JangodInterpreter;
 import net.asfun.jangod.parse.FixedToken;
@@ -28,8 +29,8 @@ public class TextNode extends Node {
 	private FixedToken master;
 	static final String name = "Text_Node";
 
-	public TextNode(FixedToken token) {
-		super();
+	public TextNode(Application app, FixedToken token) {
+		super(app);
 		master = token;
 	}
 
@@ -51,7 +52,7 @@ public class TextNode extends Node {
 	
 	@Override
 	public Node clone() {
-		Node clone = new TextNode(master);
+		Node clone = new TextNode(app, master);
 		clone.children = this.children.clone(clone);
 		return clone;
 	}

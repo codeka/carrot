@@ -18,8 +18,6 @@ package net.asfun.jangod.interpret;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.asfun.jangod.base.Constants;
-
 public class FloorBindings implements Cloneable{
 
 	private Map<Integer, Map<String,Object>> floor;

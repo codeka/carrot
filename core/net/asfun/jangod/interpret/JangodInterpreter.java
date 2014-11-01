@@ -25,7 +25,6 @@ import net.asfun.jangod.base.Application;
 import net.asfun.jangod.base.Configuration;
 import net.asfun.jangod.base.Constants;
 import net.asfun.jangod.base.Context;
-import net.asfun.jangod.base.ResourceManager;
 import net.asfun.jangod.parse.TokenParser;
 import net.asfun.jangod.tree.Node;
 import net.asfun.jangod.tree.TreeParser;
@@ -75,7 +74,7 @@ public class JangodInterpreter implements Cloneable{
 	}
 	
 	public void render(TokenParser parser, Writer writer) throws InterpretException, IOException {
-		render(TreeParser.parser(parser), writer);
+		render(new TreeParser(context.getApplication()).parse(parser), writer);
 	}
 	
 	public void render(Node root, Writer writer) throws InterpretException, IOException {
@@ -208,7 +207,7 @@ public class JangodInterpreter implements Cloneable{
 	public String getWorkspace() {
 		if ( file != null ) {
 			try {
-				return ResourceManager.getDirectory(file);
+				return context.getConfiguration().getResourceLocater().getDirectory(file);
 			} catch ( IOException e) {
 				return context.getConfiguration().getWorkspace();
 			}

@@ -17,6 +17,7 @@ package net.asfun.jangod.tree;
 
 import java.io.Writer;
 
+import net.asfun.jangod.base.Application;
 import net.asfun.jangod.interpret.InterpretException;
 import net.asfun.jangod.interpret.JangodInterpreter;
 
@@ -25,7 +26,9 @@ public class RootNode extends Node{
 	private static final long serialVersionUID = 97675838726004658L;
 	static final String TREE_ROOT_END = "anysome";
 
-	RootNode() {}
+	RootNode(Application app) {
+		super(app);
+	}
 
 	@Override
 	public void render(JangodInterpreter interpreter, Writer writer) throws InterpretException {
@@ -39,7 +42,7 @@ public class RootNode extends Node{
 	
 	@Override
 	public Node clone() {
-		Node clone = new RootNode();
+		Node clone = new RootNode(app);
 		clone.children = this.children.clone(clone);
 		return clone;
 	}

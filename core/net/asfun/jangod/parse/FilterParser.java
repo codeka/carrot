@@ -15,13 +15,15 @@ limitations under the License.
 **********************************************************************/
 package net.asfun.jangod.parse;
 
-import static net.asfun.jangod.parse.ParserConstants.*;
+import static net.asfun.jangod.parse.ParserConstants.CL;
+import static net.asfun.jangod.parse.ParserConstants.CM;
+import static net.asfun.jangod.parse.ParserConstants.DQ;
+import static net.asfun.jangod.parse.ParserConstants.SQ;
+import static net.asfun.jangod.parse.ParserConstants.VL;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
-import net.asfun.jangod.base.Constants;
 
 public class FilterParser implements Serializable{
 

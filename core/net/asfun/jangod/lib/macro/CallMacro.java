@@ -28,7 +28,8 @@ public class CallMacro implements Macro{
 		String[] args = new String[]{};// TODO resolve from macro's helpers
 		String[] vals = new String[]{};// TODO resolve from helpers and macro's helpers
 		for (int i=0; i<args.length; i++ ) {
-			TagNode tn = new TagNode(new TagToken("{%set "+args[i] + " " + vals[i] + " just %}"));
+			TagNode tn = new TagNode(current.application(),
+					new TagToken("{%set "+args[i] + " " + vals[i] + " just %}"));
 			rebuilder.nodeInsertBefore(current, tn);
 		}
 		rebuilder.nodeReplace(current, defineNode.clone().children());

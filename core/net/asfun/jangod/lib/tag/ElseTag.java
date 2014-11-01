@@ -19,7 +19,6 @@ package net.asfun.jangod.lib.tag;
 import java.io.IOException;
 import java.io.Writer;
 
-import net.asfun.jangod.base.Constants;
 import net.asfun.jangod.interpret.InterpretException;
 import net.asfun.jangod.interpret.JangodInterpreter;
 import net.asfun.jangod.lib.Tag;

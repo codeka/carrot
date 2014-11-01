@@ -55,7 +55,6 @@ public class IfchangedTag implements Tag{
 		}
 		interpreter.assignRuntimeScope(LASTKEY + var, test);
 		if ( isChanged ) {
-			StringBuffer sb = new StringBuffer();
 			for(Node node : carries) {
 				node.render(interpreter, writer);
 			}

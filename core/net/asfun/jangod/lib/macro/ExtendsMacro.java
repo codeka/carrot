@@ -2,7 +2,6 @@ package net.asfun.jangod.lib.macro;
 
 import java.io.IOException;
 
-import net.asfun.jangod.base.ResourceManager;
 import net.asfun.jangod.lib.Macro;
 import net.asfun.jangod.parse.ParseException;
 import net.asfun.jangod.parse.TokenParser;
@@ -29,10 +28,12 @@ public class ExtendsMacro implements Macro{
 		}
 		String templateFile = rebuilder.resolveString(helper[0]);
 		try {
-			String fullName = ResourceManager.getFullName(templateFile, 
-					rebuilder.getWorkspace(), rebuilder.getConfiguration().getWorkspace());
+			String fullName = current.application().getConfiguration().getResourceLocater()
+					.getFullName(templateFile, rebuilder.getWorkspace(),
+					rebuilder.getConfiguration().getWorkspace());
 			//TODO STOP LOOP EXTENDS
-			Node extendsRoot = TreeParser.parser( new TokenParser( ResourceManager.getResource(
+			Node extendsRoot = new TreeParser(current.application()).parse(new TokenParser(
+					current.application().getConfiguration().getResourceLocater().getString(
 					fullName, rebuilder.getConfiguration().getEncoding())));
 			extendsRoot = rebuilder.derive().refactor(extendsRoot);
 			

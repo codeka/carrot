@@ -18,7 +18,6 @@ package net.asfun.jangod.lib.tag;
 import java.io.IOException;
 import java.io.Writer;
 
-import net.asfun.jangod.base.ResourceManager;
 import net.asfun.jangod.interpret.InterpretException;
 import net.asfun.jangod.interpret.JangodInterpreter;
 import net.asfun.jangod.lib.Tag;
@@ -44,8 +43,9 @@ public class IncludeTag implements Tag{
 			throw new InterpretException("Tag 'include' expects 1 helper >>> " + helper.length);
 		}
 		String templateFile = interpreter.resolveString(helper[0]);
-		String fullName = ResourceManager.getFullName(templateFile, 
-				interpreter.getWorkspace(), interpreter.getConfiguration().getWorkspace());
+		String fullName = interpreter.getApplication().getConfiguration().getResourceLocater()
+				.getFullName(templateFile, interpreter.getWorkspace(),
+						interpreter.getConfiguration().getWorkspace());
 		Node node = interpreter.getApplication().getParseResult(
 				fullName, interpreter.getConfiguration().getEncoding() );
 		JangodInterpreter child = interpreter.clone();

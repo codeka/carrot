@@ -16,6 +16,5 @@ limitations under the License.
 package net.asfun.jangod.lib;
 
 public interface Importable {
-	
 	public String getName();
 }

@@ -19,11 +19,8 @@ import net.asfun.jangod.parse.ParseException;
 import net.asfun.jangod.tree.Node;
 import net.asfun.jangod.tree.TreeRebuilder;
 
-
-public interface Macro extends Importable{
-
+public interface Macro extends Importable {
 	public String getEndMacroName();
-	
-	public void refactor(Node current, String helpers, TreeRebuilder rebuilder) throws ParseException;
-	
+	public void refactor(Node current, String helpers, TreeRebuilder rebuilder)
+			throws ParseException;
 }

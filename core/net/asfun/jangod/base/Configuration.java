@@ -19,9 +19,9 @@ import static net.asfun.jangod.util.logging.JangodLogger;
 
 import java.io.File;
 import java.util.Locale;
-import java.util.Properties;
 import java.util.TimeZone;
 
+import net.asfun.jangod.cache.SynchronousStorage;
 import net.asfun.jangod.lib.Filter;
 import net.asfun.jangod.lib.FilterLibrary;
 import net.asfun.jangod.lib.Importable;
@@ -30,20 +30,18 @@ import net.asfun.jangod.lib.MacroLibrary;
 import net.asfun.jangod.lib.Tag;
 import net.asfun.jangod.lib.TagLibrary;
 
-public class Configuration implements Cloneable{
-	
+public class Configuration {
 	private String encoding;
 	private Locale locale;
 	private TimeZone timezone;
 	private String workspace;
-	Properties properties = new Properties();
-	static final Configuration config;
-	
-	static {
-		config = ConfigInitializer.getConfig(null);
-	}
-	
-	protected Configuration(){};
+	private ResourceLocater resourceLocater;
+	private Class<?> parseCacheClass;
+
+	protected Configuration() {
+		resourceLocater = new FileLocater();
+		parseCacheClass = SynchronousStorage.class;
+	};
 	
 	public static void addImport(Importable importee) {
 		if ( importee instanceof Filter) {
@@ -69,25 +67,21 @@ public class Configuration implements Cloneable{
 	public void setLocale(Locale locale) {
 		this.locale = locale;
 	}
-	
+
 	public String getEncoding() {
 		return encoding;
 	}
-	
+
 	public Locale getLocale() {
 		return locale;
 	}
-	
+
 	public TimeZone getTimezone() {
 		return timezone;
 	}
 
 	public void setTimezone(TimeZone timezone) {
 		this.timezone = timezone;
-	}
-
-	public static Configuration getDefault() {
-		return config;
 	}
 
 	public String getWorkspace() {
@@ -102,23 +96,20 @@ public class Configuration implements Cloneable{
 			workspace = rootPath;
 		}
 	}
-	
-	public String getProperty(String key, String defaultValue) {
-		return properties.getProperty(key, defaultValue);
+
+	public void setResourceLocater(ResourceLocater resourceLocater) {
+		this.resourceLocater = resourceLocater;
 	}
-	
-	public String getProperty(String key) {
-		return properties.getProperty(key);
+
+	public ResourceLocater getResourceLocater() {
+		return resourceLocater;
 	}
-	
-	@Override
-	public Configuration clone() {
-		Configuration conf = new Configuration();
-		conf.encoding = config.encoding;
-		conf.locale = config.locale;
-		conf.timezone = config.timezone;
-		conf.workspace = config.workspace;
-		conf.properties = (Properties) config.properties.clone();
-		return conf;
+
+	public void setParseCacheClass(Class<?> clazz) {
+		parseCacheClass = clazz;
+	}
+
+	public Class<?> getParseCacheClass() {
+		return parseCacheClass;
 	}
 }

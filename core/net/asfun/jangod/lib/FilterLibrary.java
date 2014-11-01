@@ -16,7 +16,6 @@ limitations under the License.
 package net.asfun.jangod.lib;
 
 import static net.asfun.jangod.util.logging.JangodLogger;
-
 import net.asfun.jangod.lib.filter.*;
 
 public class FilterLibrary extends SimpleLibrary<Filter>{
@@ -38,8 +37,8 @@ public class FilterLibrary extends SimpleLibrary<Filter>{
 		register(ctnf.getName(), ctnf);
 		Filter lenf = new LengthFilter();
 		register(lenf.getName(), lenf);
-//		Filter revf = new ReverseFilter();
-//		register(revf.getName(), revf);
+		Filter revf = new ReverseFilter();
+		register(revf.getName(), revf);
 //		Filter ranf = new RandomFilter();
 //		register(ranf.getName(), ranf);
 		

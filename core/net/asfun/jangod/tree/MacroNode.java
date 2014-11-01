@@ -20,7 +20,7 @@ import static net.asfun.jangod.util.logging.JangodLogger;
 import java.io.IOException;
 import java.io.Writer;
 
-import net.asfun.jangod.base.Constants;
+import net.asfun.jangod.base.Application;
 import net.asfun.jangod.interpret.InterpretException;
 import net.asfun.jangod.interpret.JangodInterpreter;
 import net.asfun.jangod.lib.Macro;
@@ -36,8 +36,8 @@ public class MacroNode extends Node {
 	private MacroToken master;
 	String endName = null;
 
-	public MacroNode(MacroToken token) throws ParseException{
-		super();
+	public MacroNode(Application app, MacroToken token) throws ParseException{
+		super(app);
 		master = token;
 		Macro macro = MacroLibrary.getMacro(master.getMacroName());
 		if ( macro == null ) {
@@ -77,7 +77,7 @@ public class MacroNode extends Node {
 	@Override
 	public Node clone() {
 		try {
-			Node clone = new MacroNode(master);
+			Node clone = new MacroNode(app, master);
 			clone.children = this.children.clone(clone);
 			return clone;
 		} catch (ParseException e) {

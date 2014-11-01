@@ -110,7 +110,7 @@ public class JangodEngine implements ScriptEngine {
 		try {
 			return render(interpreter, parser);
 		} catch (Exception e) {
-			throw new ScriptException(e.getMessage());
+			throw new ScriptException(e);
 		}
 	}
 
