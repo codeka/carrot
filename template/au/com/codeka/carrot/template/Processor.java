@@ -58,11 +58,11 @@ public class Processor {
 
     context.initBindings(bindings, Context.SCOPE_SESSION);
     try {
-      String fullName = application.getConfiguration().getResourceLocater().getFullName(
-        templateFile, application.getConfiguration().getWorkspace());
-      interpreter.setFile(fullName);
+      String resourceName = application.getConfiguration().getResourceLocater().findResource(
+          templateFile);
+      interpreter.setFile(resourceName);
       interpreter.init();
-      interpreter.render(application.getParseResult(fullName, encoding), writer);
+      interpreter.render(application.getParseResult(resourceName), writer);
     } catch (IOException e) {
       throw new CarrotException(e);
     }

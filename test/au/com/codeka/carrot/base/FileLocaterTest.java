@@ -7,11 +7,11 @@ import org.junit.Test;
 
 public class FileLocaterTest {
 
-  FileLocater locater;
+  FileResourceLocater locater;
 
   @Before
   public void setUp() throws Exception {
-    locater = new FileLocater();
+    //locater = new FileLocater();
   }
 
   @Test

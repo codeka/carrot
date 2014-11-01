@@ -28,13 +28,14 @@ public class ParseResultManager {
     }
   }
 
-  public Node getParseResult(String file, String encoding) throws IOException, ParseException {
-    String key = file + join + encoding;
+  public Node getParseResult(String resourceName)
+      throws IOException, ParseException {
+    String key = resourceName;
     Node root = cache.get(key);
     if (root == null) {
       root = new TreeParser(application).parse(new TokenParser(
-          application.getConfiguration().getResourceLocater().getString(file, encoding)));
-      root = new TreeRebuilder(application, file).refactor(root);
+          application.getConfiguration().getResourceLocater().getString(resourceName)));
+      root = new TreeRebuilder(application, resourceName).refactor(root);
       cache.put(key, root);
     }
     return root;

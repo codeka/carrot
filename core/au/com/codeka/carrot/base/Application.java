@@ -38,8 +38,7 @@ public class Application {
     return config;
   }
 
-  public Node getParseResult(String fullName, String encoding)
-      throws CarrotException, IOException {
-    return parseResultManager.getParseResult(fullName, encoding);
+  public Node getParseResult(String resourceName) throws CarrotException, IOException {
+    return parseResultManager.getParseResult(resourceName);
   }
 }

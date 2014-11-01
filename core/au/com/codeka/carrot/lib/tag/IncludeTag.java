@@ -29,11 +29,9 @@ public class IncludeTag implements Tag {
       throw new InterpretException("Tag 'include' expects 1 helper >>> " + helper.length);
     }
     String templateFile = interpreter.resolveString(helper[0]);
-    String fullName = interpreter.getApplication().getConfiguration().getResourceLocater()
-        .getFullName(templateFile, interpreter.getWorkspace(),
-            interpreter.getConfiguration().getWorkspace());
-    Node node = interpreter.getApplication().getParseResult(
-        fullName, interpreter.getConfiguration().getEncoding());
+    String resourceName = interpreter.getApplication().getConfiguration().getResourceLocater()
+        .findResource(interpreter.getWorkspace(), templateFile);
+    Node node = interpreter.getApplication().getParseResult(resourceName);
     CarrotInterpreter child = interpreter.clone();
     child.assignRuntimeScope(CarrotInterpreter.INSERT_FLAG, true, 1);
     child.render(node, writer);

@@ -1,6 +1,5 @@
 package au.com.codeka.carrot.base;
 
-import java.io.File;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -14,7 +13,6 @@ public class Configuration {
   private String encoding;
   private Locale locale;
   private TimeZone timezone;
-  private String workspace;
   private ResourceLocater resourceLocater;
   private Class<?> parseCacheClass;
   private Logger logger;
@@ -23,7 +21,7 @@ public class Configuration {
   private MacroLibrary macroLibrary;
 
   protected Configuration() {
-    resourceLocater = new FileLocater();
+    resourceLocater = new FileResourceLocater(this, ".");
     parseCacheClass = SynchronousStorage.class;
     logger = new Log.DefaultLogger();
     filterLibrary = new FilterLibrary(this);
@@ -65,20 +63,6 @@ public class Configuration {
 
   public void setTimezone(TimeZone timezone) {
     this.timezone = timezone;
-  }
-
-  public String getWorkspace() {
-    return workspace;
-  }
-
-  public void setWorkspace(String rootPath) {
-    if (rootPath == null)
-      return;
-    if (rootPath.endsWith(File.separator)) {
-      workspace = rootPath.substring(0, rootPath.lastIndexOf(File.separator));
-    } else {
-      workspace = rootPath;
-    }
   }
 
   public void setResourceLocater(ResourceLocater resourceLocater) {

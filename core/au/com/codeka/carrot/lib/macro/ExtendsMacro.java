@@ -28,13 +28,11 @@ public class ExtendsMacro implements Macro {
     }
     String templateFile = rebuilder.resolveString(helper[0]);
     try {
-      String fullName = current.application().getConfiguration().getResourceLocater()
-          .getFullName(templateFile, rebuilder.getWorkspace(),
-              rebuilder.getConfiguration().getWorkspace());
+      String resourceName = current.application().getConfiguration().getResourceLocater()
+          .findResource(rebuilder.getWorkspace(), templateFile);
       // TODO STOP LOOP EXTENDS
       Node extendsRoot = new TreeParser(current.application()).parse(new TokenParser(
-          current.application().getConfiguration().getResourceLocater().getString(
-              fullName, rebuilder.getConfiguration().getEncoding())));
+          current.application().getConfiguration().getResourceLocater().getString(resourceName)));
       extendsRoot = rebuilder.derive().refactor(extendsRoot);
 
       rebuilder.parent = extendsRoot;

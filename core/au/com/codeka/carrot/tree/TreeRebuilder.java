@@ -60,12 +60,9 @@ public class TreeRebuilder {
     if (file != null) {
       try {
         return application.getConfiguration().getResourceLocater().getDirectory(file);
-      } catch (IOException e) {
-        return application.getConfiguration().getWorkspace();
-      }
-    } else {
-      return application.getConfiguration().getWorkspace();
+      } catch (IOException e) {}
     }
+    return null;
   }
 
   public void assignNode(String key, Node node) {

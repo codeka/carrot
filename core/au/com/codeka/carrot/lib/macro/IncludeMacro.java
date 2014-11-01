@@ -27,13 +27,11 @@ public class IncludeMacro implements Macro {
     }
     String templateFile = rebuilder.resolveString(helper[0]);
     try {
-      String fullName = rebuilder.getConfiguration().getResourceLocater().getFullName(
-          templateFile, rebuilder.getWorkspace(),
-          rebuilder.getConfiguration().getWorkspace());
+      String fullName = rebuilder.getConfiguration().getResourceLocater().findResource(
+          rebuilder.getWorkspace(), templateFile);
       // TODO STOP LOOP INCLUDE
       Node includeRoot = new TreeParser(current.application()).parse(
-          new TokenParser(rebuilder.getConfiguration().getResourceLocater().getString(
-              fullName, rebuilder.getConfiguration().getEncoding())));
+          new TokenParser(rebuilder.getConfiguration().getResourceLocater().getString(fullName)));
 
       rebuilder.nodeReplace(current, includeRoot.children());
     } catch (IOException e) {

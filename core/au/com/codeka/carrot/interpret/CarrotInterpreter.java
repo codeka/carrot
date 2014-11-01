@@ -198,12 +198,10 @@ public class CarrotInterpreter implements Cloneable {
     if (file != null) {
       try {
         return context.getConfiguration().getResourceLocater().getDirectory(file);
-      } catch (IOException e) {
-        return context.getConfiguration().getWorkspace();
-      }
-    } else {
-      return context.getConfiguration().getWorkspace();
+      } catch (IOException e) { }
     }
+
+    return null;
   }
 
   public void setFile(String fullName) {

@@ -30,11 +30,9 @@ public class ExtendsTag implements Tag {
       throw new InterpretException("Tag 'extends' expects 1 helper >>> " + helper.length);
     }
     String templateFile = interpreter.resolveString(helper[0]);
-    String fullName = interpreter.getApplication().getConfiguration().getResourceLocater()
-        .getFullName(templateFile, interpreter.getWorkspace(),
-            interpreter.getConfiguration().getWorkspace());
-    Node node = interpreter.getContext().getApplication().getParseResult(
-        fullName, interpreter.getConfiguration().getEncoding());
+    String resourceName = interpreter.getApplication().getConfiguration().getResourceLocater()
+        .findResource(interpreter.getWorkspace(), templateFile);
+    Node node = interpreter.getContext().getApplication().getParseResult(resourceName);
 
     ListOrderedMap blockList = new ListOrderedMap();
     interpreter.assignRuntimeScope(CarrotInterpreter.BLOCK_LIST, blockList, 1);
