@@ -3,6 +3,7 @@ package au.com.codeka.carrot.lib.filter;
 import java.lang.reflect.Array;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Objects;
 
 import au.com.codeka.carrot.base.CarrotException;
 import au.com.codeka.carrot.base.Constants;
@@ -59,7 +60,7 @@ public class ContainFilter implements Filter {
     }
     // string
     if (object instanceof String) {
-      return object.toString().contains(argObj.toString());
+      return object.toString().contains(Objects.toString(argObj));
     }
     // iterator
     if (object instanceof Iterator) {

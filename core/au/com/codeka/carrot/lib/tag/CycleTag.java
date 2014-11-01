@@ -48,7 +48,9 @@ public class CycleTag implements Tag {
           values[i] = interpreter.resolveString(values[i]);
         }
       }
-      writer.write(values[forindex % values.length]);
+      if (values != null) {
+        writer.write(values[forindex % values.length]);
+      }
     } else if (helper.length == 3) {
       HelperStringTokenizer items = new HelperStringTokenizer(helper[0]);
       items.splitComma(true);
