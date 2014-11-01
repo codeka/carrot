@@ -8,22 +8,18 @@ import au.com.codeka.carrot.base.Application;
 import au.com.codeka.carrot.base.CarrotException;
 import au.com.codeka.carrot.interpret.CarrotInterpreter;
 import au.com.codeka.carrot.lib.Filter;
-import au.com.codeka.carrot.lib.FilterLibrary;
 import au.com.codeka.carrot.parse.EchoToken;
-import au.com.codeka.carrot.util.Log;
 import au.com.codeka.carrot.util.ObjectValue;
 
 public class VariableNode extends Node {
 
   private static final long serialVersionUID = 1;
   private EchoToken master;
-  private Log log;
   static final String name = "Variable_Node";
 
   public VariableNode(Application app, EchoToken token) {
     super(app);
     master = token;
-    log = new Log(app.getConfiguration());
   }
 
   @Override
@@ -41,11 +37,7 @@ public class VariableNode extends Node {
     String[] args;
     Filter filter;
     for (int i = 0; i < filters.size(); i++) {
-      filter = FilterLibrary.getFilter(filters.get(i));
-      if (filter == null) {
-        log.warn("Skipping an unregistered filter: %s", filters.get(i));
-        continue;
-      }
+      filter = app.getConfiguration().getFilterLibrary().fetch(filters.get(i));
       args = argss.get(i);
       if (args == null) {
         var = filter.filter(var, interpreter);

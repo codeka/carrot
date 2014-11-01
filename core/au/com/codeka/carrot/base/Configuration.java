@@ -5,12 +5,8 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import au.com.codeka.carrot.cache.SynchronousStorage;
-import au.com.codeka.carrot.lib.Filter;
 import au.com.codeka.carrot.lib.FilterLibrary;
-import au.com.codeka.carrot.lib.Importable;
-import au.com.codeka.carrot.lib.Macro;
 import au.com.codeka.carrot.lib.MacroLibrary;
-import au.com.codeka.carrot.lib.Tag;
 import au.com.codeka.carrot.lib.TagLibrary;
 import au.com.codeka.carrot.util.Log;
 
@@ -22,23 +18,29 @@ public class Configuration {
   private ResourceLocater resourceLocater;
   private Class<?> parseCacheClass;
   private Logger logger;
+  private FilterLibrary filterLibrary;
+  private TagLibrary tagLibrary;
+  private MacroLibrary macroLibrary;
 
   protected Configuration() {
     resourceLocater = new FileLocater();
     parseCacheClass = SynchronousStorage.class;
     logger = new Log.DefaultLogger();
+    filterLibrary = new FilterLibrary(this);
+    tagLibrary = new TagLibrary(this);
+    macroLibrary = new MacroLibrary(this);
   };
 
-  public static void addImport(Importable importee) {
-    if (importee instanceof Filter) {
-      FilterLibrary.addFilter((Filter) importee);
-    } else if (importee instanceof Tag) {
-      TagLibrary.addTag((Tag) importee);
-    } else if (importee instanceof Macro) {
-      MacroLibrary.addMacro((Macro) importee);
-    } else {
-      // TODO: this method shouldn't be static and it should be on the Application class anyway.
-    }
+  public FilterLibrary getFilterLibrary() {
+    return filterLibrary;
+  }
+
+  public MacroLibrary getMacroLibrary() {
+    return macroLibrary;
+  }
+
+  public TagLibrary getTagLibrary() {
+    return tagLibrary;
   }
 
   public void setEncoding(String encoding) {

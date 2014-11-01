@@ -7,9 +7,7 @@ import au.com.codeka.carrot.base.Application;
 import au.com.codeka.carrot.base.CarrotException;
 import au.com.codeka.carrot.interpret.CarrotInterpreter;
 import au.com.codeka.carrot.lib.Macro;
-import au.com.codeka.carrot.lib.MacroLibrary;
 import au.com.codeka.carrot.lib.Tag;
-import au.com.codeka.carrot.lib.TagLibrary;
 import au.com.codeka.carrot.parse.MacroToken;
 import au.com.codeka.carrot.parse.ParseException;
 import au.com.codeka.carrot.util.Log;
@@ -25,7 +23,7 @@ public class MacroNode extends Node {
     super(app);
     master = token;
     log = new Log(app.getConfiguration());
-    Macro macro = MacroLibrary.getMacro(master.getMacroName());
+    Macro macro = app.getConfiguration().getMacroLibrary().fetch(master.getMacroName());
     if (macro == null) {
       throw new ParseException("Can't find macro >>> " + master.getMacroName());
     }
@@ -35,7 +33,7 @@ public class MacroNode extends Node {
   @Override
   public void render(CarrotInterpreter interpreter, Writer writer)
       throws CarrotException, IOException {
-    Tag tag = TagLibrary.getTag(master.getMacroName());
+    Tag tag = app.getConfiguration().getTagLibrary().fetch(master.getMacroName());
     if (tag != null) {
       log.debug("Treat macro as tag with same name: %s", master.getMacroName());
       interpreter.setLevel(level);
@@ -46,7 +44,7 @@ public class MacroNode extends Node {
   }
 
   public void refactor(TreeRebuilder rebuilder) throws ParseException {
-    Macro macro = MacroLibrary.getMacro(master.getMacroName());
+    Macro macro = app.getConfiguration().getMacroLibrary().fetch(master.getMacroName());
     macro.refactor(this, master.getHelpers(), rebuilder);
   }
 

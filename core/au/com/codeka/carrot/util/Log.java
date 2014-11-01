@@ -6,14 +6,14 @@ import java.util.logging.Logger;
 import au.com.codeka.carrot.base.Configuration;
 
 public final class Log {
-  private Configuration.Logger logger;
+  private Configuration config;
 
   public Log(Configuration config) {
-    this.logger = config.getLogger();
+    this.config = config;
   }
 
   public void write(int level, String msg) {
-    logger.write(level, msg);
+    config.getLogger().write(level, msg);
   }
 
   public void debug(String fmt, Object... args) {

@@ -1,5 +1,6 @@
 package au.com.codeka.carrot.lib;
 
+import au.com.codeka.carrot.base.Configuration;
 import au.com.codeka.carrot.lib.filter.AbsFilter;
 import au.com.codeka.carrot.lib.filter.AddFilter;
 import au.com.codeka.carrot.lib.filter.AndFilter;
@@ -21,11 +22,9 @@ import au.com.codeka.carrot.lib.filter.ReverseFilter;
 import au.com.codeka.carrot.lib.filter.TruncateFilter;
 import au.com.codeka.carrot.lib.filter.UpperFilter;
 
-public class FilterLibrary extends SimpleLibrary<Filter> {
-  private static FilterLibrary lib;
-
-  static {
-    lib = new FilterLibrary();
+public class FilterLibrary extends Library<Filter> {
+  public FilterLibrary(Configuration config) {
+    super(config, "filter");
   }
 
   @Override
@@ -85,12 +84,7 @@ public class FilterLibrary extends SimpleLibrary<Filter> {
     register(md5f.getName(), md5f);
   }
 
-  public static Filter getFilter(String filterName) {
-    return lib.fetch(filterName);
-  }
-
-  public static void addFilter(Filter filter) {
-    lib.register(filter.getName(), filter);
-    //JangodLogger.fine("Imported filter >>>" + filter.getName());
+  public void register(Filter filter) {
+    register(filter.getName(), filter);
   }
 }

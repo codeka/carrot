@@ -5,7 +5,6 @@ import java.util.List;
 import au.com.codeka.carrot.base.CarrotException;
 import au.com.codeka.carrot.base.Constants;
 import au.com.codeka.carrot.lib.Filter;
-import au.com.codeka.carrot.lib.FilterLibrary;
 import au.com.codeka.carrot.parse.FilterParser;
 import au.com.codeka.carrot.parse.ParseException;
 
@@ -35,7 +34,7 @@ public class VariableFilter {
     String[] args;
     Filter filter;
     for (int i = 0; i < filters.size(); i++) {
-      filter = FilterLibrary.getFilter(filters.get(i));
+      filter = interpreter.getConfiguration().getFilterLibrary().fetch(filters.get(i));
       args = argss.get(i);
       if (args == null) {
         var = filter.filter(var, interpreter);

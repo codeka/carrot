@@ -1,14 +1,13 @@
 package au.com.codeka.carrot.lib;
 
+import au.com.codeka.carrot.base.Configuration;
 import au.com.codeka.carrot.lib.macro.BlockMacro;
 import au.com.codeka.carrot.lib.macro.ExtendsMacro;
 import au.com.codeka.carrot.lib.macro.IncludeMacro;
 
-public class MacroLibrary extends SimpleLibrary<Macro> {
-  private static MacroLibrary lib;
-
-  static {
-    lib = new MacroLibrary();
+public class MacroLibrary extends Library<Macro> {
+  public MacroLibrary(Configuration config) {
+    super(config, "macro");
   }
 
   @Override
@@ -21,12 +20,7 @@ public class MacroLibrary extends SimpleLibrary<Macro> {
     register(blkMacro.getName(), blkMacro);
   }
 
-  public static Macro getMacro(String name) {
-    return lib.fetch(name);
-  }
-
-  public static void addMacro(Macro macro) {
-    lib.register(macro.getName(), macro);
-    //JangodLogger.fine("Imported macro >>>" + macro.getName());
+  public void register(Macro macro) {
+    register(macro.getName(), macro);
   }
 }

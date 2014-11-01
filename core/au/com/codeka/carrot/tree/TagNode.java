@@ -21,10 +21,7 @@ public class TagNode extends Node {
   public TagNode(Application app, TagToken token) throws ParseException {
     super(app);
     master = token;
-    Tag tag = TagLibrary.getTag(master.getTagName());
-    if (tag == null) {
-      throw new ParseException("Can't find tag >>> " + master.getTagName());
-    }
+    Tag tag = app.getConfiguration().getTagLibrary().fetch(master.getTagName());
     endName = tag.getEndTagName();
   }
 
@@ -32,7 +29,7 @@ public class TagNode extends Node {
   public void render(CarrotInterpreter interpreter, Writer writer)
       throws CarrotException, IOException {
     interpreter.setLevel(level);
-    Tag tag = TagLibrary.getTag(master.getTagName());
+    Tag tag = app.getConfiguration().getTagLibrary().fetch(master.getTagName());
     tag.interpreter(children(), master.getHelpers(), interpreter, writer);
   }
 
