@@ -3,7 +3,6 @@ package au.com.codeka.carrot.base;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import au.com.codeka.carrot.cache.SynchronousStorage;
 import au.com.codeka.carrot.lib.FilterLibrary;
 import au.com.codeka.carrot.lib.MacroLibrary;
 import au.com.codeka.carrot.lib.TagLibrary;
@@ -14,7 +13,7 @@ public class Configuration {
   private Locale locale;
   private TimeZone timezone;
   private ResourceLocater resourceLocater;
-  private Class<?> parseCacheClass;
+  private boolean parseCacheEnabled;
   private Logger logger;
   private FilterLibrary filterLibrary;
   private TagLibrary tagLibrary;
@@ -22,7 +21,7 @@ public class Configuration {
 
   protected Configuration() {
     resourceLocater = new FileResourceLocater(this, ".");
-    parseCacheClass = SynchronousStorage.class;
+    parseCacheEnabled = true;
     logger = new Log.DefaultLogger();
     filterLibrary = new FilterLibrary(this);
     tagLibrary = new TagLibrary(this);
@@ -73,12 +72,12 @@ public class Configuration {
     return resourceLocater;
   }
 
-  public void setParseCacheClass(Class<?> clazz) {
-    parseCacheClass = clazz;
+  public void setParseCacheEnabled(boolean enabled) {
+    parseCacheEnabled = enabled;
   }
 
-  public Class<?> getParseCacheClass() {
-    return parseCacheClass;
+  public boolean isParseCacheEnabled() {
+    return parseCacheEnabled;
   }
 
   public void setLogger(Logger logger) {

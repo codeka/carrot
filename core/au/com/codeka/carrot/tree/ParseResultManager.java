@@ -1,43 +1,78 @@
 package au.com.codeka.carrot.tree;
 
 import java.io.IOException;
+import java.lang.ref.SoftReference;
+import java.util.concurrent.ConcurrentHashMap;
 
 import au.com.codeka.carrot.base.Application;
-import au.com.codeka.carrot.base.Configuration;
-import au.com.codeka.carrot.cache.StatelessObjectStorage;
 import au.com.codeka.carrot.parse.ParseException;
 import au.com.codeka.carrot.parse.TokenParser;
+import au.com.codeka.carrot.util.Log;
 
+/** Keeps a cache of parse tree for resources, and creates new parse trees on demand. */
 public class ParseResultManager {
-
-  StatelessObjectStorage<String, Node> cache;
-  Application application;
-  static final String join = "@";
+  private final ConcurrentHashMap<String, NodeContainer> cache;
+  private final Application application;
+  private final Log log;
 
   public ParseResultManager(Application application) {
     this.application = application;
-    init(application.getConfiguration());
-  }
 
-  @SuppressWarnings("unchecked")
-  private void init(Configuration config) {
-    try {
-      cache = (StatelessObjectStorage<String, Node>) config.getParseCacheClass().newInstance();
-    } catch (Exception e) {
-      throw new RuntimeException(e);
+    if (application.getConfiguration().isParseCacheEnabled()) {
+      cache = new ConcurrentHashMap<String, NodeContainer>();
+    } else {
+      cache = null;
     }
+
+    log = new Log(application.getConfiguration());
   }
 
   public Node getParseResult(String resourceName)
       throws IOException, ParseException {
-    String key = resourceName;
-    Node root = cache.get(key);
-    if (root == null) {
-      root = new TreeParser(application).parse(new TokenParser(
-          application.getConfiguration().getResourceLocater().getString(resourceName)));
-      root = new TreeRebuilder(application, resourceName).refactor(root);
-      cache.put(key, root);
+    if (cache == null) {
+      return createNode(resourceName);
     }
+
+    Node root = null;
+    NodeContainer container = cache.get(resourceName);
+    long modifiedTime = application.getConfiguration().getResourceLocater()
+        .getModifiedTime(resourceName);
+    if (container != null) {
+      root = container.node.get();
+      if (root != null) {
+        // reset to null if the resource has been modified anyway
+        if (container.lastModifiedTime != modifiedTime) {
+          log.info("Resource has been modified, reloading: %s", resourceName);
+          root = null;
+        }
+      } else {
+        log.info("Resource has been garbage-collected, reloading: %s", resourceName);
+      }
+    } else {
+      log.info("Resource not cached, loading: %s", resourceName);
+    }
+    if (root == null) {
+      root = createNode(resourceName);
+      cache.put(resourceName, new NodeContainer(root, modifiedTime));
+    }
+
     return root;
+  }
+
+  private Node createNode(String resourceName) throws IOException, ParseException {
+    Node root = new TreeParser(application).parse(new TokenParser(
+        application.getConfiguration().getResourceLocater().getString(resourceName)));
+    root = new TreeRebuilder(application, resourceName).refactor(root);
+    return root;
+  }
+
+  private static class NodeContainer {
+    public SoftReference<Node> node;
+    public long lastModifiedTime;
+
+    public NodeContainer(Node node, long lastModifiedTime) {
+      this.node = new SoftReference<Node>(node);
+      this.lastModifiedTime = lastModifiedTime;
+    }
   }
 }

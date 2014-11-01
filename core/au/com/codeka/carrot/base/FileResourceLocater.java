@@ -56,6 +56,11 @@ public class FileResourceLocater implements ResourceLocater {
   }
 
   @Override
+  public long getModifiedTime(String resourceName) throws IOException {
+    return new File(resourceName).lastModified();
+  }
+
+  @Override
   public Reader getReader(String resourceName) throws IOException {
     File file = new File(resourceName);
     return new InputStreamReader(new FileInputStream(file), config.getEncoding());
@@ -77,5 +82,4 @@ public class FileResourceLocater implements ResourceLocater {
     }
     return buff.toString();
   }
-
 }

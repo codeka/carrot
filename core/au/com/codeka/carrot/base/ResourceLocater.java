@@ -36,6 +36,22 @@ public interface ResourceLocater {
   public String findResource(String relativeName) throws IOException;
 
   /**
+   * Gets a value which indicates when the resource was modified. This could be a timestamp, but
+   * it could also be a hash, the actual value doesn't matter as long as it's different when the
+   * resource is modified.
+   * <p>
+   * The value is used to determine whether we need to flush our caches, and this function will be
+   * called for every request to render a template, so calling this needs to be quick.
+   * <p>
+   * Zero indicates this {@link ResourceLocater} doesn't support modification detection.
+   *
+   * @param resourceName The name of the resource, as returned from {@link #findResource}.
+   * @return A value indicating the 'last modified time' (or a hash) of the resource.
+   * @throws IOException
+   */
+  public long getModifiedTime(String resourceName) throws IOException;
+
+  /**
    * Gets a {@link Reader} to read the contents of the given resource.
    *
    * @param resourceName Name of the resource, typically you will use {@link #findResource} to find

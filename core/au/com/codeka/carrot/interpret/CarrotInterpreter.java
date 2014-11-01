@@ -91,12 +91,20 @@ public class CarrotInterpreter implements Cloneable {
     }
   }
 
-  public Object retraceVariable(String variable) throws CarrotException {
-    if (variable == null || variable.trim().length() == 0) {
+  /**
+   * Look for the given variable name.
+   *
+   * @param variableName The name of the variable to resolve to a value.
+   * @return The variable, if it can be resolved, or null otherwise.
+   * @throws CarrotException if there is an exception trying to call user-supplied methods.
+   */
+  //@Nullable
+  public Object retraceVariable(String variableName) throws CarrotException {
+    if (variableName == null || variableName.trim().length() == 0) {
       // No variable, just return empty string.
       return "";
     }
-    Variable var = new Variable(variable);
+    Variable var = new Variable(variableName);
     String varName = var.getName();
     // find from runtime(tree scope) > engine > global
     Object obj = runtime.get(varName, level);
@@ -108,20 +116,15 @@ public class CarrotInterpreter implements Cloneable {
       obj = context.getAttribute(varName);
     }
     if (obj == null) {
-      if (VAR_DATE.equals(variable)) {
+      if (VAR_DATE.equals(variableName)) {
         return new java.util.Date();
       }
-      if (VAR_PATH.equals(variable)) {
+      if (VAR_PATH.equals(variableName)) {
         return getWorkspace();
       }
     }
     if (obj != null) {
       obj = var.resolve(obj);
-      if (obj == null) {
-        log.warn("%s can't resolve member '%s'", varName, variable);
-      }
-    } else {
-      log.warn("%s can't resolve variable '%s'", variable, varName);
     }
     return obj;
   }
