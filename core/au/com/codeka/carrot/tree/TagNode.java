@@ -7,7 +7,6 @@ import au.com.codeka.carrot.base.Application;
 import au.com.codeka.carrot.base.CarrotException;
 import au.com.codeka.carrot.interpret.CarrotInterpreter;
 import au.com.codeka.carrot.lib.Tag;
-import au.com.codeka.carrot.lib.TagLibrary;
 import au.com.codeka.carrot.parse.ParseException;
 import au.com.codeka.carrot.parse.TagToken;
 
