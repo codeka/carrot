@@ -6,6 +6,8 @@ import java.util.TimeZone;
 import au.com.codeka.carrot.lib.FilterLibrary;
 import au.com.codeka.carrot.lib.MacroLibrary;
 import au.com.codeka.carrot.lib.TagLibrary;
+import au.com.codeka.carrot.resource.FileResourceLocater;
+import au.com.codeka.carrot.resource.ResourceLocater;
 import au.com.codeka.carrot.util.Log;
 
 public class Configuration {

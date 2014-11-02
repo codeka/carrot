@@ -5,6 +5,7 @@ import java.io.IOException;
 import au.com.codeka.carrot.lib.Macro;
 import au.com.codeka.carrot.parse.ParseException;
 import au.com.codeka.carrot.parse.TokenParser;
+import au.com.codeka.carrot.resource.ResourceName;
 import au.com.codeka.carrot.tree.Node;
 import au.com.codeka.carrot.tree.TreeParser;
 import au.com.codeka.carrot.tree.TreeRebuilder;
@@ -28,7 +29,7 @@ public class ExtendsMacro implements Macro {
     }
     String templateFile = rebuilder.resolveString(helper[0]);
     try {
-      String resourceName = current.application().getConfiguration().getResourceLocater()
+      ResourceName resourceName = current.application().getConfiguration().getResourceLocater()
           .findResource(rebuilder.getWorkspace(), templateFile);
       // TODO STOP LOOP EXTENDS
       Node extendsRoot = new TreeParser(current.application()).parse(new TokenParser(

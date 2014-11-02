@@ -1,6 +1,5 @@
 package au.com.codeka.carrot.tree;
 
-import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -12,24 +11,26 @@ import au.com.codeka.carrot.base.Application;
 import au.com.codeka.carrot.base.Configuration;
 import au.com.codeka.carrot.base.Constants;
 import au.com.codeka.carrot.parse.ParseException;
+import au.com.codeka.carrot.resource.ResourceName;
 
 public class TreeRebuilder {
 
-  String file = null;
-  Application application;
-  Map<String, Node> capture = new HashMap<String, Node>();
-  Map<String, Object> variables = new HashMap<String, Object>();
-  LinkedList<Method> actions = new LinkedList<Method>();
-  List<Object[]> msgs = new LinkedList<Object[]>();
+  private final ResourceName currResource;
+  private final Application application;
+  private final Map<String, Node> capture = new HashMap<String, Node>();
+  private final Map<String, Object> variables = new HashMap<String, Object>();
+  private final LinkedList<Method> actions = new LinkedList<Method>();
+  private List<Object[]> msgs = new LinkedList<Object[]>();
   public Node parent = null;
 
   public TreeRebuilder(Application application) {
     this.application = application;
+    this.currResource = null;
   }
 
-  TreeRebuilder(Application application, String file) {
+  TreeRebuilder(Application application, ResourceName currResource) {
     this.application = application;
-    this.file = file;
+    this.currResource = currResource;
   }
 
   /**
@@ -38,9 +39,9 @@ public class TreeRebuilder {
    * @return
    */
   public TreeRebuilder derive() {
-    TreeRebuilder tr = new TreeRebuilder(this.application, this.file);
-    tr.capture = this.capture;
-    tr.variables = this.variables;
+    TreeRebuilder tr = new TreeRebuilder(this.application, currResource);
+    tr.capture.putAll(this.capture);
+    tr.variables.putAll(this.variables);
     tr.parent = this.parent;
     return tr;
   }
@@ -56,13 +57,11 @@ public class TreeRebuilder {
     return string;
   }
 
-  public String getWorkspace() {
-    if (file != null) {
-      try {
-        return application.getConfiguration().getResourceLocater().getDirectory(file);
-      } catch (IOException e) {}
+  public ResourceName getWorkspace() {
+    if (currResource == null) {
+      return null;
     }
-    return null;
+    return currResource.getParent();
   }
 
   public void assignNode(String key, Node node) {
@@ -80,11 +79,11 @@ public class TreeRebuilder {
   public Object fetchVariable(String key, Object value) {
     return variables.get(key);
   }
-
+/*
   public void setFile(String fullName) {
     this.file = fullName;
   }
-
+*/
   public Configuration getConfiguration() {
     return application.getConfiguration();
   }

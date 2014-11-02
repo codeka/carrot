@@ -10,6 +10,7 @@ import au.com.codeka.carrot.base.CarrotException;
 import au.com.codeka.carrot.base.Configuration;
 import au.com.codeka.carrot.base.Context;
 import au.com.codeka.carrot.interpret.CarrotInterpreter;
+import au.com.codeka.carrot.resource.ResourceName;
 
 /**
  * Processor for processing a template. Can only be used once and must be
@@ -19,14 +20,12 @@ public class Processor {
 
   protected Context context;
   protected Application application;
-  CarrotInterpreter interpreter;
 
   private boolean used;
 
   public Processor(Application application) {
     this.application = application;
     context = new Context(application);
-    interpreter = new CarrotInterpreter(context);
   }
 
   public Configuration getConfiguration() {
@@ -58,11 +57,10 @@ public class Processor {
 
     context.initBindings(bindings, Context.SCOPE_SESSION);
     try {
-      String resourceName = application.getConfiguration().getResourceLocater().findResource(
+      ResourceName resourceName = application.getConfiguration().getResourceLocater().findResource(
           templateFile);
-      interpreter.setFile(resourceName);
-      interpreter.init();
-      interpreter.render(application.getParseResult(resourceName), writer);
+      CarrotInterpreter interpreter = new CarrotInterpreter(context);
+      interpreter.render(resourceName, writer);
     } catch (IOException e) {
       throw new CarrotException(e);
     }

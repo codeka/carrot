@@ -5,6 +5,8 @@ import java.io.IOException;
 import org.junit.Before;
 import org.junit.Test;
 
+import au.com.codeka.carrot.resource.FileResourceLocater;
+
 public class FileLocaterTest {
 
   FileResourceLocater locater;

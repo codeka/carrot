@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Hashtable;
 import java.util.Map;
 
+import au.com.codeka.carrot.resource.ResourceName;
 import au.com.codeka.carrot.tree.Node;
 import au.com.codeka.carrot.tree.ParseResultManager;
 
@@ -38,7 +39,7 @@ public class Application {
     return config;
   }
 
-  public Node getParseResult(String resourceName) throws CarrotException, IOException {
+  public Node getParseResult(ResourceName resourceName) throws CarrotException, IOException {
     return parseResultManager.getParseResult(resourceName);
   }
 }

@@ -10,6 +10,7 @@ import au.com.codeka.carrot.base.Configuration;
 import au.com.codeka.carrot.base.Constants;
 import au.com.codeka.carrot.base.Context;
 import au.com.codeka.carrot.parse.TokenParser;
+import au.com.codeka.carrot.resource.ResourceName;
 import au.com.codeka.carrot.tree.Node;
 import au.com.codeka.carrot.tree.TreeParser;
 import au.com.codeka.carrot.util.ListOrderedMap;
@@ -33,7 +34,7 @@ public class CarrotInterpreter implements Cloneable {
   private FloorBindings runtime;
   private Context context;
   private Log log;
-  String file = null;
+  private ResourceName workspace;
 
   public CarrotInterpreter(Context context) {
     this.context = context;
@@ -62,11 +63,35 @@ public class CarrotInterpreter implements Cloneable {
     level = 1;
   }
 
-  public void render(TokenParser parser, Writer writer) throws CarrotException, IOException {
-    render(new TreeParser(context.getApplication()).parse(parser), writer);
+  /**
+   * Finds the {@link ResourceName} of the resource with the given name, relative to our current
+   * workspace.
+   *
+   * @param name The name of the resource to find.
+   * @param resolveName {@code true} if the name is a variable that we may need to resolve first.
+   * @return A {@link ResourceName} for the resource with the given name.
+   * @throws IOException
+   */
+  public ResourceName findResource(String name, boolean resolveName)
+      throws CarrotException, IOException {
+    if (resolveName) {
+      name = resolveString(name);
+    }
+    return getApplication().getConfiguration().getResourceLocater()
+        .findResource(getWorkspace(), name);
   }
 
-  public void render(Node root, Writer writer) throws CarrotException, IOException {
+  public void render(TokenParser tokenParser, Writer writer) throws CarrotException, IOException {
+    workspace = null;
+    render(new TreeParser(context.getApplication()).parse(tokenParser), writer);
+  }
+
+  public void render(ResourceName resourceName, Writer writer) throws CarrotException, IOException {
+    workspace = resourceName.getParent();
+    render(context.getApplication().getParseResult(resourceName), writer);
+  }
+
+  private void render(Node root, Writer writer) throws CarrotException, IOException {
     for (Node node : root.children()) {
       node.render(this, writer);
     }
@@ -197,17 +222,11 @@ public class CarrotInterpreter implements Cloneable {
     return context.getApplication();
   }
 
-  public String getWorkspace() {
-    if (file != null) {
-      try {
-        return context.getConfiguration().getResourceLocater().getDirectory(file);
-      } catch (IOException e) { }
-    }
-
-    return null;
+  public ResourceName getWorkspace() {
+    return workspace;
   }
 
-  public void setFile(String fullName) {
-    this.file = fullName;
+  public void setCurrentResource(ResourceName resourceName) {
+    workspace = resourceName.getParent();
   }
 }

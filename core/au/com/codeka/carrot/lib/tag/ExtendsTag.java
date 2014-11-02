@@ -5,18 +5,16 @@ import java.io.StringWriter;
 import java.io.Writer;
 
 import au.com.codeka.carrot.base.CarrotException;
-import au.com.codeka.carrot.interpret.InterpretException;
 import au.com.codeka.carrot.interpret.CarrotInterpreter;
+import au.com.codeka.carrot.interpret.InterpretException;
 import au.com.codeka.carrot.lib.Tag;
-import au.com.codeka.carrot.tree.Node;
+import au.com.codeka.carrot.resource.ResourceName;
 import au.com.codeka.carrot.tree.NodeList;
 import au.com.codeka.carrot.util.HelperStringTokenizer;
 import au.com.codeka.carrot.util.ListOrderedMap;
 
 /**
  * {% extends "base.html" %} {% extends var_fileName %}
- * 
- * @author anysome TODO EXTENDS NESTED
  */
 public class ExtendsTag implements Tag {
 
@@ -29,10 +27,8 @@ public class ExtendsTag implements Tag {
     if (helper.length != 1) {
       throw new InterpretException("Tag 'extends' expects 1 helper >>> " + helper.length);
     }
-    String templateFile = interpreter.resolveString(helper[0]);
-    String resourceName = interpreter.getApplication().getConfiguration().getResourceLocater()
-        .findResource(interpreter.getWorkspace(), templateFile);
-    Node node = interpreter.getContext().getApplication().getParseResult(resourceName);
+
+    ResourceName resourceName = interpreter.findResource(helper[0], true);
 
     ListOrderedMap blockList = new ListOrderedMap();
     interpreter.assignRuntimeScope(CarrotInterpreter.BLOCK_LIST, blockList, 1);
@@ -40,7 +36,7 @@ public class ExtendsTag implements Tag {
     interpreter.assignRuntimeScope(CarrotInterpreter.CHILD_FLAG, true, 1);
     parent.assignRuntimeScope(CarrotInterpreter.PARENT_FLAG, true, 1);
     StringWriter child = new StringWriter();
-    parent.render(node, child);
+    parent.render(resourceName, child);
     interpreter.assignRuntimeScope(CarrotInterpreter.SEMI_RENDER, child.toString(), 1);
   }
 
