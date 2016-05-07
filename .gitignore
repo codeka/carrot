@@ -1,10 +1,4 @@
 
+# Ignore gradle files.
+.gradle/
 build/
-dist/
-
-*.class
-
-.settings/
-.classpath
-.project
-
