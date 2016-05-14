@@ -16,7 +16,7 @@ public abstract class ResourceName {
   }
 
   /**
-   * Gets the name of this resource, which may be relative to the parent (i.e. not nessecarily a
+   * @return The name of this resource, which may be relative to the parent (i.e. not necessarily a
    * direct child of the parent).
    */
   public String getName() {
@@ -24,7 +24,7 @@ public abstract class ResourceName {
   }
 
   /**
-   * Gets the direct 'parent' of this resource. This will resolve the name of this resource and
+   * @return The direct 'parent' of this resource. This will resolve the name of this resource and
    * then return the direct parent of the resolved name.
    */
   public abstract ResourceName getParent();

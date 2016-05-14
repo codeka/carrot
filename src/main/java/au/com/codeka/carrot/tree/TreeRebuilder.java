@@ -34,9 +34,7 @@ public class TreeRebuilder {
   }
 
   /**
-   * share the same capture nodes
-   * 
-   * @return
+   * @return A new {@link TreeRebuilder} that's a copy of this one.
    */
   public TreeRebuilder derive() {
     TreeRebuilder tr = new TreeRebuilder(this.application, currResource);
@@ -125,13 +123,15 @@ public class TreeRebuilder {
   }
 
   /**
-   * Replace a node with many nodes.<br />
+   * Replace a node with many nodes.
+   *
    * It will take place after node tree iterate.
    * 
    * @param tobe
    *          The node tobe replaced
    * @param with
    *          The new nodelist instead of old node
+   * @throws ParseException If there is an error replacing the node.
    */
   public void nodeReplace(Node tobe, NodeList with) throws ParseException {
     if (tobe != null) {

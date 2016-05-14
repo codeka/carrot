@@ -22,7 +22,7 @@ public class FixedToken extends Token {
   }
 
   /**
-   * set n is an integer and > 0 change "{\[n]{" and "{\[n]!" and "{\[n]#" and
+   * set n is an integer and &gt; 0 change "{\[n]{" and "{\[n]!" and "{\[n]#" and
    * "{\[n]%" to "{\[n-1]{" or "{\[n-1]!" or "{\[n-1]#" or "{\[n-1]%"
    */
   @Override

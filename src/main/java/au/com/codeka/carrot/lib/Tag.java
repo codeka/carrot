@@ -15,7 +15,7 @@ public interface Tag extends Importable {
   /**
    * Get name of end tag lowerCase Null if it's a single tag without content.
    * 
-   * @return
+   * @return The end tag name.
    */
   public String getEndTagName();
 

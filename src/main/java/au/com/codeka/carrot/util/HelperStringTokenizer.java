@@ -28,7 +28,7 @@ public class HelperStringTokenizer implements Iterator<String> {
   /**
    * use Comma as token split or not true use it; false don't use it.
    * 
-   * @param onOrOff
+   * @param onOrOff True if we want to split on commas.
    */
   public void splitComma(boolean onOrOff) {
     useComma = onOrOff;

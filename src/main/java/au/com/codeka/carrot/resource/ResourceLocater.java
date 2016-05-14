@@ -44,7 +44,7 @@ public interface ResourceLocater {
    *
    * @param resourceName The {@link ResourceName} of the resource.
    * @return A value indicating the 'last modified time' (or a hash) of the resource.
-   * @throws IOException
+   * @throws IOException If the resource cannot be found.
    */
   public long getModifiedTime(ResourceName resourceName) throws IOException;
 
@@ -53,7 +53,7 @@ public interface ResourceLocater {
    *
    * @param resourceName The {@link ResourceName} of the resource.
    * @return A {@link Reader} for reading the contents of the resource.
-   * @throws IOException
+   * @throws IOException If the resource cannot be found.
    */
   public Reader getReader(ResourceName resourceName) throws IOException;
 
@@ -62,7 +62,7 @@ public interface ResourceLocater {
    *
    * @param resourceName The {@link ResourceName} of the resource.
    * @return The string contents of the resource.
-   * @throws IOException
+   * @throws IOException If the resource cannot be found.
    */
   public String getString(ResourceName resourceName) throws IOException;
 }

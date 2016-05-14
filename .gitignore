@@ -3,3 +3,9 @@
 .gradle/
 build/
 gradle.properties
+
+# Ignore IntelliJ files
+.idea/
+*.iml
+local.properties
+

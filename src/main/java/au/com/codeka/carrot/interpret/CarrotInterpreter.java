@@ -70,7 +70,8 @@ public class CarrotInterpreter implements Cloneable {
    * @param name The name of the resource to find.
    * @param resolveName {@code true} if the name is a variable that we may need to resolve first.
    * @return A {@link ResourceName} for the resource with the given name.
-   * @throws IOException
+   * @throws IOException If the resource cannot be found.
+   * @throws CarrotException If some other error occurs.
    */
   public ResourceName findResource(String name, boolean resolveName)
       throws CarrotException, IOException {
@@ -187,8 +188,8 @@ public class CarrotInterpreter implements Cloneable {
   /**
    * save variable to runtime tree scope space
    * 
-   * @param name
-   * @param item
+   * @param name The name of the various to save.
+   * @param item The value to give it.
    */
   public void assignRuntimeScope(String name, Object item) {
     runtime.put(name, item, level);

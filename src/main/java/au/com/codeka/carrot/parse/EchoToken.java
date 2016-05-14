@@ -28,9 +28,7 @@ public class EchoToken extends Token {
   }
 
   /**
-   * get filters' args
-   * 
-   * @return
+   * @return The filter's args.
    */
   public List<String[]> getArgss() {
     return fp.getArgss();
@@ -41,7 +39,7 @@ public class EchoToken extends Token {
    * {{obj.attr.attr|filter1:"ar|g1",arg2|filter2:'a:",b"c' }} then var =
    * obj.attr.attr filter = [ [filter1,ar|g1,arg2], [filter2,a:",b"c] ]
    * 
-   * @throws ParseException
+   * @throws ParseException If there was an error parsing the token.
    */
   @Override
   protected void parse() throws ParseException {
