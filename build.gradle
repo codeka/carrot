@@ -4,6 +4,13 @@ repositories {
     mavenCentral()
 }
 
+task carrotJar(type: Jar) {
+}
+
+artifacts {
+  archives carrotJar
+}
+
 dependencies {
     compile 'com.google.code.findbugs:jsr305:3.0.0'
     testCompile 'junit:junit:4.12'
