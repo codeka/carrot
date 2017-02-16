@@ -71,6 +71,22 @@ public class VariableChain {
     // map
     if (value instanceof Map) {
       Map<?, ?> map = (Map<?, ?>) value;
+      try {
+        Long l = Long.parseLong(name);
+        if (map.containsKey(l)) {
+          return map.get(l);
+        }
+      } catch (NumberFormatException e) {
+        // Ignore.
+      }
+      try {
+        Integer i = Integer.parseInt(name);
+        if (map.containsKey(i)) {
+          return map.get(i);
+        }
+      } catch (NumberFormatException e) {
+        // Ignore.
+      }
       if (map.containsKey(name)) {
         return map.get(name);
       }
