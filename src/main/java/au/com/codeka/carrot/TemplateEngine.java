@@ -1,11 +1,11 @@
 package au.com.codeka.carrot;
 
 import au.com.codeka.carrot.lib.Scope;
-import au.com.codeka.carrot.parse.Tokenizer;
+import au.com.codeka.carrot.tmpl.parse.Tokenizer;
 import au.com.codeka.carrot.resource.ResourceLocater;
 import au.com.codeka.carrot.resource.ResourceName;
-import au.com.codeka.carrot.tree.Node;
-import au.com.codeka.carrot.tree.TreeParser;
+import au.com.codeka.carrot.tmpl.Node;
+import au.com.codeka.carrot.tmpl.TemplateParser;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
@@ -22,7 +22,7 @@ public class TemplateEngine {
   private final Configuration config;
   private final Map<String, Object> globalBindings;
   private final ParseCache parseCache;
-  private final TreeParser treeParser;
+  private final TemplateParser templateParser;
 
   /**
    * Constructs a new {@link TemplateEngine} with a default {@link Configuration}.
@@ -44,7 +44,7 @@ public class TemplateEngine {
     this.config = config;
     this.globalBindings = new HashMap<>();
     this.parseCache = new ParseCache(config);
-    this.treeParser = new TreeParser(config);
+    this.templateParser = new TemplateParser(config);
   }
 
   /**
@@ -80,7 +80,7 @@ public class TemplateEngine {
     ResourceName resourceName = config.getResourceLocater().findResource(templateFile);
     Node node = parseCache.getNode(resourceName);
     if (node == null) {
-      node = treeParser.parse(new Tokenizer(config.getResourceLocater().getReader(resourceName)));
+      node = templateParser.parse(new Tokenizer(config.getResourceLocater().getReader(resourceName)));
       parseCache.addNode(resourceName, node);
     }
 

@@ -1,7 +1,7 @@
 package au.com.codeka.carrot;
 
 import au.com.codeka.carrot.resource.ResourceName;
-import au.com.codeka.carrot.tree.Node;
+import au.com.codeka.carrot.tmpl.Node;
 
 import java.lang.ref.WeakReference;
 import java.util.HashMap;

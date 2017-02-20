@@ -1,8 +1,8 @@
-package au.com.codeka.carrot.tree;
+package au.com.codeka.carrot.tmpl;
 
 import au.com.codeka.carrot.CarrotException;
 import au.com.codeka.carrot.Configuration;
-import au.com.codeka.carrot.parse.Tokenizer;
+import au.com.codeka.carrot.tmpl.parse.Tokenizer;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -12,20 +12,20 @@ import java.io.StringReader;
 import static com.google.common.truth.Truth.assertThat;
 
 /**
- * Tests for {@link TreeParser}.
+ * Tests for {@link TemplateParser}.
  */
 @RunWith(JUnit4.class)
-public class TreeParserTest {
+public class TemplateParserTest {
   @Test
   public void testEmptyTree() {
-    Node node = parseTree("");
+    Node node = parseTemplate("");
     assertThat(node.getChildren()).isNotNull();
     assertThat(node.getChildren()).isEmpty();
   }
 
   @Test
   public void testSingleFixedToken() {
-    Node node = parseTree("Hello World");
+    Node node = parseTemplate("Hello World");
     assertThat(node.getChildren()).isNotNull();
     assertThat(node.getChildren()).hasSize(1);
     assertThat(node.getChildren().get(0)).isInstanceOf(FixedNode.class);
@@ -34,7 +34,7 @@ public class TreeParserTest {
 
   @Test
   public void testFixedCommentFixed() {
-    Node node = parseTree("Hello{# foo #}World");
+    Node node = parseTemplate("Hello{# foo #}World");
     assertThat(node.getChildren()).isNotNull();
     assertThat(node.getChildren()).hasSize(2);
     assertThat(node.getChildren().get(0)).isInstanceOf(FixedNode.class);
@@ -45,7 +45,7 @@ public class TreeParserTest {
 
   @Test
   public void testFixedEchoFixed() {
-    Node node = parseTree("Hello{{ foo }}World");
+    Node node = parseTemplate("Hello{{ foo }}World");
     assertThat(node.getChildren()).isNotNull();
     assertThat(node.getChildren()).hasSize(3);
     assertThat(node.getChildren().get(0)).isInstanceOf(FixedNode.class);
@@ -58,7 +58,7 @@ public class TreeParserTest {
 
   @Test
   public void testIfFixedEnd() {
-    Node node = parseTree("{% if foo %}Hello World{% end %}");
+    Node node = parseTemplate("{% if foo %}Hello World{% end %}");
     assertThat(node.getChildren()).isNotNull();
     assertThat(node.getChildren()).hasSize(1);
     assertThat(node.getChildren().get(0)).isInstanceOf(TagNode.class);
@@ -72,10 +72,10 @@ public class TreeParserTest {
     assertThat(((FixedNode) ifNode.getChildren().get(0)).getContent()).isEqualTo("Hello World");
   }
 
-  private Node parseTree(String input) {
-    TreeParser treeParser = new TreeParser(new Configuration());
+  private Node parseTemplate(String input) {
+    TemplateParser templateParser = new TemplateParser(new Configuration());
     try {
-      Node node = treeParser.parse(new Tokenizer(new StringReader(input)));
+      Node node = templateParser.parse(new Tokenizer(new StringReader(input)));
       assertThat(node).isNotNull();
       return node;
     } catch (CarrotException e) {

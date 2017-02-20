@@ -1,4 +1,4 @@
-package au.com.codeka.carrot.parse;
+package au.com.codeka.carrot.tmpl.parse;
 
 import au.com.codeka.carrot.CarrotException;
 

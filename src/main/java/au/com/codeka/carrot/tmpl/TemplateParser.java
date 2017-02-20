@@ -1,18 +1,18 @@
-package au.com.codeka.carrot.tree;
+package au.com.codeka.carrot.tmpl;
 
 import au.com.codeka.carrot.CarrotException;
 import au.com.codeka.carrot.Configuration;
-import au.com.codeka.carrot.parse.Token;
-import au.com.codeka.carrot.parse.TokenType;
-import au.com.codeka.carrot.parse.Tokenizer;
+import au.com.codeka.carrot.tmpl.parse.Token;
+import au.com.codeka.carrot.tmpl.parse.TokenType;
+import au.com.codeka.carrot.tmpl.parse.Tokenizer;
 
 /**
  * Parses a stream of {@link Token}s into a tree of {@link Node}s.
  */
-public class TreeParser {
+public class TemplateParser {
   private final Configuration config;
 
-  public TreeParser(Configuration config) {
+  public TemplateParser(Configuration config) {
     this.config = config;
   }
 

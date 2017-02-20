@@ -1,4 +1,4 @@
-package au.com.codeka.carrot.parse;
+package au.com.codeka.carrot.tmpl.parse;
 
 /**
  * An enumeration which describes the different types of tokens we can parse.

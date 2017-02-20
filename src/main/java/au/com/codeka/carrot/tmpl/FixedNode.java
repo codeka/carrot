@@ -1,6 +1,5 @@
-package au.com.codeka.carrot.tree;
+package au.com.codeka.carrot.tmpl;
 
-import au.com.codeka.carrot.CarrotException;
 import au.com.codeka.carrot.lib.Scope;
 
 import java.io.IOException;

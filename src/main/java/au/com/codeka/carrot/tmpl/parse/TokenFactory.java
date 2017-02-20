@@ -1,4 +1,4 @@
-package au.com.codeka.carrot.parse;
+package au.com.codeka.carrot.tmpl.parse;
 
 /**
  * Factory for creating {@link Token}s.

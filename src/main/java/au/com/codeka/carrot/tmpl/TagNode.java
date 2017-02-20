@@ -1,11 +1,11 @@
-package au.com.codeka.carrot.tree;
+package au.com.codeka.carrot.tmpl;
 
 import au.com.codeka.carrot.CarrotException;
 import au.com.codeka.carrot.Configuration;
 import au.com.codeka.carrot.lib.Scope;
 import au.com.codeka.carrot.lib.Tag;
 import au.com.codeka.carrot.lib.tag.EndTag;
-import au.com.codeka.carrot.parse.Token;
+import au.com.codeka.carrot.tmpl.parse.Token;
 
 import java.io.IOException;
 import java.io.Writer;
