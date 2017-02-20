@@ -1,13 +1,17 @@
 package au.com.codeka.carrot.tree;
 
+import au.com.codeka.carrot.lib.Scope;
+
 import javax.annotation.Nullable;
+import java.io.IOException;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Base class for nodes in the abstract syntax tree.
  */
-public class Node {
+public abstract class Node {
   @Nullable
   private final List<Node> children;
 
@@ -34,5 +38,18 @@ public class Node {
 
   public boolean isBlockNode() {
     return children != null;
+  }
+
+  /** Render this node to the given {@link Writer}. */
+  public abstract void render(Writer writer, Scope scope) throws IOException;
+
+  protected void renderChildren(Writer writer, Scope scope) throws IOException {
+    if (children == null) {
+      throw new IllegalStateException("Cannot call renderChildren on non-block node.");
+    }
+
+    for (Node child : children) {
+      child.render(writer, scope);
+    }
   }
 }

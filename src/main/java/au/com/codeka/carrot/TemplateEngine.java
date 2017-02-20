@@ -1,10 +1,14 @@
 package au.com.codeka.carrot;
 
+import au.com.codeka.carrot.lib.Scope;
 import au.com.codeka.carrot.parse.Tokenizer;
+import au.com.codeka.carrot.resource.ResourceLocater;
 import au.com.codeka.carrot.resource.ResourceName;
 import au.com.codeka.carrot.tree.Node;
 import au.com.codeka.carrot.tree.TreeParser;
 
+import javax.annotation.Nullable;
+import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.HashMap;
@@ -64,12 +68,15 @@ public class TemplateEngine {
    *
    * @param writer A {@link Writer} to write the results of processing the given template to.
    * @param templateFile The name of the template file, which will be resolved by our configured
-   *                     {@Link ResourceLocator}.
+   *                     {@link ResourceLocater}.
    * @param bindings A mapping of string to variables that make up the bindings for this template.
    *
    * @throws CarrotException Thrown if any errors occur.
    */
-  public void process(Writer writer, String templateFile, Map<String, Object> bindings) throws CarrotException {
+  public void process(
+      Writer writer,
+      String templateFile,
+      @Nullable Map<String, Object> bindings) throws CarrotException {
     ResourceName resourceName = config.getResourceLocater().findResource(templateFile);
     Node node = parseCache.getNode(resourceName);
     if (node == null) {
@@ -77,19 +84,27 @@ public class TemplateEngine {
       parseCache.addNode(resourceName, node);
     }
 
-    // TODO: write the node.
+    Scope scope = new Scope(globalBindings);
+    if (bindings != null) {
+      scope.push(bindings);
+    }
+    try {
+      node.render(writer, scope);
+    } catch (IOException e) {
+      throw new CarrotException(e);
+    }
   }
 
   /**
    * Process the template with the given filename, and returns the result as a string.
    *
    * @param templateFile The name of the template file, which will be resolved by our configured
-   *                     {@Link ResourceLocator}.
+   *                     {@link ResourceLocater}.
    * @param bindings A mapping of string to variables that make up the bindings for this template.
    *
    * @throws CarrotException Thrown if any errors occur.
    */
-  public String process(String templateFile, Map<String, Object> bindings) throws CarrotException {
+  public String process(String templateFile, @Nullable Map<String, Object> bindings) throws CarrotException {
     StringWriter writer = new StringWriter();
     process(writer, templateFile, bindings);
     return writer.getBuffer().toString();

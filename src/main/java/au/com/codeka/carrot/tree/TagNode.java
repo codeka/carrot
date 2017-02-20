@@ -2,9 +2,13 @@ package au.com.codeka.carrot.tree;
 
 import au.com.codeka.carrot.CarrotException;
 import au.com.codeka.carrot.Configuration;
+import au.com.codeka.carrot.lib.Scope;
 import au.com.codeka.carrot.lib.Tag;
 import au.com.codeka.carrot.lib.tag.EndTag;
 import au.com.codeka.carrot.parse.Token;
+
+import java.io.IOException;
+import java.io.Writer;
 
 /**
  * A {@link TagNode} represents a node of the form "{% tagname foo %}" where "tagname" is the name of the tag and "foo"
@@ -51,5 +55,10 @@ public class TagNode extends Node {
 
   public Tag getTag() {
     return tag;
+  }
+
+  @Override
+  public void render(Writer writer, Scope scope) throws IOException {
+    // TODO
   }
 }

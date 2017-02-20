@@ -21,15 +21,17 @@ public class ParseCache {
 
   public Node getNode(ResourceName resourceName) throws CarrotException {
     WeakReference<CacheEntry> cacheEntryRef = cache.get(resourceName);
-    CacheEntry cacheEntry = cacheEntryRef.get();
-    if (cacheEntry != null) {
-      long modifiedTime = config.getResourceLocater().getModifiedTime(resourceName);
-      if (modifiedTime != cacheEntry.modifiedTime) {
-        cache.remove(resourceName);
-        return null;
-      }
+    if (cacheEntryRef != null) {
+      CacheEntry cacheEntry = cacheEntryRef.get();
+      if (cacheEntry != null) {
+        long modifiedTime = config.getResourceLocater().getModifiedTime(resourceName);
+        if (modifiedTime != cacheEntry.modifiedTime) {
+          cache.remove(resourceName);
+          return null;
+        }
 
-      return cacheEntry.node;
+        return cacheEntry.node;
+      }
     }
 
     return null;
