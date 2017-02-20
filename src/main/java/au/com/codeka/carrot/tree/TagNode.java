@@ -1,55 +1,55 @@
 package au.com.codeka.carrot.tree;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import au.com.codeka.carrot.base.Application;
-import au.com.codeka.carrot.base.CarrotException;
-import au.com.codeka.carrot.interpret.CarrotInterpreter;
+import au.com.codeka.carrot.CarrotException;
+import au.com.codeka.carrot.Configuration;
 import au.com.codeka.carrot.lib.Tag;
-import au.com.codeka.carrot.parse.ParseException;
-import au.com.codeka.carrot.parse.TagToken;
+import au.com.codeka.carrot.lib.tag.EndTag;
+import au.com.codeka.carrot.parse.Token;
 
+/**
+ * A {@link TagNode} represents a node of the form "{% tagname foo %}" where "tagname" is the name of the tag and "foo"
+ * is the parameters.
+ *
+ * <p>Tags are represented by the {@link Tag} class, which is extensible.
+ */
 public class TagNode extends Node {
+  private final Tag tag;
 
-  private static final long serialVersionUID = 2405693063353887509L;
-
-  private TagToken master;
-  String endName = null;
-
-  public TagNode(Application app, TagToken token) throws ParseException {
-    super(app);
-    master = token;
-    Tag tag = app.getConfiguration().getTagLibrary().fetch(master.getTagName());
-    endName = tag.getEndTagName();
+  public TagNode(Tag tag, String content) {
+    super(tag.isBlockTag() /* isBlockNode */);
+    this.tag = tag;
   }
 
-  @Override
-  public void render(CarrotInterpreter interpreter, Writer writer)
-      throws CarrotException, IOException {
-    interpreter.setLevel(level);
-    Tag tag = app.getConfiguration().getTagLibrary().fetch(master.getTagName());
-    tag.interpreter(children(), master.getHelpers(), interpreter, writer);
+  /** Creates a special {@link TagNode} for an echo token. */
+  public static TagNode createEcho(Token token, Configuration config) throws CarrotException {
+    Tag tag = config.getTagRegistry().createEchoTag();
+    return new TagNode(tag, token.getContent());
   }
 
-  @Override
-  public String toString() {
-    return master.toString();
-  }
+  public static TagNode create(Token token, Configuration config) throws CarrotException {
+    String content = token.getContent().trim();
 
-  @Override
-  public String getName() {
-    return master.getTagName();
-  }
-
-  @Override
-  public Node clone() {
-    try {
-      Node clone = new TagNode(app, master);
-      clone.children = this.children.clone(clone);
-      return clone;
-    } catch (ParseException e) {
-      throw new InternalError();
+    String tagName;
+    int space = content.indexOf(' ');
+    if (space <= 0) {
+      tagName = content;
+    } else {
+      tagName = content.substring(0, space);
+      content = content.substring(space).trim();
     }
+    Tag tag = config.getTagRegistry().createTag(tagName);
+    if (tag == null) {
+      throw new CarrotException(String.format("Invalid tag '%s'", tagName), token.getLine(), token.getColumn());
+    }
+
+    return new TagNode(tag, content);
+  }
+
+  public boolean isEndBlock() {
+    return tag instanceof EndTag;
+  }
+
+  public Tag getTag() {
+    return tag;
   }
 }

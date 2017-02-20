@@ -3,8 +3,11 @@ package au.com.codeka.carrot.resource;
 import javax.annotation.Nullable;
 
 /**
- * Represents a resolved resource name. You can pass this to resource locater to get the actual
- * resource.
+ * The "name" of a resolved resource (usually a file, but not nessecarily). You can pass this to a resource locator
+ * to get the actual contents of the resource.
+ *
+ * <p>{@link ResourceName}s may be related to a parent {@link ResourceName}. They may not necessarily be direct
+ * children of the parent, in which case children will always be separated by a forward slash '/'.
  */
 public abstract class ResourceName {
   protected final String name;
@@ -16,16 +19,15 @@ public abstract class ResourceName {
   }
 
   /**
-   * @return The name of this resource, which may be relative to the parent (i.e. not necessarily a
-   * direct child of the parent).
+   * @return The name of this resource, which may be relative to the parent (i.e. not necessarily a direct child of the
+   *         parent). Relative names are always separated with forward slash '/'.
    */
   public String getName() {
     return name;
   }
 
   /**
-   * @return The direct 'parent' of this resource. This will resolve the name of this resource and
-   * then return the direct parent of the resolved name.
+   * @return The parent {@link ResourceName} (may be null if this {@link ResourceName} is relative to the root).
    */
-  public abstract ResourceName getParent();
+  @Nullable public abstract ResourceName getParent();
 }

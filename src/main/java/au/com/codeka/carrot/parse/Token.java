@@ -1,50 +1,66 @@
 package au.com.codeka.carrot.parse;
 
-import static au.com.codeka.carrot.parse.ParserConstants.*;
+import java.util.Objects;
 
-import java.io.Serializable;
+/**
+ * Represents a token in a stream of tokens from the {@link Tokenizer}.
+ */
+public class Token {
+  private final TokenType type;
+  private final String content;
+  private final int line;
+  private final int column;
 
-public abstract class Token implements Serializable {
-
-  private static final long serialVersionUID = -7513379852268838992L;
-
-  protected String image;
-  // useful for some token type
-  protected String content;
-
-  public Token(String image2) throws ParseException {
-    image = image2;
-    parse();
+  private Token(TokenType type, String content, int line, int column) {
+    this.type = type;
+    this.content = content;
+    this.line = line;
+    this.column = column;
   }
 
-  public String getImage() {
-    return image;
+  public TokenType getType() {
+    return type;
+  }
+
+  public String getContent() {
+    return content;
+  }
+
+  public static Token create(TokenType type, String content) {
+    return new Token(type, content, 0, 0);
+  }
+
+  public static Token create(TokenType type, String content, int line, int column) {
+    return new Token(type, content, line, column);
+  }
+
+  @Override
+  public boolean equals(Object other) {
+    if (other instanceof Token) {
+      return ((Token) other).type == type
+          && ((Token) other).content.equals(content);
+    }
+    return false;
+  }
+
+  /** Gets the line this token appears on. */
+  public int getLine() {
+    return line;
+  }
+
+  /** Gets the column this token appears on. */
+  public int getColumn() {
+    return column;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(type, content);
   }
 
   @Override
   public String toString() {
-    return image;
+    return String.format("%s <%s>", type, content);
   }
-
-  protected abstract void parse() throws ParseException;
-
-  public abstract int getType();
-
-  static Token newToken(int tokenKind, String image2) throws ParseException {
-    switch (tokenKind) {
-    case TOKEN_FIXED:
-      return new FixedToken(image2);
-    case TOKEN_NOTE:
-      return new NoteToken(image2);
-    case TOKEN_ECHO:
-      return new EchoToken(image2);
-    case TOKEN_TAG:
-      return new TagToken(image2);
-    case TOKEN_MACRO:
-      return new MacroToken(image2);
-    default:
-      throw new ParseException("Creating a token with unknown type >>> " + (char) tokenKind);
-    }
-  }
-
 }
+

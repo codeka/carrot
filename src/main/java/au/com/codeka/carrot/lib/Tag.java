@@ -1,22 +1,31 @@
 package au.com.codeka.carrot.lib;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import au.com.codeka.carrot.base.CarrotException;
-import au.com.codeka.carrot.interpret.CarrotInterpreter;
-import au.com.codeka.carrot.tree.NodeList;
-
-public interface Tag extends Importable {
-
-  public void interpreter(NodeList carries, String helpers,
-      CarrotInterpreter interpreter, Writer writer) throws CarrotException, IOException;
+/**
+ * Interface that tags must implement.
+ *
+ * <p>A tag is a keyword that appears at the beginning of a {% %} block. The tag must have a single-word, lower-case
+ * name. If the tag can itself contain content, it must specify the name of the end-tag which ends the tag.</p>
+ */
+public abstract class Tag implements Cloneable {
+  /** Gets the name of this tag. */
+  public abstract String getTagName();
 
   /**
-   * Get name of end tag lowerCase Null if it's a single tag without content.
-   * 
-   * @return The end tag name.
+   * The default implementation of {@link #isMatch} just checks that the name is the same as returned from
+   * {@link #getTagName()}. This method can be overridden to provide more nuanced matching.
    */
-  public String getEndTagName();
+  public boolean isMatch(String tagName) {
+    return tagName.equalsIgnoreCase(getTagName());
+  }
 
+  /**
+   * @return True if this is a "block" tag, meanining it contains child content (in the form of a list of {@link Node}s)
+   *         and false if this is not a block tag (e.g. it's just a single inline element or something).
+   */
+  public boolean isBlockTag() {
+    return false;
+  }
+
+  @Override
+  public abstract Tag clone();
 }
