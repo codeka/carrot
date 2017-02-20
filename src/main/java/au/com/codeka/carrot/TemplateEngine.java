@@ -1,5 +1,10 @@
 package au.com.codeka.carrot;
 
+import au.com.codeka.carrot.parse.Tokenizer;
+import au.com.codeka.carrot.resource.ResourceName;
+import au.com.codeka.carrot.tree.Node;
+import au.com.codeka.carrot.tree.TreeParser;
+
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.HashMap;
@@ -12,6 +17,8 @@ import java.util.Map;
 public class TemplateEngine {
   private final Configuration config;
   private final Map<String, Object> globalBindings;
+  private final ParseCache parseCache;
+  private final TreeParser treeParser;
 
   /**
    * Constructs a new {@link TemplateEngine} with a default {@link Configuration}.
@@ -32,6 +39,8 @@ public class TemplateEngine {
   public TemplateEngine(Configuration config) {
     this.config = config;
     this.globalBindings = new HashMap<>();
+    this.parseCache = new ParseCache(config);
+    this.treeParser = new TreeParser(config);
   }
 
   /**
@@ -61,7 +70,14 @@ public class TemplateEngine {
    * @throws CarrotException Thrown if any errors occur.
    */
   public void process(Writer writer, String templateFile, Map<String, Object> bindings) throws CarrotException {
+    ResourceName resourceName = config.getResourceLocater().findResource(templateFile);
+    Node node = parseCache.getNode(resourceName);
+    if (node == null) {
+      node = treeParser.parse(new Tokenizer(config.getResourceLocater().getReader(resourceName)));
+      parseCache.addNode(resourceName, node);
+    }
 
+    // TODO: write the node.
   }
 
   /**

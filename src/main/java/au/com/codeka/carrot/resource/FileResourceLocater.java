@@ -1,5 +1,6 @@
 package au.com.codeka.carrot.resource;
 
+import au.com.codeka.carrot.CarrotException;
 import au.com.codeka.carrot.Configuration;
 
 import javax.annotation.Nullable;
@@ -23,7 +24,7 @@ public class FileResourceLocater implements ResourceLocater {
   }
 
   @Override
-  public ResourceName findResource(@Nullable ResourceName parent, String name) throws IOException {
+  public ResourceName findResource(@Nullable ResourceName parent, String name) throws CarrotException {
     if (parent != null) {
       File file = new File(((FileResourceName) parent).getFile(), name);
       if (file.exists() && file.isFile()) {
@@ -36,23 +37,28 @@ public class FileResourceLocater implements ResourceLocater {
       return new FileResourceName(null, name, file);
     }
 
-    throw new FileNotFoundException("[parent = " + parent + "] [name = " + name + "] [base = " + baseFile + "]");
+    throw new CarrotException(
+        new FileNotFoundException("[parent = " + parent + "] [name = " + name + "] [base = " + baseFile + "]"));
   }
 
   @Override
-  public ResourceName findResource(String name) throws IOException {
+  public ResourceName findResource(String name) throws CarrotException {
     return findResource(null, name);
   }
 
   @Override
-  public long getModifiedTime(ResourceName resourceName) throws IOException {
+  public long getModifiedTime(ResourceName resourceName) throws CarrotException {
     return ((FileResourceName) resourceName).getFile().lastModified();
   }
 
   @Override
-  public Reader getReader(ResourceName resourceName) throws IOException {
-    return new InputStreamReader(
-        new FileInputStream(((FileResourceName) resourceName).getFile()), config.getEncoding());
+  public Reader getReader(ResourceName resourceName) throws CarrotException {
+    try {
+      return new InputStreamReader(
+          new FileInputStream(((FileResourceName) resourceName).getFile()), config.getEncoding());
+    } catch (IOException e) {
+      throw new CarrotException(e);
+    }
   }
 
   /** Our version of {@link ResourceName} that represents file system files. */

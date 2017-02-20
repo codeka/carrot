@@ -1,5 +1,7 @@
 package au.com.codeka.carrot.resource;
 
+import au.com.codeka.carrot.CarrotException;
+
 import javax.annotation.Nullable;
 import java.io.IOException;
 import java.io.Reader;
@@ -20,18 +22,18 @@ public interface ResourceLocater {
    *               non-relative name. May be null to search only in the search path.
    * @param name The name of the resource to search file.
    * @return A {@link ResourceName} representing the resolved name of the resource.
-   * @throws IOException If the resource cannot be found.
+   * @throws CarrotException If the resource cannot be found.
    */
-  public ResourceName findResource(@Nullable ResourceName parent, String name) throws IOException;
+  ResourceName findResource(@Nullable ResourceName parent, String name) throws CarrotException;
 
   /**
    * Searches for a resource with the given name, returns the full path to it.
    *
    * @param name The name of the resource to search file.
    * @return A {@link ResourceName} representing the resolved name of the resource.
-   * @throws IOException If the resource cannot be found.
+   * @throws CarrotException If the resource cannot be found.
    */
-  public ResourceName findResource(String name) throws IOException;
+  ResourceName findResource(String name) throws CarrotException;
 
   /**
    * Gets a value which indicates when the resource was modified. This could be a timestamp, but it could also be a
@@ -45,16 +47,16 @@ public interface ResourceLocater {
    *
    * @param resourceName The {@link ResourceName} of the resource.
    * @return A value indicating the 'last modified time' (or a hash) of the resource.
-   * @throws IOException If the resource cannot be found.
+   * @throws CarrotException If the resource cannot be found.
    */
-  public long getModifiedTime(ResourceName resourceName) throws IOException;
+  long getModifiedTime(ResourceName resourceName) throws CarrotException;
 
   /**
    * Gets a {@link Reader} to read the contents of the given resource.
    *
    * @param resourceName The {@link ResourceName} of the resource.
    * @return A {@link Reader} for reading the contents of the resource.
-   * @throws IOException If the resource cannot be found.
+   * @throws CarrotException If the resource cannot be found.
    */
-  public Reader getReader(ResourceName resourceName) throws IOException;
+  Reader getReader(ResourceName resourceName) throws CarrotException;
 }
