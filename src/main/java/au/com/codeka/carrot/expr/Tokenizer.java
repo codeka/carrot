@@ -35,20 +35,39 @@ public class Tokenizer {
   }
 
   /**
-   * Returns a {@link Token} if it's of the given type, or throws a {@link CarrotException} if it's not.
+   * Returns a {@link Token} if it's one of the given types, or throws a {@link CarrotException} if it's not.
    *
-   * @param type The {@link TokenType} we want to accept.
+   * @param types The {@link TokenType}s we want to accept one of.
    * @return The next {@link Token}, if it's of the given type.
    * @throws CarrotException If there's an error parsing the token, or if it's not of the given type.
    */
   @Nullable
-  public Token expect(TokenType type) throws CarrotException {
-    if (token.getType() == type) {
-      Token t = token;
-      next();
-      return t;
+  public Token expect(TokenType... types) throws CarrotException {
+    for (TokenType type : types) {
+      if (token.getType() == type) {
+        Token t = token;
+        next();
+        return t;
+      }
     }
-    throw new CarrotException("Expected token of type " + type + ", got " + token.getType(), line, col);
+
+    StringBuilder typeString = new StringBuilder();
+    for (int i = 0; i < types.length; i++) {
+      if (i > 0) {
+        if (i == types.length - 1) {
+          typeString.append(" or ");
+        } else {
+          typeString.append(", ");
+        }
+      }
+      typeString.append(types[i]);
+    }
+    throw new CarrotException("Expected token of type " + typeString + ", got " + token.getType(), line, col);
+  }
+
+  /** Returns a {@link CarrotException} with the given message (presumably because we got an unexpected token). */
+  public CarrotException unexpected(String msg) {
+    return new CarrotException(String.format("%s, found: %s", msg, token), line, col);
   }
 
   /** Advance to the {@link Token}, storing it in the member variable token. */
