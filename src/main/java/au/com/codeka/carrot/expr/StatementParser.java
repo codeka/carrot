@@ -10,13 +10,18 @@ import au.com.codeka.carrot.tmpl.TagNode;
  * <code>
  *   statement =
  *     expression
- *     | condition
- *     | identifier "(" expression {"," expression} ")"
+ *     | identifier "(" statement {"," statement} ")"
  *
- *   condition =
- *     expression ("=="|"!="|"<"|"<="|">="|">") expression
+ *   expression = ["!"] notcond
  *
- *   expression = ["+"|"-"] term {("+"|"-") term}
+ *   notcond = andcond {"&&" andcond}
+ *
+ *   andcond = orcond {"||" orcond}
+ *
+ *   orcond =
+ *     comparator [("=="|"!="|"<"|"<="|">="|">") comparator]
+ *
+ *   comparator = ["+"|"-"] term {("+"|"-") term}
  *
  *   term = factor {("*" | "/") factor}
  *
@@ -24,9 +29,9 @@ import au.com.codeka.carrot.tmpl.TagNode;
  *     variable
  *     | number
  *     | literal
- *     | "(" expression ")"
+ *     | "(" statement ")"
  *
- *   variable = identifier ["[" expression "]"] ["." variable]
+ *   variable = identifier ["[" statement "]"] ["." variable]
  *
  *   identifier = "any valid Java identifier"
  *   number = "and valid Java number"
@@ -42,6 +47,11 @@ public class StatementParser {
     this.tokenizer = tokenizer;
   }
 
+  /** Parses the "end" of the statement. Just verifies that there's no unexpected tokens after the end. */
+  public void parseEnd() throws CarrotException {
+    tokenizer.end();
+  }
+
   public Identifier parseIdentifier() throws CarrotException {
     return new Identifier(tokenizer.expect(TokenType.IDENTIFIER));
   }
@@ -54,13 +64,75 @@ public class StatementParser {
     return new StringLiteral(tokenizer.expect(TokenType.STRING_LITERAL));
   }
 
-  public Variable parseVariable() throws CarrotException {
+  public Statement parseStatement() throws CarrotException {
+    if (tokenizer.accept(TokenType.IDENTIFIER) && tokenizer.accept(1, TokenType.LPAREN)) {
+      Identifier identifier = parseIdentifier();
+      Function.Builder funcBuilder = new Function.Builder(identifier);
+      tokenizer.expect(TokenType.LPAREN);
+      while (!tokenizer.accept(TokenType.RPAREN)) {
+        funcBuilder.addParam(parseStatement());
+        tokenizer.expect(TokenType.COMMA);
+      }
+      tokenizer.expect(TokenType.RPAREN);
+      return new Statement(funcBuilder.build());
+    } else {
+      return new Statement(parseExpression());
+    }
+  }
+
+  Expression parseExpression() throws CarrotException {
+    boolean not = false;
+    if (tokenizer.accept(TokenType.NOT)) {
+      not = true;
+    }
+
+    return new Expression(not, parseNotCond());
+  }
+
+  NotCond parseNotCond() throws CarrotException {
+    NotCond.Builder notCondBuilder = new NotCond.Builder(parseAndCond());
+    while (tokenizer.accept(TokenType.LOGICAL_AND)) {
+      tokenizer.expect(TokenType.LOGICAL_AND);
+      notCondBuilder.addAndCond(parseAndCond());
+    }
+    return notCondBuilder.build();
+  }
+
+  AndCond parseAndCond() throws CarrotException {
+    AndCond.Builder andCondBuilder = new AndCond.Builder(parseOrCond());
+    while (tokenizer.accept(TokenType.LOGICAL_OR)) {
+      tokenizer.expect(TokenType.LOGICAL_OR);
+      andCondBuilder.addOrCond(parseOrCond());
+    }
+    return andCondBuilder.build();
+  }
+
+  OrCond parseOrCond() throws CarrotException {
+    Comparator lhs = parseComparator();
+    TokenType[] validTypes = new TokenType[] {
+        TokenType.EQUALITY,
+        TokenType.INEQUALITY,
+        TokenType.LESS_THAN,
+        TokenType.LESS_THAN_OR_EQUAL,
+        TokenType.GREATER_THAN_OR_EQUAL,
+        TokenType.GREATER_THAN
+    };
+    if (tokenizer.accept(validTypes)) {
+      Token operator = tokenizer.expect(validTypes);
+      Comparator rhs = parseComparator();
+      return new OrCond(lhs, operator, rhs);
+    } else {
+      return new OrCond(lhs);
+    }
+  }
+
+  Variable parseVariable() throws CarrotException {
     Identifier ident = parseIdentifier();
-    Expression accessExpression = null;
+    Statement accessStatement = null;
     Variable dotVariable = null;
     if (tokenizer.accept(TokenType.LSQUARE)) {
       tokenizer.expect(TokenType.LSQUARE);
-      accessExpression = parseExpression();
+      accessStatement = parseStatement();
       tokenizer.expect(TokenType.RSQUARE);
     }
     if (tokenizer.accept(TokenType.DOT)) {
@@ -68,16 +140,16 @@ public class StatementParser {
       dotVariable = parseVariable();
     }
 
-    return new Variable(ident, accessExpression, dotVariable);
+    return new Variable(ident, accessStatement, dotVariable);
   }
 
-  public Factor parseFactor() throws CarrotException {
+  Factor parseFactor() throws CarrotException {
     if (tokenizer.accept(TokenType.LPAREN)) {
       tokenizer.expect(TokenType.LPAREN);
-      Expression expr = parseExpression();
+      Statement stmt = parseStatement();
       tokenizer.expect(TokenType.RPAREN);
 
-      return new Factor(expr);
+      return new Factor(stmt);
     }
     if (tokenizer.accept(TokenType.STRING_LITERAL)) {
       return new Factor(parseString());
@@ -92,7 +164,7 @@ public class StatementParser {
     throw tokenizer.unexpected("Variable, number, string or expression expected.");
   }
 
-  public Term parseTerm() throws CarrotException {
+  Term parseTerm() throws CarrotException {
     Token prefix;
     if (tokenizer.accept(TokenType.MULTIPLY) || tokenizer.accept(TokenType.DIVIDE)) {
       prefix = tokenizer.expect(TokenType.MULTIPLY, TokenType.DIVIDE);
@@ -110,7 +182,7 @@ public class StatementParser {
     return termBuilder.build();
   }
 
-  public Expression parseExpression() throws CarrotException {
+  Comparator parseComparator() throws CarrotException {
     Token prefix;
     if (tokenizer.accept(TokenType.PLUS) || tokenizer.accept(TokenType.MINUS)) {
       prefix = tokenizer.expect(TokenType.PLUS, TokenType.MINUS);
@@ -119,7 +191,7 @@ public class StatementParser {
     }
 
     Term term = parseTerm();
-    Expression.Builder exprBuilder = new Expression.Builder(prefix, term);
+    Comparator.Builder exprBuilder = new Comparator.Builder(prefix, term);
     while (tokenizer.accept(TokenType.PLUS) || tokenizer.accept(TokenType.MINUS)) {
       prefix = tokenizer.expect(TokenType.PLUS, TokenType.MINUS);
       exprBuilder.addTerm(prefix, parseTerm());

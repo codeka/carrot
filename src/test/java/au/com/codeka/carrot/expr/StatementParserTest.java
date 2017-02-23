@@ -15,32 +15,32 @@ import static com.google.common.truth.Truth.assertThat;
 @RunWith(JUnit4.class)
 public class StatementParserTest {
   @Test
-  public void testExpressionThreeTerms() throws CarrotException {
+  public void testComparatorThreeTerms() throws CarrotException {
     StatementParser parser = createStatementParser("one + 2 - \"three\"");
-    Expression expr = parser.parseExpression();
-    assertThat(expr.toString()).isEqualTo("one PLUS 2 MINUS \"three\"");
+    Comparator comp = parser.parseComparator();
+    assertThat(comp.toString()).isEqualTo("one PLUS 2 MINUS \"three\"");
   }
 
   @Test
-  public void testExpressionTermsAndFactors() throws CarrotException {
+  public void testComparatorTermsAndFactors() throws CarrotException {
     StatementParser parser = createStatementParser("one + 2 * 3 - \"three\"");
-    Expression expr = parser.parseExpression();
-    assertThat(expr.toString()).isEqualTo("one PLUS 2 MULTIPLY 3 MINUS \"three\"");
+    Comparator comp = parser.parseComparator();
+    assertThat(comp.toString()).isEqualTo("one PLUS 2 MULTIPLY 3 MINUS \"three\"");
   }
 
   @Test
   public void testVariable() throws CarrotException {
     StatementParser parser = createStatementParser("a.b['c'].d");
     Variable var = parser.parseVariable();
-    assertThat(var.toString()).isEqualTo("a.b[\"c\"].d");
+    assertThat(var.toString()).isEqualTo("a DOT b LSQUARE \"c\" RSQUARE  DOT d");
 
     parser = createStatementParser("a.b[c.d].e");
     var = parser.parseVariable();
-    assertThat(var.toString()).isEqualTo("a.b[c.d].e");
+    assertThat(var.toString()).isEqualTo("a DOT b LSQUARE c DOT d RSQUARE  DOT e");
 
     parser = createStatementParser("a.b[c.d['e']].f");
     var = parser.parseVariable();
-    assertThat(var.toString()).isEqualTo("a.b[c.d[\"e\"]].f");
+    assertThat(var.toString()).isEqualTo("a DOT b LSQUARE c DOT d LSQUARE \"e\" RSQUARE  RSQUARE  DOT f");
   }
 
   private StatementParser createStatementParser(String str) throws CarrotException {

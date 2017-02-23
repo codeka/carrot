@@ -5,6 +5,8 @@ import au.com.codeka.carrot.CarrotException;
 import javax.annotation.Nullable;
 import java.io.IOException;
 import java.io.Reader;
+import java.util.ArrayDeque;
+import java.util.Queue;
 
 /**
  * Converts an input {@link Reader} into a stream of {@link Token}s.
@@ -12,7 +14,7 @@ import java.io.Reader;
 public class Tokenizer {
   private final Reader reader;
   @Nullable private Character lookahead;
-  private Token token;
+  private ArrayDeque<Token> tokens = new ArrayDeque<>();
   private int line;
   private int col;
 
@@ -24,14 +26,40 @@ public class Tokenizer {
   }
 
   /**
-   * Returns true if the current token if of the given {@link TokenType}. You can then use {@link #expect} to get
+   * Returns true if the current token is and of the given {@link TokenType}s. You can then use {@link #expect} to get
    * the token (and advance to the next one).
    *
+   * @param types The {@link TokenType} we want to accept.
+   * @return True, if the current token is of the given type, or false it's not.
+   */
+  public boolean accept(TokenType... types) throws CarrotException {
+    Token token = tokens.peek();
+    for (int i = 0; i < types.length; i++) {
+      if (types[i] == token.getType()) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * Returns true if the token at the given offset from the current is of the given {@link TokenType}. The 0th token
+   * is the current one, the 1st is the after that and so on. This can be used to "look ahead" into the token stream.
+   *
+   * @param offset The offset from "current" that we want to peek. 0 is the current token, 1 is the next and so on.
    * @param type The {@link TokenType} we want to accept.
    * @return True, if the current token is of the given type, or false it's not.
    */
-  public boolean accept(TokenType type) throws CarrotException {
-    return (token.getType() == type);
+  public boolean accept(int offset, TokenType type) throws CarrotException {
+    if (offset == 0) {
+      return accept(type);
+    }
+
+    while (tokens.size() <= offset) {
+      next();
+    }
+    Token[] array = tokens.toArray(new Token[tokens.size()]);
+    return (array[offset].getType() == type);
   }
 
   /**
@@ -44,8 +72,8 @@ public class Tokenizer {
   @Nullable
   public Token expect(TokenType... types) throws CarrotException {
     for (TokenType type : types) {
-      if (token.getType() == type) {
-        Token t = token;
+      if (tokens.peek().getType() == type) {
+        Token t = tokens.remove();
         next();
         return t;
       }
@@ -62,12 +90,18 @@ public class Tokenizer {
       }
       typeString.append(types[i]);
     }
-    throw new CarrotException("Expected token of type " + typeString + ", got " + token.getType(), line, col);
+    throw new CarrotException(
+        "Expected token of type " + typeString + ", got " + tokens.peek().getType(), line, col);
+  }
+
+  /** Throws {@link CarrotException} unless we're at the end of the tokens. */
+  public void end() throws CarrotException {
+    expect(TokenType.EOF);
   }
 
   /** Returns a {@link CarrotException} with the given message (presumably because we got an unexpected token). */
   public CarrotException unexpected(String msg) {
-    return new CarrotException(String.format("%s, found: %s", msg, token), line, col);
+    return new CarrotException(String.format("%s, found: %s", msg, tokens.peek()), line, col);
   }
 
   /** Advance to the {@link Token}, storing it in the member variable token. */
@@ -77,7 +111,7 @@ public class Tokenizer {
       ch = nextChar();
     }
     if (ch < 0) {
-      token = new Token(TokenType.UNKNOWN);
+      tokens.add(new Token(TokenType.EOF));
       return;
     }
 
@@ -85,6 +119,7 @@ public class Tokenizer {
     int startLine = line;
     int startCol = col;
     int next;
+    Token token;
 
     switch (ch) {
       case '(':
@@ -117,6 +152,20 @@ public class Tokenizer {
       case '/':
         token = new Token(TokenType.DIVIDE);
         break;
+      case '&':
+        next = nextChar();
+        if (next != '&') {
+          throw new CarrotException("Expected &&", startLine, startCol);
+        }
+        token = new Token(TokenType.LOGICAL_AND);
+        break;
+      case '|':
+        next = nextChar();
+        if (next != '|') {
+          throw new CarrotException("Expected ||", startLine, startCol);
+        }
+        token = new Token(TokenType.LOGICAL_OR);
+        break;
       case '=':
         next = nextChar();
         if (next != '=') {
@@ -127,9 +176,11 @@ public class Tokenizer {
       case '!':
         next = nextChar();
         if (next != '=') {
-          throw new CarrotException("Expected !=", startLine, startCol);
+          lookahead = (char) next;
+          token = new Token(TokenType.NOT);
+        } else {
+          token = new Token(TokenType.INEQUALITY);
         }
-        token = new Token(TokenType.INEQUALITY);
         break;
       case '<':
         next = nextChar();
@@ -204,6 +255,8 @@ public class Tokenizer {
           throw new CarrotException("Unexpected character: " + (char) ch, startLine, startCol);
         }
     }
+
+    tokens.add(token);
   }
 
   private int nextChar() throws CarrotException {

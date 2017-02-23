@@ -2,12 +2,15 @@ package au.com.codeka.carrot.tmpl;
 
 import au.com.codeka.carrot.CarrotException;
 import au.com.codeka.carrot.Configuration;
+import au.com.codeka.carrot.expr.StatementParser;
+import au.com.codeka.carrot.expr.Tokenizer;
 import au.com.codeka.carrot.lib.Scope;
 import au.com.codeka.carrot.lib.Tag;
 import au.com.codeka.carrot.lib.tag.EndTag;
 import au.com.codeka.carrot.tmpl.parse.Token;
 
 import java.io.IOException;
+import java.io.StringReader;
 import java.io.Writer;
 
 /**
@@ -19,15 +22,14 @@ import java.io.Writer;
 public class TagNode extends Node {
   private final Tag tag;
 
-  public TagNode(Tag tag, String content) {
+  public TagNode(Tag tag) {
     super(tag.isBlockTag() /* isBlockNode */);
     this.tag = tag;
   }
 
   /** Creates a special {@link TagNode} for an echo token. */
   public static TagNode createEcho(Token token, Configuration config) throws CarrotException {
-    Tag tag = config.getTagRegistry().createEchoTag();
-    return new TagNode(tag, token.getContent());
+    return create("echo", token.getContent(), config, token.getLine(), token.getColumn());
   }
 
   public static TagNode create(Token token, Configuration config) throws CarrotException {
@@ -41,12 +43,21 @@ public class TagNode extends Node {
       tagName = content.substring(0, space);
       content = content.substring(space).trim();
     }
+
+    return create(tagName, content, config, token.getLine(), token.getColumn());
+  }
+
+  private static TagNode create(
+      String tagName, String content, Configuration config, int line, int col) throws CarrotException {
     Tag tag = config.getTagRegistry().createTag(tagName);
     if (tag == null) {
-      throw new CarrotException(String.format("Invalid tag '%s'", tagName), token.getLine(), token.getColumn());
+      throw new CarrotException(String.format("Invalid tag '%s'", tagName), line, col);
     }
 
-    return new TagNode(tag, content);
+    StatementParser stmtParser = new StatementParser(new Tokenizer(new StringReader(content)));
+    tag.parseStatement(stmtParser);
+
+    return new TagNode(tag);
   }
 
   public boolean isEndBlock() {

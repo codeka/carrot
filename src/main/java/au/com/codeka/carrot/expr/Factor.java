@@ -10,34 +10,34 @@ public class Factor {
   @Nullable private final Variable variable;
   @Nullable private final NumberLiteral number;
   @Nullable private final StringLiteral string;
-  @Nullable private final Expression expression;
+  @Nullable private final Statement statement;
 
   public Factor(Variable variable) {
     this.variable = variable;
     this.number = null;
     this.string = null;
-    this.expression = null;
+    this.statement = null;
   }
 
   public Factor(NumberLiteral number) {
     this.variable = null;
     this.number = number;
     this.string = null;
-    this.expression = null;
+    this.statement = null;
   }
 
   public Factor(StringLiteral string) {
     this.variable = null;
     this.number = null;
     this.string = string;
-    this.expression = null;
+    this.statement = null;
   }
 
-  public Factor(Expression expression) {
+  public Factor(Statement statement) {
     this.variable = null;
     this.number = null;
     this.string = null;
-    this.expression = expression;
+    this.statement = statement;
   }
 
   /** Returns a string representation of this {@link Term}, useful for debugging. */
@@ -49,8 +49,8 @@ public class Factor {
       return number.toString();
     } else if (string != null) {
       return string.toString();
-    } else if (expression != null) {
-      return "(" + expression.toString() + ")";
+    } else if (statement != null) {
+      return TokenType.LPAREN + " " + statement.toString() + " " + TokenType.RPAREN;
     }
 
     throw new IllegalStateException("Everything is null.");

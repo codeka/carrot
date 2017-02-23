@@ -11,12 +11,12 @@ import javax.annotation.Nullable;
  */
 public class Variable {
   private final Identifier identifier;
-  @Nullable private final Expression accessExpression;
+  @Nullable private final Statement accessStatement;
   @Nullable private final Variable dotVariable;
 
-  public Variable(Identifier identifier, @Nullable Expression accessExpression, @Nullable Variable dotVariable) {
+  public Variable(Identifier identifier, @Nullable Statement accessStatement, @Nullable Variable dotVariable) {
     this.identifier = identifier;
-    this.accessExpression = accessExpression;
+    this.accessStatement = accessStatement;
     this.dotVariable = dotVariable;
   }
 
@@ -24,11 +24,11 @@ public class Variable {
   @Override
   public String toString() {
     String str = identifier.toString();
-    if (accessExpression != null) {
-      str += "[" + accessExpression + "]";
+    if (accessStatement != null) {
+      str += " " + TokenType.LSQUARE + " " + accessStatement + " " + TokenType.RSQUARE + " ";
     }
     if (dotVariable != null) {
-      str += "." + dotVariable.toString();
+      str += " " + TokenType.DOT + " " + dotVariable.toString();
     }
     return str;
   }

@@ -5,7 +5,7 @@ package au.com.codeka.carrot.expr;
  */
 public enum TokenType {
   /** An unknown token, or the end of the stream. */
-  UNKNOWN(false),
+  EOF(false),
 
   /** A string literal "like this". */
   STRING_LITERAL(true),
@@ -30,6 +30,9 @@ public enum TokenType {
 
   COMMA(false),
   DOT(false),
+  NOT(false),
+  LOGICAL_AND(false),
+  LOGICAL_OR(false),
   EQUALITY(false),
   INEQUALITY(false),
   LESS_THAN(false),
