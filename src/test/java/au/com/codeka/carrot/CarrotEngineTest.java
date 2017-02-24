@@ -17,7 +17,7 @@ import static com.google.common.truth.Truth.assertThat;
  * These are basically end-to-end tests of the entire shebang.
  */
 @RunWith(JUnit4.class)
-public class TemplateEngineTest {
+public class CarrotEngineTest {
   @Test
   public void testEmptyTemplate() {
     assertThat(render("", null)).isEqualTo("");
@@ -29,11 +29,11 @@ public class TemplateEngineTest {
   }
 
   private String render(String template, @Nullable Map<String, Object> bindings) {
-    TemplateEngine engine = new TemplateEngine();
+    CarrotEngine engine = new CarrotEngine();
     return render(engine, template, bindings);
   }
 
-  private String render(TemplateEngine engine, String template, @Nullable Map<String, Object> bindings) {
+  private String render(CarrotEngine engine, String template, @Nullable Map<String, Object> bindings) {
     engine.getConfig().setResourceLocater(new TestResourceLocator(template));
     try {
       return engine.process("", bindings);

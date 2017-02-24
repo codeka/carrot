@@ -15,32 +15,32 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * {@link TemplateEngine} is the root of the carrot system. You create an instance of this, make it global or static,
+ * {@link CarrotEngine} is the root of the carrot system. You create an instance of this, make it global or static,
  * load templates and process them from here.
  */
-public class TemplateEngine {
+public class CarrotEngine {
   private final Configuration config;
   private final Map<String, Object> globalBindings;
   private final ParseCache parseCache;
   private final TemplateParser templateParser;
 
   /**
-   * Constructs a new {@link TemplateEngine} with a default {@link Configuration}.
+   * Constructs a new {@link CarrotEngine} with a default {@link Configuration}.
    *
    * <p>The configuration is mutable, so you can modify once this class has been created.
    */
-  public TemplateEngine() {
+  public CarrotEngine() {
     this(new Configuration());
   }
 
   /**
-   * Constructs a new {@link TemplateEngine} with the given {@link Configuration}.
+   * Constructs a new {@link CarrotEngine} with the given {@link Configuration}.
    *
    * <p>The configuration is mutable, so you can modify once this class has been created.
    *
    *  @param config The {@link Configuration} to construct this engine with.
    */
-  public TemplateEngine(Configuration config) {
+  public CarrotEngine(Configuration config) {
     this.config = config;
     this.globalBindings = new HashMap<>();
     this.parseCache = new ParseCache(config);
@@ -49,7 +49,7 @@ public class TemplateEngine {
 
   /**
    * Gets the {@link Configuration}. The configuration is mutable, so you are able to modify settings on the value
-   * returned here and they will take effect on the current {@link TemplateEngine}.
+   * returned here and they will take effect on the current {@link CarrotEngine}.
    */
   public Configuration getConfig() {
     return config;
@@ -57,7 +57,7 @@ public class TemplateEngine {
 
   /**
    * Get a map of the global variables. These bindings will be accessible in all templates processed by this
-   * {@link TemplateEngine}.
+   * {@link CarrotEngine}.
    */
   public Map<String, Object> getGlobalBindings() {
     return globalBindings;

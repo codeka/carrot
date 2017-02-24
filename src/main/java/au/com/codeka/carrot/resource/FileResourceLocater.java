@@ -1,5 +1,6 @@
 package au.com.codeka.carrot.resource;
 
+import au.com.codeka.carrot.CarrotEngine;
 import au.com.codeka.carrot.CarrotException;
 import au.com.codeka.carrot.Configuration;
 
@@ -15,7 +16,7 @@ public class FileResourceLocater implements ResourceLocater {
    * Constructs a new {@link FileResourceLocater} using the given {@link Configuration} and base path to search for
    * resources in.
    *
-   * @param config The {@link Configuration} you used to construct the {@link au.com.codeka.carrot.TemplateEngine}.
+   * @param config The {@link Configuration} you used to construct the {@link CarrotEngine}.
    * @param basePath The path path to search for resources in.
    */
   public FileResourceLocater(Configuration config, String basePath) {
