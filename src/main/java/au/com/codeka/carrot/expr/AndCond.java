@@ -1,5 +1,10 @@
 package au.com.codeka.carrot.expr;
 
+import au.com.codeka.carrot.CarrotException;
+import au.com.codeka.carrot.Configuration;
+import au.com.codeka.carrot.lib.Scope;
+import au.com.codeka.carrot.lib.ValueHelper;
+
 import java.util.ArrayList;
 
 /**
@@ -20,6 +25,15 @@ public class AndCond {
     }
     return str;
   }
+
+  public Object evaluate(Configuration config, Scope scope) throws CarrotException {
+    Object value = orConds.get(0).evaluate(config, scope);
+    for (int i = 1; i < orConds.size(); i++) {
+      value = ValueHelper.isTrue(value) || ValueHelper.isTrue(orConds.get(i).evaluate(config, scope));
+    }
+    return value;
+  }
+
 
   public static class Builder {
     private ArrayList<OrCond> orConds = new ArrayList<>();

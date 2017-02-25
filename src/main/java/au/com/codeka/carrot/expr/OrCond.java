@@ -1,5 +1,10 @@
 package au.com.codeka.carrot.expr;
 
+import au.com.codeka.carrot.CarrotException;
+import au.com.codeka.carrot.Configuration;
+import au.com.codeka.carrot.lib.Scope;
+import au.com.codeka.carrot.lib.ValueHelper;
+
 import javax.annotation.Nullable;
 
 /**
@@ -25,10 +30,18 @@ public class OrCond {
   @Override
   public String toString() {
     String str = lhs.toString();
-    if (operator != null) {
+    if (operator != null && rhs != null) {
       str += " " + operator + " ";
       str += rhs.toString();
     }
     return str;
+  }
+
+  public Object evaluate(Configuration config, Scope scope) throws CarrotException {
+    Object value = lhs.evaluate(config, scope);
+    if (operator != null) {
+      throw new CarrotException("TODO");
+    }
+    return value;
   }
 }

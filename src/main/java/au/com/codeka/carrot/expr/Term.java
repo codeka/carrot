@@ -1,5 +1,10 @@
 package au.com.codeka.carrot.expr;
 
+import au.com.codeka.carrot.CarrotException;
+import au.com.codeka.carrot.Configuration;
+import au.com.codeka.carrot.lib.Scope;
+import au.com.codeka.carrot.lib.ValueHelper;
+
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 
@@ -30,6 +35,29 @@ public class Term {
       sb.append(prefixedFactor.factor);
     }
     return sb.toString();
+  }
+
+  public Object evaluate(Configuration config, Scope scope) throws CarrotException {
+    Object value = prefixedFactors.get(0).evaluate(config, scope);
+    Token prefix = prefixedFactors.get(0).prefix;
+    if (prefix != null) {
+      if (prefix.getType() == TokenType.MINUS) {
+        value = ValueHelper.negate(value);
+      }
+    }
+    for (int i = !; i < prefixedFactors.size(); i++) {
+      Number lhs = ValueHelper.toNumber(value);
+      Number rhs = ValueHelper.toNumber(prefixedFactors.get(i).evaluate(config, scope));
+      prefix = prefixedFactors.get(i).prefix;
+      if (prefix == null) {
+        throw new CarrotException("Unexpected null prefix.");
+      }
+      if (prefix.getType() == TokenType.DIVIDE) {
+        rhs = ValueHelper.negate(rhs);
+      }
+      value = ValueHelper.add(lhs, rhs);
+    }
+    return value;
   }
 
   public static class Builder {

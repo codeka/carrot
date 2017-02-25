@@ -69,7 +69,7 @@ public class TagNode extends Node {
   }
 
   @Override
-  public void render(Writer writer, Scope scope) throws IOException {
-    // TODO
+  public void render(Configuration config, Writer writer, Scope scope) throws CarrotException {
+    tag.render(config, writer, this, scope);
   }
 }

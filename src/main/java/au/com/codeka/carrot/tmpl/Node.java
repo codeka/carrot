@@ -1,5 +1,7 @@
 package au.com.codeka.carrot.tmpl;
 
+import au.com.codeka.carrot.CarrotException;
+import au.com.codeka.carrot.Configuration;
 import au.com.codeka.carrot.lib.Scope;
 
 import javax.annotation.Nullable;
@@ -41,15 +43,15 @@ public abstract class Node {
   }
 
   /** Render this node to the given {@link Writer}. */
-  public abstract void render(Writer writer, Scope scope) throws IOException;
+  public abstract void render(Configuration config, Writer writer, Scope scope) throws CarrotException, IOException;
 
-  protected void renderChildren(Writer writer, Scope scope) throws IOException {
+  protected void renderChildren(Configuration config, Writer writer, Scope scope) throws CarrotException, IOException {
     if (children == null) {
       throw new IllegalStateException("Cannot call renderChildren on non-block node.");
     }
 
     for (Node child : children) {
-      child.render(writer, scope);
+      child.render(config, writer, scope);
     }
   }
 }

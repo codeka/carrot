@@ -1,7 +1,11 @@
 package au.com.codeka.carrot.lib;
 
 import au.com.codeka.carrot.CarrotException;
+import au.com.codeka.carrot.Configuration;
 import au.com.codeka.carrot.expr.StatementParser;
+import au.com.codeka.carrot.tmpl.TagNode;
+
+import java.io.Writer;
 
 /**
  * Interface that tags must implement.
@@ -35,7 +39,19 @@ public abstract class Tag implements Cloneable {
    * @throws CarrotException if there is an unrecoverable error parsing the statement.
    */
   public void parseStatement(StatementParser stmtParser) throws CarrotException {
+    stmtParser.parseEnd();
+  }
 
+  /**
+   * Render this {@link Tag} to the given {@link Writer}.
+   *
+   * @param config The current {@link Configuration}.
+   * @param writer The {@link Writer} to render to.
+   * @param tagNode The {@link TagNode} that we're enclosed in. You can use this to render the children, or query
+   *                the children or whatever.
+   * @param scope The current {@link Scope}.
+   */
+  public void render(Configuration config, Writer writer, TagNode tagNode, Scope scope) throws CarrotException {
   }
 
   @Override

@@ -1,5 +1,7 @@
 package au.com.codeka.carrot.tmpl;
 
+import au.com.codeka.carrot.CarrotException;
+import au.com.codeka.carrot.Configuration;
 import au.com.codeka.carrot.lib.Scope;
 
 import java.io.IOException;
@@ -14,7 +16,7 @@ public class RootNode extends Node {
   }
 
   @Override
-  public void render(Writer writer, Scope scope) throws IOException {
-    renderChildren(writer, scope);
+  public void render(Configuration config, Writer writer, Scope scope) throws CarrotException, IOException {
+    renderChildren(config, writer, scope);
   }
 }
