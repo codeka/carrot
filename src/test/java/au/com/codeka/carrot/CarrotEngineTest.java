@@ -34,8 +34,20 @@ public class CarrotEngineTest {
     assertThat(render("foo{% if a == 0 %}bar{% end %}baz", ImmutableMap.of("a", 0L))).isEqualTo("foobarbaz");
   }
 
+  @Test
+  public void testEchoTag() {
+    assertThat(render("foo{{ foo.bar[baz] }}", ImmutableMap.of(
+        "foo", new Object() {
+          public Map<String, String> getBar() {
+            return ImmutableMap.of("hello", "World");
+          }
+        },
+        "baz", "hello"))).isEqualTo("fooWorld");
+  }
+
   private String render(String template, @Nullable Map<String, Object> bindings) {
     CarrotEngine engine = new CarrotEngine();
+    engine.getConfig().setLogger((level, msg) -> System.err.println(msg));
     return render(engine, template, bindings);
   }
 

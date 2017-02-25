@@ -7,6 +7,9 @@ import au.com.codeka.carrot.lib.ValueHelper;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.Array;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 
@@ -35,13 +38,13 @@ public class Variable {
 
   private Object evaluate(Object value, Configuration config, Scope scope) throws CarrotException {
     Object accessor = identifier.evaluate();
-    value = access(value, accessor);
+    value = access(config, value, accessor);
     return evaluateRecursive(value, config, scope);
   }
 
   private Object evaluateRecursive(Object value, Configuration config, Scope scope) throws CarrotException {
     if (accessStatement != null) {
-      value = access(value, accessStatement.evaluate(config, scope));
+      value = access(config, value, accessStatement.evaluate(config, scope));
     }
     if (dotVariable != null) {
       value = dotVariable.evaluate(value, config, scope);
@@ -49,7 +52,7 @@ public class Variable {
     return value;
   }
 
-  private Object access(Object value, Object accessor) throws CarrotException {
+  private Object access(Configuration config, Object value, Object accessor) throws CarrotException {
     if (value == null) {
       throw new CarrotException("Value is null.");
     } else if (value instanceof Map) {
@@ -61,7 +64,40 @@ public class Variable {
     } else if (value.getClass().isArray()) {
       return Array.get(value, ValueHelper.toNumber(accessor).intValue());
     } else {
-      throw new CarrotException("Cannot access key '" + accessor + "' in '" + value + "'");
+      // Do some reflection. First, check for a field with the given name.
+      try {
+        String name = accessor.toString();
+        Field field = value.getClass().getField(name);
+        field.setAccessible(true);
+        return field.get(value);
+      } catch(NoSuchFieldException | IllegalAccessException e) {
+        // Just keep trying.
+      }
+
+      // Next, try a method with the given name
+      try {
+        String name = accessor.toString();
+        Method method = value.getClass().getMethod(name);
+        method.setAccessible(true);
+        return method.invoke(value);
+      } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+        // Just keep trying.
+      }
+
+      // Next, try a getter method with the given name (that is, if name is "foo" try "getFoo").
+      try {
+        String name = accessor.toString();
+        name = Character.toUpperCase(name.charAt(0)) + name.substring(1);
+        name = "get" + name;
+        Method method = value.getClass().getMethod(name);
+        method.setAccessible(true);
+        return method.invoke(value);
+      } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+        // Just keep trying.
+        throw new CarrotException(e);
+      }
+
+   //   throw new CarrotException("Cannot access key '" + accessor + "' in '" + value + "'");
     }
   }
 

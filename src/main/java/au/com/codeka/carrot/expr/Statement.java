@@ -3,7 +3,6 @@ package au.com.codeka.carrot.expr;
 import au.com.codeka.carrot.CarrotException;
 import au.com.codeka.carrot.Configuration;
 import au.com.codeka.carrot.lib.Scope;
-import au.com.codeka.carrot.lib.ValueHelper;
 
 import javax.annotation.Nullable;
 
@@ -44,6 +43,6 @@ public class Statement {
       value = function.evaluate(config, scope);
     }
 
-    return ValueHelper.isTrue(value);
+    return value;
   }
 }

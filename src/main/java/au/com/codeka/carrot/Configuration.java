@@ -11,6 +11,7 @@ public class Configuration {
   private String encoding;
   private ResourceLocater resourceLocater;
   private TagRegistry tagRegistry;
+  private Logger logger;
 
   public Configuration() {
     encoding = "UTF-8";
@@ -38,5 +39,22 @@ public class Configuration {
 
   public TagRegistry getTagRegistry() {
     return tagRegistry;
+  }
+
+  public Configuration setLogger(Logger logger) {
+    this.logger = logger;
+    return this;
+  }
+
+  public Logger getLogger() {
+    return logger;
+  }
+
+  public interface Logger {
+    int LEVEL_DEBUG = 1;
+    int LEVEL_INFO = 2;
+    int LEVEL_WARNING = 3;
+
+    void print(int level, String msg);
   }
 }
