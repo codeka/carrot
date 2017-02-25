@@ -1,5 +1,9 @@
 package au.com.codeka.carrot.expr;
 
+import au.com.codeka.carrot.CarrotException;
+import au.com.codeka.carrot.Configuration;
+import au.com.codeka.carrot.lib.Scope;
+
 import javax.annotation.Nullable;
 
 /**
@@ -38,6 +42,20 @@ public class Factor {
     this.number = null;
     this.string = null;
     this.statement = statement;
+  }
+
+  public Object evaluate(Configuration config, Scope scope) throws CarrotException {
+    if (variable != null) {
+      return variable.evaluate(config, scope);
+    } else if (number != null) {
+      return number.evaluate();
+    } else if (string != null) {
+      return string.evaluate();
+    } else if (statement != null) {
+      return statement.evaluate(config, scope);
+    } else {
+      throw new CarrotException("Everything is null.");
+    }
   }
 
   /** Returns a string representation of this {@link Term}, useful for debugging. */

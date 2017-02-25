@@ -76,13 +76,45 @@ public class ValueHelper {
 
   /** Return a number that's the inverse of the given value (that is, 1 / value). */
   public static Number divide(Object lhs, Object rhs) throws CarrotException {
-    Number number = toNumber(value);
-    if (number instanceof Double) {
-      return 1.0 / (Double) number;
-    } else if (number instanceof Float) {
-      return 1.0f / (Float) number;
-    } else if (number instanceof Long) {
-      return 1.0 / (double) (Long) number;
-    } else if (number instanceof)
+    if (lhs == null || rhs == null) {
+      throw new CarrotException("Left hand side or right hand side is null.");
+    }
+
+    Number lhsNumber = toNumber(lhs);
+    Number rhsNumber = toNumber(rhs);
+
+    if (lhsNumber instanceof Double || rhsNumber instanceof Double) {
+      return lhsNumber.doubleValue() / rhsNumber.doubleValue();
+    } else if (lhsNumber instanceof Float || rhsNumber instanceof Float) {
+      return lhsNumber.floatValue() / rhsNumber.floatValue();
+    } else if (lhsNumber instanceof Long || rhsNumber instanceof Long) {
+      return lhsNumber.longValue() / rhsNumber.longValue();
+    } else if (lhsNumber instanceof Integer || rhsNumber instanceof Integer) {
+      return lhsNumber.longValue() / rhsNumber.longValue();
+    }
+
+    throw new CarrotException("Unknown number type '" + lhs + "' or '" + rhs + "'.");
+  }
+
+  /** Return a number that's the inverse of the given value (that is, 1 / value). */
+  public static Number multiply(Object lhs, Object rhs) throws CarrotException {
+    if (lhs == null || rhs == null) {
+      throw new CarrotException("Left hand side or right hand side is null.");
+    }
+
+    Number lhsNumber = toNumber(lhs);
+    Number rhsNumber = toNumber(rhs);
+
+    if (lhsNumber instanceof Double || rhsNumber instanceof Double) {
+      return lhsNumber.doubleValue() * rhsNumber.doubleValue();
+    } else if (lhsNumber instanceof Float || rhsNumber instanceof Float) {
+      return lhsNumber.floatValue() * rhsNumber.floatValue();
+    } else if (lhsNumber instanceof Long || rhsNumber instanceof Long) {
+      return lhsNumber.longValue() * rhsNumber.longValue();
+    } else if (lhsNumber instanceof Integer || rhsNumber instanceof Integer) {
+      return lhsNumber.longValue() * rhsNumber.longValue();
+    }
+
+    throw new CarrotException("Unknown number type '" + lhs + "' or '" + rhs + "'.");
   }
 }

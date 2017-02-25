@@ -1,6 +1,14 @@
 package au.com.codeka.carrot.expr;
 
+import au.com.codeka.carrot.CarrotException;
+import au.com.codeka.carrot.Configuration;
+import au.com.codeka.carrot.lib.Scope;
+import au.com.codeka.carrot.lib.ValueHelper;
+
 import javax.annotation.Nullable;
+import java.lang.reflect.Array;
+import java.util.List;
+import java.util.Map;
 
 /**
  * A {@link Variable} is has the following EBNF form:
@@ -18,6 +26,39 @@ public class Variable {
     this.identifier = identifier;
     this.accessStatement = accessStatement;
     this.dotVariable = dotVariable;
+  }
+
+  public Object evaluate(Configuration config, Scope scope) throws CarrotException {
+    Object value = scope.resolve(identifier.evaluate());
+    return evaluateRecursive(value, config, scope);
+  }
+
+  private Object evaluateRecursive(Object value, Configuration config, Scope scope) throws CarrotException {
+    Object accessor = identifier.evaluate();
+    value = access(value, accessor);
+    if (accessStatement != null) {
+      value = access(value, accessStatement.evaluate(config, scope));
+    }
+    if (dotVariable != null) {
+      value = dotVariable.evaluateRecursive(value, config, scope);
+    }
+    return value;
+  }
+
+  private Object access(Object value, Object accessor) throws CarrotException {
+    if (value == null) {
+      throw new CarrotException("Value is null.");
+    } else if (value instanceof Map) {
+      Map map = (Map) value;
+      return map.get(accessor);
+    } else if (value instanceof List) {
+      List list = (List) value;
+      return list.get(ValueHelper.toNumber(accessor).intValue());
+    } else if (value.getClass().isArray()) {
+      return Array.get(value, ValueHelper.toNumber(accessor).intValue());
+    } else {
+      throw new CarrotException("Cannot access key '" + accessor + "' in '" + value + "'");
+    }
   }
 
   /** Gets a string representation of the {@link Variable}, useful for debugging. */

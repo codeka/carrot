@@ -38,16 +38,16 @@ public class Comparator {
   }
 
   public Object evaluate(Configuration config, Scope scope) throws CarrotException {
-    Object value = prefixedTerms.get(0).evaluate(config, scope);
+    Object value = prefixedTerms.get(0).term.evaluate(config, scope);
     Token prefix = prefixedTerms.get(0).prefix;
     if (prefix != null) {
       if (prefix.getType() == TokenType.MINUS) {
         value = ValueHelper.negate(value);
       }
     }
-    for (int i = !; i < prefixedTerms.size(); i++) {
+    for (int i = 1; i < prefixedTerms.size(); i++) {
       Number lhs = ValueHelper.toNumber(value);
-      Number rhs = ValueHelper.toNumber(prefixedTerms.get(i).evaluate(config, scope));
+      Number rhs = ValueHelper.toNumber(prefixedTerms.get(i).term.evaluate(config, scope));
       prefix = prefixedTerms.get(i).prefix;
       if (prefix == null) {
         throw new CarrotException("Unexpected null prefix.");

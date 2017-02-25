@@ -1,5 +1,8 @@
 package au.com.codeka.carrot.expr;
 
+import au.com.codeka.carrot.CarrotException;
+import au.com.codeka.carrot.lib.ValueHelper;
+
 /**
  * A number (integer or double).
  */
@@ -16,6 +19,10 @@ public class NumberLiteral {
 
   public Object getValue() {
     return token.getValue();
+  }
+
+  public Object evaluate() throws CarrotException {
+    return ValueHelper.toNumber(getValue());
   }
 
   /** Returns a string representation of this {@link NumberLiteral}, useful for debugging. */

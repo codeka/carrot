@@ -1,5 +1,8 @@
 package au.com.codeka.carrot.expr;
 
+import au.com.codeka.carrot.CarrotException;
+import au.com.codeka.carrot.lib.ValueHelper;
+
 /**
  * A string literal.
  */
@@ -16,6 +19,10 @@ public class StringLiteral {
 
   public String getValue() {
     return (String) token.getValue();
+  }
+
+  public Object evaluate() {
+    return getValue();
   }
 
   /** Returns a string representation of this {@link StringLiteral}, useful for debugging. */
