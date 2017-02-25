@@ -5,6 +5,7 @@ import au.com.codeka.carrot.Configuration;
 import au.com.codeka.carrot.expr.StatementParser;
 import au.com.codeka.carrot.tmpl.TagNode;
 
+import java.io.IOException;
 import java.io.Writer;
 
 /**
@@ -51,7 +52,8 @@ public abstract class Tag implements Cloneable {
    *                the children or whatever.
    * @param scope The current {@link Scope}.
    */
-  public void render(Configuration config, Writer writer, TagNode tagNode, Scope scope) throws CarrotException {
+  public void render(Configuration config, Writer writer, TagNode tagNode, Scope scope)
+      throws CarrotException, IOException {
   }
 
   @Override

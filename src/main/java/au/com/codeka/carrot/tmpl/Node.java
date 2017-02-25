@@ -45,7 +45,8 @@ public abstract class Node {
   /** Render this node to the given {@link Writer}. */
   public abstract void render(Configuration config, Writer writer, Scope scope) throws CarrotException, IOException;
 
-  protected void renderChildren(Configuration config, Writer writer, Scope scope) throws CarrotException, IOException {
+  /** Render all of this {@link Node}'s children to the given {@link Writer}. */
+  public void renderChildren(Configuration config, Writer writer, Scope scope) throws CarrotException, IOException {
     if (children == null) {
       throw new IllegalStateException("Cannot call renderChildren on non-block node.");
     }

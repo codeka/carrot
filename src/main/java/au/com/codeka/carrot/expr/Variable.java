@@ -33,14 +33,18 @@ public class Variable {
     return evaluateRecursive(value, config, scope);
   }
 
-  private Object evaluateRecursive(Object value, Configuration config, Scope scope) throws CarrotException {
+  private Object evaluate(Object value, Configuration config, Scope scope) throws CarrotException {
     Object accessor = identifier.evaluate();
     value = access(value, accessor);
+    return evaluateRecursive(value, config, scope);
+  }
+
+  private Object evaluateRecursive(Object value, Configuration config, Scope scope) throws CarrotException {
     if (accessStatement != null) {
       value = access(value, accessStatement.evaluate(config, scope));
     }
     if (dotVariable != null) {
-      value = dotVariable.evaluateRecursive(value, config, scope);
+      value = dotVariable.evaluate(value, config, scope);
     }
     return value;
   }

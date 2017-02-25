@@ -1,5 +1,8 @@
 package au.com.codeka.carrot.expr;
 
+import au.com.codeka.carrot.Configuration;
+import au.com.codeka.carrot.lib.Scope;
+
 import java.util.ArrayList;
 
 /**
@@ -26,6 +29,11 @@ public class Function {
     }
     str += " " + TokenType.RPAREN;
     return str;
+  }
+
+  public Object evaluate(Configuration config, Scope scope) {
+    // TODO
+    return null;
   }
 
   public static class Builder {

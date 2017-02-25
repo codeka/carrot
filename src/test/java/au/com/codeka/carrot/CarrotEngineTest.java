@@ -2,6 +2,7 @@ package au.com.codeka.carrot;
 
 import au.com.codeka.carrot.resource.ResourceLocater;
 import au.com.codeka.carrot.resource.ResourceName;
+import com.google.common.collect.ImmutableMap;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -26,6 +27,11 @@ public class CarrotEngineTest {
   @Test
   public void testSingleFixed() {
     assertThat(render("Hello World", null)).isEqualTo("Hello World");
+  }
+
+  @Test
+  public void testIfTag() {
+    assertThat(render("foo{% if a == 0 %}bar{% end %}baz", ImmutableMap.of("a", 0L))).isEqualTo("foobarbaz");
   }
 
   private String render(String template, @Nullable Map<String, Object> bindings) {

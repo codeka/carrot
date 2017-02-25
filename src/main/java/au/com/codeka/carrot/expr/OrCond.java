@@ -39,8 +39,14 @@ public class OrCond {
 
   public Object evaluate(Configuration config, Scope scope) throws CarrotException {
     Object value = lhs.evaluate(config, scope);
-    if (operator != null) {
-      throw new CarrotException("TODO");
+    if (operator != null && rhs != null) {
+      if (operator.getType() == TokenType.EQUALITY) {
+        Object lhsValue = value;
+        Object rhsValue = rhs.evaluate(config, scope);
+        return lhsValue.equals(rhsValue);
+      } else {
+        throw new CarrotException("TODO");
+      }
     }
     return value;
   }

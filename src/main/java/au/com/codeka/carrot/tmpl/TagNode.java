@@ -39,6 +39,7 @@ public class TagNode extends Node {
     int space = content.indexOf(' ');
     if (space <= 0) {
       tagName = content;
+      content = "";
     } else {
       tagName = content.substring(0, space);
       content = content.substring(space).trim();
@@ -54,8 +55,12 @@ public class TagNode extends Node {
       throw new CarrotException(String.format("Invalid tag '%s'", tagName), line, col);
     }
 
-    StatementParser stmtParser = new StatementParser(new Tokenizer(new StringReader(content)));
-    tag.parseStatement(stmtParser);
+    try {
+      StatementParser stmtParser = new StatementParser(new Tokenizer(new StringReader(content)));
+      tag.parseStatement(stmtParser);
+    } catch (CarrotException e) {
+      throw new CarrotException("Exception parsing statement for '" + tagName + "' [" + content + "]", e);
+    }
 
     return new TagNode(tag);
   }
@@ -69,7 +74,7 @@ public class TagNode extends Node {
   }
 
   @Override
-  public void render(Configuration config, Writer writer, Scope scope) throws CarrotException {
+  public void render(Configuration config, Writer writer, Scope scope) throws CarrotException, IOException {
     tag.render(config, writer, this, scope);
   }
 }

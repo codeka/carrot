@@ -6,8 +6,10 @@ import au.com.codeka.carrot.expr.Statement;
 import au.com.codeka.carrot.expr.StatementParser;
 import au.com.codeka.carrot.lib.Scope;
 import au.com.codeka.carrot.lib.Tag;
+import au.com.codeka.carrot.lib.ValueHelper;
 import au.com.codeka.carrot.tmpl.TagNode;
 
+import java.io.IOException;
 import java.io.Writer;
 
 /**
@@ -38,8 +40,11 @@ public class IfTag extends Tag {
   }
 
   @Override
-  public void render(Configuration config, Writer writer, TagNode tagNode, Scope scope) throws CarrotException {
+  public void render(Configuration config, Writer writer, TagNode tagNode, Scope scope)
+      throws CarrotException, IOException {
     Object value = stmt.evaluate(config, scope);
-
+    if (ValueHelper.isTrue(value)) {
+      tagNode.renderChildren(config, writer, scope);
+    }
   }
 }
