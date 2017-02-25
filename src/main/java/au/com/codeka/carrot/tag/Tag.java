@@ -1,5 +1,8 @@
-package au.com.codeka.carrot;
+package au.com.codeka.carrot.tag;
 
+import au.com.codeka.carrot.CarrotException;
+import au.com.codeka.carrot.Configuration;
+import au.com.codeka.carrot.Scope;
 import au.com.codeka.carrot.expr.StatementParser;
 import au.com.codeka.carrot.tmpl.TagNode;
 

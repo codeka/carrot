@@ -3,6 +3,7 @@ package au.com.codeka.carrot;
 import au.com.codeka.carrot.tag.EchoTag;
 import au.com.codeka.carrot.tag.EndTag;
 import au.com.codeka.carrot.tag.IfTag;
+import au.com.codeka.carrot.tag.Tag;
 
 import java.util.ArrayList;
 

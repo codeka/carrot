@@ -5,7 +5,6 @@ import au.com.codeka.carrot.Configuration;
 import au.com.codeka.carrot.expr.Statement;
 import au.com.codeka.carrot.expr.StatementParser;
 import au.com.codeka.carrot.Scope;
-import au.com.codeka.carrot.Tag;
 import au.com.codeka.carrot.tmpl.TagNode;
 
 import java.io.IOException;
