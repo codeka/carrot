@@ -2,7 +2,7 @@ package au.com.codeka.carrot.tmpl;
 
 import au.com.codeka.carrot.CarrotException;
 import au.com.codeka.carrot.Configuration;
-import au.com.codeka.carrot.lib.Scope;
+import au.com.codeka.carrot.Scope;
 
 import javax.annotation.Nullable;
 import java.io.IOException;

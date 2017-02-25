@@ -1,7 +1,7 @@
 package au.com.codeka.carrot.expr;
 
 import au.com.codeka.carrot.CarrotException;
-import au.com.codeka.carrot.lib.ValueHelper;
+import au.com.codeka.carrot.ValueHelper;
 
 /**
  * A number (integer or double).

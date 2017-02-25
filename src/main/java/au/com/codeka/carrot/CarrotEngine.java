@@ -1,6 +1,5 @@
 package au.com.codeka.carrot;
 
-import au.com.codeka.carrot.lib.Scope;
 import au.com.codeka.carrot.tmpl.parse.Tokenizer;
 import au.com.codeka.carrot.resource.ResourceLocater;
 import au.com.codeka.carrot.resource.ResourceName;

@@ -1,7 +1,7 @@
 package au.com.codeka.carrot.expr;
 
 import au.com.codeka.carrot.Configuration;
-import au.com.codeka.carrot.lib.Scope;
+import au.com.codeka.carrot.Scope;
 
 import java.util.ArrayList;
 

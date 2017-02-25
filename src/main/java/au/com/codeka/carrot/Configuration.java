@@ -1,6 +1,5 @@
 package au.com.codeka.carrot;
 
-import au.com.codeka.carrot.lib.TagRegistry;
 import au.com.codeka.carrot.resource.FileResourceLocater;
 import au.com.codeka.carrot.resource.ResourceLocater;
 

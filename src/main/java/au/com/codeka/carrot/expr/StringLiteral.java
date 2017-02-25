@@ -1,8 +1,5 @@
 package au.com.codeka.carrot.expr;
 
-import au.com.codeka.carrot.CarrotException;
-import au.com.codeka.carrot.lib.ValueHelper;
-
 /**
  * A string literal.
  */

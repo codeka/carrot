@@ -1,8 +1,8 @@
-package au.com.codeka.carrot.lib;
+package au.com.codeka.carrot;
 
-import au.com.codeka.carrot.lib.tag.EchoTag;
-import au.com.codeka.carrot.lib.tag.EndTag;
-import au.com.codeka.carrot.lib.tag.IfTag;
+import au.com.codeka.carrot.tag.EchoTag;
+import au.com.codeka.carrot.tag.EndTag;
+import au.com.codeka.carrot.tag.IfTag;
 
 import java.util.ArrayList;
 

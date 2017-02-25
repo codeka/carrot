@@ -1,6 +1,6 @@
-package au.com.codeka.carrot.lib.tag;
+package au.com.codeka.carrot.tag;
 
-import au.com.codeka.carrot.lib.Tag;
+import au.com.codeka.carrot.Tag;
 
 /**
  * The "end" tag, for all tags that end blocks.

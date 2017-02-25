@@ -1,4 +1,4 @@
-package au.com.codeka.carrot.lib;
+package au.com.codeka.carrot;
 
 import javax.annotation.Nullable;
 import java.util.*;
