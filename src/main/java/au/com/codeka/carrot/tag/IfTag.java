@@ -1,11 +1,8 @@
 package au.com.codeka.carrot.tag;
 
-import au.com.codeka.carrot.CarrotException;
-import au.com.codeka.carrot.Configuration;
+import au.com.codeka.carrot.*;
 import au.com.codeka.carrot.expr.Statement;
 import au.com.codeka.carrot.expr.StatementParser;
-import au.com.codeka.carrot.Scope;
-import au.com.codeka.carrot.ValueHelper;
 import au.com.codeka.carrot.tmpl.TagNode;
 
 import java.io.IOException;
@@ -39,11 +36,11 @@ public class IfTag extends Tag {
   }
 
   @Override
-  public void render(Configuration config, Writer writer, TagNode tagNode, Scope scope)
+  public void render(CarrotEngine engine, Writer writer, TagNode tagNode, Scope scope)
       throws CarrotException, IOException {
-    Object value = stmt.evaluate(config, scope);
+    Object value = stmt.evaluate(engine.getConfig(), scope);
     if (ValueHelper.isTrue(value)) {
-      tagNode.renderChildren(config, writer, scope);
+      tagNode.renderChildren(engine, writer, scope);
     }
   }
 }

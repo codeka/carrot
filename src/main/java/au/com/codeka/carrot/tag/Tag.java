@@ -1,5 +1,6 @@
 package au.com.codeka.carrot.tag;
 
+import au.com.codeka.carrot.CarrotEngine;
 import au.com.codeka.carrot.CarrotException;
 import au.com.codeka.carrot.Configuration;
 import au.com.codeka.carrot.Scope;
@@ -47,13 +48,13 @@ public abstract class Tag implements Cloneable {
   /**
    * Render this {@link Tag} to the given {@link Writer}.
    *
-   * @param config The current {@link Configuration}.
+   * @param engine The current {@link CarrotEngine}.
    * @param writer The {@link Writer} to render to.
    * @param tagNode The {@link TagNode} that we're enclosed in. You can use this to render the children, or query
    *                the children or whatever.
    * @param scope The current {@link Scope}.
    */
-  public void render(Configuration config, Writer writer, TagNode tagNode, Scope scope)
+  public void render(CarrotEngine engine, Writer writer, TagNode tagNode, Scope scope)
       throws CarrotException, IOException {
   }
 

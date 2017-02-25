@@ -88,7 +88,7 @@ public class CarrotEngine {
       scope.push(bindings);
     }
     try {
-      node.render(config, writer, scope);
+      node.render(this, writer, scope);
     } catch (IOException e) {
       throw new CarrotException(e);
     }

@@ -1,5 +1,6 @@
 package au.com.codeka.carrot.tag;
 
+import au.com.codeka.carrot.CarrotEngine;
 import au.com.codeka.carrot.CarrotException;
 import au.com.codeka.carrot.Configuration;
 import au.com.codeka.carrot.expr.Statement;
@@ -60,9 +61,9 @@ public class ExtendsTag extends Tag {
   }
 
   @Override
-  public void render(Configuration config, Writer writer, TagNode tagNode, Scope scope)
+  public void render(CarrotEngine engine, Writer writer, TagNode tagNode, Scope scope)
       throws CarrotException, IOException {
-    String skeletonName = skeletonNameStatement.evaluate(config, scope).toString();
+    String skeletonName = skeletonNameStatement.evaluate(engine.getConfig(), scope).toString();
 
   }
 }

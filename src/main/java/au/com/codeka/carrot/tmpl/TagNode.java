@@ -1,5 +1,6 @@
 package au.com.codeka.carrot.tmpl;
 
+import au.com.codeka.carrot.CarrotEngine;
 import au.com.codeka.carrot.CarrotException;
 import au.com.codeka.carrot.Configuration;
 import au.com.codeka.carrot.expr.StatementParser;
@@ -74,7 +75,7 @@ public class TagNode extends Node {
   }
 
   @Override
-  public void render(Configuration config, Writer writer, Scope scope) throws CarrotException, IOException {
-    tag.render(config, writer, this, scope);
+  public void render(CarrotEngine engine, Writer writer, Scope scope) throws CarrotException, IOException {
+    tag.render(engine, writer, this, scope);
   }
 }

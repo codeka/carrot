@@ -1,7 +1,7 @@
 package au.com.codeka.carrot.tag;
 
+import au.com.codeka.carrot.CarrotEngine;
 import au.com.codeka.carrot.CarrotException;
-import au.com.codeka.carrot.Configuration;
 import au.com.codeka.carrot.expr.Statement;
 import au.com.codeka.carrot.expr.StatementParser;
 import au.com.codeka.carrot.Scope;
@@ -32,9 +32,9 @@ public class EchoTag extends Tag {
   }
 
   @Override
-  public void render(Configuration config, Writer writer, TagNode tagNode, Scope scope)
+  public void render(CarrotEngine engine, Writer writer, TagNode tagNode, Scope scope)
       throws CarrotException, IOException {
-    Object value = stmt.evaluate(config, scope);
+    Object value = stmt.evaluate(engine.getConfig(), scope);
     writer.write(value.toString());
   }
 }
