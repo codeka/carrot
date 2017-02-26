@@ -2,6 +2,12 @@ package au.com.codeka.carrot;
 
 import au.com.codeka.carrot.CarrotException;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+
 /**
  * Various helpers for working with {@link Object}s.
  */
@@ -116,5 +122,23 @@ public class ValueHelper {
     }
 
     throw new CarrotException("Unknown number type '" + lhs + "' or '" + rhs + "'.");
+  }
+
+  @SuppressWarnings("unchecked")
+  public static List<Object> iterate(Object iterable) throws CarrotException {
+    if (iterable instanceof List) {
+      return (List) iterable;
+    } else if (iterable instanceof Collection) {
+      return new ArrayList<>((Collection) iterable);
+    } else if (iterable.getClass().isArray()) {
+      int length = Array.getLength(iterable);
+      ArrayList<Object> objects = new ArrayList<>(length);
+      for (int i = 0; i < length; i++) {
+        objects.add(Array.get(iterable, i));
+      }
+      return objects;
+    }
+
+    throw new CarrotException("Unable to iterate '" + iterable + "'");
   }
 }
