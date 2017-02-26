@@ -15,26 +15,9 @@ import java.io.Writer;
 public class IfTag extends Tag {
   private Statement stmt;
 
-  public IfTag() {
-  }
-
-  public IfTag(Statement stmt) {
-    this.stmt = stmt;
-  }
-
-  @Override
-  public String getTagName() {
-    return "if";
-  }
-
   @Override
   public boolean isBlockTag() {
     return true;
-  }
-
-  @Override
-  public Tag clone() {
-    return new IfTag(stmt);
   }
 
   @Override

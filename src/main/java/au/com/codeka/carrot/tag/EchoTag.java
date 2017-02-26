@@ -16,23 +16,6 @@ import java.io.Writer;
 public class EchoTag extends Tag {
   private Statement stmt;
 
-  public EchoTag() {
-  }
-
-  public EchoTag(Statement stmt) {
-    this.stmt = stmt;
-  }
-
-  @Override
-  public String getTagName() {
-    return "echo";
-  }
-
-  @Override
-  public Tag clone() {
-    return new EchoTag(stmt);
-  }
-
   @Override
   public void parseStatement(StatementParser stmtParser) throws CarrotException {
     stmt = stmtParser.parseStatement();

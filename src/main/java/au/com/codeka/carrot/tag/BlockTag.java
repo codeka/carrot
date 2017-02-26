@@ -17,18 +17,6 @@ import java.util.Map;
 public class BlockTag extends Tag {
   private Statement blockName;
 
-  public BlockTag() {
-  }
-
-  public BlockTag(Statement blockName) {
-    this.blockName = blockName;
-  }
-
-  @Override
-  public String getTagName() {
-    return "block";
-  }
-
   public boolean isBlockTag() {
     return true;
   }
@@ -36,11 +24,6 @@ public class BlockTag extends Tag {
   @Override
   public void parseStatement(StatementParser statementParser) throws CarrotException {
     blockName = statementParser.parseStatement();
-  }
-
-  @Override
-  public BlockTag clone() {
-    return new BlockTag(blockName);
   }
 
   @Override

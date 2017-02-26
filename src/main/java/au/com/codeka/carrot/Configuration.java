@@ -15,7 +15,7 @@ public class Configuration {
   public Configuration() {
     encoding = "UTF-8";
     resourceLocater = new FileResourceLocater(this, ".");
-    tagRegistry = new TagRegistry();
+    tagRegistry = new TagRegistry(this);
   }
 
   public String getEncoding() {

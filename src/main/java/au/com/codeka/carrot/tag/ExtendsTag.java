@@ -47,18 +47,8 @@ public class ExtendsTag extends Tag {
   private Statement skeletonNameStatement;
 
   @Override
-  public String getTagName() {
-    return "extends";
-  }
-
-  @Override
   public boolean isBlockTag() {
     return true;
-  }
-
-  @Override
-  public Tag clone() {
-    return new ExtendsTag();
   }
 
   @Override

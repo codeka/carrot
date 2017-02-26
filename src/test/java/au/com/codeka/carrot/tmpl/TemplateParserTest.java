@@ -2,6 +2,8 @@ package au.com.codeka.carrot.tmpl;
 
 import au.com.codeka.carrot.CarrotException;
 import au.com.codeka.carrot.Configuration;
+import au.com.codeka.carrot.tag.EchoTag;
+import au.com.codeka.carrot.tag.IfTag;
 import au.com.codeka.carrot.tmpl.parse.Tokenizer;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -51,7 +53,7 @@ public class TemplateParserTest {
     assertThat(node.getChildren().get(0)).isInstanceOf(FixedNode.class);
     assertThat(((FixedNode) node.getChildren().get(0)).getContent()).isEqualTo("Hello");
     assertThat(node.getChildren().get(1)).isInstanceOf(TagNode.class);
-    assertThat(((TagNode) node.getChildren().get(1)).getTag().getTagName()).isEqualTo("echo");
+    assertThat(((TagNode) node.getChildren().get(1)).getTag()).isInstanceOf(EchoTag.class);
     assertThat(node.getChildren().get(2)).isInstanceOf(FixedNode.class);
     assertThat(((FixedNode) node.getChildren().get(2)).getContent()).isEqualTo("World");
   }
@@ -64,7 +66,7 @@ public class TemplateParserTest {
     assertThat(node.getChildren().get(0)).isInstanceOf(TagNode.class);
 
     TagNode ifNode = (TagNode) node.getChildren().get(0);
-    assertThat(ifNode.getTag().getTagName()).isEqualTo("if");
+    assertThat(ifNode.getTag()).isInstanceOf(IfTag.class);
 
     assertThat(ifNode.getChildren()).isNotNull();
     assertThat(ifNode.getChildren()).hasSize(1);
