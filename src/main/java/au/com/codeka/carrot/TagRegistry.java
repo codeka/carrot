@@ -1,9 +1,6 @@
 package au.com.codeka.carrot;
 
-import au.com.codeka.carrot.tag.EchoTag;
-import au.com.codeka.carrot.tag.EndTag;
-import au.com.codeka.carrot.tag.IfTag;
-import au.com.codeka.carrot.tag.Tag;
+import au.com.codeka.carrot.tag.*;
 
 import java.util.ArrayList;
 
@@ -18,6 +15,8 @@ public class TagRegistry {
     tags.add(new EchoTag());
     tags.add(new EndTag());
     tags.add(new IfTag());
+    tags.add(new ExtendsTag());
+    tags.add(new BlockTag());
   }
 
   public Tag createEchoTag() {

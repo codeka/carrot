@@ -66,6 +66,33 @@ public class CarrotEngine {
    * Process the template with the given filename, writing the results to the given {@link Writer}.
    *
    * @param writer A {@link Writer} to write the results of processing the given template to.
+   * @param resourceName The {@link ResourceName} of the template file, which will be located by our configured
+   *                     {@link ResourceLocater}.
+   * @param scope The {@link Scope} we're rendering into.
+   *
+   * @throws CarrotException Thrown if any errors occur.
+   */
+  public void process(
+      Writer writer,
+      ResourceName resourceName,
+      Scope scope) throws CarrotException {
+    Node node = parseCache.getNode(resourceName);
+    if (node == null) {
+      node = templateParser.parse(new Tokenizer(config.getResourceLocater().getReader(resourceName)));
+      parseCache.addNode(resourceName, node);
+    }
+
+    try {
+      node.render(this, writer, scope);
+    } catch (IOException e) {
+      throw new CarrotException(e);
+    }
+  }
+
+  /**
+   * Process the template with the given filename, writing the results to the given {@link Writer}.
+   *
+   * @param writer A {@link Writer} to write the results of processing the given template to.
    * @param templateFile The name of the template file, which will be resolved by our configured
    *                     {@link ResourceLocater}.
    * @param bindings A mapping of string to variables that make up the bindings for this template.
@@ -77,21 +104,13 @@ public class CarrotEngine {
       String templateFile,
       @Nullable Map<String, Object> bindings) throws CarrotException {
     ResourceName resourceName = config.getResourceLocater().findResource(templateFile);
-    Node node = parseCache.getNode(resourceName);
-    if (node == null) {
-      node = templateParser.parse(new Tokenizer(config.getResourceLocater().getReader(resourceName)));
-      parseCache.addNode(resourceName, node);
-    }
 
     Scope scope = new Scope(globalBindings);
     if (bindings != null) {
       scope.push(bindings);
     }
-    try {
-      node.render(this, writer, scope);
-    } catch (IOException e) {
-      throw new CarrotException(e);
-    }
+
+    process(writer, resourceName, scope);
   }
 
   /**

@@ -16,6 +16,13 @@ import java.io.Writer;
 public class EchoTag extends Tag {
   private Statement stmt;
 
+  public EchoTag() {
+  }
+
+  public EchoTag(Statement stmt) {
+    this.stmt = stmt;
+  }
+
   @Override
   public String getTagName() {
     return "echo";
@@ -23,7 +30,7 @@ public class EchoTag extends Tag {
 
   @Override
   public Tag clone() {
-    return new EchoTag();
+    return new EchoTag(stmt);
   }
 
   @Override
