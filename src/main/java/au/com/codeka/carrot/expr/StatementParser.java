@@ -14,12 +14,12 @@ import au.com.codeka.carrot.tmpl.TagNode;
  *
  *   expression = ["!"] notcond
  *
- *   notcond = andcond {"&&" andcond}
+ *   notcond = andcond {"&amp;&amp;" andcond}
  *
  *   andcond = orcond {"||" orcond}
  *
  *   orcond =
- *     comparator [("=="|"!="|"<"|"<="|">="|">") comparator]
+ *     comparator [("=="|"!="|"&lt;"|"&lt;="|"&gt;="|"&gt;") comparator]
  *
  *   comparator = ["+"|"-"] term {("+"|"-") term}
  *

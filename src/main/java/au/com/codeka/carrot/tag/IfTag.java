@@ -10,7 +10,7 @@ import java.io.Writer;
 
 /**
  * The "if" tag evaluates it's single parameter and outputs it's children if true. It can be chained with zero or more
- * {@link ElseifTag}s and zero or one {@link ElseTag}s.
+ * ElseifTags and zero or one ElseTags.
  */
 public class IfTag extends Tag {
   private Statement stmt;

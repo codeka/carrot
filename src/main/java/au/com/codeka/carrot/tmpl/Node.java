@@ -15,8 +15,7 @@ import java.util.List;
  * Base class for nodes in the abstract syntax tree.
  */
 public abstract class Node {
-  @Nullable
-  private final List<Node> children;
+  @Nullable private final List<Node> children;
 
   protected Node(boolean isBlockNode) {
     if (isBlockNode) {

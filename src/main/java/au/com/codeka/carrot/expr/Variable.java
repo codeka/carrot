@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * A {@link Variable} is has the following EBNF form:
  *
- * <code>variable = identifier ["." variable | "[" expression "]"]
+ * <code>variable = identifier ["." variable | "[" expression "]"]</code>
  *
  * See {@link StatementParser} for the full grammar.
  */

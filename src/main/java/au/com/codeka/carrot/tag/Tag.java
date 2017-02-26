@@ -18,7 +18,7 @@ import java.io.Writer;
  */
 public abstract class Tag {
   /**
-   * @return True if this is a "block" tag, meaning it contains child content (in the form of a list of {@link Node}s)
+   * @return True if this is a "block" tag, meaning it contains child content (in the form of a list of Nodes)
    *         and false if this is not a block tag (e.g. it's just a single inline element or something).
    */
   public boolean isBlockTag() {
