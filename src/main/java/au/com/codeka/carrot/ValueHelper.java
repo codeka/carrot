@@ -126,7 +126,10 @@ public class ValueHelper {
 
   @SuppressWarnings("unchecked")
   public static List<Object> iterate(Object iterable) throws CarrotException {
-    if (iterable instanceof List) {
+    if (iterable == null) {
+      // Just iterate an empty list.
+      return new ArrayList<>();
+    } else if (iterable instanceof List) {
       return (List) iterable;
     } else if (iterable instanceof Collection) {
       return new ArrayList<>((Collection) iterable);

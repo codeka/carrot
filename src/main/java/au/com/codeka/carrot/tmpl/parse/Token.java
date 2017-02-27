@@ -1,5 +1,8 @@
 package au.com.codeka.carrot.tmpl.parse;
 
+import au.com.codeka.carrot.resource.ResourcePointer;
+
+import javax.annotation.Nullable;
 import java.util.Objects;
 
 /**
@@ -8,14 +11,12 @@ import java.util.Objects;
 public class Token {
   private final TokenType type;
   private final String content;
-  private final int line;
-  private final int column;
+  @Nullable private final ResourcePointer ptr;
 
-  private Token(TokenType type, String content, int line, int column) {
+  private Token(TokenType type, String content, ResourcePointer ptr) {
     this.type = type;
     this.content = content;
-    this.line = line;
-    this.column = column;
+    this.ptr = ptr;
   }
 
   public TokenType getType() {
@@ -27,11 +28,11 @@ public class Token {
   }
 
   public static Token create(TokenType type, String content) {
-    return new Token(type, content, 0, 0);
+    return new Token(type, content, null);
   }
 
-  public static Token create(TokenType type, String content, int line, int column) {
-    return new Token(type, content, line, column);
+  public static Token create(TokenType type, String content, ResourcePointer ptr) {
+    return new Token(type, content, ptr);
   }
 
   @Override
@@ -43,14 +44,9 @@ public class Token {
     return false;
   }
 
-  /** Gets the line this token appears on. */
-  public int getLine() {
-    return line;
-  }
-
-  /** Gets the column this token appears on. */
-  public int getColumn() {
-    return column;
+  /** Gets the {@link ResourcePointer} from where this token was read from. */
+  public ResourcePointer getPointer() {
+    return ptr;
   }
 
   @Override

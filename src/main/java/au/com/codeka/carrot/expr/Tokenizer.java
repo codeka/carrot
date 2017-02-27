@@ -1,6 +1,8 @@
 package au.com.codeka.carrot.expr;
 
 import au.com.codeka.carrot.CarrotException;
+import au.com.codeka.carrot.resource.ResourcePointer;
+import au.com.codeka.carrot.util.LineReader;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
@@ -12,16 +14,12 @@ import java.util.Queue;
  * Converts an input {@link Reader} into a stream of {@link Token}s.
  */
 public class Tokenizer {
-  private final Reader reader;
+  private final LineReader reader;
   @Nullable private Character lookahead;
   private ArrayDeque<Token> tokens = new ArrayDeque<>();
-  private int line;
-  private int col;
 
-  public Tokenizer(Reader reader) throws CarrotException {
+  public Tokenizer(LineReader reader) throws CarrotException {
     this.reader = reader;
-    line = 1;
-    col = 1;
     next();
   }
 
@@ -91,7 +89,7 @@ public class Tokenizer {
       typeString.append(types[i]);
     }
     throw new CarrotException(
-        "Expected token of type " + typeString + ", got " + tokens.peek().getType(), line, col);
+        "Expected token of type " + typeString + ", got " + tokens.peek().getType(), reader.getPointer());
   }
 
   /** Throws {@link CarrotException} unless we're at the end of the tokens. */
@@ -101,7 +99,7 @@ public class Tokenizer {
 
   /** Returns a {@link CarrotException} with the given message (presumably because we got an unexpected token). */
   public CarrotException unexpected(String msg) {
-    return new CarrotException(String.format("%s, found: %s", msg, tokens.peek()), line, col);
+    return new CarrotException(String.format("%s, found: %s", msg, tokens.peek()), reader.getPointer());
   }
 
   /** Advance to the {@link Token}, storing it in the member variable token. */
@@ -115,9 +113,6 @@ public class Tokenizer {
       return;
     }
 
-
-    int startLine = line;
-    int startCol = col;
     int next;
     Token token;
 
@@ -155,21 +150,21 @@ public class Tokenizer {
       case '&':
         next = nextChar();
         if (next != '&') {
-          throw new CarrotException("Expected &&", startLine, startCol);
+          throw new CarrotException("Expected &&", reader.getPointer());
         }
         token = new Token(TokenType.LOGICAL_AND);
         break;
       case '|':
         next = nextChar();
         if (next != '|') {
-          throw new CarrotException("Expected ||", startLine, startCol);
+          throw new CarrotException("Expected ||", reader.getPointer());
         }
         token = new Token(TokenType.LOGICAL_OR);
         break;
       case '=':
         next = nextChar();
         if (next != '=') {
-          throw new CarrotException("Expected ==", startLine, startCol);
+          throw new CarrotException("Expected ==", reader.getPointer());
         }
         token = new Token(TokenType.EQUALITY);
         break;
@@ -186,7 +181,7 @@ public class Tokenizer {
         next = nextChar();
         if (next != '=') {
           if (next < 0) {
-            throw new CarrotException("Unexpected end of file.", startLine, startCol);
+            throw new CarrotException("Unexpected end of file.", reader.getPointer());
           }
           lookahead = (char) next;
           token = new Token(TokenType.LESS_THAN);
@@ -198,7 +193,7 @@ public class Tokenizer {
         next = nextChar();
         if (next != '=') {
           if (next < 0) {
-            throw new CarrotException("Unexpected end of file.", startLine, startCol);
+            throw new CarrotException("Unexpected end of file.", reader.getPointer());
           }
           lookahead = (char) next;
           token = new Token(TokenType.GREATER_THAN);
@@ -215,7 +210,7 @@ public class Tokenizer {
           next = nextChar();
         }
         if (next < 0) {
-          throw new CarrotException("Unexpected end-of-file waiting for " + (char) ch, startLine, startCol);
+          throw new CarrotException("Unexpected end-of-file waiting for " + (char) ch, reader.getPointer());
         }
         token = new Token(TokenType.STRING_LITERAL, str);
         break;
@@ -252,7 +247,7 @@ public class Tokenizer {
           }
           token = new Token(TokenType.IDENTIFIER, identifier);
         } else {
-          throw new CarrotException("Unexpected character: " + (char) ch, startLine, startCol);
+          throw new CarrotException("Unexpected character: " + (char) ch, reader.getPointer());
         }
     }
 
@@ -266,13 +261,7 @@ public class Tokenizer {
         ch = lookahead;
         lookahead = null;
       } else {
-        ch = reader.read();
-      }
-      if (ch == '\n') {
-        line++;
-        col = 1;
-      } else {
-        col++;
+        ch = reader.nextChar();
       }
 
       return ch;

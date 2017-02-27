@@ -1,6 +1,8 @@
 package au.com.codeka.carrot.tmpl.parse;
 
 import au.com.codeka.carrot.CarrotException;
+import au.com.codeka.carrot.resource.ResourcePointer;
+import au.com.codeka.carrot.util.LineReader;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -84,7 +86,7 @@ public class TokenizerTest {
       Token token = tokenizer.getNextToken();
       fail("Expected ParseException, got: " + token);
     } catch (CarrotException e) {
-      assertThat(e.getMessage()).isEqualTo("Expected '%}' [line: 1 col: 15]");
+      assertThat(e.getMessage()).isEqualTo("???\n1: stuff {% foo }} baz\n                  ^\nExpected '%}'");
     }
 
     tokenizer = createTokenizer("blah {% foo #} baz");
@@ -93,7 +95,7 @@ public class TokenizerTest {
       Token token = tokenizer.getNextToken();
       fail("Expected ParseException, got: " + token);
     } catch (CarrotException e) {
-      assertThat(e.getMessage()).isEqualTo("Expected '%}' [line: 1 col: 14]");
+      assertThat(e.getMessage()).isEqualTo("???\n1: blah {% foo #} baz\n                 ^\nExpected '%}'");
     }
   }
 
@@ -105,7 +107,7 @@ public class TokenizerTest {
       Token token = tokenizer.getNextToken();
       fail("Expected ParseException, got: " + token);
     } catch (CarrotException e) {
-      assertThat(e.getMessage()).isEqualTo("Expected '}}' [line: 1 col: 15]");
+      assertThat(e.getMessage()).isEqualTo("???\n1: stuff {{ foo %} baz\n                  ^\nExpected '}}'");
     }
 
     tokenizer = createTokenizer("blah {{ foo #} baz");
@@ -114,7 +116,7 @@ public class TokenizerTest {
       Token token = tokenizer.getNextToken();
       fail("Expected ParseException, got: " + token);
     } catch (CarrotException e) {
-      assertThat(e.getMessage()).isEqualTo("Expected '}}' [line: 1 col: 14]");
+      assertThat(e.getMessage()).isEqualTo("???\n1: blah {{ foo #} baz\n                 ^\nExpected '}}'");
     }
   }
 
@@ -179,7 +181,7 @@ public class TokenizerTest {
   }
 
   private static Tokenizer createTokenizer(String content) {
-    return new Tokenizer(new StringReader(content), new TestTokenFactory());
+    return new Tokenizer(new LineReader(new ResourcePointer(null), new StringReader(content)), new TestTokenFactory());
   }
 
   /** Our {@link TestTokenFactory} creates instances of {@link Token}, even for {@link TokenType#UNKNOWN}. */

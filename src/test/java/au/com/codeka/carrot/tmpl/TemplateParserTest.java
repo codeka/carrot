@@ -2,9 +2,11 @@ package au.com.codeka.carrot.tmpl;
 
 import au.com.codeka.carrot.CarrotException;
 import au.com.codeka.carrot.Configuration;
+import au.com.codeka.carrot.resource.ResourcePointer;
 import au.com.codeka.carrot.tag.EchoTag;
 import au.com.codeka.carrot.tag.IfTag;
 import au.com.codeka.carrot.tmpl.parse.Tokenizer;
+import au.com.codeka.carrot.util.LineReader;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -77,7 +79,8 @@ public class TemplateParserTest {
   private Node parseTemplate(String input) {
     TemplateParser templateParser = new TemplateParser(new Configuration());
     try {
-      Node node = templateParser.parse(new Tokenizer(new StringReader(input)));
+      Node node =
+          templateParser.parse(new Tokenizer(new LineReader(new ResourcePointer(null), new StringReader(input))));
       assertThat(node).isNotNull();
       return node;
     } catch (CarrotException e) {

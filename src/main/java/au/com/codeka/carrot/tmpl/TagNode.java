@@ -6,9 +6,11 @@ import au.com.codeka.carrot.Configuration;
 import au.com.codeka.carrot.expr.StatementParser;
 import au.com.codeka.carrot.expr.Tokenizer;
 import au.com.codeka.carrot.Scope;
+import au.com.codeka.carrot.resource.ResourcePointer;
 import au.com.codeka.carrot.tag.Tag;
 import au.com.codeka.carrot.tag.EndTag;
 import au.com.codeka.carrot.tmpl.parse.Token;
+import au.com.codeka.carrot.util.LineReader;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -21,16 +23,18 @@ import java.io.Writer;
  * <p>Tags are represented by the {@link Tag} class, which is extensible.
  */
 public class TagNode extends Node {
+  private final ResourcePointer ptr;
   private final Tag tag;
 
-  public TagNode(Tag tag) {
-    super(tag.isBlockTag() /* isBlockNode */);
+  public TagNode(ResourcePointer ptr, Tag tag) {
+    super(ptr, tag.isBlockTag() /* isBlockNode */);
+    this.ptr = ptr;
     this.tag = tag;
   }
 
   /** Creates a special {@link TagNode} for an echo token. */
   public static TagNode createEcho(Token token, Configuration config) throws CarrotException {
-    return create("echo", token.getContent(), config, token.getLine(), token.getColumn());
+    return create("echo", token.getContent(), config, token.getPointer());
   }
 
   public static TagNode create(Token token, Configuration config) throws CarrotException {
@@ -46,24 +50,24 @@ public class TagNode extends Node {
       content = content.substring(space).trim();
     }
 
-    return create(tagName, content, config, token.getLine(), token.getColumn());
+    return create(tagName, content, config, token.getPointer());
   }
 
   private static TagNode create(
-      String tagName, String content, Configuration config, int line, int col) throws CarrotException {
+      String tagName, String content, Configuration config, ResourcePointer ptr) throws CarrotException {
     Tag tag = config.getTagRegistry().createTag(tagName);
     if (tag == null) {
-      throw new CarrotException(String.format("Invalid tag '%s'", tagName), line, col);
+      throw new CarrotException(String.format("Invalid tag '%s'", tagName), ptr);
     }
 
     try {
-      StatementParser stmtParser = new StatementParser(new Tokenizer(new StringReader(content)));
+      StatementParser stmtParser = new StatementParser(new Tokenizer(new LineReader(ptr, new StringReader(content))));
       tag.parseStatement(stmtParser);
     } catch (CarrotException e) {
       throw new CarrotException("Exception parsing statement for '" + tagName + "' [" + content + "]", e);
     }
 
-    return new TagNode(tag);
+    return new TagNode(ptr, tag);
   }
 
   public boolean isEndBlock() {

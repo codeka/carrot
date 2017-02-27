@@ -1,6 +1,8 @@
 package au.com.codeka.carrot.expr;
 
 import au.com.codeka.carrot.CarrotException;
+import au.com.codeka.carrot.resource.ResourcePointer;
+import au.com.codeka.carrot.util.LineReader;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -44,6 +46,6 @@ public class StatementParserTest {
   }
 
   private StatementParser createStatementParser(String str) throws CarrotException {
-    return new StatementParser(new Tokenizer(new StringReader(str)));
+    return new StatementParser(new Tokenizer(new LineReader(new ResourcePointer(null), new StringReader(str))));
   }
 }

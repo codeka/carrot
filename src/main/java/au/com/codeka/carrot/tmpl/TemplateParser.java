@@ -17,7 +17,7 @@ public class TemplateParser {
   }
 
   public Node parse(Tokenizer tokenizer) throws CarrotException {
-    Node root = new RootNode();
+    Node root = new RootNode(tokenizer.getPointer());
     parse(tokenizer, root);
     return root;
   }
@@ -44,7 +44,7 @@ public class TemplateParser {
         }
         childNode = tagNode;
       } else if (token.getType() == TokenType.FIXED) {
-        childNode = FixedNode.create(token.getContent());
+        childNode = FixedNode.create(token);
       } else {
         throw new IllegalStateException("Unknown token type: " + token.getType());
       }

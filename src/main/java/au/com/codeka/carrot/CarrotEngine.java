@@ -1,5 +1,6 @@
 package au.com.codeka.carrot;
 
+import au.com.codeka.carrot.util.LineReader;
 import au.com.codeka.carrot.tmpl.parse.Tokenizer;
 import au.com.codeka.carrot.resource.ResourceLocater;
 import au.com.codeka.carrot.resource.ResourceName;
@@ -78,14 +79,15 @@ public class CarrotEngine {
       Scope scope) throws CarrotException {
     Node node = parseCache.getNode(resourceName);
     if (node == null) {
-      node = templateParser.parse(new Tokenizer(config.getResourceLocater().getReader(resourceName)));
+      LineReader lineReader = new LineReader(resourceName, config.getResourceLocater().getReader(resourceName));
+      node = templateParser.parse(new Tokenizer(lineReader));
       parseCache.addNode(resourceName, node);
     }
 
     try {
       node.render(this, writer, scope);
     } catch (IOException e) {
-      throw new CarrotException(e);
+      throw new CarrotException(e, node.getPointer());
     }
   }
 

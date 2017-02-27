@@ -1,10 +1,11 @@
 package au.com.codeka.carrot.tmpl.parse;
 
 import au.com.codeka.carrot.CarrotException;
+import au.com.codeka.carrot.resource.ResourcePointer;
+import au.com.codeka.carrot.util.LineReader;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
-import java.io.Reader;
 import java.util.Arrays;
 
 /**
@@ -24,21 +25,18 @@ import java.util.Arrays;
  * TagToken: content="}"</code>
  */
 public class Tokenizer {
-  private final Reader ins;
+  private final LineReader ins;
   private final TokenFactory tokenFactory;
 
   private char[] lookahead;
-  private int line;
-  private int col;
 
-  public Tokenizer(Reader ins) {
+  public Tokenizer(LineReader ins) {
     this(ins, null);
   }
 
-  public Tokenizer(Reader ins, @Nullable TokenFactory tokenFactory) {
+  public Tokenizer(LineReader ins, @Nullable TokenFactory tokenFactory) {
     this.ins = ins;
     this.tokenFactory = tokenFactory == null ? new DefaultTokenFactory() : tokenFactory;
-    this.line = 1;
   }
 
   /**
@@ -71,7 +69,7 @@ public class Tokenizer {
                 lookahead = new char[]{'{', '%'};
                 return tokenFactory.create(tokenType, content);
               } else {
-                throw new CarrotException("Unexpected '{%'", line, col);
+                throw new CarrotException("Unexpected '{%'", ins.getPointer());
               }
               break;
             case '{':
@@ -81,7 +79,7 @@ public class Tokenizer {
                 lookahead = new char[]{'{', '{'};
                 return tokenFactory.create(tokenType, content);
               } else {
-                throw new CarrotException("Unexpected '{{", line, col);
+                throw new CarrotException("Unexpected '{{", ins.getPointer());
               }
               break;
             case '#':
@@ -91,7 +89,7 @@ public class Tokenizer {
                 lookahead = new char[]{'{', '#'};
                 return tokenFactory.create(tokenType, content);
               } else {
-                throw new CarrotException("Unexpected '{{", line, col);
+                throw new CarrotException("Unexpected '{{", ins.getPointer());
               }
               break;
             case '\\':
@@ -116,11 +114,11 @@ public class Tokenizer {
 
           if ((char) i == '}') {
             if (tokenType == TokenType.ECHO && ch != '}') {
-              throw new CarrotException("Expected '}}'", line, col);
+              throw new CarrotException("Expected '}}'", ins.getPointer());
             } else if (tokenType == TokenType.TAG && ch != '%') {
-              throw new CarrotException("Expected '%}'", line, col);
+              throw new CarrotException("Expected '%}'", ins.getPointer());
             } else if (tokenType == TokenType.COMMENT && ch != '#') {
-              throw new CarrotException("Expected '#}'", line, col);
+              throw new CarrotException("Expected '#}'", ins.getPointer());
             } else if (tokenType == TokenType.FIXED) {
               content.append(ch);
               content.append((char) i);
@@ -142,6 +140,10 @@ public class Tokenizer {
     }
   }
 
+  public ResourcePointer getPointer() {
+    return ins.getPointer();
+  }
+
   private int getNextChar() throws CarrotException {
     if (lookahead != null) {
       char ch = lookahead[0];
@@ -154,16 +156,9 @@ public class Tokenizer {
     }
 
     try {
-      int ch = ins.read();
-      if (ch == '\n') {
-        line ++;
-        col = 0;
-      } else {
-        col ++;
-      }
-      return ch;
+      return ins.nextChar();
     } catch (IOException e) {
-      throw new CarrotException(e);
+      throw new CarrotException(e, ins.getPointer());
     }
   }
 
@@ -174,7 +169,7 @@ public class Tokenizer {
         case UNKNOWN:
           return null;
         default:
-          return Token.create(type, content.toString(), line, col);
+          return Token.create(type, content.toString(), ins.getPointer());
       }
     }
   }

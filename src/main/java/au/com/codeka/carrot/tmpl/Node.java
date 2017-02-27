@@ -2,8 +2,8 @@ package au.com.codeka.carrot.tmpl;
 
 import au.com.codeka.carrot.CarrotEngine;
 import au.com.codeka.carrot.CarrotException;
-import au.com.codeka.carrot.Configuration;
 import au.com.codeka.carrot.Scope;
+import au.com.codeka.carrot.resource.ResourcePointer;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
@@ -16,8 +16,11 @@ import java.util.List;
  */
 public abstract class Node {
   @Nullable private final List<Node> children;
+  private ResourcePointer ptr;
 
-  protected Node(boolean isBlockNode) {
+  protected Node(ResourcePointer ptr, boolean isBlockNode) {
+    this.ptr = ptr;
+
     if (isBlockNode) {
       children = new ArrayList<>();
     } else {
@@ -42,6 +45,10 @@ public abstract class Node {
     return children != null;
   }
 
+  public ResourcePointer getPointer() {
+    return ptr;
+  }
+
   /** Render this node to the given {@link Writer}. */
   public abstract void render(CarrotEngine engine, Writer writer, Scope scope) throws CarrotException, IOException;
 
@@ -52,7 +59,14 @@ public abstract class Node {
     }
 
     for (Node child : children) {
-      child.render(engine, writer, scope);
+      try {
+        child.render(engine, writer, scope);
+      } catch (Exception e) {
+        if (e instanceof CarrotException) {
+          throw e;
+        }
+        throw new CarrotException(e, child.getPointer());
+      }
     }
   }
 }
