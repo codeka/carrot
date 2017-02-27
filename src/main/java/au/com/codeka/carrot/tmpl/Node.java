@@ -63,6 +63,9 @@ public abstract class Node {
         child.render(engine, writer, scope);
       } catch (Exception e) {
         if (e instanceof CarrotException) {
+          if (((CarrotException) e).getPointer() == null) {
+            throw new CarrotException(e, child.getPointer());
+          }
           throw e;
         }
         throw new CarrotException(e, child.getPointer());

@@ -38,13 +38,14 @@ public class Variable {
 
   private Object evaluate(Object value, Configuration config, Scope scope) throws CarrotException {
     Object accessor = identifier.evaluate();
-    value = access(config, value, accessor);
+    value = access(config, value, accessor, identifier.toString());
     return evaluateRecursive(value, config, scope);
   }
 
   private Object evaluateRecursive(Object value, Configuration config, Scope scope) throws CarrotException {
     if (accessStatement != null) {
-      value = access(config, value, accessStatement.evaluate(config, scope));
+      value = access(
+          config, value, accessStatement.evaluate(config, scope), accessStatement.toString());
     }
     if (dotVariable != null) {
       value = dotVariable.evaluate(value, config, scope);
@@ -52,9 +53,13 @@ public class Variable {
     return value;
   }
 
-  private Object access(Configuration config, Object value, Object accessor) throws CarrotException {
+  private Object access(
+      Configuration config,
+      Object value,
+      Object accessor,
+      String debugName) throws CarrotException {
     if (value == null) {
-      throw new CarrotException("Value is null.");
+      throw new CarrotException(debugName + " is null.");
     } else if (value instanceof Map) {
       Map map = (Map) value;
       return map.get(accessor);
