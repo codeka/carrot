@@ -59,7 +59,8 @@ public class ExtendsTagTest {
       engine.process("index", new TreeMap<>());
       fail("Expected CarrotException.");
     } catch (CarrotException e) {
-      assertThat(e.getMessage()).isEqualTo("File not found: skeleton");
+      assertThat(e.getMessage())
+          .isEqualTo("index\n1: {% extends \"skeleton\" %}\n                           ^\nFile not found: skeleton");
     }
   }
 

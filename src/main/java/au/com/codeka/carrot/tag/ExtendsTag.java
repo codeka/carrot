@@ -2,7 +2,7 @@ package au.com.codeka.carrot.tag;
 
 import au.com.codeka.carrot.CarrotEngine;
 import au.com.codeka.carrot.CarrotException;
-import au.com.codeka.carrot.expr.Statement;
+import au.com.codeka.carrot.expr.Expression;
 import au.com.codeka.carrot.expr.StatementParser;
 import au.com.codeka.carrot.Scope;
 import au.com.codeka.carrot.resource.ResourceName;
@@ -44,7 +44,7 @@ import static au.com.codeka.carrot.util.Preconditions.checkNotNull;
  * be replaced with the content inside the block.
  */
 public class ExtendsTag extends Tag {
-  private Statement skeletonNameStatement;
+  private Expression skeletonNameExpr;
 
   @Override
   public boolean isBlockTag() {
@@ -53,13 +53,13 @@ public class ExtendsTag extends Tag {
 
   @Override
   public void parseStatement(StatementParser stmtParser) throws CarrotException {
-    skeletonNameStatement = stmtParser.parseStatement();
+    skeletonNameExpr = stmtParser.parseExpression();
   }
 
   @Override
   public void render(CarrotEngine engine, Writer writer, TagNode tagNode, Scope scope)
       throws CarrotException, IOException {
-    String skeletonName = skeletonNameStatement.evaluate(engine.getConfig(), scope).toString();
+    String skeletonName = skeletonNameExpr.evaluate(engine.getConfig(), scope).toString();
 
     // We take our children, which should all be block tags, add them to a special variable in the scope, and then
     // just render the template instead.

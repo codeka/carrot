@@ -3,7 +3,7 @@ package au.com.codeka.carrot.tag;
 import au.com.codeka.carrot.CarrotEngine;
 import au.com.codeka.carrot.CarrotException;
 import au.com.codeka.carrot.Scope;
-import au.com.codeka.carrot.expr.Statement;
+import au.com.codeka.carrot.expr.Expression;
 import au.com.codeka.carrot.expr.StatementParser;
 import au.com.codeka.carrot.tmpl.TagNode;
 
@@ -15,7 +15,7 @@ import java.util.Map;
  * The {% block %} tag is used in conjunction with {% extends %}. See {@link ExtendsTag} for details.
  */
 public class BlockTag extends Tag {
-  private Statement blockName;
+  private Expression blockNameExpr;
 
   public boolean isBlockTag() {
     return true;
@@ -23,7 +23,7 @@ public class BlockTag extends Tag {
 
   @Override
   public void parseStatement(StatementParser statementParser) throws CarrotException {
-    blockName = statementParser.parseStatement();
+    blockNameExpr = statementParser.parseExpression();
   }
 
   @Override
@@ -45,6 +45,6 @@ public class BlockTag extends Tag {
   }
 
   public String getBlockName(CarrotEngine carrotEngine, Scope scope) throws CarrotException {
-    return blockName.evaluate(carrotEngine.getConfig(), scope).toString();
+    return blockNameExpr.evaluate(carrotEngine.getConfig(), scope).toString();
   }
 }

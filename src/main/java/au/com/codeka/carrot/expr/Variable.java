@@ -22,17 +22,26 @@ import java.util.Map;
  */
 public class Variable {
   private final Identifier identifier;
-  @Nullable private final Statement accessStatement;
+  @Nullable private final Function function;
+  @Nullable private final Expression accessExpression;
   @Nullable private final Variable dotVariable;
 
-  public Variable(Identifier identifier, @Nullable Statement accessStatement, @Nullable Variable dotVariable) {
+  public Variable(
+      Identifier identifier,
+      @Nullable Function function,
+      @Nullable Expression accessExpression,
+      @Nullable Variable dotVariable) {
     this.identifier = identifier;
-    this.accessStatement = accessStatement;
+    this.function = function;
+    this.accessExpression = accessExpression;
     this.dotVariable = dotVariable;
   }
 
   public Object evaluate(Configuration config, Scope scope) throws CarrotException {
     Object value = scope.resolve(identifier.evaluate());
+    if (function != null) {
+      value = function.evaluate(value, config, scope);
+    }
     return evaluateRecursive(value, config, scope);
   }
 
@@ -43,9 +52,9 @@ public class Variable {
   }
 
   private Object evaluateRecursive(Object value, Configuration config, Scope scope) throws CarrotException {
-    if (accessStatement != null) {
+    if (accessExpression != null) {
       value = access(
-          config, value, accessStatement.evaluate(config, scope), accessStatement.toString());
+          config, value, accessExpression.evaluate(config, scope), accessExpression.toString());
     }
     if (dotVariable != null) {
       value = dotVariable.evaluate(value, config, scope);
@@ -110,8 +119,8 @@ public class Variable {
   @Override
   public String toString() {
     String str = identifier.toString();
-    if (accessStatement != null) {
-      str += " " + TokenType.LSQUARE + " " + accessStatement + " " + TokenType.RSQUARE + " ";
+    if (accessExpression != null) {
+      str += " " + TokenType.LSQUARE + " " + accessExpression + " " + TokenType.RSQUARE + " ";
     }
     if (dotVariable != null) {
       str += " " + TokenType.DOT + " " + dotVariable.toString();

@@ -1,7 +1,7 @@
 package au.com.codeka.carrot.tag;
 
 import au.com.codeka.carrot.*;
-import au.com.codeka.carrot.expr.Statement;
+import au.com.codeka.carrot.expr.Expression;
 import au.com.codeka.carrot.expr.StatementParser;
 import au.com.codeka.carrot.tmpl.TagNode;
 
@@ -13,7 +13,7 @@ import java.io.Writer;
  * ElseifTags and zero or one ElseTags.
  */
 public class IfTag extends Tag {
-  private Statement stmt;
+  private Expression expr;
 
   @Override
   public boolean isBlockTag() {
@@ -22,13 +22,13 @@ public class IfTag extends Tag {
 
   @Override
   public void parseStatement(StatementParser stmtParser) throws CarrotException {
-    stmt = stmtParser.parseStatement();
+    expr = stmtParser.parseExpression();
   }
 
   @Override
   public void render(CarrotEngine engine, Writer writer, TagNode tagNode, Scope scope)
       throws CarrotException, IOException {
-    Object value = stmt.evaluate(engine.getConfig(), scope);
+    Object value = expr.evaluate(engine.getConfig(), scope);
     if (ValueHelper.isTrue(value)) {
       tagNode.renderChildren(engine, writer, scope);
     }

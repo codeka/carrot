@@ -8,10 +8,6 @@ import au.com.codeka.carrot.tmpl.TagNode;
  * StatementParser is used to parse expressions. Expressions are used to refer to everything that appears after the
  * {@link Tag} in a {@link TagNode}, and has the following pseudo-EBNF grammar:
  * <code>
- *   statement =
- *     expression
- *     | identifier "(" statement {"," statement} ")"
- *
  *   expression = ["!"] notcond
  *
  *   notcond = andcond {"&amp;&amp;" andcond}
@@ -29,9 +25,11 @@ import au.com.codeka.carrot.tmpl.TagNode;
  *     variable
  *     | number
  *     | literal
- *     | "(" statement ")"
+ *     | "(" expression ")"
  *
- *   variable = identifier ["[" statement "]"] ["." variable]
+ *   variable = identifier [func-call] ["[" expression "]"] ["." variable]
+ *
+ *   func-call = "." identifier "(" expression {"," expression} ")"
  *
  *   identifier = "any valid Java identifier"
  *   number = "and valid Java number"
@@ -63,7 +61,7 @@ public class StatementParser {
   public StringLiteral parseString() throws CarrotException {
     return new StringLiteral(tokenizer.expect(TokenType.STRING_LITERAL));
   }
-
+/*
   public Statement parseStatement() throws CarrotException {
     if (tokenizer.accept(TokenType.IDENTIFIER) && tokenizer.accept(1, TokenType.LPAREN)) {
       Identifier identifier = parseIdentifier();
@@ -79,8 +77,8 @@ public class StatementParser {
       return new Statement(parseExpression());
     }
   }
-
-  Expression parseExpression() throws CarrotException {
+*/
+  public Expression parseExpression() throws CarrotException {
     boolean not = false;
     if (tokenizer.accept(TokenType.NOT)) {
       not = true;
@@ -128,11 +126,31 @@ public class StatementParser {
 
   Variable parseVariable() throws CarrotException {
     Identifier ident = parseIdentifier();
-    Statement accessStatement = null;
+    Expression accessExpression = null;
     Variable dotVariable = null;
+    Function args = null;
+    if (tokenizer.accept(0, TokenType.DOT)
+        && tokenizer.accept(1, TokenType.IDENTIFIER)
+        && tokenizer.accept(2, TokenType.LPAREN)) {
+      tokenizer.expect(TokenType.DOT);
+      Identifier funcNameIdentifier = parseIdentifier();
+      tokenizer.expect(TokenType.LPAREN);
+      Function.Builder argsBuilder = new Function.Builder(funcNameIdentifier);
+      boolean first = true;
+      while (!tokenizer.accept(TokenType.RPAREN)) {
+        if (!first) {
+          tokenizer.expect(TokenType.COMMA);
+        }
+        first = false;
+        Expression expr = parseExpression();
+        argsBuilder.addParam(expr);
+      }
+      tokenizer.expect(TokenType.RPAREN);
+      args = argsBuilder.build();
+    }
     if (tokenizer.accept(TokenType.LSQUARE)) {
       tokenizer.expect(TokenType.LSQUARE);
-      accessStatement = parseStatement();
+      accessExpression = parseExpression();
       tokenizer.expect(TokenType.RSQUARE);
     }
     if (tokenizer.accept(TokenType.DOT)) {
@@ -140,16 +158,16 @@ public class StatementParser {
       dotVariable = parseVariable();
     }
 
-    return new Variable(ident, accessStatement, dotVariable);
+    return new Variable(ident, args, accessExpression, dotVariable);
   }
 
   Factor parseFactor() throws CarrotException {
     if (tokenizer.accept(TokenType.LPAREN)) {
       tokenizer.expect(TokenType.LPAREN);
-      Statement stmt = parseStatement();
+      Expression expr = parseExpression();
       tokenizer.expect(TokenType.RPAREN);
 
-      return new Factor(stmt);
+      return new Factor(expr);
     }
     if (tokenizer.accept(TokenType.STRING_LITERAL)) {
       return new Factor(parseString());

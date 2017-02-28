@@ -4,8 +4,8 @@ import au.com.codeka.carrot.CarrotEngine;
 import au.com.codeka.carrot.CarrotException;
 import au.com.codeka.carrot.Scope;
 import au.com.codeka.carrot.ValueHelper;
+import au.com.codeka.carrot.expr.Expression;
 import au.com.codeka.carrot.expr.Identifier;
-import au.com.codeka.carrot.expr.Statement;
 import au.com.codeka.carrot.expr.StatementParser;
 import au.com.codeka.carrot.tmpl.TagNode;
 
@@ -20,7 +20,7 @@ import java.util.Map;
  */
 public class ForTag extends Tag {
   private Identifier loopIdentifier;
-  private Statement loopStatement;
+  private Expression loopExpression;
 
   @Override
   public boolean isBlockTag() {
@@ -34,14 +34,14 @@ public class ForTag extends Tag {
     if (!inIdentifier.evaluate().equalsIgnoreCase("in")) {
       throw new CarrotException("Expected 'in'.");
     }
-    loopStatement = stmtParser.parseStatement();
+    loopExpression = stmtParser.parseExpression();
   }
 
   @Override
   public void render(CarrotEngine engine, Writer writer, TagNode tagNode, Scope scope)
       throws CarrotException, IOException {
 
-    List<Object> objects = ValueHelper.iterate(loopStatement.evaluate(engine.getConfig(), scope));
+    List<Object> objects = ValueHelper.iterate(loopExpression.evaluate(engine.getConfig(), scope));
     Map<String, Object> loop = new HashMap<>();
     for (int i = 0; i < objects.size(); i++) {
       Map<String, Object> context = new HashMap<>();

@@ -14,34 +14,34 @@ public class Factor {
   @Nullable private final Variable variable;
   @Nullable private final NumberLiteral number;
   @Nullable private final StringLiteral string;
-  @Nullable private final Statement statement;
+  @Nullable private final Expression expression;
 
   public Factor(Variable variable) {
     this.variable = variable;
     this.number = null;
     this.string = null;
-    this.statement = null;
+    this.expression = null;
   }
 
   public Factor(NumberLiteral number) {
     this.variable = null;
     this.number = number;
     this.string = null;
-    this.statement = null;
+    this.expression = null;
   }
 
   public Factor(StringLiteral string) {
     this.variable = null;
     this.number = null;
     this.string = string;
-    this.statement = null;
+    this.expression = null;
   }
 
-  public Factor(Statement statement) {
+  public Factor(Expression expression) {
     this.variable = null;
     this.number = null;
     this.string = null;
-    this.statement = statement;
+    this.expression = expression;
   }
 
   public Object evaluate(Configuration config, Scope scope) throws CarrotException {
@@ -51,8 +51,8 @@ public class Factor {
       return number.evaluate();
     } else if (string != null) {
       return string.evaluate();
-    } else if (statement != null) {
-      return statement.evaluate(config, scope);
+    } else if (expression != null) {
+      return expression.evaluate(config, scope);
     } else {
       throw new CarrotException("Everything is null.");
     }
@@ -67,8 +67,8 @@ public class Factor {
       return number.toString();
     } else if (string != null) {
       return string.toString();
-    } else if (statement != null) {
-      return TokenType.LPAREN + " " + statement.toString() + " " + TokenType.RPAREN;
+    } else if (expression != null) {
+      return TokenType.LPAREN + " " + expression.toString() + " " + TokenType.RPAREN;
     }
 
     throw new IllegalStateException("Everything is null.");
