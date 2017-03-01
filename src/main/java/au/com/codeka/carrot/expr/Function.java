@@ -4,7 +4,6 @@ import au.com.codeka.carrot.CarrotException;
 import au.com.codeka.carrot.Configuration;
 import au.com.codeka.carrot.Scope;
 import au.com.codeka.carrot.util.Log;
-import com.sun.corba.se.impl.io.TypeMismatchException;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.InvocationTargetException;
@@ -123,7 +122,7 @@ public class Function {
    * @return The converted value, or null if no conversion is possible.
    */
   @Nullable
-  private static Object convertType(Class<?> outputType, Object value) throws TypeMismatchException {
+  private static Object convertType(Class<?> outputType, Object value) {
     if (value == null) {
       throw new NullPointerException("Value cannot be null.");
     }
