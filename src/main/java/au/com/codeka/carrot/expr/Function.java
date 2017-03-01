@@ -25,7 +25,7 @@ public class Function {
 
   @Override
   public String toString() {
-    String str = funcName.toString() + TokenType.LPAREN + " ";
+    String str = funcName.toString() + " " + TokenType.LPAREN + " ";
     for (int i = 0; i < args.size(); i++) {
       if (i > 0) {
         str += " " + TokenType.COMMA + " ";

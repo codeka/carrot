@@ -43,6 +43,10 @@ public class StatementParserTest {
     parser = createStatementParser("a.b[c.d['e']].f");
     var = parser.parseVariable();
     assertThat(var.toString()).isEqualTo("a DOT b LSQUARE c DOT d LSQUARE \"e\" RSQUARE  RSQUARE  DOT f");
+
+    parser = createStatementParser("a.b(1, 2)");
+    var = parser.parseVariable();
+    assertThat(var.toString()).isEqualTo("a DOT b LPAREN 1 COMMA 2 RPAREN");
   }
 
   private StatementParser createStatementParser(String str) throws CarrotException {

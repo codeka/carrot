@@ -119,6 +119,9 @@ public class Variable {
   @Override
   public String toString() {
     String str = identifier.toString();
+    if (function != null) {
+      str += " " + TokenType.DOT + " " + function.toString();
+    }
     if (accessExpression != null) {
       str += " " + TokenType.LSQUARE + " " + accessExpression + " " + TokenType.RSQUARE + " ";
     }
