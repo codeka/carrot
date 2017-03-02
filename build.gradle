@@ -13,6 +13,9 @@ artifacts {
   archives carrotJar
 }
 
+// Make sure the check task (that travis runs) depends on Jacoco
+check.dependsOn jacocoTestReport
+
 dependencies {
     compile 'com.google.code.findbugs:jsr305:3.0.0'
     testCompile 'junit:junit:4.12'
