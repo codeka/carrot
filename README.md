@@ -1,8 +1,10 @@
 Carrot
 ======
 
-Carrot is a templating library for Java that is similar to the Jinja library from python. Jinja -> Ginger -> Carrot, geddit?
+[![Build Status](https://travis-ci.org/codeka/carrot.svg?branch=master)](https://travis-ci.org/codeka/carrot)
+[![Code Coverage](https://img.shields.io/codecov/c/github/codeka/carrot/master.svg)](https://codecov.io/github/codeka/carrot?branch=master)
 
+Carrot is a templating library for Java that is similar to the Jinja library from python. Jinja -> Ginger -> Carrot, geddit?
 
 It was originally a fork of http://jangod.googlecode.com/svn/trunk/, but that project appears to be abandoned, so I've renamed it and ressurected it.
 
