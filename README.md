@@ -1,10 +1,12 @@
 Carrot
 ======
 
+[![Build Status](https://travis-ci.org/codeka/carrot.svg?branch=master)](https://travis-ci.org/codeka/carrot)
+[![Code Coverage](https://img.shields.io/codecov/c/github/codeka/carrot/master.svg)](https://codecov.io/github/codeka/carrot?branch=master)
+
 Carrot is a templating library for Java that is similar to the Jinja library from python. Jinja -> Ginger -> Carrot, geddit?
 
-
-It was originally a fork of http://jangod.googlecode.com/svn/trunk/, but that project appears to be abandoned, so I've renamed it and ressurected it.
+It was originally a fork of http://jangod.googlecode.com/, but that project appears to be abandoned, so I've renamed it, and subsequently (in version 2.x) rewritten it.
 
 Getting Started
 ===============
@@ -14,16 +16,16 @@ With Maven:
     <dependency>
       <groupId>au.com.codeka</groupId>
       <artifactId>carrot</artifactId>
-      <version>1.0.0</version>
+      <version>2.0.0</version>
     </dependency>
 
 With Gradle:
 
-    compile 'au.com.codeka:carrot:1.0.0'
+    compile 'au.com.codeka:carrot:2.0.0'
 
-First, you need to create a `TemplateEngine`, which will hold the environment for parsing templates and processing them:
+First, you need to create a `CarrotEngine`, which will hold the environment for parsing templates and processing them:
 
-    TemplateEngine engine = new TemplateEngine();
+    CarrotEngine engine = new CarrotEngine();
     Configuration config = engine.getConfiguration();
     config.setResourceLocator(new FileResourceLocator(config, "path/to/templates"));
 
@@ -34,20 +36,20 @@ skeleton.html:
     <!DOCTYPE html>
     <html>
       <head>
-        <title>{% block title %}</title>
+        <title>{% block "title" %}{% end %}</title>
       </head>
       <body>
-        {% block content %}
+        {% block "content" %}{% end %}
       </body>
     </html>
 
 index.html:
 
     {% extends "skeleton.html" %}
-    {% block title %}Hello World{% endblock %}
-    {% block content %}
+    {% block "title" %}Hello World{% end %}
+    {% block "content" %}
       <h1>Hello, World!</h1>
-    {% endblock %}
+    {% end %}
 
 Finally to process a template, you use the `process` method:
 
@@ -56,7 +58,7 @@ Finally to process a template, you use the `process` method:
 
 Now how do you actually pass data from your application to the template? That's what the bindings are for. Say you have the following in your template:
 
-    <p>Hello, {%= name %}!</p>
+    <p>Hello, {{ name }}!</p>
 
 You'd pass data to that via a binding, like so:
 
