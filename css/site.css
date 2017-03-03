@@ -1,0 +1,71 @@
+html, body {
+  font-family: roboto, sans-serif;
+}
+
+h1, h2, h3, h4 {
+  font-family: georgia, serif;
+}
+
+section#header {
+  width: 800px;
+  margin: 0 auto;
+  height: 64px;
+}
+
+section#header img {
+  float: left;
+  margin: 8px 16px 8px 16px;
+}
+
+section#header h1 {
+  line-height: 64px;
+  font-size: 32px;
+  margin: 0; padding: 0;
+}
+
+section#header h1 span {
+  font-size: 16px;
+  font-weight: normal;
+  margin-left: 8px;
+}
+
+section#maincontent {
+  width: 800px;
+  margin: 0 auto;
+}
+
+section #navmenu {
+  width: 200px;
+  float: left;
+  background: #aaa;
+}
+
+section#content {
+  background: #ccc;
+  margin-left: 200px;
+}
+
+div.bottom-nav {
+  padding-bottom: 64px;
+}
+
+div.bottom-nav div.next {
+  float: right;
+}
+
+div.bottom-nav div.back {
+  float: left;
+}
+
+.copyright {
+  font-size: 75%;
+  text-align: center;
+}
+
+code .html {
+  color: #060;
+}
+
+code .carrot {
+  color: #606;
+}
