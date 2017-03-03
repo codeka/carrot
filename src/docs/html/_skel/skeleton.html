@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Carrot &bull; {% block "title" %}A Java templating engine{% end %}</title>
+  <link rel="shortcut icon" href="{{basePath}}favicon.ico">
+  <link rel="stylesheet" href="{{basePath}}css/site.css">
+  {% block "head" %}{% end %}
+</head>
+<body>
+  <section id="header"><div class="header-bg">
+    <img src="{{basePath}}img/carrot-48.png" width="48" height="48" alt="Logo" />
+    <h1>Carrot<span>A templating engine for Java</span></h1>
+  </div></section>
+
+  <section id="maincontent">
+    <section id="navmenu"><div class="navmenu-bg">
+      <ul>
+        <li><a href="{{basePath}}index.html">Introduction</a>
+        <li><a href="{{basePath}}getting-started.html">Getting started</a>
+        <li><a href="{{basePath}}template-language.html">Template language</a>
+      </ul>
+      <ul>
+        <li><a href="{{basePath}}javadoc/">Javadoc</a></li>
+        <li><a href="https://github.com/codeka/carrot">Github</a></li>
+        <li><a href="https://github.com/codeka/carrot/issues">File an issue</a></li>
+      </ul>
+      <p class="copyright">Copyright &copy; Dean Harding</p>
+    </div></section>
+    <section id="content">{% block "content" %}{% end %}</section>
+  </section>
+</body>
+</html>

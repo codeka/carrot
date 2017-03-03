@@ -6,6 +6,21 @@ repositories {
     mavenCentral()
 }
 
+dependencies {
+    compile 'com.google.code.findbugs:jsr305:3.0.0'
+    testCompile 'junit:junit:4.12'
+    testCompile 'com.google.truth:truth:0.31'
+}
+
+sourceSets {
+    docs {
+        java {
+        }
+        compileClasspath += main.output
+        runtimeClasspath += main.output
+    }
+}
+
 task carrotJar(type: Jar) {
 }
 
@@ -20,11 +35,19 @@ jacocoTestReport {
     }
 }
 
+task compileBuildDocs(dependsOn: ['classes', 'javadoc'], type: JavaCompile) {
+    source = sourceSets.docs.java.srcDirs
+    classpath = sourceSets.docs.compileClasspath
+    destinationDir = sourceSets.docs.output.classesDir
+}
+
+task buildDocs(dependsOn: 'compileBuildDocs', type: JavaExec) {
+    inputs.files file("src/docs/html"), sourceSets.docs.output.files
+    outputs.files file("$buildDir/docs")
+    main "au.com.codeka.carrot.BuildDocs"
+    classpath = sourceSets.main.runtimeClasspath + [sourceSets.docs.output.classesDir]
+    args file("src/docs/html").absolutePath, file("$buildDir/docs").absolutePath
+}
+
 // Make sure the check task (that travis runs) depends on Jacoco
 check.dependsOn jacocoTestReport
-
-dependencies {
-    compile 'com.google.code.findbugs:jsr305:3.0.0'
-    testCompile 'junit:junit:4.12'
-    testCompile 'com.google.truth:truth:0.31'
-}

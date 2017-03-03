@@ -1,0 +1,64 @@
+{% extends "_skel/skeleton.html" %}
+{% block "title" %}Getting started{% end %}
+{% block "content" %}
+<h2>Getting started</h2>
+
+<h3>With Maven:</h3>
+
+<code><pre>&lt;dependency&gt;
+  &lt;groupId&gt;au.com.codeka&lt;/groupId&gt;
+  &lt;artifactId&gt;carrot&lt;/artifactId&gt;
+  &lt;version&gt;2.0.0&lt;/version&gt;
+&lt;/dependency&gt;</pre></code>
+
+<h3>With Gradle:</h3>
+
+<code><pre>compile 'au.com.codeka:carrot:2.0.0'</pre></code>
+
+<p>First, you need to create a <code>CarrotEngine</code>, which will hold the environment for parsing templates and
+  processing them:</p>
+
+<code><pre>CarrotEngine engine = new CarrotEngine();
+Configuration config = engine.getConfiguration();
+config.setResourceLocator(
+    new FileResourceLocator(config, "path/to/templates"));</pre></code>
+
+<p>Typically, you'll have a "skeleton" template and a "body" template, where the skeleton defines the overall HTML
+  structure that all your pages share, and the body template is the custom things just for that page. The way you do
+  this is by having your body template extend the skeleton template, like so:</p>
+
+<h4>skeleton.html:</h4>
+
+<code><pre>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;title&gt;{\% block "title" %}{\% end %}&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  {\% block "content" %}{\% end %}
+&lt;/body&gt;
+&lt;/html&gt;</pre></code>
+
+<h4>index.html:</h4>
+
+<code><pre>{\% extends "skeleton.html" %}
+{\% block "title" %}Hello World{\% end %}
+{\% block "content" %}
+  &lt;h1&gt;Hello, World!&lt;/h1&gt;
+{\% end %}</pre></code>
+
+<p>Finally to process a template, you use the process method:</p>
+
+<code><pre>Map&lt;String, Object&gt; bindings = new TreeMap<>();
+System.out.println(engine.process("index.html", bindings));</pre></code>
+
+<hr>
+<div class="bottom-nav">
+  <div class="back">
+    <a href="{{basePath}}index.html">← Introduction</a>
+  </div>
+  <div class="next">
+    <a href="{{basePath}}template-language.html">Template Language →</a>
+  </div>
+</div>
+{% end %}

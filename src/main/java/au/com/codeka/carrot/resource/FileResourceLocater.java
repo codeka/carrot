@@ -26,6 +26,11 @@ public class FileResourceLocater implements ResourceLocater {
 
   @Override
   public ResourceName findResource(@Nullable ResourceName parent, String name) throws CarrotException {
+    if (name.startsWith("/")) {
+      File file = new File(name);
+      return new FileResourceName(null, file.getName(), file);
+    }
+
     if (parent != null) {
       File file = new File(((FileResourceName) parent).getFile(), name);
       if (file.exists() && file.isFile()) {

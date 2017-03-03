@@ -1,0 +1,44 @@
+{% extends "_skel/skeleton.html" %}
+{% block "content" %}
+<h2>Introduction</h2>
+  <p>Carrot is a modern, designer-friendly template engine for Java. It is based on
+    <a href="http://jinja.pocoo.org">Jinja2</a>, and while originally a fork of
+    <a href="http://www.jangod.com/">Jangod</a>, has since been completely rewritten.</p>
+  <p>Fast and customizable, you can register custom tags for highly specialized rendering, you can register Java
+    objects and methods for custom formatting, and you can use template inheritance for maintain common layout and
+    styles.</p>
+  <p>Originally designed for HTML rendering, Carrot can be used for any for textual rendering, including CSS,
+    Javascript, or any other text files.</p>
+
+<h2>Sample</h2>
+<code><pre>
+  <span class="carrot">{\% extends "skeleton.html" %}</span>
+  <span class="carrot">{\% block "content" %}</span>
+  <span class="html">&lt;ul&gt;</span>
+    <span class="carrot">{\% for account in accounts %}</span>
+      <span class="html">&lt;li&gt;
+        &lt;a</span> href="/accounts/<span class="carrot">{\{ account.id }}</span>"<span class="html">&gt;</span>
+          <span class="carrot">{\{ empires[account.empire_id].name }}</span>
+        <span class="html">&lt;/a&gt;
+      &lt;/li&gt;</span>
+    <span class="carrot">{\% endfor %}</span>
+  <span class="html">&lt;/ul&gt;</span>
+  <span class="carrot">{\% end %}</span>
+</pre></code>
+
+<h2>Features</h2>
+<ul>
+  <li>Automatic HTML escaping (which can be overridden, of course)</li>
+  <li>Template inheritance</li>
+  <li>Powerful object querying syntax (for calling methods on data bound objects, querying maps and sub-objects, etc)</li>
+  <li>Easy debugging, with verbose error messages and exception</li>
+  <li>Highly configuration, with the ability to write your own functions and tags</li>
+</ul>
+
+<hr>
+<div class="bottom-nav">
+  <div class="next">
+    <a href="{{basePath}}getting-started.html">Getting started →</a>
+  </div>
+</div>
+{% end %}
