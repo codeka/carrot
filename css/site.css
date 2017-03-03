@@ -37,11 +37,15 @@ section#maincontent {
 section #navmenu {
   width: 200px;
   float: left;
-  background: #aaa;
+}
+
+section #navmenu ul ul {
+  padding: 0 0 0 20px;
+  margin: 0;
+  list-style-type: disc;
 }
 
 section#content {
-  background: #ccc;
   margin-left: 200px;
 }
 

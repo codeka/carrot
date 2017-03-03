@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Carrot &bull; If tag</title>
+  <link rel="shortcut icon" href="../favicon.ico">
+  <link rel="stylesheet" href="../css/site.css">
+  
+</head>
+<body>
+  <section id="header"><div class="header-bg">
+    <img src="../img/carrot-48.png" width="48" height="48" alt="Logo" />
+    <h1>Carrot<span>A templating engine for Java</span></h1>
+  </div></section>
+
+  <section id="maincontent">
+    <section id="navmenu"><div class="navmenu-bg">
+      <ul>
+        <li><a href="../index.html">Introduction</a>
+        <li><a href="../getting-started.html">Getting started</a>
+        <li><a href="../template-language.html">Template language</a>
+          <ul>
+            <li><a href="../tags/echo.html">Echo tag</a></li>
+            <li><a href="../tags/if.html">If tag</a></li>
+            <li><a href="../tags/for.html">For tag</a></li>
+            <li><a href="../tags/extends.html">Extends tag</a></li>
+            <li><a href="../tags/custom.html">Custom tags</a></li>
+
+          </ul>
+      </ul>
+      <ul>
+        <li><a href="../javadoc/">Javadoc</a></li>
+        <li><a href="https://github.com/codeka/carrot">Github</a></li>
+        <li><a href="https://github.com/codeka/carrot/issues">File an issue</a></li>
+      </ul>
+      <p class="copyright">Copyright &copy; Dean Harding</p>
+    </div></section>
+    <section id="content">
+<h2>If tag</h2>
+
+<code><pre>{% if &lt;expr&gt; %} content {% end %}</pre></code>
+
+<p>The if tag evaluates the given <code>&lt;expr&gt;</code> and, if it's true, evaluates the given content block. If
+  the expression evaluates to false, nothing is output.</p>
+
+<h3>Examples</h3>
+
+<p>First, let's assume we have the follow code to render the template set up:</p>
+
+<code><pre>  CarrotEngine engine = new CarrotEngine();
+  engine.getConfig().setResourceLocator(...);
+
+  Map&lt;String, Object&gt; bindings = ImmutableMap.&lt;String, Object&gt;builder()
+      .put("foo", true)
+      .put("bar", false)
+      .put("user", ImmutableMap.of(
+          "id", 1234,
+          "name", "Dean"))
+      .build();
+
+  System.out.println(engine.process("filename.html", bindings));</pre></code>
+
+<p>And the following template:</p>
+
+<code><pre>  {% if foo %}foo is true{% end %}
+  {% if bar %}bar is true{% end %}
+  {% if user.id &lt; 2000 %}
+    user.id is less than 2000
+    {% if user.name == "Dean" %}user.name is Dean{% end %}
+  {% end %}</pre></code>
+
+<p>It would output the following:</p>
+
+<code><pre>  foo is true
+
+    user.id is less than 2000
+    user.name is Dean</pre></code>
+
+<hr>
+<div class="bottom-nav">
+  <div class="back">
+    <a href="../tags/echo.html">← Echo tag</a>
+  </div>
+  <div class="next">
+    <a href="../tags/for.html">For tag →</a>
+  </div>
+</div>
+</section>
+  </section>
+</body>
+</html>

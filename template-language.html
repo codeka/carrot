@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Carrot &bull; Template lanugage</title>
+  <title>Carrot &bull; Template language</title>
+  <link rel="shortcut icon" href="favicon.ico">
   <link rel="stylesheet" href="css/site.css">
   
 </head>
@@ -17,6 +18,14 @@
         <li><a href="index.html">Introduction</a>
         <li><a href="getting-started.html">Getting started</a>
         <li><a href="template-language.html">Template language</a>
+          <ul>
+            <li><a href="tags/echo.html">Echo tag</a></li>
+            <li><a href="tags/if.html">If tag</a></li>
+            <li><a href="tags/for.html">For tag</a></li>
+            <li><a href="tags/extends.html">Extends tag</a></li>
+            <li><a href="tags/custom.html">Custom tags</a></li>
+
+          </ul>
       </ul>
       <ul>
         <li><a href="javadoc/">Javadoc</a></li>
@@ -28,7 +37,58 @@
     <section id="content">
 <h2>Template language</h2>
 
-<p>TODO</p>
+<p>Carrot's template language is actually pretty simple. At the top level, there's three main kinds of tags you can
+use. They are:</p>
+
+<p><code><pre>{# comment #}
+{{ echo }}
+{% tag %}</pre></code></p>
+
+<h3>Comments</h3>
+
+<code><pre>{# comment #}</pre></code>
+
+<p>The first type of tag is the simplest, a comment. Comments are stripped from the output and otherwise ignored. Useful
+also for commenting out bits of other template, since you can just put a # between the { and the % or {.</p>
+
+<p>At this point, I should also just note that you can escape a tag with a backslash, like so:</p>
+
+<code><pre>You can output a literal {% like so: {\%</pre></code>
+
+<p>Same, of course, with the other types of tags.</p>
+
+<h3>Echo</h3>
+
+<code><pre>{{ &lt;expr&gt; }}</pre></code>
+
+<p>The next type of tag, the "echo" tag is actually just a shortcut for <code>{% echo &lt;expr&gt; %}</code>. It
+simple echos the evaluation of the expression inside the tag.</p>
+
+<p>See the <a href="expressions.html">Expressions</a> section for more details about how expression are
+  evaluated.</p>
+
+<h3>Tags</h3>
+
+<code><pre>{% echo &lt;expr&gt; %}
+{% if &lt;expr&gt; %}...{% end %}
+{% for identifier in &lt;expr&gt; %}...{% end %}
+{% extends &lt;expr&gt; %}...{% end %}
+{% block &lt;expr&gt; %}...{% end %}</pre></code>
+
+<p>Tags are where most of the interesting work happens in your template. See the following pages for details, but
+basically there are two types of tags: block tags and inline tags. Inline tags, like the <code>echo</code> tag don't
+tag children and just output directly into the stream. Block tags like <code>if</code>, <code>for</code>, etc have
+children and can optionally output their children.</p>
+
+<p>You can register your own classes as tags like so:</p>
+
+<code><pre>
+  CarrotEngine engine = ...;
+  engine.getConfig().getTagRegistry().add("tagName", MyTag.class);
+</pre></code>
+
+<p>Your tag class must inherit from <a href="javadoc/au/com/codeka/carrot/tag/Tag.html">Tag</a>. More
+  details, and an example, can be found in the <a href="tags/custom.html">custom tags</a> section.</p>
 
 <hr>
 <div class="bottom-nav">
@@ -36,6 +96,7 @@
     <a href="getting-started.html">← Getting started</a>
   </div>
   <div class="next">
+    <a href="tags/echo.html">Echo tag →</a>
   </div>
 </div>
 </section>
