@@ -59,7 +59,7 @@ class BuildDocs {
         String contents = engine.process(inputFile, bindings);
         Files.write(new File(outputFile).toPath(), contents.getBytes("UTF-8"));
       } catch (CarrotException | IOException e) {
-        System.err.println(e.toString());
+        e.printStackTrace(System.err);
         System.exit(-1);
       }
     } else {
@@ -72,7 +72,7 @@ class BuildDocs {
         }
         Files.copy(new File(inputFile).toPath(), outf.toPath());
       } catch (IOException e) {
-        System.err.println(e.toString());
+        e.printStackTrace(System.err);
         System.exit(-1);
       }
     }

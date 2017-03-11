@@ -6,6 +6,8 @@ import au.com.codeka.carrot.Configuration;
 
 import javax.annotation.Nullable;
 import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /** An implementation of {@link ResourceLocater} that loads files from the file system. */
 public class FileResourceLocater implements ResourceLocater {
@@ -26,7 +28,8 @@ public class FileResourceLocater implements ResourceLocater {
 
   @Override
   public ResourceName findResource(@Nullable ResourceName parent, String name) throws CarrotException {
-    if (name.startsWith("/")) {
+    Path path = Paths.get(name);
+    if (path.getRoot() != null) {
       File file = new File(name);
       return new FileResourceName(null, file.getName(), file);
     }
