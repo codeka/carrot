@@ -37,7 +37,82 @@
     <section id="content">
 <h2>Extends tag</h2>
 
-<p>The extends tag, TODO.</p>
+<code><pre>{% extends "skeleton.html" %}
+  {% block "name" %}
+    content
+  {% end %}
+{% end %}</pre></code>
+
+<p>The <code>extends</code> tag is used to base one template on another. This is useful for things like sites with
+a common layout, CSS files, headers etc and reduces boiler plate by allowing you to define the structure or "skeleton"
+of each page in a common layout.</p>
+
+<h3>Examples</h3>
+
+<p>To use <code>extends</code>, you need to set up two templates. One is the "skeleton" and one is the "content"
+template.</p>
+
+<p>skeleton.html</p>
+
+<code><pre>  &lt;!DOCTYPE html&gt;
+  &lt;html&gt;
+    &lt;head&gt;
+      &lt;title&gt;{% block "title" %}Page title{% end %}&lt;/title&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+      {% block "content" %}{% end %}
+    &lt;/body&gt;
+  &lt;/html&gt;</pre></code>
+
+<p>content.html</p>
+
+<code><pre>  {% extends "skeleton.html" %}
+    {% block "title" %}Hello world{% end %}
+    {% block "content" %}
+      &lt;p&gt;This is the content!&lt;/p&gt;
+    {% end %}
+  {% end %}</pre></code>
+
+<p>It would output the following:</p>
+
+<code><pre>  &lt;!DOCTYPE html&gt;
+  &lt;html&gt;
+    &lt;head&gt;
+      &lt;title&gt;Hello world&lt;/title&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+      &lt;p&gt;This is the content!&lt;/p&gt;
+    &lt;/body&gt;
+  &lt;/html&gt;</pre></code>
+
+<h3>Things to keep in mind</h3>
+
+<p>Some things to keep in mind when using <code>extends</code>, in no particular order:</p>
+
+<ul>
+  <li>The {% end %} of the {% extends %} is optional (in fact, if there are any unclosed blocks at the end of a
+    file, the processor will insert as many pseudo-{% end %} tags as necessary).
+  <li>If you put something inside the {% block %} tags in the skeleton, then the contents there will be used in case
+    the block is not defined in the content template. This is useful for having "default" values for blocks.
+  <li>The name of the skeleton file and of the blocks is evaluated just like any other expression in Carrot. So if it's
+    not working as you expect, it could be that you've forgotten to put the names in quotes (this is one difference
+    between Carrot and Jinja2).
+</ul>
+
+<h3>How it works</h3>
+
+<p>Below is a basic description of how <code>extends</code> works, which should hopefully give you some ideas about
+how to make best use of it in your templates.</p>
+
+<ol>
+  <li>When an <code>{% extends %}</code> block is encountered, all of it's children are parsed and any children that
+    aren't themselves <code>{% block %}</code> are dropped.
+  <li>The blocks are added to pseudo object, named "__blocks" in the current scope.
+  <li>The template mentioned in the <code>{% extends %}</code> is parsed and rendered.
+  <li>When that template is parsed, any <code>{% block %}</code> it encounters, it looks for a property with the same
+    name in the "__blocks" variable, and if it finds one, renders it instead. If it doesn't find one, it just renders
+    it's own content.
+</ol>
 
 <hr>
 <div class="bottom-nav">
