@@ -1,0 +1,88 @@
+{% extends "_skel/skeleton.html" %}
+{% block "title" %}For tag{% end %}
+{% block "content" %}
+<h2>For tag</h2>
+
+<code><pre>{\% for identifier in &lt;expr&gt; %}
+  content
+{\% end %}</pre></code>
+
+<p>The for tag evaluates the expression and, assuming it is a collection of some kind, iterates the collection,
+  rendering it's content for each iteration of the loop. Inside the loop, the given <code>identifier</code> is available
+  for you to reference.</p>
+
+<p>In addition to the <code>identifier</code>, a special <code>loop</code> object is available inside the contents of
+  for loop, with some additional information about the loop. The loop variable has the following properties:</p>
+
+<table>
+  <tr>
+    <td><code>loop.index</code></td>
+    <td>The index of the loop we're in, 0-based.</td>
+  </tr>
+  <tr>
+    <td><code>loop.revindex</code></td>
+    <td>The index of the loop, counting from the last element (the last element will be 0, the second last 1, and so
+      on)</td>
+  </tr>
+  <tr>
+    <td><code>loop.first</code></td>
+    <td>True if this is the first element in the loop (i.e. if <code>loop.index == 0</code>), false otherwise.</td>
+  </tr>
+  <tr>
+    <td><code>loop.last</code></td>
+    <td>True if this is the last element in the loop (i.e. if <code>loop.revindex == 0</code>), false otherwise.</td>
+  </tr>
+  <tr>
+    <td><code>loop.length</code></td>
+    <td>The total number of elements in the loop.</td>
+  </tr>
+</table>
+
+<h3>Examples</h3>
+
+<p>First, let's assume we have the follow code to render the template set up:</p>
+
+<code><pre>  CarrotEngine engine = new CarrotEngine();
+  engine.getConfig().setResourceLocator(...);
+
+  Map&lt;String, Object&gt; bindings = ImmutableMap.&lt;String, Object&gt;builder()
+      .put("users", Lists.newArrayList(
+          ImmutableMap.of("id", 1234, "name", "Dean"),
+          ImmutableMap.of("id", 2657, "name", "John"),
+          ImmutableMap.of("id", 3464, "name", "Harry")
+        )
+      .build();
+
+  System.out.println(engine.process("filename.html", bindings));
+</pre></code>
+
+<p>And the following template:</p>
+
+<code><pre>  {\% for user in users %}
+    &lt;div{\% if loop.first %} class="first"{\% end %}&gt;
+      {\{ loop.index }}: {\{ user.id }} {\{ user.name }}
+    &lt;/div&gt;
+  {\% end %}</pre></code>
+
+<p>It would output the following:</p>
+
+<code><pre>  &lt;div class="first"&gt;
+    0: 1234 Dean
+  &lt;/div&gt;
+  &lt;div&gt;
+    1: 2657 John
+  &lt;/div&gt;
+  &lt;div&gt;
+    2: 3464 Harry
+  &lt;/div&gt;</pre></code>
+
+<hr>
+<div class="bottom-nav">
+  <div class="back">
+    <a href="{{basePath}}tags/if.html">← If tag</a>
+  </div>
+  <div class="next">
+    <a href="{{basePath}}tags/extends.html">Extends tag →</a>
+  </div>
+</div>
+{% end %}

@@ -1,0 +1,68 @@
+{% extends "_skel/skeleton.html" %}
+{% block "title" %}Echo tag{% end %}
+{% block "content" %}
+<h2>Echo tag</h2>
+
+<code><pre>{\% echo &lt;expr&gt; %}
+{\{ &lt;expr&gt; }}</pre></code>
+
+<p>The echo tag simply outputs the evaluation of the given expression. See the
+  <a href="{{basePath}}expressions.html">Expressions</a> section for details on how expressions are evaluated.</p>
+
+<p>Note that <code>{\{ &lt;expr&gt; }}</code> is just a shortcut for <code>{\% echo &lt;expr&gt; %}</code>.</p>
+
+<h3>Examples</h3>
+
+<p>First, let's assume we have the follow code to render the template set up:</p>
+
+<code><pre>  CarrotEngine engine = new CarrotEngine();
+  engine.getConfig().setResourceLocator(...);
+
+  Map&lt;String, Object&gt; bindings = ImmutableMap.&lt;String, Object&gt;builder()
+      .put("num", 5463)
+      .put("str", "Hello, World")
+      .put("user", ImmutableMap.of(
+          "id", 1234,
+          "name", "Dean"))
+      .put("details", ImmutableMap.of(
+          1234, "Some details.")
+      .build();
+
+  System.out.println(engine.process("filename.html", bindings));
+</pre></code>
+
+<p>Given the following template:</p>
+
+<code><pre>  A number: {\% echo num %}
+  A string: {\% echo str %}
+  A user: {\% echo user.id %} {\% echo user.name %}
+  User's details: {\% echo details[user.id] %}</pre></code>
+
+<p>You'll get the following output:</p>
+
+<code><pre>  A number: 5463
+  A string: Hello, World
+  A user: 1234 Dean
+  User's details: Some details.</pre></code>
+
+<p>Things to note:</p>
+
+<ul>
+  <li><code>foo.bar</code> will return the value of the "<code>bar</code>" field in object <code>foo</code>. It will
+    first look for a field with exact name <code>bar</code>. If it can't find one, it'll look for a getter method with
+    name "<code>getBar</code>". If <code>foo</code> is a map, it will use <code>Map.get("bar")</code>.
+  <li><code>foo[bar]</code> will first evaluate "<code>bar</code>", then perform exactly the same steps above to get
+    the value in <code>foo</code>. In particular, <code>foo["bar"]</code> is actually identical to <code>foo.bar</code>.
+
+</ul>
+
+<hr>
+<div class="bottom-nav">
+  <div class="back">
+    <a href="{{basePath}}template-language.html">← Template language</a>
+  </div>
+  <div class="next">
+    <a href="{{basePath}}tags/if.html">If tag →</a>
+  </div>
+</div>
+{% end %}
