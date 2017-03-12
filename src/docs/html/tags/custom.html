@@ -1,0 +1,33 @@
+{% extends "_skel/skeleton.html" %}
+{% block "title" %}Custom tags{% end %}
+{% block "content" %}
+<h2>Custom tags</h2>
+
+<p>Custom tags are where the real power of Carrot comes from. You can register your own classes to be called when
+a custom tag is encountered in the template. Custom tags are extremely powerful, and there's nothing that any of
+the built-in tags can do that a custom tag could not also do.</p>
+
+<p>To create a custom tag, you create a class that inherits from
+  <a href="{{basePath}}javadoc/au/com/codeka/carrot/tag/Tag.html">Tag</a>, and register it in the tag registry, like
+  so:</p>
+
+<code><pre>  CarrotEngine engine = new CarrotEngine();
+  engine.getConfig().getTagRegistry().add("mytag", MyTag.class);</pre></code>
+
+<p>Then, whenever the engine encounters a <code>{\% mytag %}</code> it will call your tag's code to render the
+  result.</p>
+
+<p>The best way to understand how to write a custom would be to look at the source for one of the built-in tags,
+  which you can find <a href="https://github.com/codeka/carrot/tree/master/src/main/java/au/com/codeka/carrot/tag">here</a>
+  and the documentation for which you can find <a href="{{basePath}}javadoc/au/com/codeka/carrot/tag/package-summary.html">here</a>.</p>
+
+<hr>
+<div class="bottom-nav">
+  <div class="back">
+    <a href="{{basePath}}tags/extends.html">← Extends tag</a>
+  </div>
+  <div class="next">
+    <a href="{{basePath}}expressions.html">Expressions →</a>
+  </div>
+</div>
+{% end %}

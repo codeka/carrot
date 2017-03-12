@@ -7,7 +7,7 @@ repositories {
 }
 
 dependencies {
-    compile 'com.google.code.findbugs:jsr305:3.0.0'
+    compile 'com.google.code.findbugs:jsr305:3.0.1'
     testCompile 'junit:junit:4.12'
     testCompile 'com.google.truth:truth:0.31'
 }
@@ -28,6 +28,11 @@ artifacts {
   archives carrotJar
 }
 
+task buildJavadoc(type: Javadoc) {
+    source = sourceSets.main.allJava
+    options.noTimestamp = true
+}
+
 jacocoTestReport {
     reports {
         xml.enabled = true
@@ -35,13 +40,13 @@ jacocoTestReport {
     }
 }
 
-task compileBuildDocs(dependsOn: ['classes', 'javadoc'], type: JavaCompile) {
+task compileBuildDocs(dependsOn: ['classes'], type: JavaCompile) {
     source = sourceSets.docs.java.srcDirs
     classpath = sourceSets.docs.compileClasspath
     destinationDir = sourceSets.docs.output.classesDir
 }
 
-task buildDocs(dependsOn: 'compileBuildDocs', type: JavaExec) {
+task buildDocs(dependsOn: ['compileBuildDocs', 'buildJavadoc'], type: JavaExec) {
     inputs.files file("src/docs/html"), sourceSets.docs.output.files
     outputs.files file("$buildDir/docs")
     main "au.com.codeka.carrot.BuildDocs"
