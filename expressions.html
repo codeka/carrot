@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Carrot &bull; Expressions</title>
+  <link rel="shortcut icon" href="favicon.ico">
+  <link rel="stylesheet" href="css/site.css">
+  
+</head>
+<body>
+  <section id="header"><div class="header-bg">
+    <img src="img/carrot-48.png" width="48" height="48" alt="Logo" />
+    <h1>Carrot<span>A templating engine for Java</span></h1>
+  </div></section>
+
+  <section id="maincontent">
+    <section id="navmenu"><div class="navmenu-bg">
+      <ul>
+        <li><a href="index.html">Introduction</a>
+        <li><a href="getting-started.html">Getting started</a>
+        <li><a href="template-language.html">Template language</a>
+          <ul>
+            <li><a href="tags/echo.html">Echo tag</a>
+            <li><a href="tags/if.html">If tag</a>
+            <li><a href="tags/for.html">For tag</a>
+            <li><a href="tags/extends.html">Extends tag</a>
+            <li><a href="tags/custom.html">Custom tags</a>
+          </ul>
+        <li><a href="expressions.html">Expressions</a>
+      </ul>
+      <ul>
+        <li><a href="javadoc/">Javadoc</a></li>
+        <li><a href="https://github.com/codeka/carrot">Github</a></li>
+        <li><a href="https://github.com/codeka/carrot/issues">File an issue</a></li>
+      </ul>
+      <p class="copyright">Copyright &copy; Dean Harding</p>
+    </div></section>
+    <section id="content">
+<h2>Expressions</h2>
+
+<p>One of the more powerful features of Carrot is it's support for expressions. Many template languages support
+  variables with just complicated regular expressions, which means you end up with weird, complicated patterns for
+  doing anything with them (see all the <a href="http://jinja.pocoo.org/docs/2.9/templates/#builtin-filters">filters</a>
+  in Jinja2, for example).</p>
+
+<p>In Carrot, everything is parsed with a proper recursive-decent parser, we get much more natural syntax for dealing
+  with expressions. Below are some examples of things that are supported in Carrot's model:</p>
+
+<dl>
+  <dt>Basic arithmetic</dt>
+  <dd><pre><code>a + b
+foo + 1
+bar * 3.4
+a + (foo * 3) - 2</code></pre></dd>
+
+  <dt>Boolean operations</dt>
+  <dd><pre><code>x == 2
+foo &lt;= bar
+bar != 0
+x &gt; 0 || y &gt; 0</code></pre></dd>
+
+  <dt>Accessor methods</dt>
+  <dd><pre><code>foo.bar.baz
+foo["bar"]
+foo[bar.baz].blah</code></pre>
+  <p>The rules for querying accessor methods are fairly simple. In the case of <code>foo.bar</code>, we will first
+    look for a field on <code>foo</code> call "bar", then we will look for a method on <code>foo</code> called
+    "getBar". If <code>foo</code> is a Map, we will attempt to call <code>Map.get</code>, with the string "bar".</p>
+  <p>In the case of <code>foo[bar]</code>, we will first evaluate the variable <code>bar</code>, and use that value
+    to query <code>foo</code>. Note that whether accessed via <code>.</code> or via <code>[]</code>, the rules are
+    actually the same (that is, we'll still look for a field with the name that <code>bar</code> evaluates to).</p></dd>
+
+  <dt>Method calls</dt>
+  <dd><pre><code>foo.bar()
+foo.bar(x, y)</code></pre>
+  <p>Method calls work exactly as you'd expect. In the case of <code>foo.bar(x, y)</code>, we first try to evaluate
+    <code>x</code> and <code>y</code>. Then we look for a method on <code>foo</code> named "bar", which takes two
+    parameters. The expression evaluates to the return value of the bar method.</p></dd>
+</dl>
+
+<hr>
+<div class="bottom-nav">
+  <div class="back">
+    <a href="index.html">← Introduction</a>
+  </div>
+  <div class="next">
+    <a href="template-language.html">Template Language →</a>
+  </div>
+</div>
+</section>
+  </section>
+</body>
+</html>

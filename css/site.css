@@ -6,6 +6,10 @@ h1, h2, h3, h4 {
   font-family: georgia, serif;
 }
 
+dt {
+  font-weight: bold;
+}
+
 section#header {
   width: 800px;
   margin: 0 auto;
