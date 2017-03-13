@@ -26,6 +26,16 @@ public abstract class Tag {
   }
 
   /**
+   * Return true if we can chain to the given next {@link Tag}.
+   *
+   * @param nextTag The next {@link Tag} that we want to check whether we can chain to.
+   * @return True if we can chain to the next tag.
+   */
+  public boolean canChain(Tag nextTag) {
+    return false;
+  }
+
+  /**
    * Parse the statement that appears after the tag in the markup.
    *
    * @param stmtParser A {@link StatementParser} for parsing the statement.

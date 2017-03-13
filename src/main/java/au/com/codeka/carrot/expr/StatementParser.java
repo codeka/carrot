@@ -4,6 +4,8 @@ import au.com.codeka.carrot.CarrotException;
 import au.com.codeka.carrot.tag.Tag;
 import au.com.codeka.carrot.tmpl.TagNode;
 
+import javax.annotation.Nullable;
+
 /**
  * StatementParser is used to parse expressions. Expressions are used to refer to everything that appears after the
  * {@link Tag} in a {@link TagNode}, and has the following pseudo-EBNF grammar:
@@ -54,6 +56,20 @@ public class StatementParser {
    */
   public void parseEnd() throws CarrotException {
     tokenizer.end();
+  }
+
+  /**
+   * Tries to parse an identifier from the stream and returns it if we parsed it, otherwise returns null.
+   *
+   * @return The {@link Identifier} we parsed, or null if we couldn't parse an identifier.
+   * @throws CarrotException if there's some error parsing the identifer.
+   */
+  @Nullable
+  public Identifier maybeParseIdentifier() throws CarrotException {
+    if (tokenizer.accept(TokenType.IDENTIFIER)) {
+      return parseIdentifier();
+    }
+    return null;
   }
 
   public Identifier parseIdentifier() throws CarrotException {

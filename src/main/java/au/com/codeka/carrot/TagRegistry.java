@@ -23,6 +23,7 @@ public class TagRegistry {
     add("echo", EchoTag.class);
     add("if", IfTag.class);
     add("for", ForTag.class);
+    add("else", ElseTag.class);
     add("extends", ExtendsTag.class);
     add("block", BlockTag.class);
     add((tagName) -> tagName.toLowerCase().startsWith("end"), EndTag.class);

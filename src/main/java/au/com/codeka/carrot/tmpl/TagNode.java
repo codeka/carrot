@@ -87,6 +87,16 @@ public class TagNode extends Node {
     return new TagNode(ptr, tag);
   }
 
+  @Override
+  public boolean canChain(Node nextNode) {
+    if (nextNode instanceof TagNode) {
+      Tag nextTag = ((TagNode) nextNode).tag;
+      return tag.canChain(nextTag);
+    }
+
+    return false;
+  }
+
   /** @return True if this is an end block (that is, if it ends it's parent's block). */
   public boolean isEndBlock() {
     return tag instanceof EndTag;

@@ -3,6 +3,7 @@ package au.com.codeka.carrot.tag;
 import au.com.codeka.carrot.*;
 import au.com.codeka.carrot.expr.Expression;
 import au.com.codeka.carrot.expr.StatementParser;
+import au.com.codeka.carrot.tmpl.Node;
 import au.com.codeka.carrot.tmpl.TagNode;
 
 import java.io.IOException;
@@ -20,6 +21,13 @@ public class IfTag extends Tag {
     return true;
   }
 
+  /**
+   * Return true if we can chain to the given next {@link Tag}. If it's an else tag then we can chain to it.
+   */
+  public boolean canChain(Tag nextTag) {
+    return (nextTag instanceof ElseTag);
+  }
+
   @Override
   public void parseStatement(StatementParser stmtParser) throws CarrotException {
     expr = stmtParser.parseExpression();
@@ -31,6 +39,11 @@ public class IfTag extends Tag {
     Object value = expr.evaluate(engine.getConfig(), scope);
     if (ValueHelper.isTrue(value)) {
       tagNode.renderChildren(engine, writer, scope);
+    } else {
+      Node nextNode = tagNode.getNextNode();
+      if (nextNode != null) {
+        nextNode.render(engine, writer, scope);
+      }
     }
   }
 }

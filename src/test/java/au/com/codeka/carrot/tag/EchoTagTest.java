@@ -1,17 +1,11 @@
 package au.com.codeka.carrot.tag;
 
-import au.com.codeka.carrot.CarrotEngine;
 import au.com.codeka.carrot.CarrotException;
-import au.com.codeka.carrot.resource.MemoryResourceLocator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-import javax.annotation.Nullable;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TreeMap;
-
+import static au.com.codeka.carrot.util.RenderHelper.render;
 import static com.google.common.truth.Truth.assertThat;
 
 /**
@@ -69,22 +63,5 @@ public class EchoTagTest {
           }
         },
         "b", 2)).isEqualTo("13.5");
-  }
-
-  private String render(String content, Object... bindings) throws CarrotException {
-    CarrotEngine engine = new CarrotEngine();
-    engine.getConfig().setLogger((level, msg) -> System.err.println(msg));
-
-    Map<String, String> resources = new TreeMap<>();
-    resources.put("index", content);
-    MemoryResourceLocator resourceLocator = new MemoryResourceLocator(resources);
-    engine.getConfig().setResourceLocater(resourceLocator);
-
-    Map<String, Object> bindingsMap = new HashMap<>();
-    for (int i = 0; i < bindings.length; i += 2) {
-      bindingsMap.put(bindings[i].toString(), bindings[i + 1]);
-    }
-
-    return engine.process("index", bindingsMap);
   }
 }

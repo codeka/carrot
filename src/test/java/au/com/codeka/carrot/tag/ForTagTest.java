@@ -54,6 +54,30 @@ public class ForTagTest {
             .isEqualTo("foo 0 2 true false 3bar 1 1 false false 3baz 2 0 false true 3");
   }
 
+  @Test
+  public void testEmptyCollectionWithNoElse() throws CarrotException {
+    Map<String, Object> context = new HashMap<>();
+    ArrayList<String> values = new ArrayList<>();
+    context.put("values", values);
+    assertThat(render("{% for str in values %}"
+        + "Hello {{str}} World"
+        + "{% end %}", context))
+        .isEqualTo("");
+  }
+
+  @Test
+  public void testEmptyCollectionWithElse() throws CarrotException {
+    Map<String, Object> context = new HashMap<>();
+    ArrayList<String> values = new ArrayList<>();
+    context.put("values", values);
+    assertThat(render("{% for str in values %}"
+        + "Hello {{str}} World"
+        + "{% else %}"
+        + "The collection is empty"
+        + "{% end %}", context))
+        .isEqualTo("The collection is empty");
+  }
+
   private String render(String content, @Nullable Map<String, Object> bindings) throws CarrotException {
     CarrotEngine engine = new CarrotEngine();
     engine.getConfig().setLogger((level, msg) -> System.err.println(msg));

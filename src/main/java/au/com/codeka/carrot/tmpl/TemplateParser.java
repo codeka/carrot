@@ -41,8 +41,13 @@ public class TemplateParser {
         TagNode tagNode = TagNode.create(token, config);
         if (tagNode.isEndBlock()) {
           return;
+        } else if (node.canChain(tagNode)) {
+          // If we can chain to the given node, then instead of adding it as child, we'll chain to it instead.
+          node = node.chain(tagNode);
+          childNode = null;
+        } else {
+          childNode = tagNode;
         }
-        childNode = tagNode;
       } else if (token.getType() == TokenType.FIXED) {
         childNode = FixedNode.create(token);
       } else {

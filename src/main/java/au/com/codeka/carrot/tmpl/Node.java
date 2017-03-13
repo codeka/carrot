@@ -16,6 +16,7 @@ import java.util.List;
  */
 public abstract class Node {
   @Nullable private final List<Node> children;
+  @Nullable private Node nextNode;
   private ResourcePointer ptr;
 
   protected Node(ResourcePointer ptr, boolean isBlockNode) {
@@ -50,6 +51,37 @@ public abstract class Node {
   /** @return True if this a block node (i.e. whether it should have children) or not. */
   public boolean isBlockNode() {
     return children != null;
+  }
+
+  /**
+   * Checks whether this {@link Node} can chain to the given node.
+   *
+   * @param node The {@link Node} we want to check.
+   * @return True if we can chain to the following node, false if we cannot.
+   */
+  public boolean canChain(Node node) {
+    return false;
+  }
+
+  /**
+   * Chain to the given next {@link Node}. We save the given {@link Node} as our "next" node in the chain, and then
+   * return it.
+   *
+   * @throws IllegalStateException If you try to chain to a node where {@link #canChain(Node)} returns false.
+   */
+  public Node chain(Node nextNode) {
+    if (!canChain(nextNode)) {
+      throw new IllegalStateException("Cannot chain to the next node: " + nextNode);
+    }
+
+    this.nextNode = nextNode;
+    return nextNode;
+  }
+
+  /** @return The next {@link Node} in this chain, if there is one. */
+  @Nullable
+  public Node getNextNode() {
+    return nextNode;
   }
 
   /**

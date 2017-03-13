@@ -32,6 +32,8 @@ task buildJavadoc(type: Javadoc) {
     source = sourceSets.main.allJava
     classpath = sourceSets.main.compileClasspath
     options.noTimestamp = true
+    options.docTitle = "Carrot"
+    options.windowTitle = "Carrot Javadoc"
 }
 
 jacocoTestReport {
