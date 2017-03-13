@@ -7,7 +7,8 @@ import au.com.codeka.carrot.tmpl.TagNode;
 /**
  * StatementParser is used to parse expressions. Expressions are used to refer to everything that appears after the
  * {@link Tag} in a {@link TagNode}, and has the following pseudo-EBNF grammar:
- * <code>
+ *
+ * <pre><code>
  *   expression = ["!"] notcond
  *
  *   notcond = andcond {"&amp;&amp;" andcond}
@@ -34,7 +35,8 @@ import au.com.codeka.carrot.tmpl.TagNode;
  *   identifier = "any valid Java identifier"
  *   number = "and valid Java number"
  *   literal = """ anything """
- * </code>
+ * </code></pre>
+ *
  * <p>The statement parser allows you to extract any sub-element from a string as well (for example, the ForTag
  * wants to pull off it's arguments an identifier followed by the identifier "in" followed by a statement.
  */
@@ -45,7 +47,11 @@ public class StatementParser {
     this.tokenizer = tokenizer;
   }
 
-  /** Parses the "end" of the statement. Just verifies that there's no unexpected tokens after the end. */
+  /**
+   * Parses the "end" of the statement. Just verifies that there's no unexpected tokens after the end.
+   *
+   * @throws CarrotException if we're not actually at the end of the statement.
+   */
   public void parseEnd() throws CarrotException {
     tokenizer.end();
   }
@@ -61,23 +67,7 @@ public class StatementParser {
   public StringLiteral parseString() throws CarrotException {
     return new StringLiteral(tokenizer.expect(TokenType.STRING_LITERAL));
   }
-/*
-  public Statement parseStatement() throws CarrotException {
-    if (tokenizer.accept(TokenType.IDENTIFIER) && tokenizer.accept(1, TokenType.LPAREN)) {
-      Identifier identifier = parseIdentifier();
-      Function.Builder funcBuilder = new Function.Builder(identifier);
-      tokenizer.expect(TokenType.LPAREN);
-      while (!tokenizer.accept(TokenType.RPAREN)) {
-        funcBuilder.addParam(parseStatement());
-        tokenizer.expect(TokenType.COMMA);
-      }
-      tokenizer.expect(TokenType.RPAREN);
-      return new Statement(funcBuilder.build());
-    } else {
-      return new Statement(parseExpression());
-    }
-  }
-*/
+
   public Expression parseExpression() throws CarrotException {
     boolean not = false;
     if (tokenizer.accept(TokenType.NOT)) {

@@ -1,18 +1,21 @@
 package au.com.codeka.carrot;
 
-import au.com.codeka.carrot.CarrotException;
-
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 /**
  * Various helpers for working with {@link Object}s.
  */
 public class ValueHelper {
-  /** Does the given value represent "true". For example, it's a Boolean that's true, a non-zero integer, etc. */
+  /**
+   * Does the given value represent "true". For example, it's a Boolean that's true, a non-zero integer, etc.
+   *
+   * @param value The value to test.
+   * @return True if the value is "true-ish", false otherwise.
+   * @throws CarrotException When the value cannot be determined to be true or false.
+   */
   public static boolean isTrue(Object value) throws CarrotException {
     if (value == null) {
       return false;
@@ -27,22 +30,39 @@ public class ValueHelper {
     }
   }
 
+  /**
+   * Returns the "negative" of the given value. For example, if you pass in "1" then "-1" is returned, etc.
+   *
+   * @param value The value to negate.
+   * @return The negated value.
+   * @throws CarrotException Thrown if the value can't be converted to a number.
+   */
   public static Number negate(Object value) throws CarrotException {
     if (value == null) {
       throw new CarrotException("Value is null");
-    } else if (value instanceof Integer) {
-      return -((Integer) value);
-    } else if (value instanceof Long) {
-      return -((Long) value);
-    } else if (value instanceof Float) {
-      return -((Float) value);
-    } else if (value instanceof Double) {
-      return -((Double) value);
     } else {
-      throw new CarrotException("Value '" + value + "' cannot be negated.");
+      Number num = toNumber(value);
+      if (num instanceof Integer) {
+        return -((Integer) num);
+      } else if (num instanceof Long) {
+        return -((Long) num);
+      } else if (num instanceof Float) {
+        return -((Float) num);
+      } else if (num instanceof Double) {
+        return -((Double) num);
+      } else {
+        throw new CarrotException("Value '" + value + "' cannot be negated.");
+      }
     }
   }
 
+  /**
+   * Converts the given value to a {@link Number}.
+   *
+   * @param value The value to convert.
+   * @return A {@link Number} that the value represents.
+   * @throws CarrotException Thrown if the value can't be converted to a number.
+   */
   public static Number toNumber(Object value) throws CarrotException {
     if (value == null) {
       throw new CarrotException("Value is null.");
@@ -60,6 +80,15 @@ public class ValueHelper {
     }
   }
 
+  /**
+   * Adds the two values together. We attempt to make them the most-precise they can be (i.e. if one of them is a double
+   * then double is returned, if one of them is a long then long is returned, etc).
+   *
+   * @param lhs The left-hand side to add.
+   * @param rhs The right-hand side to add.
+   * @return The two numbers added together.
+   * @throws CarrotException Thrown is either of the values can't be converted to a number.
+   */
   public static Number add(Object lhs, Object rhs) throws CarrotException {
     if (lhs == null || rhs == null) {
       throw new CarrotException("Left hand side or right hand side is null.");
@@ -80,7 +109,14 @@ public class ValueHelper {
     throw new CarrotException("Unknown number type '" + lhs + "' or '" + rhs + "'.");
   }
 
-  /** Return a number that's the inverse of the given value (that is, 1 / value). */
+  /**
+   * Divides the left hand side by the right hand side, and returns the result.
+   *
+   * @param lhs The left hand side of the division.
+   * @param rhs The right hand side of the division.
+   * @return The result of "lhs / rhs".
+   * @throws CarrotException Thrown is either of the values cannot be converted to a number.
+   */
   public static Number divide(Object lhs, Object rhs) throws CarrotException {
     if (lhs == null || rhs == null) {
       throw new CarrotException("Left hand side or right hand side is null.");
@@ -102,7 +138,14 @@ public class ValueHelper {
     throw new CarrotException("Unknown number type '" + lhs + "' or '" + rhs + "'.");
   }
 
-  /** Return a number that's the inverse of the given value (that is, 1 / value). */
+  /**
+   * Multiplies the left hand side by the right hand side, and returns the result.
+   *
+   * @param lhs The left hand side of the multiplication.
+   * @param rhs The right hand side of the multiplication.
+   * @return The result of "lhs * rhs".
+   * @throws CarrotException Thrown is either of the values cannot be converted to a number.
+   */
   public static Number multiply(Object lhs, Object rhs) throws CarrotException {
     if (lhs == null || rhs == null) {
       throw new CarrotException("Left hand side or right hand side is null.");
@@ -124,6 +167,14 @@ public class ValueHelper {
     throw new CarrotException("Unknown number type '" + lhs + "' or '" + rhs + "'.");
   }
 
+  /**
+   * Convert the given value to a list of object, as if it were an iterable. If the value is itself an array or a list
+   * then it's just returned in-place. Otherwise it will be converted to an {@link ArrayList}.
+   *
+   * @param iterable The value to "iterate".
+   * @return A {@link List} that can actually be iterated.
+   * @throws CarrotException If the value is not iterable.
+   */
   @SuppressWarnings("unchecked")
   public static List<Object> iterate(Object iterable) throws CarrotException {
     if (iterable == null) {

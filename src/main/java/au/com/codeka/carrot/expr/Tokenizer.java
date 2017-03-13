@@ -29,6 +29,7 @@ public class Tokenizer {
    *
    * @param types The {@link TokenType} we want to accept.
    * @return True, if the current token is of the given type, or false it's not.
+   * @throws CarrotException If there's an error parsing the tokens.
    */
   public boolean accept(TokenType... types) throws CarrotException {
     Token token = tokens.peek();
@@ -47,6 +48,7 @@ public class Tokenizer {
    * @param offset The offset from "current" that we want to peek. 0 is the current token, 1 is the next and so on.
    * @param type The {@link TokenType} we want to accept.
    * @return True, if the current token is of the given type, or false it's not.
+   * @throws CarrotException If there's an error parsing the tokens.
    */
   public boolean accept(int offset, TokenType type) throws CarrotException {
     if (offset == 0) {
@@ -92,17 +94,28 @@ public class Tokenizer {
         "Expected token of type " + typeString + ", got " + tokens.peek().getType(), reader.getPointer());
   }
 
-  /** Throws {@link CarrotException} unless we're at the end of the tokens. */
+  /**
+   * @throws CarrotException unless we're at the end of the tokens.
+   */
   public void end() throws CarrotException {
     expect(TokenType.EOF);
   }
 
-  /** Returns a {@link CarrotException} with the given message (presumably because we got an unexpected token). */
+  /**
+   * Creates a {@link CarrotException} with the given message, populated with our current state.
+   *
+   * @param msg The message to create the exception with.
+   * @return A {@link CarrotException} with the given message (presumably because we got an unexpected token).
+   */
   public CarrotException unexpected(String msg) {
     return new CarrotException(String.format("%s, found: %s", msg, tokens.peek()), reader.getPointer());
   }
 
-  /** Advance to the {@link Token}, storing it in the member variable token. */
+  /**
+   * Advance to the {@link Token}, storing it in the member variable token.
+   *
+   * @throws CarrotException if there's an error parsing the tokens.
+   */
   private void next() throws CarrotException {
     int ch = nextChar();
     while (Character.isWhitespace(ch)) {

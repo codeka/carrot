@@ -13,16 +13,16 @@ import java.util.Arrays;
  *
  * <p>Each {@link Token} represents a high-level component of the template. For example, the following template:
  *
- * <p><code>Text {{ hello }} stuff {% if (blah) { %} stuff {% } %}</code>
+ * <p><code>Text {{ hello }} stuff {% if (blah) %} more stuff {% end %}</code>
  *
  * <p>Corresponds to the following stream of tokens:
  *
- * <p><code>FixedToken: content="Text "
- * EchoToken: content="hello"
- * FixedToken: content="stuff"
- * TagToken: content="if (blah) {"
- * FixedToken: content=" stuff "
- * TagToken: content="}"</code>
+ * <pre><code>TokenType=FIXED, Content="Text "
+ *TokenType=ECHO, Content=" hello "
+ *TokenType=FIXED, Content=" stuff "
+ *TokenType=TAG, Content=" if (blah) "
+ *TokenType=FIXED, Content=" more stuff "
+ *TokenType=TAG, Content=" end "</code></pre>
  */
 public class Tokenizer {
   private final LineReader ins;
@@ -30,10 +30,22 @@ public class Tokenizer {
 
   private char[] lookahead;
 
+  /**
+   * Construct a new {@link Tokenizer} with the given {@link LineReader}, and a default {@link TokenFactory}.
+   *
+   * @param ins A {@link LineReader} to read tokens from.
+   */
   public Tokenizer(LineReader ins) {
     this(ins, null);
   }
 
+  /**
+   * Construct a new {@link Tokenizer} with the given {@link LineReader} and {@link TokenFactory}.
+   *
+   * @param ins A {@link LineReader} to read tokens from.
+   * @param tokenFactory A {@link TokenFactory} for creating the tokens. If null, a default token factory that just
+   *                     creates instances of {@link Token} is used.
+   */
   public Tokenizer(LineReader ins, @Nullable TokenFactory tokenFactory) {
     this.ins = ins;
     this.tokenFactory = tokenFactory == null ? new DefaultTokenFactory() : tokenFactory;
@@ -41,6 +53,9 @@ public class Tokenizer {
 
   /**
    * Gets the next token from the stream, or null if there's no tokens left.
+   *
+   * @return The next {@link Token} in the stream, or null if we're at the end of the stream.
+   * @throws CarrotException when there's an error parsing the tokens.
    */
   @Nullable
   public Token getNextToken() throws CarrotException {
@@ -140,6 +155,7 @@ public class Tokenizer {
     }
   }
 
+  /** @return The current {@link ResourcePointer}, useful for outputting where in the file an error occurred. */
   public ResourcePointer getPointer() {
     return ins.getPointer();
   }

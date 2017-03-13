@@ -28,6 +28,12 @@ public abstract class Node {
     }
   }
 
+  /**
+   * Add the given {@link Node} to our list of children. Will only be called if {@link #isBlockNode()} return true.
+   *
+   * @param child The child {@link Node} to add.
+   * @throws IllegalStateException if {@link #isBlockNode()} returns false.
+   */
   public void add(Node child) {
     if (children == null) {
       throw new IllegalStateException("Cannot add children to non-block nodes");
@@ -35,24 +41,45 @@ public abstract class Node {
     children.add(child);
   }
 
-  /** Gets the children of this node, or null if this is not a block node. */
+  /** @return The children of this node, or null if this is not a block node. */
   @Nullable
   public List<Node> getChildren() {
     return children;
   }
 
+  /** @return True if this a block node (i.e. whether it should have children) or not. */
   public boolean isBlockNode() {
     return children != null;
   }
 
+  /**
+   * @return The {@link ResourcePointer} that point to this {@link Node}'s position in the resource. Useful for logging
+   *    errors and whatnot.
+   */
   public ResourcePointer getPointer() {
     return ptr;
   }
 
-  /** Render this node to the given {@link Writer}. */
+  /**
+   * Render this node to the given {@link Writer}.
+   *
+   * @param engine The {@link CarrotEngine} we're running inside of.
+   * @param writer The {@link Writer} to write this node to.
+   * @param scope The current {@link Scope}, containing all our variables.
+   * @throws CarrotException if there's an error parsing or rendering the node.
+   * @throws IOException if there's an error writing to the {@link Writer}.
+   */
   public abstract void render(CarrotEngine engine, Writer writer, Scope scope) throws CarrotException, IOException;
 
-  /** Render all of this {@link Node}'s children to the given {@link Writer}. */
+  /**
+   * Render all of this {@link Node}'s children to the given {@link Writer}.
+   *
+   * @param engine The {@link CarrotEngine} we're running inside of.
+   * @param writer The {@link Writer} to write this node to.
+   * @param scope The current {@link Scope}, containing all our variables.
+   * @throws CarrotException if there's an error parsing or rendering the node.
+   * @throws IOException if there's an error writing to the {@link Writer}.
+   */
   public void renderChildren(CarrotEngine engine, Writer writer, Scope scope) throws CarrotException, IOException {
     if (children == null) {
       throw new IllegalStateException("Cannot call renderChildren on non-block node.");

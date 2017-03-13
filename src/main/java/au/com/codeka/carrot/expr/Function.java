@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
 /**
- * A list of arguments to a function. See {@link StatementParser} for the full EBNF.
+ * A function identifier and a list of arguments to that function. See {@link StatementParser} for the full EBNF.
  */
 public class Function {
   private final Identifier funcName;
@@ -36,7 +36,16 @@ public class Function {
     return str;
   }
 
-  /** Evaluate this function on the given object, with the given {@link Configuration} and {@link Scope}. */
+  /**
+   * Evaluate this function on the given object, with the given {@link Configuration} and {@link Scope}.
+   *
+   * @param value The value to evaluate this function on. That is, the object on which we want to call the function
+   *              this object represents.
+   * @param config The current {@link Configuration}.
+   * @param scope The current {@link Scope}.
+   * @return The result of calling the function (i.e. the function's return value).
+   * @throws CarrotException if there's any exceptions calling the function.
+   */
   public Object evaluate(Object value, Configuration config, Scope scope) throws CarrotException {
     Class<?>[] paramTypes = new Class<?>[args.size()];
     Object[] paramValues = new Object[args.size()];
@@ -55,7 +64,8 @@ public class Function {
     }
   }
 
-  /** Attempts a basic sort of overload matching, looking for a method on the given class that we can call.
+  /**
+   * Attempts a basic sort of overload matching, looking for a method on the given class that we can call.
    *
    * <p>Unlike normal Java overload resolution, we just return the <em>first</em> method that matches close enough. So
    * if there's a method that takes an int and one that takes a long (say), we make no guarantee about which one will
@@ -154,20 +164,37 @@ public class Function {
     return null;
   }
 
+  /**
+   * Simple builder class for {@link Function}.
+   */
   public static class Builder {
     private final Identifier funcName;
     private final ArrayList<Expression> args;
 
+    /**
+     * Construct a new {@link Builder} for a function with the given {@link Identifier} as it's name.
+     *
+     * @param funcName The name of this function.
+     */
     public Builder(Identifier funcName) {
       this.funcName = funcName;
       this.args = new ArrayList<>();
     }
 
+    /**
+     * Add the given {@link Expression} as an argument to the function.
+     *
+     * @param arg The {@link Expression} to add as an argument.
+     * @return This {@link Builder}.
+     */
     public Builder addParam(Expression arg) {
       this.args.add(arg);
       return this;
     }
 
+    /**
+     * @return The built {@link Function}.
+     */
     public Function build() {
       return new Function(funcName, args);
     }

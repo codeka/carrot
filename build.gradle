@@ -25,11 +25,12 @@ task carrotJar(type: Jar) {
 }
 
 artifacts {
-  archives carrotJar
+    archives carrotJar
 }
 
 task buildJavadoc(type: Javadoc) {
     source = sourceSets.main.allJava
+    classpath = sourceSets.main.compileClasspath
     options.noTimestamp = true
 }
 
@@ -47,10 +48,11 @@ task compileBuildDocs(dependsOn: ['classes'], type: JavaCompile) {
 }
 
 task buildDocs(dependsOn: ['compileBuildDocs', 'buildJavadoc'], type: JavaExec) {
+    logging.captureStandardOutput LogLevel.INFO
     inputs.files file("src/docs/html"), sourceSets.docs.output.files
     outputs.files file("$buildDir/docs")
     main "au.com.codeka.carrot.BuildDocs"
-    classpath = sourceSets.main.runtimeClasspath + [sourceSets.docs.output.classesDir]
+    classpath = sourceSets.main.runtimeClasspath + files([sourceSets.docs.output.classesDir])
     args file("src/docs/html").absolutePath, file("$buildDir/docs").absolutePath
 }
 

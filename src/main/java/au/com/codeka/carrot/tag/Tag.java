@@ -27,6 +27,7 @@ public abstract class Tag {
 
   /**
    * Parse the statement that appears after the tag in the markup.
+   *
    * @param stmtParser A {@link StatementParser} for parsing the statement.
    * @throws CarrotException if there is an unrecoverable error parsing the statement.
    */
@@ -42,6 +43,9 @@ public abstract class Tag {
    * @param tagNode The {@link TagNode} that we're enclosed in. You can use this to render the children, or query
    *                the children or whatever.
    * @param scope The current {@link Scope}.
+   * @throws CarrotException if there's an error parsing or rendering the template
+   * @throws IOException when there's an error writing to the {@link Writer} (basically this is just passed on from
+   *         whatever errors the {@link Writer} might throw..
    */
   public void render(CarrotEngine engine, Writer writer, TagNode tagNode, Scope scope)
       throws CarrotException, IOException {

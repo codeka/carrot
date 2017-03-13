@@ -19,18 +19,40 @@ public class Token {
     this.ptr = ptr;
   }
 
+  /**
+   * @return The {@link TokenType} of this token.
+   */
   public TokenType getType() {
     return type;
   }
 
+  /**
+   * @return The contents of this token.
+   */
   public String getContent() {
     return content;
   }
 
+  /**
+   * Create a new {@link Token}.
+   *
+   * @param type The {@link TokenType} of the token to create.
+   * @param content The content to include in the token.
+   * @return A new {@link Token}.
+   */
   public static Token create(TokenType type, String content) {
     return new Token(type, content, null);
   }
 
+  /**
+   * Create a new {@link Token}.
+   *
+   * @param type The {@link TokenType} of the token to create.
+   * @param content The content to include in the token.
+   * @param ptr The {@link ResourcePointer} this token we created from (used when throwing exceptions later so we can
+   *            know where the token was created from).
+   * @return A new {@link Token}.
+   */
   public static Token create(TokenType type, String content, ResourcePointer ptr) {
     return new Token(type, content, ptr);
   }
@@ -44,7 +66,9 @@ public class Token {
     return false;
   }
 
-  /** Gets the {@link ResourcePointer} from where this token was read from. */
+  /**
+   * @return The {@link ResourcePointer} from where this token was read from.
+   */
   public ResourcePointer getPointer() {
     return ptr;
   }

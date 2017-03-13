@@ -48,7 +48,7 @@ public class CarrotEngine {
   }
 
   /**
-   * Gets the {@link Configuration}. The configuration is mutable, so you are able to modify settings on the value
+   * @return The {@link Configuration}. The configuration is mutable, so you are able to modify settings on the value
    * returned here and they will take effect on the current {@link CarrotEngine}.
    */
   public Configuration getConfig() {
@@ -56,7 +56,7 @@ public class CarrotEngine {
   }
 
   /**
-   * Get a map of the global variables. These bindings will be accessible in all templates processed by this
+   * @return A map of the global variables. These bindings will be accessible in all templates processed by this
    * {@link CarrotEngine}.
    */
   public Map<String, Object> getGlobalBindings() {
@@ -121,6 +121,7 @@ public class CarrotEngine {
    * @param templateFile The name of the template file, which will be resolved by our configured
    *                     {@link ResourceLocater}.
    * @param bindings A mapping of string to variables that make up the bindings for this template.
+   * @return The processed template, as a string.
    *
    * @throws CarrotException Thrown if any errors occur.
    */
