@@ -59,7 +59,7 @@ public class Function {
       Method method = findMethod(config, value.getClass(), funcName.evaluate(), paramTypes, paramValues);
       method.setAccessible(true);
       return method.invoke(value, paramValues);
-    } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+    } catch (InvocationTargetException | IllegalAccessException e) {
       throw new CarrotException(e); // TODO: getPointer()
     }
   }
@@ -80,14 +80,18 @@ public class Function {
    * @param paramValues The values we're going to execute. If the types don't match exactly, we may need to convert
    *                    some of the parameters first.
    * @return The {@link Method} that matches the given name and parameter values.
-   * @throws NoSuchMethodException If no method matches.
+   * @throws CarrotException If no method matches.
    */
   private Method findMethod(
       Configuration config,
       Class<?> cls,
       String name,
       Class<?>[] paramTypes,
-      Object[] paramValues) throws NoSuchMethodException {
+      Object[] paramValues) throws CarrotException {
+
+    // This is a list of "candidate" methods that we tried and rejected for whatever reason. Useful in the error
+    // message that we throw if there's no perfect method.
+    ArrayList<String> candidates = new ArrayList<>();
     for (Method method : cls.getMethods()) {
       if (!method.getName().equalsIgnoreCase(name)) {
         continue;
@@ -95,6 +99,7 @@ public class Function {
 
       if (method.getParameterCount() != paramTypes.length) {
         Log.debug(config, "Wrong number of arguments: %d: %s", paramTypes.length, method);
+        candidates.add(method.toString());
         continue;
       }
 
@@ -108,6 +113,7 @@ public class Function {
           } else {
             Log.debug(config,
                 "Param %d (%s) not assignable from %s: %s", i, methodParamTypes[i], paramTypes[i], method);
+            candidates.add(method.toString());
             allMatch = false;
             break;
           }
@@ -121,7 +127,8 @@ public class Function {
       }
     }
 
-    throw new NoSuchElementException(String.format("No matching method '%s' found on class %s", name, cls.getName()));
+    throw new CarrotException(String.format("No matching method '%s' found on class %s, candidates: [%s]",
+        name, cls.getName(), String.join(",", candidates)));
   }
 
   /**

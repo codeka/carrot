@@ -193,10 +193,9 @@ public class Tokenizer {
       case '<':
         next = nextChar();
         if (next != '=') {
-          if (next < 0) {
-            throw new CarrotException("Unexpected end of file.", reader.getPointer());
+          if (next > 0) {
+            lookahead = (char) next;
           }
-          lookahead = (char) next;
           token = new Token(TokenType.LESS_THAN);
         } else {
           token = new Token(TokenType.LESS_THAN_OR_EQUAL);
@@ -205,10 +204,9 @@ public class Tokenizer {
       case '>':
         next = nextChar();
         if (next != '=') {
-          if (next < 0) {
-            throw new CarrotException("Unexpected end of file.", reader.getPointer());
+          if (next > 0) {
+            lookahead = (char) next;
           }
-          lookahead = (char) next;
           token = new Token(TokenType.GREATER_THAN);
         } else {
           token = new Token(TokenType.GREATER_THAN_OR_EQUAL);
