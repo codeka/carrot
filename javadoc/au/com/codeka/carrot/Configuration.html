@@ -17,7 +17,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10};
+var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -165,30 +165,40 @@ extends java.lang.Object</pre>
 <th class="colLast" scope="col">Method and Description</th>
 </tr>
 <tr id="i0" class="altColor">
+<td class="colFirst"><code>boolean</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../au/com/codeka/carrot/Configuration.html#getAutoEscape--">getAutoEscape</a></span>()</code>&nbsp;</td>
+</tr>
+<tr id="i1" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../au/com/codeka/carrot/Configuration.html#getEncoding--">getEncoding</a></span>()</code>&nbsp;</td>
 </tr>
-<tr id="i1" class="rowColor">
+<tr id="i2" class="altColor">
 <td class="colFirst"><code><a href="../../../../au/com/codeka/carrot/Configuration.Logger.html" title="interface in au.com.codeka.carrot">Configuration.Logger</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../au/com/codeka/carrot/Configuration.html#getLogger--">getLogger</a></span>()</code>&nbsp;</td>
 </tr>
-<tr id="i2" class="altColor">
+<tr id="i3" class="rowColor">
 <td class="colFirst"><code><a href="../../../../au/com/codeka/carrot/resource/ResourceLocater.html" title="interface in au.com.codeka.carrot.resource">ResourceLocater</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../au/com/codeka/carrot/Configuration.html#getResourceLocater--">getResourceLocater</a></span>()</code>&nbsp;</td>
 </tr>
-<tr id="i3" class="rowColor">
+<tr id="i4" class="altColor">
 <td class="colFirst"><code><a href="../../../../au/com/codeka/carrot/TagRegistry.html" title="class in au.com.codeka.carrot">TagRegistry</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../au/com/codeka/carrot/Configuration.html#getTagRegistry--">getTagRegistry</a></span>()</code>&nbsp;</td>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i5" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../au/com/codeka/carrot/Configuration.html#setAutoEscape-boolean-">setAutoEscape</a></span>(boolean&nbsp;value)</code>
+<div class="block">Sets whether or not you want to automatically escape all variable output.</div>
+</td>
+</tr>
+<tr id="i6" class="altColor">
 <td class="colFirst"><code><a href="../../../../au/com/codeka/carrot/Configuration.html" title="class in au.com.codeka.carrot">Configuration</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../au/com/codeka/carrot/Configuration.html#setEncoding-java.lang.String-">setEncoding</a></span>(java.lang.String&nbsp;encoding)</code>&nbsp;</td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code><a href="../../../../au/com/codeka/carrot/Configuration.html" title="class in au.com.codeka.carrot">Configuration</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../au/com/codeka/carrot/Configuration.html#setLogger-au.com.codeka.carrot.Configuration.Logger-">setLogger</a></span>(<a href="../../../../au/com/codeka/carrot/Configuration.Logger.html" title="interface in au.com.codeka.carrot">Configuration.Logger</a>&nbsp;logger)</code>&nbsp;</td>
 </tr>
-<tr id="i6" class="altColor">
+<tr id="i8" class="altColor">
 <td class="colFirst"><code><a href="../../../../au/com/codeka/carrot/Configuration.html" title="class in au.com.codeka.carrot">Configuration</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../au/com/codeka/carrot/Configuration.html#setResourceLocater-au.com.codeka.carrot.resource.ResourceLocater-">setResourceLocater</a></span>(<a href="../../../../au/com/codeka/carrot/resource/ResourceLocater.html" title="interface in au.com.codeka.carrot.resource">ResourceLocater</a>&nbsp;resourceLocater)</code>&nbsp;</td>
 </tr>
@@ -274,6 +284,42 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>getTagRegistry</h4>
 <pre>public&nbsp;<a href="../../../../au/com/codeka/carrot/TagRegistry.html" title="class in au.com.codeka.carrot">TagRegistry</a>&nbsp;getTagRegistry()</pre>
+</li>
+</ul>
+<a name="getAutoEscape--">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getAutoEscape</h4>
+<pre>public&nbsp;boolean&nbsp;getAutoEscape()</pre>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>Whether or not variables are automatically HTML-escaped. True by default.</dd>
+</dl>
+</li>
+</ul>
+<a name="setAutoEscape-boolean-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setAutoEscape</h4>
+<pre>public&nbsp;void&nbsp;setAutoEscape(boolean&nbsp;value)</pre>
+<div class="block">Sets whether or not you want to automatically escape all variable output.
+
+ <p>By default, all variables are HTML-escaped. You can explicitly mark output as "safe" for output by passing it
+ through html.safe(), as in:
+
+ <pre><code>{{ html.safe("Some &lt;b&gt;HTML&lt;/b&gt; here") }}</code></pre>
+
+ Without the call to <code>html.safe</code>, the above would have output
+ "Some &amp;lt;b&amp;gt;HTML&amp;lt;/b&gt; here".</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>value</code> - If true, output will be automatically HTML-escaped. If false, it would be as if all output is wrapped
+              in <code>html.safe()</code> by default.</dd>
+</dl>
 </li>
 </ul>
 <a name="setLogger-au.com.codeka.carrot.Configuration.Logger-">

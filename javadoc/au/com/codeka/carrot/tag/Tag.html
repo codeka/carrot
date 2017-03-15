@@ -47,7 +47,7 @@ var activeTableTab = "activeTableTab";
 </div>
 <div class="subNav">
 <ul class="navList">
-<li><a href="../../../../../au/com/codeka/carrot/tag/IfTag.html" title="class in au.com.codeka.carrot.tag"><span class="typeNameLink">Prev&nbsp;Class</span></a></li>
+<li><a href="../../../../../au/com/codeka/carrot/tag/SetTag.html" title="class in au.com.codeka.carrot.tag"><span class="typeNameLink">Prev&nbsp;Class</span></a></li>
 <li>Next&nbsp;Class</li>
 </ul>
 <ul class="navList">
@@ -107,7 +107,7 @@ var activeTableTab = "activeTableTab";
 <li class="blockList">
 <dl>
 <dt>Direct Known Subclasses:</dt>
-<dd><a href="../../../../../au/com/codeka/carrot/tag/BlockTag.html" title="class in au.com.codeka.carrot.tag">BlockTag</a>, <a href="../../../../../au/com/codeka/carrot/tag/EchoTag.html" title="class in au.com.codeka.carrot.tag">EchoTag</a>, <a href="../../../../../au/com/codeka/carrot/tag/ElseTag.html" title="class in au.com.codeka.carrot.tag">ElseTag</a>, <a href="../../../../../au/com/codeka/carrot/tag/EndTag.html" title="class in au.com.codeka.carrot.tag">EndTag</a>, <a href="../../../../../au/com/codeka/carrot/tag/ExtendsTag.html" title="class in au.com.codeka.carrot.tag">ExtendsTag</a>, <a href="../../../../../au/com/codeka/carrot/tag/ForTag.html" title="class in au.com.codeka.carrot.tag">ForTag</a>, <a href="../../../../../au/com/codeka/carrot/tag/IfTag.html" title="class in au.com.codeka.carrot.tag">IfTag</a></dd>
+<dd><a href="../../../../../au/com/codeka/carrot/tag/BlockTag.html" title="class in au.com.codeka.carrot.tag">BlockTag</a>, <a href="../../../../../au/com/codeka/carrot/tag/EchoTag.html" title="class in au.com.codeka.carrot.tag">EchoTag</a>, <a href="../../../../../au/com/codeka/carrot/tag/ElseTag.html" title="class in au.com.codeka.carrot.tag">ElseTag</a>, <a href="../../../../../au/com/codeka/carrot/tag/EndTag.html" title="class in au.com.codeka.carrot.tag">EndTag</a>, <a href="../../../../../au/com/codeka/carrot/tag/ExtendsTag.html" title="class in au.com.codeka.carrot.tag">ExtendsTag</a>, <a href="../../../../../au/com/codeka/carrot/tag/ForTag.html" title="class in au.com.codeka.carrot.tag">ForTag</a>, <a href="../../../../../au/com/codeka/carrot/tag/IfTag.html" title="class in au.com.codeka.carrot.tag">IfTag</a>, <a href="../../../../../au/com/codeka/carrot/tag/SetTag.html" title="class in au.com.codeka.carrot.tag">SetTag</a></dd>
 </dl>
 <hr>
 <br>
@@ -216,6 +216,24 @@ extends java.lang.Object</pre>
 <!--   -->
 </a>
 <h3>Method Detail</h3>
+<a name="parseStatement-au.com.codeka.carrot.expr.StatementParser-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>parseStatement</h4>
+<pre>public&nbsp;void&nbsp;parseStatement(<a href="../../../../../au/com/codeka/carrot/expr/StatementParser.html" title="class in au.com.codeka.carrot.expr">StatementParser</a>&nbsp;stmtParser)
+                    throws <a href="../../../../../au/com/codeka/carrot/CarrotException.html" title="class in au.com.codeka.carrot">CarrotException</a></pre>
+<div class="block">Parse the statement that appears after the tag in the markup. This is guaranteed to be called before
+ <a href="../../../../../au/com/codeka/carrot/tag/Tag.html#isBlockTag--"><code>isBlockTag()</code></a> or <a href="../../../../../au/com/codeka/carrot/tag/Tag.html#canChain-au.com.codeka.carrot.tag.Tag-"><code>canChain(Tag)</code></a>.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>stmtParser</code> - A <a href="../../../../../au/com/codeka/carrot/expr/StatementParser.html" title="class in au.com.codeka.carrot.expr"><code>StatementParser</code></a> for parsing the statement.</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../../../au/com/codeka/carrot/CarrotException.html" title="class in au.com.codeka.carrot">CarrotException</a></code> - if there is an unrecoverable error parsing the statement.</dd>
+</dl>
+</li>
+</ul>
 <a name="isBlockTag--">
 <!--   -->
 </a>
@@ -243,23 +261,6 @@ extends java.lang.Object</pre>
 <dd><code>nextTag</code> - The next <a href="../../../../../au/com/codeka/carrot/tag/Tag.html" title="class in au.com.codeka.carrot.tag"><code>Tag</code></a> that we want to check whether we can chain to.</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>True if we can chain to the next tag.</dd>
-</dl>
-</li>
-</ul>
-<a name="parseStatement-au.com.codeka.carrot.expr.StatementParser-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>parseStatement</h4>
-<pre>public&nbsp;void&nbsp;parseStatement(<a href="../../../../../au/com/codeka/carrot/expr/StatementParser.html" title="class in au.com.codeka.carrot.expr">StatementParser</a>&nbsp;stmtParser)
-                    throws <a href="../../../../../au/com/codeka/carrot/CarrotException.html" title="class in au.com.codeka.carrot">CarrotException</a></pre>
-<div class="block">Parse the statement that appears after the tag in the markup.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>stmtParser</code> - A <a href="../../../../../au/com/codeka/carrot/expr/StatementParser.html" title="class in au.com.codeka.carrot.expr"><code>StatementParser</code></a> for parsing the statement.</dd>
-<dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code><a href="../../../../../au/com/codeka/carrot/CarrotException.html" title="class in au.com.codeka.carrot">CarrotException</a></code> - if there is an unrecoverable error parsing the statement.</dd>
 </dl>
 </li>
 </ul>
@@ -317,7 +318,7 @@ extends java.lang.Object</pre>
 </div>
 <div class="subNav">
 <ul class="navList">
-<li><a href="../../../../../au/com/codeka/carrot/tag/IfTag.html" title="class in au.com.codeka.carrot.tag"><span class="typeNameLink">Prev&nbsp;Class</span></a></li>
+<li><a href="../../../../../au/com/codeka/carrot/tag/SetTag.html" title="class in au.com.codeka.carrot.tag"><span class="typeNameLink">Prev&nbsp;Class</span></a></li>
 <li>Next&nbsp;Class</li>
 </ul>
 <ul class="navList">

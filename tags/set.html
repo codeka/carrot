@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Carrot &bull; Custom tags</title>
+  <title>Carrot &bull; Set tag</title>
   <link rel="shortcut icon" href="../favicon.ico">
   <link rel="stylesheet" href="../css/site.css">
   
@@ -37,33 +37,47 @@
       <p class="copyright">Copyright &copy; Dean Harding</p>
     </div></section>
     <section id="content">
-<h2>Custom tags</h2>
+<h2>Set tag</h2>
 
-<p>Custom tags are where the real power of Carrot comes from. You can register your own classes to be called when
-a custom tag is encountered in the template. Custom tags are extremely powerful, and there's nothing that any of
-the built-in tags can do that a custom tag could not also do.</p>
+<code><pre>{% set &lt;identifier&gt; %}
+  content
+{% end %}</pre></code>
 
-<p>To create a custom tag, you create a class that inherits from
-  <a href="../javadoc/au/com/codeka/carrot/tag/Tag.html">Tag</a>, and register it in the tag registry, like
-  so:</p>
+<p>The <code>{% set %}</code> tag can be used to set the value of a variable in the current scope to the value of
+the tag's contents. It's best described with an example.</p>
 
-<code><pre>  CarrotEngine engine = new CarrotEngine();
-  engine.getConfig().getTagRegistry().add("mytag", MyTag.class);</pre></code>
+<h3>Example</h3>
 
-<p>Then, whenever the engine encounters a <code>{% mytag %}</code> it will call your tag's code to render the
-  result.</p>
+<p>Given the template:</p>
 
-<p>The best way to understand how to write a custom would be to look at the source for one of the built-in tags,
-  which you can find <a href="https://github.com/codeka/carrot/tree/master/src/main/java/au/com/codeka/carrot/tag">here</a>
-  and the documentation for which you can find <a href="../javadoc/au/com/codeka/carrot/tag/package-summary.html">here</a>.</p>
+
+
+<pre><code>{% set foo %}
+  Here is some &lt;b&gt;HTML&lt;/b&gt;!
+{% end %}</code></pre>
+
+<p>This would set the value of the variable <code>foo</code> to the string "Here is some &lt;b&gt;HTML&lt;/b&gt;!". Later on in your template,
+you can then do stuff like:</p>
+
+<pre><code>
+  {{ foo }}
+  {{ html.safe(foo) }}
+</code></pre>
+
+<p>And get:</p>
+
+<pre><code>
+  Here is some &lt;b&gt;HTML&lt;/b&gt;!
+  Here is some <b>HTML</b>!
+</code></pre>
 
 <hr>
 <div class="bottom-nav">
   <div class="back">
-    <a href="../tags/extends.html">← Extends tag</a>
+    <a href="../tags/for.html">← For tag</a>
   </div>
   <div class="next">
-    <a href="../expressions.html">Expressions →</a>
+    <a href="../tags/extends.html">Extends tag →</a>
   </div>
 </div>
 </section>

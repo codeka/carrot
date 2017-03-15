@@ -245,7 +245,8 @@ extends <a href="../../../../../au/com/codeka/carrot/tag/Tag.html" title="class 
 <pre>public&nbsp;void&nbsp;parseStatement(<a href="../../../../../au/com/codeka/carrot/expr/StatementParser.html" title="class in au.com.codeka.carrot.expr">StatementParser</a>&nbsp;statementParser)
                     throws <a href="../../../../../au/com/codeka/carrot/CarrotException.html" title="class in au.com.codeka.carrot">CarrotException</a></pre>
 <div class="block"><span class="descfrmTypeLabel">Description copied from class:&nbsp;<code><a href="../../../../../au/com/codeka/carrot/tag/Tag.html#parseStatement-au.com.codeka.carrot.expr.StatementParser-">Tag</a></code></span></div>
-<div class="block">Parse the statement that appears after the tag in the markup.</div>
+<div class="block">Parse the statement that appears after the tag in the markup. This is guaranteed to be called before
+ <a href="../../../../../au/com/codeka/carrot/tag/Tag.html#isBlockTag--"><code>Tag.isBlockTag()</code></a> or <a href="../../../../../au/com/codeka/carrot/tag/Tag.html#canChain-au.com.codeka.carrot.tag.Tag-"><code>Tag.canChain(Tag)</code></a>.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
 <dd><code><a href="../../../../../au/com/codeka/carrot/tag/Tag.html#parseStatement-au.com.codeka.carrot.expr.StatementParser-">parseStatement</a></code>&nbsp;in class&nbsp;<code><a href="../../../../../au/com/codeka/carrot/tag/Tag.html" title="class in au.com.codeka.carrot.tag">Tag</a></code></dd>

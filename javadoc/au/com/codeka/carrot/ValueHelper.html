@@ -17,7 +17,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":9,"i1":9,"i2":9,"i3":9,"i4":9,"i5":9,"i6":9};
+var methods = {"i0":9,"i1":9,"i2":9,"i3":9,"i4":9,"i5":9,"i6":9,"i7":9};
 var tabs = {65535:["t0","All Methods"],1:["t1","Static Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -160,31 +160,37 @@ extends java.lang.Object</pre>
 </td>
 </tr>
 <tr id="i2" class="altColor">
+<td class="colFirst"><code>static java.lang.String</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../au/com/codeka/carrot/ValueHelper.html#escape-java.lang.Object-">escape</a></span>(java.lang.Object&nbsp;value)</code>
+<div class="block">Performs HTML-escaping of the given value.</div>
+</td>
+</tr>
+<tr id="i3" class="rowColor">
 <td class="colFirst"><code>static boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../au/com/codeka/carrot/ValueHelper.html#isTrue-java.lang.Object-">isTrue</a></span>(java.lang.Object&nbsp;value)</code>
 <div class="block">Does the given value represent "true".</div>
 </td>
 </tr>
-<tr id="i3" class="rowColor">
+<tr id="i4" class="altColor">
 <td class="colFirst"><code>static java.util.List&lt;java.lang.Object&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../au/com/codeka/carrot/ValueHelper.html#iterate-java.lang.Object-">iterate</a></span>(java.lang.Object&nbsp;iterable)</code>
 <div class="block">Convert the given value to a list of object, as if it were an iterable.</div>
 </td>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code>static java.lang.Number</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../au/com/codeka/carrot/ValueHelper.html#multiply-java.lang.Object-java.lang.Object-">multiply</a></span>(java.lang.Object&nbsp;lhs,
         java.lang.Object&nbsp;rhs)</code>
 <div class="block">Multiplies the left hand side by the right hand side, and returns the result.</div>
 </td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code>static java.lang.Number</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../au/com/codeka/carrot/ValueHelper.html#negate-java.lang.Object-">negate</a></span>(java.lang.Object&nbsp;value)</code>
 <div class="block">Returns the "negative" of the given value.</div>
 </td>
 </tr>
-<tr id="i6" class="altColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code>static java.lang.Number</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../au/com/codeka/carrot/ValueHelper.html#toNumber-java.lang.Object-">toNumber</a></span>(java.lang.Object&nbsp;value)</code>
 <div class="block">Converts the given value to a <code>Number</code>.</div>
@@ -353,7 +359,7 @@ extends java.lang.Object</pre>
 <a name="iterate-java.lang.Object-">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>iterate</h4>
 <pre>public static&nbsp;java.util.List&lt;java.lang.Object&gt;&nbsp;iterate(java.lang.Object&nbsp;iterable)
@@ -367,6 +373,23 @@ extends java.lang.Object</pre>
 <dd>A <code>List</code> that can actually be iterated.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../../au/com/codeka/carrot/CarrotException.html" title="class in au.com.codeka.carrot">CarrotException</a></code> - If the value is not iterable.</dd>
+</dl>
+</li>
+</ul>
+<a name="escape-java.lang.Object-">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>escape</h4>
+<pre>public static&nbsp;java.lang.String&nbsp;escape(@Nullable
+                                      java.lang.Object&nbsp;value)</pre>
+<div class="block">Performs HTML-escaping of the given value.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>value</code> - The value to escape. If the value is <a href="../../../../au/com/codeka/carrot/util/SafeString.html" title="class in au.com.codeka.carrot.util"><code>SafeString</code></a>, then no escaping will be done.</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>The HTML-escaped version of the string.</dd>
 </dl>
 </li>
 </ul>
