@@ -19,10 +19,10 @@ bar * 3.4
 a + (foo * 3) - 2</code></pre></dd>
 
   <dt>Boolean operations</dt>
-  <dd><pre><code>x == 2
-foo &lt;= bar
+  <dd><pre><code>{% set someHtml %}x == 2
+foo <= bar
 bar != 0
-x &gt; 0 || y &gt; 0</code></pre></dd>
+x > 0 || y > 0{% end %}{{ someHtml }}</code></pre></dd>
 
   <dt>Accessor methods</dt>
   <dd><pre><code>foo.bar.baz

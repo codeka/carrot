@@ -72,15 +72,16 @@
 
 <p>It would output the following:</p>
 
-<code><pre>  &lt;div class="first"&gt;
+{% set someHtml %}  <div class="first">
     0: 1234 Dean
-  &lt;/div&gt;
-  &lt;div&gt;
+  </div>
+  <div>
     1: 2657 John
-  &lt;/div&gt;
-  &lt;div&gt;
+  </div>
+  <div>
     2: 3464 Harry
-  &lt;/div&gt;</pre></code>
+  </div>{% end %}
+<code><pre>{{ someHtml }}</pre></code>
 
 <p>Similarly, the following template:</p>
 
@@ -100,7 +101,7 @@
     <a href="{{basePath}}tags/if.html">← If tag</a>
   </div>
   <div class="next">
-    <a href="{{basePath}}tags/extends.html">Extends tag →</a>
+    <a href="{{basePath}}tags/set.html">Set tag →</a>
   </div>
 </div>
 {% end %}

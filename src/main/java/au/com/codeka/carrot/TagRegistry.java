@@ -26,6 +26,7 @@ public class TagRegistry {
     add("else", ElseTag.class);
     add("extends", ExtendsTag.class);
     add("block", BlockTag.class);
+    add("set", SetTag.class);
     add((tagName) -> tagName.toLowerCase().startsWith("end"), EndTag.class);
   }
 

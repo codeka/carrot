@@ -33,6 +33,11 @@ public class Scope {
     stack.pop();
   }
 
+  /** @return The current bindings off the top of the stack. */
+  public Map<String, Object> peek() {
+    return stack.peek();
+  }
+
   /**
    * Resolve the given named variable from the stack of bindings, most recently-pushed to last.
    *

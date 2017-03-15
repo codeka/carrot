@@ -1,0 +1,47 @@
+{% extends "_skel/skeleton.html" %}
+{% block "title" %}Set tag{% end %}
+{% block "content" %}
+<h2>Set tag</h2>
+
+<code><pre>{\% set &lt;identifier&gt; %}
+  content
+{\% end %}</pre></code>
+
+<p>The <code>{\% set %}</code> tag can be used to set the value of a variable in the current scope to the value of
+the tag's contents. It's best described with an example.</p>
+
+<h3>Example</h3>
+
+<p>Given the template:</p>
+
+{% set someHtml %}Here is some <b>HTML</b>!{% end %}
+
+<pre><code>{\% set foo %}
+  {{ someHtml }}
+{\% end %}</code></pre>
+
+<p>This would set the value of the variable <code>foo</code> to the string "{{ someHtml }}". Later on in your template,
+you can then do stuff like:</p>
+
+<pre><code>
+  {\{ foo }}
+  {\{ html.safe(foo) }}
+</code></pre>
+
+<p>And get:</p>
+
+<pre><code>
+  {{ someHtml }}
+  {{ html.safe(someHtml) }}
+</code></pre>
+
+<hr>
+<div class="bottom-nav">
+  <div class="back">
+    <a href="{{basePath}}tags/for.html">← For tag</a>
+  </div>
+  <div class="next">
+    <a href="{{basePath}}tags/extends.html">Extends tag →</a>
+  </div>
+</div>
+{% end %}

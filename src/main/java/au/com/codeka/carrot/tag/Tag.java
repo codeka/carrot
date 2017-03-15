@@ -18,6 +18,17 @@ import java.io.Writer;
  */
 public abstract class Tag {
   /**
+   * Parse the statement that appears after the tag in the markup. This is guaranteed to be called before
+   * {@link #isBlockTag()} or {@link #canChain(Tag)}.
+   *
+   * @param stmtParser A {@link StatementParser} for parsing the statement.
+   * @throws CarrotException if there is an unrecoverable error parsing the statement.
+   */
+  public void parseStatement(StatementParser stmtParser) throws CarrotException {
+    stmtParser.parseEnd();
+  }
+
+  /**
    * @return True if this is a "block" tag, meaning it contains child content (in the form of a list of Nodes)
    *         and false if this is not a block tag (e.g. it's just a single inline element or something).
    */
@@ -33,16 +44,6 @@ public abstract class Tag {
    */
   public boolean canChain(Tag nextTag) {
     return false;
-  }
-
-  /**
-   * Parse the statement that appears after the tag in the markup.
-   *
-   * @param stmtParser A {@link StatementParser} for parsing the statement.
-   * @throws CarrotException if there is an unrecoverable error parsing the statement.
-   */
-  public void parseStatement(StatementParser stmtParser) throws CarrotException {
-    stmtParser.parseEnd();
   }
 
   /**
