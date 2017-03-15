@@ -39,11 +39,16 @@
 
 <code><pre>{% for identifier in &lt;expr&gt; %}
   content
+{% else %}
+  content
 {% end %}</pre></code>
 
 <p>The for tag evaluates the expression and, assuming it is a collection of some kind, iterates the collection,
   rendering it's content for each iteration of the loop. Inside the loop, the given <code>identifier</code> is available
   for you to reference.</p>
+
+<p>If you have an <code>{% else %}</code> block after the <code>{% for %}</code> block, the else block will be
+  output if the collection is empty.</p>
 
 <p>In addition to the <code>identifier</code>, a special <code>loop</code> object is available inside the contents of
   for loop, with some additional information about the loop. The loop variable has the following properties:</p>
@@ -85,6 +90,7 @@
           ImmutableMap.of("id", 2657, "name", "John"),
           ImmutableMap.of("id", 3464, "name", "Harry")
         )
+      .put("admins", Lists.newArrayList())
       .build();
 
   System.out.println(engine.process("filename.html", bindings));
@@ -109,6 +115,18 @@
   &lt;div&gt;
     2: 3464 Harry
   &lt;/div&gt;</pre></code>
+
+<p>Similarly, the following template:</p>
+
+<code><pre>  {% for admin in admins %}
+    {{ admin.id }} : {{ admin.name }}
+  {% else %}
+    You don't have any admin users.
+  {% end %}</pre></code>
+
+<p>Would output the following:</p>
+
+<code><pre>You don't have any admin users.</pre></code>
 
 <hr>
 <div class="bottom-nav">
