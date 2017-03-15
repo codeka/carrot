@@ -1,0 +1,45 @@
+{% extends "_skel/skeleton.html" %}
+{% block "title" %}Helpers{% end %}
+{% block "content" %}
+<h2>Helpers</h2>
+
+<p>Helpers are global functions that are registered by default when you create the <code>CarrotEngine</code>. You can
+access them in all of your templates, and they provide some useful functionality: from HTML-escaping to formatting
+numbers.</p>
+
+<h3>HTML</h3>
+
+<dl>
+  <dt id="html_safe">html.safe(&lt;str&gt;)</dt>
+  <dd>Mark a string as "safe". When
+    <a href="{{basePath}}/javadoc/au/com/codeka/carrot/Configuration.html#setAutoEscape-boolean-">Configuration.setAutoEscape</a>
+    is false (which is the default), all output from tags is escaped automatically. If you don't want that to happen
+    (for example, if the value is from a known safe source), then you can use <code>html.safe</code> to mark is as
+    safe for un-escaped output.
+
+    <p>For example, given the following template:</p>
+    <pre><code>{\{ "Some &lt;b&gt;HTML&lt;/b&gt; here" }}
+{\{ html.safe("Some &lt;b&gt;HTML&lt;/b&gt; here") }}</code></pre>
+    <p>You would get:</p>
+    <pre><code>Some &amp;lt;b&amp;gt;HTML&amp;lt;/b&amp;gt; here
+Some &lt;b&gt;HTML&lt;/b&gt; here</code></pre>
+  </dd>
+
+  <dt id="html_escape">html.escape(&lt;str&gt;)</dt>
+  <dd>Explicitly HTML-escape the given string. This is handy if you want to turn auto-escaping off by default (via
+    <a href="{{basePath}}/javadoc/au/com/codeka/carrot/Configuration.html#setAutoEscape-boolean-">Configuration.setAutoEscape</a>)
+    but then want to selectively escape some strings.
+
+    <p>Note that calling this over and over will not cause the string to become double-escaped. And calling this when
+    auto-escape is on will have no effect.</p></dd>
+</dl>
+
+
+
+<hr>
+<div class="bottom-nav">
+  <div class="back">
+    <a href="{{basePath}}tags/custom.html">← Expressions</a>
+  </div>
+</div>
+{% end %}

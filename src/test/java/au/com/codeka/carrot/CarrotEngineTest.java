@@ -3,6 +3,7 @@ package au.com.codeka.carrot;
 import au.com.codeka.carrot.resource.ResourceLocater;
 import au.com.codeka.carrot.resource.ResourceName;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -45,10 +46,29 @@ public class CarrotEngineTest {
         "baz", "hello"))).isEqualTo("fooWorld");
   }
 
-  private String render(String template, @Nullable Map<String, Object> bindings) {
+  @Test
+  public void testAutoEscape() {
+    CarrotEngine engine = createEngine();
+    assertThat(render(engine, "{{ \"Some <b>HTML</b> here\" }}", Maps.newHashMap()))
+        .isEqualTo("Some &lt;b&gt;HTML&lt;/b&gt; here");
+
+    engine.getConfig().setAutoEscape(false);
+    assertThat(render(engine, "{{ \"Some <b>HTML</b> here\" }}", Maps.newHashMap()))
+        .isEqualTo("Some <b>HTML</b> here");
+
+    engine.getConfig().setAutoEscape(true);
+    assertThat(render(engine, "{{ \"Some <b>HTML</b> here\" }}", Maps.newHashMap()))
+        .isEqualTo("Some &lt;b&gt;HTML&lt;/b&gt; here");
+  }
+
+  private CarrotEngine createEngine() {
     CarrotEngine engine = new CarrotEngine();
     engine.getConfig().setLogger((level, msg) -> System.err.println(msg));
-    return render(engine, template, bindings);
+    return engine;
+  }
+
+  private String render(String template, @Nullable Map<String, Object> bindings) {
+    return render(createEngine(), template, bindings);
   }
 
   private String render(CarrotEngine engine, String template, @Nullable Map<String, Object> bindings) {

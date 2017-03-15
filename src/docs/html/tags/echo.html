@@ -53,6 +53,9 @@
     name "<code>getBar</code>". If <code>foo</code> is a map, it will use <code>Map.get("bar")</code>.
   <li><code>foo[bar]</code> will first evaluate "<code>bar</code>", then perform exactly the same steps above to get
     the value in <code>foo</code>. In particular, <code>foo["bar"]</code> is actually identical to <code>foo.bar</code>.
+  <li>By default, any HTML in your strings will be automatically escaped. You can disable this globally with
+    <a href="{{basePath}}/javadoc/au/com/codeka/carrot/Configuration.html#setAutoEscape-boolean-">Configuration.setAutoEscape</a>.
+    Better still, you can disable it for a single call with <a href="{{basePath}}helpers.html#html_safe">html.safe()</a>.
 
 </ul>
 

@@ -1,5 +1,8 @@
 package au.com.codeka.carrot;
 
+import au.com.codeka.carrot.util.SafeString;
+
+import javax.annotation.Nullable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -194,5 +197,29 @@ public class ValueHelper {
     }
 
     throw new CarrotException("Unable to iterate '" + iterable + "'");
+  }
+
+  /**
+   * Performs HTML-escaping of the given value.
+   *
+   * @param value The value to escape. If the value is {@link SafeString}, then no escaping will be done.
+   *
+   * @return The HTML-escaped version of the string.
+   */
+  // TODO: without pulling in any other deps (e.g. Jakarta Commons) is this as comprehensive as it needs to be?
+  public static String escape(@Nullable Object value) {
+    if (value == null) {
+      return "";
+    }
+
+    if (value instanceof SafeString) {
+      return value.toString();
+    }
+
+    String unescaped = value.toString();
+    return unescaped
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;");
   }
 }

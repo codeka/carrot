@@ -4,6 +4,7 @@ import au.com.codeka.carrot.CarrotException;
 import au.com.codeka.carrot.Configuration;
 import au.com.codeka.carrot.Scope;
 import au.com.codeka.carrot.util.Log;
+import au.com.codeka.carrot.util.SafeString;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.InvocationTargetException;

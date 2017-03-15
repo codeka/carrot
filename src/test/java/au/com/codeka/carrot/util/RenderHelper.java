@@ -2,6 +2,7 @@ package au.com.codeka.carrot.util;
 
 import au.com.codeka.carrot.CarrotEngine;
 import au.com.codeka.carrot.CarrotException;
+import au.com.codeka.carrot.Configuration;
 import au.com.codeka.carrot.resource.MemoryResourceLocator;
 
 import java.util.HashMap;
@@ -14,7 +15,11 @@ import java.util.TreeMap;
 public class RenderHelper {
   public static String render(String content, Object... bindings) throws CarrotException {
     CarrotEngine engine = new CarrotEngine();
-    engine.getConfig().setLogger((level, msg) -> System.err.println(msg));
+    engine.getConfig().setLogger((level, msg) -> {
+      if (level > Configuration.Logger.LEVEL_DEBUG) {
+        System.err.println(msg);
+      }
+    });
 
     Map<String, String> resources = new TreeMap<>();
     resources.put("index", content);

@@ -1,5 +1,6 @@
 package au.com.codeka.carrot;
 
+import au.com.codeka.carrot.helpers.HtmlHelper;
 import au.com.codeka.carrot.util.LineReader;
 import au.com.codeka.carrot.tmpl.parse.Tokenizer;
 import au.com.codeka.carrot.resource.ResourceLocater;
@@ -45,6 +46,8 @@ public class CarrotEngine {
     this.globalBindings = new HashMap<>();
     this.parseCache = new ParseCache(config);
     this.templateParser = new TemplateParser(config);
+
+    globalBindings.put("html", new HtmlHelper());
   }
 
   /**
