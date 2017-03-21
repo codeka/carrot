@@ -3,8 +3,10 @@ package au.com.codeka.carrot.expr;
 import au.com.codeka.carrot.CarrotException;
 import au.com.codeka.carrot.Configuration;
 import au.com.codeka.carrot.Scope;
+import au.com.codeka.carrot.ValueHelper;
 
 import javax.annotation.Nullable;
+import java.util.Objects;
 
 /**
  * An "orcond". See {@link StatementParser} for the full EBNF.
@@ -37,16 +39,25 @@ public class OrCond {
   }
 
   public Object evaluate(Configuration config, Scope scope) throws CarrotException {
-    Object value = lhs.evaluate(config, scope);
+    Object lhsValue = lhs.evaluate(config, scope);
     if (operator != null && rhs != null) {
+      Object rhsValue = rhs.evaluate(config, scope);
       if (operator.getType() == TokenType.EQUALITY) {
-        Object lhsValue = value;
-        Object rhsValue = rhs.evaluate(config, scope);
-        return lhsValue.equals(rhsValue);
+        return ValueHelper.isEqual(lhsValue, rhsValue);
+      } else if (operator.getType() == TokenType.INEQUALITY) {
+        return !ValueHelper.isEqual(lhsValue, rhsValue);
+      } else if (operator.getType() == TokenType.LESS_THAN) {
+        return ValueHelper.compare(lhsValue, rhsValue) < 0;
+      } else if (operator.getType() == TokenType.LESS_THAN_OR_EQUAL) {
+        return ValueHelper.compare(lhsValue, rhsValue) <= 0;
+      } else if (operator.getType() == TokenType.GREATER_THAN) {
+        return ValueHelper.compare(lhsValue, rhsValue) > 0;
+      } else if (operator.getType() == TokenType.GREATER_THAN_OR_EQUAL) {
+        return ValueHelper.compare(lhsValue, rhsValue) >= 0;
       } else {
-        throw new CarrotException("TODO");
+        throw new CarrotException("Unknown comparison: " + operator.getType());
       }
     }
-    return value;
+    return lhsValue;
   }
 }

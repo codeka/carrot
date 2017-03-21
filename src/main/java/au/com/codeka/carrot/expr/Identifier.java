@@ -15,6 +15,11 @@ public class Identifier {
   }
 
   public String evaluate() {
+    if (value.equalsIgnoreCase("null")) {
+      // "null" is a special identifier that... evaluates to null.
+      return null;
+    }
+
     return value;
   }
 

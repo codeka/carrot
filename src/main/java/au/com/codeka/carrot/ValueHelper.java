@@ -7,6 +7,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Various helpers for working with {@link Object}s.
@@ -197,6 +198,45 @@ public class ValueHelper {
     }
 
     throw new CarrotException("Unable to iterate '" + iterable + "'");
+  }
+
+  /**
+   * Tests the equality of the two given values.
+   *
+   * @param lhs The left-hand side you want to test for equality.
+   * @param rhs The right-hand side you want to test for equality.
+   * @return A value to indicate whether the value is true or false.
+   *
+   * @throws CarrotException If there's an error evaluating the objects.
+   */
+  public static boolean isEqual(Object lhs, Object rhs) throws CarrotException {
+    return Objects.equals(lhs, rhs);
+  }
+
+  /**
+   * Performs a numerical comparison on the two operands (assuming they are both convertible to numbers).
+   *
+   * @param lhs The left hand side to compare.
+   * @param rhs The right hand side to compare.
+   * @return Less than zero if lhs is less than rhs, zero if lhs is equal to rhs, and greater than zero if lhs is
+   *     greater than rhs.
+   * @throws CarrotException if either of the objects cannot be converted to numbers.
+   */
+  public static int compare(Object lhs, Object rhs) throws CarrotException {
+    Number lhsNumber = toNumber(lhs);
+    Number rhsNumber = toNumber(rhs);
+
+    if (lhsNumber instanceof Double || rhsNumber instanceof Double) {
+      return Double.compare(lhsNumber.doubleValue(), rhsNumber.doubleValue());
+    } else if (lhsNumber instanceof Float || rhsNumber instanceof Float) {
+      return Float.compare(lhsNumber.floatValue(), rhsNumber.floatValue());
+    } else if (lhsNumber instanceof Long || rhsNumber instanceof Long) {
+      return Long.compare(lhsNumber.longValue(), rhsNumber.longValue());
+    } else if (lhsNumber instanceof Integer || rhsNumber instanceof Integer) {
+      return Integer.compare(lhsNumber.intValue(), rhsNumber.intValue());
+    }
+
+    throw new CarrotException("Unknown number type.");
   }
 
   /**
