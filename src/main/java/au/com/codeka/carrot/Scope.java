@@ -1,7 +1,10 @@
 package au.com.codeka.carrot;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.*;
+
+import static au.com.codeka.carrot.util.Preconditions.checkNotNull;
 
 /**
  * Scope is a collection of all the bindings that are active. The scope is basically a stack: each time you iterate
@@ -45,7 +48,9 @@ public class Scope {
    * @return The resolved value, or null if the value doesn't exist in this scope.
    */
   @Nullable
-  public Object resolve(String name) {
+  public Object resolve(@Nonnull String name) {
+    checkNotNull(name);
+
     for (Map<String, Object> bindings : stack) {
       Object value = bindings.get(name);
       if (value != null) {

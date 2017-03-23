@@ -38,7 +38,11 @@ public class Variable {
   }
 
   public Object evaluate(Configuration config, Scope scope) throws CarrotException {
-    Object value = scope.resolve(identifier.evaluate());
+    String identifierName = identifier.evaluate();
+    if (identifierName == null) {
+      return null;
+    }
+    Object value = scope.resolve(identifierName);
     if (function != null) {
       value = function.evaluate(value, config, scope);
     }

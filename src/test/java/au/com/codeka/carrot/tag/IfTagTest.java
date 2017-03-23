@@ -107,7 +107,6 @@ public class IfTagTest {
     assertThat(render("{% if foo >= 1.2345 %}yes{% end %}", "foo", "1.2345")).isEqualTo("yes");
   }
 
-
   @Test
   public void testDifferentIntegerTypesEquality() throws CarrotException {
     assertThat(render("{% if foo == bar %}yes{% end %}", "foo", 123, "bar", 123L)).isEqualTo("yes");
@@ -119,5 +118,21 @@ public class IfTagTest {
     assertThat(render("{% if foo != bar %}yes{% end %}", "foo", 123L, "bar", 123)).isEqualTo("");
     assertThat(render("{% if foo != \"123\" %}yes{% end %}", "foo", 123)).isEqualTo("");
     assertThat(render("{% if foo != 123 %}yes{% end %}", "foo", "123")).isEqualTo("");
+  }
+
+
+  @Test
+  public void testNulls() throws CarrotException {
+    assertThat(render("{% if foo == null %}yes{% end %}", "foo", null)).isEqualTo("yes");
+    assertThat(render("{% if foo == bar %}yes{% end %}", "foo", null, "bar", null)).isEqualTo("yes");
+    assertThat(render("{% if foo == bar %}yes{% end %}", "foo", new Object(), "bar", null)).isEqualTo("");
+    assertThat(render("{% if foo != bar %}yes{% end %}", "foo", new Object(), "bar", null)).isEqualTo("yes");
+    assertThat(render("{% if foo != null %}yes{% end %}", "foo", new Object(), "bar", null)).isEqualTo("yes");
+
+    assertThat(render("{% if foo != null && foo.blah == null %}yes{% end %}", "foo", null)).isEqualTo("");
+
+    assertThat(render("{% if foo.bar == null %}yes{% end %}", "foo", new Object() {
+      public Object bar = null;
+    })).isEqualTo("yes");
   }
 }

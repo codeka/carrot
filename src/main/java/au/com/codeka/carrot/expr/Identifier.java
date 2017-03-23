@@ -1,5 +1,7 @@
 package au.com.codeka.carrot.expr;
 
+import javax.annotation.Nullable;
+
 /**
  * An Identifier.
  */
@@ -14,6 +16,7 @@ public class Identifier {
     this.value = (String) token.getValue();
   }
 
+  @Nullable
   public String evaluate() {
     if (value.equalsIgnoreCase("null")) {
       // "null" is a special identifier that... evaluates to null.
