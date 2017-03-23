@@ -106,4 +106,18 @@ public class IfTagTest {
 
     assertThat(render("{% if foo >= 1.2345 %}yes{% end %}", "foo", "1.2345")).isEqualTo("yes");
   }
+
+
+  @Test
+  public void testDifferentIntegerTypesEquality() throws CarrotException {
+    assertThat(render("{% if foo == bar %}yes{% end %}", "foo", 123, "bar", 123L)).isEqualTo("yes");
+    assertThat(render("{% if foo == bar %}yes{% end %}", "foo", 123L, "bar", 123)).isEqualTo("yes");
+    assertThat(render("{% if foo == \"123\" %}yes{% end %}", "foo", 123)).isEqualTo("yes");
+    assertThat(render("{% if foo == 123 %}yes{% end %}", "foo", "123")).isEqualTo("yes");
+
+    assertThat(render("{% if foo != bar %}yes{% end %}", "foo", 123, "bar", 123L)).isEqualTo("");
+    assertThat(render("{% if foo != bar %}yes{% end %}", "foo", 123L, "bar", 123)).isEqualTo("");
+    assertThat(render("{% if foo != \"123\" %}yes{% end %}", "foo", 123)).isEqualTo("");
+    assertThat(render("{% if foo != 123 %}yes{% end %}", "foo", "123")).isEqualTo("");
+  }
 }

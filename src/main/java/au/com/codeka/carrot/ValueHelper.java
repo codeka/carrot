@@ -210,6 +210,10 @@ public class ValueHelper {
    * @throws CarrotException If there's an error evaluating the objects.
    */
   public static boolean isEqual(Object lhs, Object rhs) throws CarrotException {
+    if (lhs instanceof Number || rhs instanceof Number) {
+      return compare(lhs, rhs) == 0;
+    }
+
     return Objects.equals(lhs, rhs);
   }
 
