@@ -67,6 +67,8 @@ public abstract class Node {
    * Chain to the given next {@link Node}. We save the given {@link Node} as our "next" node in the chain, and then
    * return it.
    *
+   * @param nextNode The next node to chain to.
+   * @return The {@link Node} to chain to.
    * @throws IllegalStateException If you try to chain to a node where {@link #canChain(Node)} returns false.
    */
   public Node chain(Node nextNode) {
