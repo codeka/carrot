@@ -43,9 +43,6 @@ public class Variable {
       return null;
     }
     Object value = scope.resolve(identifierName);
-    if (function != null) {
-      value = function.evaluate(value, config, scope);
-    }
     return evaluateRecursive(value, config, scope);
   }
 
@@ -62,6 +59,9 @@ public class Variable {
     }
     if (dotVariable != null) {
       value = dotVariable.evaluate(value, config, scope);
+    }
+    if (function != null) {
+      value = function.evaluate(value, config, scope);
     }
     return value;
   }
