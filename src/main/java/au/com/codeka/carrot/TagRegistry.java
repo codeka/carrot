@@ -27,7 +27,12 @@ public class TagRegistry {
     add("extends", ExtendsTag.class);
     add("block", BlockTag.class);
     add("set", SetTag.class);
-    add((tagName) -> tagName.toLowerCase().startsWith("end"), EndTag.class);
+    add(new TagMatcher() {
+      @Override
+      public boolean isMatch(String tagName) {
+        return tagName.toLowerCase().startsWith("end");
+      }
+    }, EndTag.class);
   }
 
   public void add(String name, Class<? extends Tag> tagClass) {
