@@ -2,6 +2,7 @@ package au.com.codeka.carrot.tag;
 
 import au.com.codeka.carrot.CarrotEngine;
 import au.com.codeka.carrot.CarrotException;
+import au.com.codeka.carrot.Configuration;
 import au.com.codeka.carrot.resource.MemoryResourceLocator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -80,7 +81,14 @@ public class ForTagTest {
 
   private String render(String content, @Nullable Map<String, Object> bindings) throws CarrotException {
     CarrotEngine engine = new CarrotEngine();
-    engine.getConfig().setLogger((level, msg) -> System.err.println(msg));
+    engine.getConfig().setLogger(new Configuration.Logger()
+    {
+      @Override
+      public void print(int level, String msg)
+      {
+        System.err.println(msg);
+      }
+    });
 
     Map<String, String> resources = new TreeMap<>();
     resources.put("index", content);

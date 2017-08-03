@@ -15,9 +15,15 @@ import java.util.TreeMap;
 public class RenderHelper {
   public static String render(String content, Object... bindings) throws CarrotException {
     CarrotEngine engine = new CarrotEngine();
-    engine.getConfig().setLogger((level, msg) -> {
-      if (level > Configuration.Logger.LEVEL_DEBUG) {
-        System.err.println(msg);
+    engine.getConfig().setLogger(new Configuration.Logger()
+    {
+      @Override
+      public void print(int level, String msg)
+      {
+        if (level > Configuration.Logger.LEVEL_DEBUG)
+        {
+          System.err.println(msg);
+        }
       }
     });
 

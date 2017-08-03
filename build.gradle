@@ -21,6 +21,9 @@ sourceSets {
     }
 }
 
+targetCompatibility = '1.7'
+sourceCompatibility = '1.7'
+
 task carrotJar(type: Jar) {
 }
 
