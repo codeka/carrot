@@ -1,12 +1,19 @@
 package au.com.codeka.carrot;
 
+import au.com.codeka.carrot.bindings.JsonArrayBindings;
+import au.com.codeka.carrot.bindings.JsonObjectBindings;
 import au.com.codeka.carrot.util.SafeString;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -26,11 +33,20 @@ public class ValueHelper {
     } else if (value instanceof Boolean) {
       return (Boolean) value;
     } else if (value instanceof Number) {
-      return ((Number) value).intValue() > 0;
+      return ((Number) value).intValue() != 0;
     } else if (value instanceof String) {
-      return ((String) value).isEmpty();
+      return !((String) value).isEmpty();
+    } else if (value instanceof CharSequence) {
+      return ((CharSequence) value).length()>0;
+    } else if (value instanceof Collection) {
+      return !((Collection) value).isEmpty();
+    } else if (value instanceof Map) {
+      return !((Map) value).isEmpty();
+    } else if (value instanceof Bindings) {
+      return !((Bindings) value).isEmpty();
     } else {
-      throw new CarrotException("Value '" + value + "' cannot be converted to boolean.");
+      // any unknown non-null, non-boolean value evaluates to true
+      return true;
     }
   }
 
@@ -183,11 +199,17 @@ public class ValueHelper {
   public static List<Object> iterate(Object iterable) throws CarrotException {
     if (iterable == null) {
       // Just iterate an empty list.
-      return new ArrayList<>();
+      return Collections.emptyList();
     } else if (iterable instanceof List) {
       return (List) iterable;
     } else if (iterable instanceof Collection) {
       return new ArrayList<>((Collection) iterable);
+    } else if (iterable instanceof Iterable) {
+      ArrayList<Object> objects = new ArrayList<>(128);
+      for (Object o:(Iterable)iterable) {
+        objects.add(o);
+      }
+      return objects;
     } else if (iterable.getClass().isArray()) {
       int length = Array.getLength(iterable);
       ArrayList<Object> objects = new ArrayList<>(length);
@@ -266,4 +288,15 @@ public class ValueHelper {
         .replaceAll("<", "&lt;")
         .replaceAll(">", "&gt;");
   }
+
+  public static Object jsonHelper(Object object) {
+    if (object instanceof JSONObject) {
+      return new JsonObjectBindings((JSONObject) object);
+    } else if (object instanceof JSONArray) {
+       return new JsonArrayBindings((JSONArray) object);
+    } else if (JSONObject.NULL.equals(object)) {
+      return null;
+    }
+      return object;
+    }
 }

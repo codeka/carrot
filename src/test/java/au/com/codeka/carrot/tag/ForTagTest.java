@@ -3,6 +3,7 @@ package au.com.codeka.carrot.tag;
 import au.com.codeka.carrot.CarrotEngine;
 import au.com.codeka.carrot.CarrotException;
 import au.com.codeka.carrot.Configuration;
+import au.com.codeka.carrot.bindings.MapBindings;
 import au.com.codeka.carrot.resource.MemoryResourceLocator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -95,6 +96,6 @@ public class ForTagTest {
     MemoryResourceLocator resourceLocator = new MemoryResourceLocator(resources);
     engine.getConfig().setResourceLocater(resourceLocator);
 
-    return engine.process("index", bindings);
+    return engine.process("index", new MapBindings(bindings));
   }
 }

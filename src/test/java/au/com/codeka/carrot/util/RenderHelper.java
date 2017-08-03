@@ -3,6 +3,7 @@ package au.com.codeka.carrot.util;
 import au.com.codeka.carrot.CarrotEngine;
 import au.com.codeka.carrot.CarrotException;
 import au.com.codeka.carrot.Configuration;
+import au.com.codeka.carrot.bindings.MapBindings;
 import au.com.codeka.carrot.resource.MemoryResourceLocator;
 
 import java.util.HashMap;
@@ -37,6 +38,6 @@ public class RenderHelper {
       bindingsMap.put(bindings[i].toString(), bindings[i + 1]);
     }
 
-    return engine.process("index", bindingsMap);
+    return engine.process("index", new MapBindings(bindingsMap));
   }
 }

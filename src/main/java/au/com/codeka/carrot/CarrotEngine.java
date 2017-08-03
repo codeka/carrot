@@ -1,19 +1,18 @@
 package au.com.codeka.carrot;
 
+import au.com.codeka.carrot.bindings.SingletonBindings;
 import au.com.codeka.carrot.helpers.HtmlHelper;
-import au.com.codeka.carrot.util.LineReader;
-import au.com.codeka.carrot.tmpl.parse.Tokenizer;
 import au.com.codeka.carrot.resource.ResourceLocater;
 import au.com.codeka.carrot.resource.ResourceName;
 import au.com.codeka.carrot.tmpl.Node;
 import au.com.codeka.carrot.tmpl.TemplateParser;
+import au.com.codeka.carrot.tmpl.parse.Tokenizer;
+import au.com.codeka.carrot.util.LineReader;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * {@link CarrotEngine} is the root of the carrot system. You create an instance of this, make it global or static,
@@ -21,7 +20,7 @@ import java.util.Map;
  */
 public class CarrotEngine {
   private final Configuration config;
-  private final Map<String, Object> globalBindings;
+  private final Bindings globalBindings;
   private final ParseCache parseCache;
   private final TemplateParser templateParser;
 
@@ -43,11 +42,9 @@ public class CarrotEngine {
    */
   public CarrotEngine(Configuration config) {
     this.config = config;
-    this.globalBindings = new HashMap<>();
+    this.globalBindings = new SingletonBindings("html", new HtmlHelper());
     this.parseCache = new ParseCache(config);
     this.templateParser = new TemplateParser(config);
-
-    globalBindings.put("html", new HtmlHelper());
   }
 
   /**
@@ -62,7 +59,7 @@ public class CarrotEngine {
    * @return A map of the global variables. These bindings will be accessible in all templates processed by this
    * {@link CarrotEngine}.
    */
-  public Map<String, Object> getGlobalBindings() {
+  public Bindings globalBindings() {
     return globalBindings;
   }
 
@@ -107,7 +104,7 @@ public class CarrotEngine {
   public void process(
       Writer writer,
       String templateFile,
-      @Nullable Map<String, Object> bindings) throws CarrotException {
+      @Nullable Bindings bindings) throws CarrotException {
     ResourceName resourceName = config.getResourceLocater().findResource(templateFile);
 
     Scope scope = new Scope(globalBindings);
@@ -128,7 +125,7 @@ public class CarrotEngine {
    *
    * @throws CarrotException Thrown if any errors occur.
    */
-  public String process(String templateFile, @Nullable Map<String, Object> bindings) throws CarrotException {
+  public String process(String templateFile, @Nullable Bindings bindings) throws CarrotException {
     StringWriter writer = new StringWriter();
     process(writer, templateFile, bindings);
     return writer.getBuffer().toString();

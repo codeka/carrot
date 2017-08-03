@@ -2,6 +2,7 @@ package au.com.codeka.carrot.tag;
 
 import au.com.codeka.carrot.CarrotEngine;
 import au.com.codeka.carrot.CarrotException;
+import au.com.codeka.carrot.bindings.SingletonBindings;
 import au.com.codeka.carrot.expr.Expression;
 import au.com.codeka.carrot.expr.StatementParser;
 import au.com.codeka.carrot.Scope;
@@ -85,9 +86,7 @@ public class ExtendsTag extends Tag {
     // TODO: we should locate the resource with the current parent.
     ResourceName resourceName = engine.getConfig().getResourceLocater().findResource(null, skeletonName);
 
-    Map<String, Object> context = new HashMap<>();
-    context.put("__blocks", blockTags);
-    scope.push(context);
+    scope.push(new SingletonBindings("__blocks", blockTags));
     engine.process(writer, resourceName, scope);
     scope.pop();
   }
