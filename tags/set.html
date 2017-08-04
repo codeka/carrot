@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Carrot &bull; Set tag</title>
+  <link rel="shortcut icon" href="../favicon.ico">
+  <link rel="stylesheet" href="../css/site.css">
+  
+</head>
+<body>
+  <section id="header"><div class="header-bg">
+    <img src="../img/carrot-48.png" width="48" height="48" alt="Logo" />
+    <h1>Carrot<span>A templating engine for Java</span></h1>
+  </div></section>
+
+  <section id="maincontent">
+    <section id="navmenu"><div class="navmenu-bg">
+      <ul>
+        <li><a href="../index.html">Introduction</a>
+        <li><a href="../getting-started.html">Getting started</a>
+        <li><a href="../template-language.html">Template language</a>
+          <ul>
+            <li><a href="../tags/echo.html">Echo tag</a>
+            <li><a href="../tags/if.html">If tag</a>
+            <li><a href="../tags/for.html">For tag</a>
+            <li><a href="../tags/set.html">Set tag</a>
+            <li><a href="../tags/extends.html">Extends tag</a>
+            <li><a href="../tags/custom.html">Custom tags</a>
+          </ul>
+        <li><a href="../expressions.html">Expressions</a>
+        <li><a href="../helpers.html">Helpers</a>
+      </ul>
+      <ul>
+        <li><a href="../javadoc/">Javadoc</a></li>
+        <li><a href="https://github.com/codeka/carrot">Github</a></li>
+        <li><a href="https://github.com/codeka/carrot/issues">File an issue</a></li>
+      </ul>
+      <p class="copyright">Copyright &copy; Dean Harding</p>
+    </div></section>
+    <section id="content">
+<h2>Set tag</h2>
+
+<code><pre>{% set &lt;identifier&gt; %}
+  content
+{% end %}</pre></code>
+
+<p>The <code>{% set %}</code> tag can be used to set the value of a variable in the current scope to the value of
+the tag's contents. It's best described with an example.</p>
+
+<h3>Example</h3>
+
+<p>Given the template:</p>
+
+
+
+<pre><code>{% set foo %}
+  Here is some &lt;b&gt;HTML&lt;/b&gt;!
+{% end %}</code></pre>
+
+<p>This would set the value of the variable <code>foo</code> to the string "Here is some &lt;b&gt;HTML&lt;/b&gt;!". Later on in your template,
+you can then do stuff like:</p>
+
+<pre><code>
+  {{ foo }}
+  {{ html.safe(foo) }}
+</code></pre>
+
+<p>And get:</p>
+
+<pre><code>
+  Here is some &lt;b&gt;HTML&lt;/b&gt;!
+  Here is some <b>HTML</b>!
+</code></pre>
+
+<hr>
+<div class="bottom-nav">
+  <div class="back">
+    <a href="../tags/for.html">← For tag</a>
+  </div>
+  <div class="next">
+    <a href="../tags/extends.html">Extends tag →</a>
+  </div>
+</div>
+</section>
+  </section>
+</body>
+</html>

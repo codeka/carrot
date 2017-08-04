@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Carrot &bull; Helpers</title>
+  <link rel="shortcut icon" href="favicon.ico">
+  <link rel="stylesheet" href="css/site.css">
+  
+</head>
+<body>
+  <section id="header"><div class="header-bg">
+    <img src="img/carrot-48.png" width="48" height="48" alt="Logo" />
+    <h1>Carrot<span>A templating engine for Java</span></h1>
+  </div></section>
+
+  <section id="maincontent">
+    <section id="navmenu"><div class="navmenu-bg">
+      <ul>
+        <li><a href="index.html">Introduction</a>
+        <li><a href="getting-started.html">Getting started</a>
+        <li><a href="template-language.html">Template language</a>
+          <ul>
+            <li><a href="tags/echo.html">Echo tag</a>
+            <li><a href="tags/if.html">If tag</a>
+            <li><a href="tags/for.html">For tag</a>
+            <li><a href="tags/set.html">Set tag</a>
+            <li><a href="tags/extends.html">Extends tag</a>
+            <li><a href="tags/custom.html">Custom tags</a>
+          </ul>
+        <li><a href="expressions.html">Expressions</a>
+        <li><a href="helpers.html">Helpers</a>
+      </ul>
+      <ul>
+        <li><a href="javadoc/">Javadoc</a></li>
+        <li><a href="https://github.com/codeka/carrot">Github</a></li>
+        <li><a href="https://github.com/codeka/carrot/issues">File an issue</a></li>
+      </ul>
+      <p class="copyright">Copyright &copy; Dean Harding</p>
+    </div></section>
+    <section id="content">
+<h2>Helpers</h2>
+
+<p>Helpers are global functions that are registered by default when you create the <code>CarrotEngine</code>. You can
+access them in all of your templates, and they provide some useful functionality: from HTML-escaping to formatting
+numbers.</p>
+
+<h3>HTML</h3>
+
+<dl>
+  <dt id="html_safe">html.safe(&lt;str&gt;)</dt>
+  <dd>Mark a string as "safe". When
+    <a href="/javadoc/au/com/codeka/carrot/Configuration.html#setAutoEscape-boolean-">Configuration.setAutoEscape</a>
+    is false (which is the default), all output from tags is escaped automatically. If you don't want that to happen
+    (for example, if the value is from a known safe source), then you can use <code>html.safe</code> to mark is as
+    safe for un-escaped output.
+
+    <p>For example, given the following template:</p>
+    <pre><code>{{ "Some &lt;b&gt;HTML&lt;/b&gt; here" }}
+{{ html.safe("Some &lt;b&gt;HTML&lt;/b&gt; here") }}</code></pre>
+    <p>You would get:</p>
+    <pre><code>Some &amp;lt;b&amp;gt;HTML&amp;lt;/b&amp;gt; here
+Some &lt;b&gt;HTML&lt;/b&gt; here</code></pre>
+  </dd>
+
+  <dt id="html_escape">html.escape(&lt;str&gt;)</dt>
+  <dd>Explicitly HTML-escape the given string. This is handy if you want to turn auto-escaping off by default (via
+    <a href="/javadoc/au/com/codeka/carrot/Configuration.html#setAutoEscape-boolean-">Configuration.setAutoEscape</a>)
+    but then want to selectively escape some strings.
+
+    <p>Note that calling this over and over will not cause the string to become double-escaped. And calling this when
+    auto-escape is on will have no effect.</p></dd>
+</dl>
+
+
+
+<hr>
+<div class="bottom-nav">
+  <div class="back">
+    <a href="tags/custom.html">← Expressions</a>
+  </div>
+</div>
+</section>
+  </section>
+</body>
+</html>

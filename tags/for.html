@@ -22,10 +22,12 @@
             <li><a href="../tags/echo.html">Echo tag</a>
             <li><a href="../tags/if.html">If tag</a>
             <li><a href="../tags/for.html">For tag</a>
+            <li><a href="../tags/set.html">Set tag</a>
             <li><a href="../tags/extends.html">Extends tag</a>
             <li><a href="../tags/custom.html">Custom tags</a>
           </ul>
         <li><a href="../expressions.html">Expressions</a>
+        <li><a href="../helpers.html">Helpers</a>
       </ul>
       <ul>
         <li><a href="../javadoc/">Javadoc</a></li>
@@ -39,11 +41,16 @@
 
 <code><pre>{% for identifier in &lt;expr&gt; %}
   content
+{% else %}
+  content
 {% end %}</pre></code>
 
 <p>The for tag evaluates the expression and, assuming it is a collection of some kind, iterates the collection,
   rendering it's content for each iteration of the loop. Inside the loop, the given <code>identifier</code> is available
   for you to reference.</p>
+
+<p>If you have an <code>{% else %}</code> block after the <code>{% for %}</code> block, the else block will be
+  output if the collection is empty.</p>
 
 <p>In addition to the <code>identifier</code>, a special <code>loop</code> object is available inside the contents of
   for loop, with some additional information about the loop. The loop variable has the following properties:</p>
@@ -79,13 +86,14 @@
 <code><pre>  CarrotEngine engine = new CarrotEngine();
   engine.getConfig().setResourceLocator(...);
 
-  Map&lt;String, Object&gt; bindings = ImmutableMap.&lt;String, Object&gt;builder()
+  Bindings bindings = new MapBindings(ImmutableMap.&lt;String, Object&gt;builder()
       .put("users", Lists.newArrayList(
           ImmutableMap.of("id", 1234, "name", "Dean"),
           ImmutableMap.of("id", 2657, "name", "John"),
           ImmutableMap.of("id", 3464, "name", "Harry")
         )
-      .build();
+      .put("admins", Lists.newArrayList())
+      .build());
 
   System.out.println(engine.process("filename.html", bindings));
 </pre></code>
@@ -100,6 +108,7 @@
 
 <p>It would output the following:</p>
 
+
 <code><pre>  &lt;div class="first"&gt;
     0: 1234 Dean
   &lt;/div&gt;
@@ -110,13 +119,25 @@
     2: 3464 Harry
   &lt;/div&gt;</pre></code>
 
+<p>Similarly, the following template:</p>
+
+<code><pre>  {% for admin in admins %}
+    {{ admin.id }} : {{ admin.name }}
+  {% else %}
+    You don't have any admin users.
+  {% end %}</pre></code>
+
+<p>Would output the following:</p>
+
+<code><pre>You don't have any admin users.</pre></code>
+
 <hr>
 <div class="bottom-nav">
   <div class="back">
     <a href="../tags/if.html">← If tag</a>
   </div>
   <div class="next">
-    <a href="../tags/extends.html">Extends tag →</a>
+    <a href="../tags/set.html">Set tag →</a>
   </div>
 </div>
 </section>
