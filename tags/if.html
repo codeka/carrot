@@ -58,13 +58,13 @@
 <code><pre>  CarrotEngine engine = new CarrotEngine();
   engine.getConfig().setResourceLocator(...);
 
-  Map&lt;String, Object&gt; bindings = ImmutableMap.&lt;String, Object&gt;builder()
+  Bindings bindings = new MapBindings(ImmutableMap.&lt;String, Object&gt;builder()
       .put("foo", true)
       .put("bar", false)
       .put("user", ImmutableMap.of(
           "id", 1234,
           "name", "Dean"))
-      .build();
+      .build());
 
   System.out.println(engine.process("filename.html", bindings));</pre></code>
 
