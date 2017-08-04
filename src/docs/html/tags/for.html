@@ -50,14 +50,14 @@
 <code><pre>  CarrotEngine engine = new CarrotEngine();
   engine.getConfig().setResourceLocator(...);
 
-  Map&lt;String, Object&gt; bindings = ImmutableMap.&lt;String, Object&gt;builder()
+  Bindings bindings = new MapBindings(ImmutableMap.&lt;String, Object&gt;builder()
       .put("users", Lists.newArrayList(
           ImmutableMap.of("id", 1234, "name", "Dean"),
           ImmutableMap.of("id", 2657, "name", "John"),
           ImmutableMap.of("id", 3464, "name", "Harry")
         )
       .put("admins", Lists.newArrayList())
-      .build();
+      .build());
 
   System.out.println(engine.process("filename.html", bindings));
 </pre></code>

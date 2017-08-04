@@ -18,12 +18,12 @@ With Maven:
     <dependency>
       <groupId>au.com.codeka</groupId>
       <artifactId>carrot</artifactId>
-      <version>2.2.1</version>
+      <version>2.3.0</version>
     </dependency>
 
 With Gradle:
 
-    compile 'au.com.codeka:carrot:2.2.1'
+    compile 'au.com.codeka:carrot:2.3.0'
 
 First, you need to create a `CarrotEngine`, which will hold the environment for parsing templates and processing them:
 
