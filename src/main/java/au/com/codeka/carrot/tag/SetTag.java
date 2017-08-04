@@ -3,6 +3,7 @@ package au.com.codeka.carrot.tag;
 import au.com.codeka.carrot.CarrotEngine;
 import au.com.codeka.carrot.CarrotException;
 import au.com.codeka.carrot.Scope;
+import au.com.codeka.carrot.bindings.SingletonBindings;
 import au.com.codeka.carrot.expr.Expression;
 import au.com.codeka.carrot.expr.Identifier;
 import au.com.codeka.carrot.expr.StatementParser;
@@ -37,6 +38,6 @@ public class SetTag extends Tag {
     StringWriter stringWriter = new StringWriter();
     tagNode.renderChildren(engine, stringWriter, scope);
 
-    scope.peek().put(identifier.evaluate(), stringWriter.toString());
+    scope.extendCurrent(new SingletonBindings(identifier.evaluate(), stringWriter.toString()));
   }
 }

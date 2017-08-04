@@ -57,19 +57,18 @@ index.html:
 
 Finally to process a template, you use the `process` method:
 
-    Map<String, Object> bindings = new TreeMap<>();
-    System.out.println(engine.process("index.html", bindings));
+    System.out.println(engine.process("index.html", new EmptyBindings()));
 
 Now how do you actually pass data from your application to the template? That's what the bindings are for. Say you have
 the following in your template:
 
     <p>Hello, {{ name }}!</p>
 
-You'd pass data to that via a binding, like so:
+You'd pass data to that via `Bindings`, like so:
 
     Map<String, Object> bindings = new TreeMap<>();
     bindings.put("name", "Dean");
-    System.out.println(engine.process("index.html", bindings));
+    System.out.println(engine.process("index.html", new MapBindings(bindings)));
 
 Documentation
 =============

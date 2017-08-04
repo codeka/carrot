@@ -1,5 +1,6 @@
 package au.com.codeka.carrot.expr;
 
+import au.com.codeka.carrot.Bindings;
 import au.com.codeka.carrot.CarrotException;
 import au.com.codeka.carrot.Configuration;
 import au.com.codeka.carrot.Scope;
@@ -76,6 +77,9 @@ public class Variable {
     } else if (value instanceof Map) {
       Map map = (Map) value;
       return map.get(accessor);
+    } else if (value instanceof Bindings) {
+      Bindings bindings = (Bindings) value;
+      return bindings.resolve(accessor.toString());
     } else if (value instanceof List) {
       List list = (List) value;
       return list.get(ValueHelper.toNumber(accessor).intValue());

@@ -3,6 +3,8 @@ package au.com.codeka.carrot.tag;
 import au.com.codeka.carrot.CarrotEngine;
 import au.com.codeka.carrot.CarrotException;
 import au.com.codeka.carrot.Configuration;
+import au.com.codeka.carrot.Bindings;
+import au.com.codeka.carrot.bindings.EmptyBindings;
 import au.com.codeka.carrot.resource.MemoryResourceLocator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,7 +28,7 @@ public class ExtendsTagTest {
         "skeleton", "Hello{% block \"foo\" %}blah blah{% end %}World",
         "index", "{% extends \"skeleton\" %}{% block \"foo\" %}yada yada{% end %}"
       );
-    String result = render(engine, "index", new TreeMap<String, Object>());
+    String result = render(engine, "index", new EmptyBindings());
     assertThat(result).isEqualTo("Helloyada yadaWorld");
   }
 
@@ -36,7 +38,7 @@ public class ExtendsTagTest {
         "skeleton", "Hello{% block \"foo\" %}blah blah{% endblock %}World{% block \"bar\" %}{% endblock %}",
         "index", "{% extends \"skeleton\" %}{% block \"foo\" %}yada yada{% end %}{% block \"bar\" %}stuff{% endblock %}"
     );
-    String result = render(engine, "index", new TreeMap<String, Object>());
+    String result = render(engine, "index",new EmptyBindings());
     assertThat(result).isEqualTo("Helloyada yadaWorldstuff");
   }
 
@@ -46,7 +48,7 @@ public class ExtendsTagTest {
         "skeleton", "Hello{% block \"foo\" %}blah blah{% end %}World",
         "index", "{% extends \"skeleton\" %}"
     );
-    String result = render(engine, "index", new TreeMap<String, Object>());
+    String result = render(engine, "index", new EmptyBindings());
     assertThat(result).isEqualTo("Helloblah blahWorld");
   }
 
@@ -56,7 +58,7 @@ public class ExtendsTagTest {
         "index", "{% extends \"skeleton\" %}"
     );
     try {
-      engine.process("index", new TreeMap<String, Object>());
+      engine.process("index", new EmptyBindings());
       fail("Expected CarrotException.");
     } catch (CarrotException e) {
       assertThat(e.getMessage())
@@ -64,7 +66,7 @@ public class ExtendsTagTest {
     }
   }
 
-  private String render(CarrotEngine engine, String templateName, @Nullable Map<String, Object> bindings) {
+  private String render(CarrotEngine engine, String templateName, @Nullable Bindings bindings) {
     try {
       return engine.process(templateName, bindings);
     } catch (CarrotException e) {

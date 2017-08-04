@@ -4,6 +4,7 @@ import au.com.codeka.carrot.CarrotEngine;
 import au.com.codeka.carrot.CarrotException;
 import au.com.codeka.carrot.Scope;
 import au.com.codeka.carrot.ValueHelper;
+import au.com.codeka.carrot.bindings.MapBindings;
 import au.com.codeka.carrot.expr.Expression;
 import au.com.codeka.carrot.expr.Identifier;
 import au.com.codeka.carrot.expr.StatementParser;
@@ -62,7 +63,7 @@ public class ForTag extends Tag {
       loop.put("length", objects.size());
       context.put("loop", loop);
 
-      scope.push(context);
+      scope.push(new MapBindings(context));
       tagNode.renderChildren(engine, writer, scope);
       scope.pop();
     }

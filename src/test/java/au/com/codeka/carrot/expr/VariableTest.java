@@ -3,6 +3,7 @@ package au.com.codeka.carrot.expr;
 import au.com.codeka.carrot.CarrotException;
 import au.com.codeka.carrot.Configuration;
 import au.com.codeka.carrot.Scope;
+import au.com.codeka.carrot.bindings.MapBindings;
 import au.com.codeka.carrot.resource.ResourcePointer;
 import au.com.codeka.carrot.util.LineReader;
 import org.junit.Test;
@@ -88,7 +89,7 @@ public class VariableTest {
     for (int i = 0; i < values.length; i += 2) {
       map.put(values[i].toString(), values[i+1]);
     }
-    return new Scope(map);
+    return new Scope(new MapBindings(map));
   }
 
   private Variable parse(String expr) throws CarrotException {

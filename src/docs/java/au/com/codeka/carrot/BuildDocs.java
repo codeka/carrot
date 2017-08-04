@@ -1,5 +1,6 @@
 package au.com.codeka.carrot;
 
+import au.com.codeka.carrot.bindings.MapBindings;
 import au.com.codeka.carrot.resource.FileResourceLocater;
 
 import java.io.File;
@@ -56,7 +57,7 @@ class BuildDocs {
         }
         bindings.put("basePath", basePath);
 
-        String contents = engine.process(inputFile, bindings);
+        String contents = engine.process(inputFile, new MapBindings(bindings));
         Files.write(new File(outputFile).toPath(), contents.getBytes("UTF-8"));
       } catch (CarrotException | IOException e) {
         e.printStackTrace(System.err);
