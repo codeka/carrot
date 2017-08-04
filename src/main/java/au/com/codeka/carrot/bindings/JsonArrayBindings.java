@@ -15,44 +15,44 @@ import java.util.NoSuchElementException;
  * @author Marten Gajda
  */
 public final class JsonArrayBindings implements Bindings, Iterable {
-    private final JSONArray jsonArray;
+  private final JSONArray jsonArray;
 
+  public JsonArrayBindings(JSONArray jsonArray) {
+    this.jsonArray = jsonArray;
+  }
 
-    public JsonArrayBindings(JSONArray jsonArray) {
-        this.jsonArray = jsonArray;
-    }
+  @Override
+  public Object resolve(@Nonnull String key) {
+    return ValueHelper.jsonHelper(jsonArray.get(Integer.parseInt(key)));
+  }
 
+  @Override
+  public boolean isEmpty() {
+    return jsonArray.length() == 0;
+  }
 
-    @Override
-    public Object resolve(@Nonnull String key) {
-        return ValueHelper.jsonHelper(jsonArray.get(Integer.parseInt(key)));
-    }
+  @Override
+  public Iterator iterator() {
+    return new Iterator() {
+      int index = 0;
 
+      @Override
+      public boolean hasNext() {
+        return index < jsonArray.length();
+      }
 
-    @Override
-    public boolean isEmpty() {
-        return jsonArray.length() == 0;
-    }
+      @Override
+      public void remove() {
+        throw new UnsupportedOperationException("Remove not supported.");
+      }
 
-
-    @Override
-    public Iterator iterator() {
-        return new Iterator() {
-            int index = 0;
-
-            @Override
-            public boolean hasNext() {
-                return index < jsonArray.length();
-            }
-
-
-            @Override
-            public Object next() {
-                if (!hasNext()) {
-                    throw new NoSuchElementException("No further elements to iterate");
-                }
-                return ValueHelper.jsonHelper(jsonArray.get(index++));
-            }
-        };
-    }
+      @Override
+      public Object next() {
+        if (!hasNext()) {
+          throw new NoSuchElementException("No further elements to iterate");
+        }
+        return ValueHelper.jsonHelper(jsonArray.get(index++));
+      }
+    };
+  }
 }

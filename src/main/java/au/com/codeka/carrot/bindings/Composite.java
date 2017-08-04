@@ -29,38 +29,34 @@ import java.util.Arrays;
  * @author Marten Gajda
  */
 public final class Composite implements Bindings {
-    private final Iterable<Bindings> bindingsIterable;
+  private final Iterable<Bindings> bindingsIterable;
 
+  public Composite(Bindings... bindings) {
+    this(Arrays.asList(bindings));
+  }
 
-    public Composite(Bindings... bindings) {
-        this(Arrays.asList(bindings));
+  public Composite(Iterable<Bindings> bindingsIterable) {
+    this.bindingsIterable = bindingsIterable;
+  }
+
+  @Override
+  public Object resolve(@Nonnull String key) {
+    for (Bindings bindings : bindingsIterable) {
+      Object value = bindings.resolve(key);
+      if (value != null) {
+        return value;
+      }
     }
+    return null;
+  }
 
-
-    public Composite(Iterable<Bindings> bindingsIterable) {
-        this.bindingsIterable = bindingsIterable;
+  @Override
+  public boolean isEmpty() {
+    for (Bindings bindings : bindingsIterable) {
+      if (!bindings.isEmpty()) {
+        return false;
+      }
     }
-
-
-    @Override
-    public Object resolve(@Nonnull String key) {
-        for (Bindings bindings : bindingsIterable) {
-            Object value = bindings.resolve(key);
-            if (value != null) {
-                return value;
-            }
-        }
-        return null;
-    }
-
-
-    @Override
-    public boolean isEmpty() {
-        for (Bindings bindings : bindingsIterable) {
-            if (!bindings.isEmpty()) {
-                return false;
-            }
-        }
-        return true;
-    }
+    return true;
+  }
 }

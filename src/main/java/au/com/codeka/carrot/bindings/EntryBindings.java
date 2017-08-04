@@ -20,27 +20,26 @@ import java.util.Map;
  * @author Marten Gajda
  */
 public final class EntryBindings implements Bindings {
+  private final Map.Entry<String, Object> entry;
 
-    private final Map.Entry<String, Object> entry;
+  public EntryBindings(Map.Entry<String, Object> entry) {
+    this.entry = entry;
+  }
 
-    public EntryBindings(Map.Entry<String, Object> entry) {
-        this.entry = entry;
+  @Override
+  public Object resolve(@Nonnull String key) {
+    switch (key) {
+      case "key":
+        return entry.getKey();
+      case "value":
+        return entry.getValue();
+      default:
+        return null;
     }
+  }
 
-    @Override
-    public Object resolve(@Nonnull String key) {
-        switch (key) {
-            case "key":
-                return entry.getKey();
-            case "value":
-                return entry.getValue();
-            default:
-                return null;
-        }
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return false;
-    }
+  @Override
+  public boolean isEmpty() {
+    return false;
+  }
 }
