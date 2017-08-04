@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel>
+      <module name="git_docs" target="1.7" />
+      <module name="git_main" target="1.7" />
+      <module name="git_test" target="1.7" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
