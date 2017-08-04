@@ -5,12 +5,12 @@ import au.com.codeka.carrot.Configuration;
 import au.com.codeka.carrot.Scope;
 import au.com.codeka.carrot.resource.ResourcePointer;
 import au.com.codeka.carrot.util.LineReader;
-import com.google.common.collect.Maps;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import java.io.StringReader;
+import java.util.HashMap;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.fail;
@@ -24,7 +24,7 @@ public class FunctionTest {
   public void testMethodNotFound() {
     Function f = new Function.Builder(new Identifier(new Token(TokenType.IDENTIFIER, "foo"))).build();
     try {
-      f.evaluate(new Object(), new Configuration(), new Scope(Maps.newHashMap()));
+      f.evaluate(new Object(), new Configuration(), new Scope(new HashMap<String, Object>()));
       fail("CarrotException expected.");
     } catch (CarrotException e) {
       assertThat(e.getMessage()).isEqualTo("No matching method 'foo' found on class java.lang.Object, candidates: []");
@@ -38,7 +38,7 @@ public class FunctionTest {
         .build();
 
     try {
-      f.evaluate(new FooWithTwoArgs(), new Configuration(), new Scope(Maps.newHashMap()));
+      f.evaluate(new FooWithTwoArgs(), new Configuration(), new Scope(new HashMap<String, Object>()));
       fail("CarrotException expected.");
     } catch (CarrotException e) {
       assertThat(e.getMessage())
@@ -55,7 +55,7 @@ public class FunctionTest {
         .build();
 
     try {
-      f.evaluate(new FooWithTwoArgs(), new Configuration(), new Scope(Maps.newHashMap()));
+      f.evaluate(new FooWithTwoArgs(), new Configuration(), new Scope(new HashMap<String, Object>()));
       fail("CarrotException expected.");
     } catch (CarrotException e) {
       assertThat(e.getMessage())

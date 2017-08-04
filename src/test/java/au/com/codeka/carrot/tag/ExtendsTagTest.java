@@ -1,8 +1,8 @@
 package au.com.codeka.carrot.tag;
 
 import au.com.codeka.carrot.CarrotEngine;
-import au.com.codeka.carrot.CarrotEngineTest;
 import au.com.codeka.carrot.CarrotException;
+import au.com.codeka.carrot.Configuration;
 import au.com.codeka.carrot.resource.MemoryResourceLocator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,7 +26,7 @@ public class ExtendsTagTest {
         "skeleton", "Hello{% block \"foo\" %}blah blah{% end %}World",
         "index", "{% extends \"skeleton\" %}{% block \"foo\" %}yada yada{% end %}"
       );
-    String result = render(engine, "index", new TreeMap<>());
+    String result = render(engine, "index", new TreeMap<String, Object>());
     assertThat(result).isEqualTo("Helloyada yadaWorld");
   }
 
@@ -36,7 +36,7 @@ public class ExtendsTagTest {
         "skeleton", "Hello{% block \"foo\" %}blah blah{% endblock %}World{% block \"bar\" %}{% endblock %}",
         "index", "{% extends \"skeleton\" %}{% block \"foo\" %}yada yada{% end %}{% block \"bar\" %}stuff{% endblock %}"
     );
-    String result = render(engine, "index", new TreeMap<>());
+    String result = render(engine, "index", new TreeMap<String, Object>());
     assertThat(result).isEqualTo("Helloyada yadaWorldstuff");
   }
 
@@ -46,7 +46,7 @@ public class ExtendsTagTest {
         "skeleton", "Hello{% block \"foo\" %}blah blah{% end %}World",
         "index", "{% extends \"skeleton\" %}"
     );
-    String result = render(engine, "index", new TreeMap<>());
+    String result = render(engine, "index", new TreeMap<String, Object>());
     assertThat(result).isEqualTo("Helloblah blahWorld");
   }
 
@@ -56,7 +56,7 @@ public class ExtendsTagTest {
         "index", "{% extends \"skeleton\" %}"
     );
     try {
-      engine.process("index", new TreeMap<>());
+      engine.process("index", new TreeMap<String, Object>());
       fail("Expected CarrotException.");
     } catch (CarrotException e) {
       assertThat(e.getMessage())
@@ -74,7 +74,14 @@ public class ExtendsTagTest {
 
   private CarrotEngine createEngine(String... nameValues) {
     CarrotEngine engine = new CarrotEngine();
-    engine.getConfig().setLogger((level, msg) -> System.err.println(msg));
+    engine.getConfig().setLogger(new Configuration.Logger()
+    {
+      @Override
+      public void print(int level, String msg)
+      {
+        System.err.println(msg);
+      }
+    });
     engine.getConfig().setResourceLocater(createResources(nameValues));
     return engine;
   }

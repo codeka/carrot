@@ -3,7 +3,6 @@ package au.com.codeka.carrot;
 import au.com.codeka.carrot.resource.ResourceLocater;
 import au.com.codeka.carrot.resource.ResourceName;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -11,6 +10,7 @@ import org.junit.runners.JUnit4;
 import javax.annotation.Nullable;
 import java.io.Reader;
 import java.io.StringReader;
+import java.util.HashMap;
 import java.util.Map;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -32,7 +32,7 @@ public class CarrotEngineTest {
 
   @Test
   public void testIfTag() {
-    assertThat(render("foo{% if a == 0 %}bar{% end %}baz", ImmutableMap.of("a", 0L))).isEqualTo("foobarbaz");
+    assertThat(render("foo{% if a == 0 %}bar{% end %}baz", ImmutableMap.<String, Object>of("a", 0L))).isEqualTo("foobarbaz");
   }
 
   @Test
@@ -49,21 +49,28 @@ public class CarrotEngineTest {
   @Test
   public void testAutoEscape() {
     CarrotEngine engine = createEngine();
-    assertThat(render(engine, "{{ \"Some <b>HTML</b> here\" }}", Maps.newHashMap()))
+    assertThat(render(engine, "{{ \"Some <b>HTML</b> here\" }}", new HashMap<String, Object>()))
         .isEqualTo("Some &lt;b&gt;HTML&lt;/b&gt; here");
 
     engine.getConfig().setAutoEscape(false);
-    assertThat(render(engine, "{{ \"Some <b>HTML</b> here\" }}", Maps.newHashMap()))
+    assertThat(render(engine, "{{ \"Some <b>HTML</b> here\" }}", new HashMap<String, Object>()))
         .isEqualTo("Some <b>HTML</b> here");
 
     engine.getConfig().setAutoEscape(true);
-    assertThat(render(engine, "{{ \"Some <b>HTML</b> here\" }}", Maps.newHashMap()))
+    assertThat(render(engine, "{{ \"Some <b>HTML</b> here\" }}", new HashMap<String, Object>()))
         .isEqualTo("Some &lt;b&gt;HTML&lt;/b&gt; here");
   }
 
   private CarrotEngine createEngine() {
     CarrotEngine engine = new CarrotEngine();
-    engine.getConfig().setLogger((level, msg) -> System.err.println(msg));
+    engine.getConfig().setLogger(new Configuration.Logger()
+    {
+      @Override
+      public void print(int level, String msg)
+      {
+        System.err.println(msg);
+      }
+    });
     return engine;
   }
 

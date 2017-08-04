@@ -72,7 +72,14 @@ public class VariableTest {
 
   private Configuration createConfig() {
     Configuration config = new Configuration();
-    config.setLogger((level, msg) -> System.err.println(msg));
+    config.setLogger(new Configuration.Logger()
+    {
+      @Override
+      public void print(int level, String msg)
+      {
+        System.err.println(msg);
+      }
+    });
     return config;
   }
 
