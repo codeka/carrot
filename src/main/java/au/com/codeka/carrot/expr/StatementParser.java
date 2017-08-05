@@ -5,6 +5,8 @@ import au.com.codeka.carrot.tag.Tag;
 import au.com.codeka.carrot.tmpl.TagNode;
 
 import javax.annotation.Nullable;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * StatementParser is used to parse expressions. Expressions are used to refer to everything that appears after the
@@ -74,6 +76,18 @@ public class StatementParser {
 
   public Identifier parseIdentifier() throws CarrotException {
     return new Identifier(tokenizer.expect(TokenType.IDENTIFIER));
+  }
+
+  public List<Identifier> parseIdentifierList() throws CarrotException {
+    List<Identifier> result = new LinkedList<>();
+    // first token of a list is always an identifier
+    result.add(new Identifier(tokenizer.expect(TokenType.IDENTIFIER)));
+    while (tokenizer.accept(TokenType.COMMA))
+    {
+      tokenizer.expect(TokenType.COMMA);
+      result.add(new Identifier(tokenizer.expect(TokenType.IDENTIFIER)));
+    }
+    return result;
   }
 
   public NumberLiteral parseNumber() throws CarrotException {

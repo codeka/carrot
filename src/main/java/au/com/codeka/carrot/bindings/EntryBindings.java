@@ -3,6 +3,8 @@ package au.com.codeka.carrot.bindings;
 import au.com.codeka.carrot.Bindings;
 
 import javax.annotation.Nonnull;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -19,7 +21,7 @@ import java.util.Map;
  *
  * @author Marten Gajda
  */
-public final class EntryBindings implements Bindings {
+public final class EntryBindings implements Bindings, Iterable {
   private final Map.Entry<String, Object> entry;
 
   public EntryBindings(Map.Entry<String, Object> entry) {
@@ -41,5 +43,10 @@ public final class EntryBindings implements Bindings {
   @Override
   public boolean isEmpty() {
     return false;
+  }
+
+  @Override
+  public Iterator iterator() {
+    return Arrays.asList(entry.getKey(), entry.getValue()).iterator();
   }
 }

@@ -10,10 +10,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -25,10 +22,11 @@ public class ForTagTest {
   @Test
   public void testArrayLoop() throws CarrotException {
     Map<String, Object> context = new HashMap<>();
-    context.put("values", new int[] { 3, 1, 4, 1, 5 });
+    context.put("values", new int[]{3, 1, 4, 1, 5});
     assertThat(render("foo{% for n in values %}a {{ n }} b{% end %}bar", context))
         .isEqualTo("fooa 3 ba 1 ba 4 ba 1 ba 5 bbar");
   }
+
 
   @Test
   public void testArrayListLoop() throws CarrotException {
@@ -42,6 +40,44 @@ public class ForTagTest {
         .isEqualTo("Hello  -foo-  -bar-  -baz-  World");
   }
 
+
+  @Test
+  public void testArrayExpansionLoop() throws CarrotException {
+    Map<String, Object> context = new HashMap<>();
+    ArrayList<List<String>> values = new ArrayList<>();
+    values.add(Arrays.asList("foo", "bar", "baz"));
+    values.add(Arrays.asList("1", "2", "3"));
+    values.add(Arrays.asList("a", "b", "c"));
+    context.put("values", values);
+    assertThat(render("Hello {% for x, y, z in values %} -{{ x }}/{{ y }}/{{ z }}- {% end %} World", context))
+        .isEqualTo("Hello  -foo/bar/baz-  -1/2/3-  -a/b/c-  World");
+  }
+
+
+  @Test
+  public void testMapExpansionLoop() throws CarrotException {
+    Map<String, Object> context = new HashMap<>();
+    Map<String, Object> values = new HashMap<>();
+    // note, we can not test Map iteration with more values, because the iteration order is undefined
+    values.put("foo", "a");
+    context.put("values", new MapBindings(values));
+    assertThat(render("Hello {% for key, val in values %} -{{ key }}:{{ val }}- {% end %} World", context))
+        .isEqualTo("Hello  -foo:a-  World");
+  }
+
+
+  @Test
+  public void testVariableExpansionLoop2() throws CarrotException {
+    Map<String, Object> context = new HashMap<>();
+    ArrayList<List<String>> values = new ArrayList<>();
+    values.add(Arrays.asList("foo", "bar", "baz"));
+    values.add(Arrays.asList("1", "2", "3"));
+    values.add(Arrays.asList("a", "b", "c"));
+    context.put("values", values);
+    assertThat(render("Hello {% for x,y, z in values %} -{{ x }}/{{ y }}/{{ z }}- {% end %} World", context))
+        .isEqualTo("Hello  -foo/bar/baz-  -1/2/3-  -a/b/c-  World");
+  }
+
   @Test
   public void testLoopVariables() throws CarrotException {
     Map<String, Object> context = new HashMap<>();
@@ -53,8 +89,9 @@ public class ForTagTest {
     assertThat(render("{% for str in values %}"
         + "{{ str }} {{ loop.index }} {{ loop.revindex }} {{ loop.first }} {{ loop.last }} {{ loop.length }}"
         + "{% end %}", context))
-            .isEqualTo("foo 0 2 true false 3bar 1 1 false false 3baz 2 0 false true 3");
+        .isEqualTo("foo 0 2 true false 3bar 1 1 false false 3baz 2 0 false true 3");
   }
+
 
   @Test
   public void testEmptyCollectionWithNoElse() throws CarrotException {
@@ -82,11 +119,9 @@ public class ForTagTest {
 
   private String render(String content, @Nullable Map<String, Object> bindings) throws CarrotException {
     CarrotEngine engine = new CarrotEngine();
-    engine.getConfig().setLogger(new Configuration.Logger()
-    {
+    engine.getConfig().setLogger(new Configuration.Logger() {
       @Override
-      public void print(int level, String msg)
-      {
+      public void print(int level, String msg) {
         System.err.println(msg);
       }
     });
