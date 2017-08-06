@@ -11,7 +11,7 @@ import java.util.Map;
  *
  * @author Marten Gajda
  */
-public final class MapBindings implements Bindings, Iterable {
+public final class MapBindings implements Bindings, Iterable<EntryBindings> {
   private final Map<String, Object> contextMap;
 
   public MapBindings(Map<String, Object> contextMap) {
@@ -29,16 +29,16 @@ public final class MapBindings implements Bindings, Iterable {
   }
 
   @Override
-  public Iterator iterator() {
+  public Iterator<EntryBindings> iterator() {
     final Iterator<Map.Entry<String, Object>> iterator = contextMap.entrySet().iterator();
-    return new Iterator() {
+    return new Iterator<EntryBindings>() {
       @Override
       public boolean hasNext() {
         return iterator.hasNext();
       }
 
       @Override
-      public Object next() {
+      public EntryBindings next() {
         return new EntryBindings(iterator.next());
       }
 

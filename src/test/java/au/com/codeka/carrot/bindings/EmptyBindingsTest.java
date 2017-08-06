@@ -10,6 +10,11 @@ import static org.junit.Assert.assertThat;
  */
 public class EmptyBindingsTest {
   @Test
+  public void testIterator() throws Exception {
+    assertThat(new EmptyBindings().iterator().hasNext(), CoreMatchers.is(false));
+  }
+
+  @Test
   public void testResolved() throws Exception {
     assertThat(new EmptyBindings().resolve("abc"), CoreMatchers.nullValue());
   }

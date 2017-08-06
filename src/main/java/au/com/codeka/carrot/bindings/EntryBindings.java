@@ -3,6 +3,7 @@ package au.com.codeka.carrot.bindings;
 import au.com.codeka.carrot.Bindings;
 
 import javax.annotation.Nonnull;
+import java.util.AbstractMap;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Map;
@@ -21,8 +22,13 @@ import java.util.Map;
  *
  * @author Marten Gajda
  */
-public final class EntryBindings implements Bindings, Iterable {
+public final class EntryBindings implements Bindings, Iterable<Object> {
   private final Map.Entry<String, Object> entry;
+
+
+  public EntryBindings(String key, Object value) {
+    this(new AbstractMap.SimpleImmutableEntry<>(key, value));
+  }
 
   public EntryBindings(Map.Entry<String, Object> entry) {
     this.entry = entry;
@@ -46,7 +52,7 @@ public final class EntryBindings implements Bindings, Iterable {
   }
 
   @Override
-  public Iterator iterator() {
+  public Iterator<Object> iterator() {
     return Arrays.asList(entry.getKey(), entry.getValue()).iterator();
   }
 }
