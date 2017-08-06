@@ -1,10 +1,10 @@
 package au.com.codeka.carrot.tag;
 
-import au.com.codeka.carrot.CarrotEngine;
-import au.com.codeka.carrot.CarrotException;
-import au.com.codeka.carrot.Scope;
-import au.com.codeka.carrot.ValueHelper;
-import au.com.codeka.carrot.bindings.MapBindings;
+import au.com.codeka.carrot.*;
+import au.com.codeka.carrot.bindings.Composite;
+import au.com.codeka.carrot.bindings.IterableExpansionBindings;
+import au.com.codeka.carrot.bindings.LoopVarBindings;
+import au.com.codeka.carrot.bindings.SingletonBindings;
 import au.com.codeka.carrot.expr.Expression;
 import au.com.codeka.carrot.expr.Identifier;
 import au.com.codeka.carrot.expr.StatementParser;
@@ -13,15 +13,13 @@ import au.com.codeka.carrot.tmpl.TagNode;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * The "for" tag iterates through a loop and execute it's black for each element0.
  */
 public class ForTag extends Tag {
-  private Identifier loopIdentifier;
+  private List<Identifier> loopIdentifiers;
   private Expression loopExpression;
 
   @Override
@@ -38,7 +36,7 @@ public class ForTag extends Tag {
 
   @Override
   public void parseStatement(StatementParser stmtParser) throws CarrotException {
-    loopIdentifier = stmtParser.parseIdentifier();
+    loopIdentifiers = stmtParser.parseIdentifierList();
     Identifier inIdentifier = stmtParser.parseIdentifier();
     if (!inIdentifier.evaluate().equalsIgnoreCase("in")) {
       throw new CarrotException("Expected 'in'.");
@@ -51,19 +49,20 @@ public class ForTag extends Tag {
       throws CarrotException, IOException {
 
     List<Object> objects = ValueHelper.iterate(loopExpression.evaluate(engine.getConfig(), scope));
-    Map<String, Object> loop = new HashMap<>();
     for (int i = 0; i < objects.size(); i++) {
-      Map<String, Object> context = new HashMap<>();
-      context.put(loopIdentifier.evaluate(), objects.get(i));
 
-      loop.put("index", i);
-      loop.put("revindex", objects.size() - i - 1);
-      loop.put("first", i == 0);
-      loop.put("last", i == (objects.size() - 1));
-      loop.put("length", objects.size());
-      context.put("loop", loop);
+      Bindings loopIdentifierBindings;
+      Object current = objects.get(i);
+      if (loopIdentifiers.size() > 1 && current instanceof Iterable) {
+        loopIdentifierBindings = new IterableExpansionBindings(loopIdentifiers, (Iterable) current);
+      } else {
+        loopIdentifierBindings = new SingletonBindings(loopIdentifiers.get(0).evaluate(), current);
+      }
 
-      scope.push(new MapBindings(context));
+      scope.push(new Composite(
+          loopIdentifierBindings,
+          new SingletonBindings("loop",
+              new LoopVarBindings(objects.size(), i))));
       tagNode.renderChildren(engine, writer, scope);
       scope.pop();
     }
@@ -76,4 +75,6 @@ public class ForTag extends Tag {
       }
     }
   }
+
+
 }
