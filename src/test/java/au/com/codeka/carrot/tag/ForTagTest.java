@@ -27,7 +27,6 @@ public class ForTagTest {
         .isEqualTo("fooa 3 ba 1 ba 4 ba 1 ba 5 bbar");
   }
 
-
   @Test
   public void testArrayListLoop() throws CarrotException {
     Map<String, Object> context = new HashMap<>();
@@ -39,7 +38,6 @@ public class ForTagTest {
     assertThat(render("Hello {% for str in values %} -{{ str }}- {% end %} World", context))
         .isEqualTo("Hello  -foo-  -bar-  -baz-  World");
   }
-
 
   @Test
   public void testArrayExpansionLoop() throws CarrotException {
@@ -53,7 +51,6 @@ public class ForTagTest {
         .isEqualTo("Hello  -foo/bar/baz-  -1/2/3-  -a/b/c-  World");
   }
 
-
   @Test
   public void testMapExpansionLoop() throws CarrotException {
     Map<String, Object> context = new HashMap<>();
@@ -65,7 +62,6 @@ public class ForTagTest {
         .isEqualTo("Hello  -foo:a-  World");
   }
 
-
   @Test
   public void testVariableExpansionLoop2() throws CarrotException {
     Map<String, Object> context = new HashMap<>();
@@ -76,6 +72,19 @@ public class ForTagTest {
     context.put("values", values);
     assertThat(render("Hello {% for x,y, z in values %} -{{ x }}/{{ y }}/{{ z }}- {% end %} World", context))
         .isEqualTo("Hello  -foo/bar/baz-  -1/2/3-  -a/b/c-  World");
+  }
+
+  @Test
+  public void testKeyValueInMap() throws CarrotException {
+    Map<String, Object> context = new HashMap<>();
+    // Use a tree map here so the keys are sorted.
+    Map<String, String> values = new TreeMap<>();
+    values.put("foo", "bar");
+    values.put("bar", "baz");
+    values.put("baz", "foo");
+    context.put("values", values);
+    assertThat(render("Hello {% for k, v in values %} -{{ k }}/{{ v }}- {% end %} World", context))
+        .isEqualTo("Hello  -bar/baz-  -baz/foo-  -foo/bar-  World");
   }
 
   @Test
@@ -91,7 +100,6 @@ public class ForTagTest {
         + "{% end %}", context))
         .isEqualTo("foo 0 2 true false 3bar 1 1 false false 3baz 2 0 false true 3");
   }
-
 
   @Test
   public void testEmptyCollectionWithNoElse() throws CarrotException {

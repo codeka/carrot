@@ -8,13 +8,7 @@ import org.json.JSONObject;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * Various helpers for working with {@link Object}s.
@@ -195,6 +189,7 @@ public class ValueHelper {
    * @return A {@link List} that can actually be iterated.
    * @throws CarrotException If the value is not iterable.
    */
+  // TODO: Return an Iterator or something so we don't have to construct a new ArrayList.
   @SuppressWarnings("unchecked")
   public static List<Object> iterate(Object iterable) throws CarrotException {
     if (iterable == null) {
@@ -205,9 +200,16 @@ public class ValueHelper {
     } else if (iterable instanceof Collection) {
       return new ArrayList<>((Collection) iterable);
     } else if (iterable instanceof Iterable) {
-      ArrayList<Object> objects = new ArrayList<>(128);
-      for (Object o:(Iterable)iterable) {
+      ArrayList<Object> objects = new ArrayList<>();
+      for (Object o : (Iterable) iterable) {
         objects.add(o);
+      }
+      return objects;
+    } else if (iterable instanceof Map) {
+      Map map = (Map) iterable;
+      ArrayList<Object> objects = new ArrayList<>();
+      for (Object key : map.keySet()) {
+        objects.add(Arrays.asList(key, map.get(key)));
       }
       return objects;
     } else if (iterable.getClass().isArray()) {
