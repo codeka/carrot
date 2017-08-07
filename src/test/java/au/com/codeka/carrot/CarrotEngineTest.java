@@ -1,6 +1,7 @@
 package au.com.codeka.carrot;
 
 import au.com.codeka.carrot.bindings.*;
+import au.com.codeka.carrot.resource.AbstractResourceName;
 import au.com.codeka.carrot.resource.ResourceLocater;
 import au.com.codeka.carrot.resource.ResourceName;
 import com.google.common.collect.ImmutableMap;
@@ -163,7 +164,7 @@ public class CarrotEngineTest {
 
     @Override
     public ResourceName findResource(@Nullable ResourceName parent, String name) throws CarrotException {
-      return new ResourceName(parent, name) {
+      return new AbstractResourceName(parent, name) {
         @Nullable
         @Override
         public ResourceName getParent() {

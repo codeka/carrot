@@ -56,7 +56,7 @@ public class MemoryResourceLocator implements ResourceLocater {
   }
 
   /** Our version of {@link ResourceName} that represents file system files. */
-  private static class MemoryResourceName extends ResourceName {
+  private static class MemoryResourceName extends AbstractResourceName {
     private final String name;
 
     public MemoryResourceName(@Nullable ResourceName parent, String name) {
