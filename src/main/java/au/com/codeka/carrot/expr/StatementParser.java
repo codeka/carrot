@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * StatementParser is used to parse expressions. Expressions are used to refer to everything that appears after the
  * {@link Tag} in a {@link TagNode}, and has the following pseudo-EBNF grammar:
- *
+ * <p>
  * <pre><code>
  *   expression = ["!"] notcond
  *
@@ -40,7 +40,7 @@ import java.util.List;
  *   number = "and valid Java number"
  *   literal = """ anything """
  * </code></pre>
- *
+ * <p>
  * <p>The statement parser allows you to extract any sub-element from a string as well (for example, the ForTag
  * wants to pull off it's arguments an identifier followed by the identifier "in" followed by a statement.
  */
@@ -82,8 +82,7 @@ public class StatementParser {
     List<Identifier> result = new LinkedList<>();
     // first token of a list is always an identifier
     result.add(new Identifier(tokenizer.expect(TokenType.IDENTIFIER)));
-    while (tokenizer.accept(TokenType.COMMA))
-    {
+    while (tokenizer.accept(TokenType.COMMA)) {
       tokenizer.expect(TokenType.COMMA);
       result.add(new Identifier(tokenizer.expect(TokenType.IDENTIFIER)));
     }
@@ -96,6 +95,15 @@ public class StatementParser {
 
   public StringLiteral parseString() throws CarrotException {
     return new StringLiteral(tokenizer.expect(TokenType.STRING_LITERAL));
+  }
+
+  public boolean isAssignment() throws CarrotException {
+    if (!tokenizer.accept(TokenType.ASSIGNMENT)) {
+      return false;
+    }
+    // consume the assignment operator
+    tokenizer.expect(TokenType.ASSIGNMENT);
+    return true;
   }
 
   public Expression parseExpression() throws CarrotException {
@@ -128,7 +136,7 @@ public class StatementParser {
 
   OrCond parseOrCond() throws CarrotException {
     Comparator lhs = parseComparator();
-    TokenType[] validTypes = new TokenType[] {
+    TokenType[] validTypes = new TokenType[]{
         TokenType.EQUALITY,
         TokenType.INEQUALITY,
         TokenType.LESS_THAN,

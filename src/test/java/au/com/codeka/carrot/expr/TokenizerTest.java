@@ -84,14 +84,10 @@ public class TokenizerTest {
     assertThat(tokenizer.expect(TokenType.NOT)).isNotNull();
     assertThat(tokenizer.expect(TokenType.IDENTIFIER).getValue()).isEqualTo("b");
 
-    try {
-      tokenizer = createTokenizer("a = b");
-      assertThat(tokenizer.expect(TokenType.IDENTIFIER).getValue()).isEqualTo("a");
-      assertThat(tokenizer.expect(TokenType.EQUALITY)).isNotNull();
-      fail("Expected CarrotException");
-    } catch (CarrotException e) {
-      assertThat(e.getMessage()).isEqualTo("???\n1: a = b\n       ^\nExpected ==");
-    }
+    tokenizer = createTokenizer("a = b");
+    assertThat(tokenizer.expect(TokenType.IDENTIFIER).getValue()).isEqualTo("a");
+    assertThat(tokenizer.expect(TokenType.ASSIGNMENT)).isNotNull();
+    assertThat(tokenizer.expect(TokenType.IDENTIFIER).getValue()).isEqualTo("b");
   }
 
   @Test
@@ -150,7 +146,7 @@ public class TokenizerTest {
       assertThat(tokenizer.expect(TokenType.PLUS).getType()).isEqualTo(TokenType.PLUS);
       assertThat(tokenizer.expect(TokenType.IDENTIFIER).getValue()).isEqualTo("b");
       fail("Expected CarrotException");
-    } catch(CarrotException e) {
+    } catch (CarrotException e) {
       assertThat(e.getMessage()).isEqualTo("???\n1: a + + b\n        ^\nExpected token of type IDENTIFIER, got PLUS");
     }
 
@@ -160,7 +156,7 @@ public class TokenizerTest {
       assertThat(tokenizer.expect(TokenType.PLUS).getType()).isEqualTo(TokenType.PLUS);
       assertThat(tokenizer.expect(TokenType.IDENTIFIER, TokenType.NUMBER_LITERAL, TokenType.STRING_LITERAL).getValue()).isEqualTo("b");
       fail("Expected CarrotException");
-    } catch(CarrotException e) {
+    } catch (CarrotException e) {
       assertThat(e.getMessage()).isEqualTo("???\n1: a + + b\n        ^\nExpected token of type IDENTIFIER, NUMBER_LITERAL or STRING_LITERAL, got PLUS");
     }
   }
