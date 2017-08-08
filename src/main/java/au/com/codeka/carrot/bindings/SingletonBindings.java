@@ -3,13 +3,15 @@ package au.com.codeka.carrot.bindings;
 import au.com.codeka.carrot.Bindings;
 
 import javax.annotation.Nonnull;
+import java.util.Collections;
+import java.util.Iterator;
 
 /**
  * {@link Bindings} with exactly one value.
  *
  * @author Marten Gajda
  */
-public final class SingletonBindings implements Bindings {
+public final class SingletonBindings implements Bindings, Iterable<EntryBindings> {
   private final String key;
   private final Object value;
 
@@ -26,5 +28,10 @@ public final class SingletonBindings implements Bindings {
   @Override
   public boolean isEmpty() {
     return false;
+  }
+
+  @Override
+  public Iterator<EntryBindings> iterator() {
+    return Collections.singleton(new EntryBindings(key, value)).iterator();
   }
 }

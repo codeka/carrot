@@ -5,7 +5,6 @@ import au.com.codeka.carrot.ValueHelper;
 import org.json.JSONObject;
 
 import javax.annotation.Nonnull;
-import java.util.AbstractMap;
 import java.util.Iterator;
 
 /**
@@ -13,7 +12,7 @@ import java.util.Iterator;
  *
  * @author Marten Gajda
  */
-public final class JsonObjectBindings implements Bindings, Iterable {
+public final class JsonObjectBindings implements Bindings, Iterable<EntryBindings> {
   private final JSONObject jsonObject;
 
   public JsonObjectBindings(JSONObject jsonObject) {
@@ -31,14 +30,14 @@ public final class JsonObjectBindings implements Bindings, Iterable {
   }
 
   @Override
-  public Iterator iterator() {
+  public Iterator<EntryBindings> iterator() {
     final Iterator<String> keys = jsonObject.keys();
 
     // return an iterator of Map Entries which allows iterating json objects like this:
     // {% for item in json %}
     //    {{ item.key }} -> {{ item.value }}
     // {% end %}
-    return new Iterator() {
+    return new Iterator<EntryBindings>() {
       @Override
       public boolean hasNext() {
         return keys.hasNext();
@@ -50,9 +49,9 @@ public final class JsonObjectBindings implements Bindings, Iterable {
       }
 
       @Override
-      public Object next() {
+      public EntryBindings next() {
         final String key = keys.next();
-        return new EntryBindings(new AbstractMap.SimpleImmutableEntry<>(key, ValueHelper.jsonHelper(jsonObject.opt(key))));
+        return new EntryBindings(key, ValueHelper.jsonHelper(jsonObject.opt(key)));
       }
     };
   }

@@ -9,6 +9,7 @@ import static org.junit.Assert.assertThat;
  * @author marten
  */
 public class CompositeTest {
+
   @Test
   public void testResolved() throws Exception {
     assertThat(new Composite().resolve("key"), CoreMatchers.nullValue());

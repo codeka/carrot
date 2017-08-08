@@ -14,7 +14,7 @@ import java.util.NoSuchElementException;
  *
  * @author Marten Gajda
  */
-public final class JsonArrayBindings implements Bindings, Iterable {
+public final class JsonArrayBindings implements Bindings, Iterable<Object> {
   private final JSONArray jsonArray;
 
   public JsonArrayBindings(JSONArray jsonArray) {
@@ -32,8 +32,8 @@ public final class JsonArrayBindings implements Bindings, Iterable {
   }
 
   @Override
-  public Iterator iterator() {
-    return new Iterator() {
+  public Iterator<Object> iterator() {
+    return new Iterator<Object>() {
       int index = 0;
 
       @Override
