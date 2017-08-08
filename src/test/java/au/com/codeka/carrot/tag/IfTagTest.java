@@ -123,17 +123,17 @@ public class IfTagTest {
 
   @Test
   public void testNulls() throws CarrotException {
-//    assertThat(render("{% if foo == null %}yes{% end %}", "foo", null)).isEqualTo("yes");
-//    assertThat(render("{% if foo == bar %}yes{% end %}", "foo", null, "bar", null)).isEqualTo("yes");
-//    assertThat(render("{% if foo == bar %}yes{% end %}", "foo", new Object(), "bar", null)).isEqualTo("");
-//    assertThat(render("{% if foo != bar %}yes{% end %}", "foo", new Object(), "bar", null)).isEqualTo("yes");
-//    assertThat(render("{% if foo != null %}yes{% end %}", "foo", new Object(), "bar", null)).isEqualTo("yes");
+    assertThat(render("{% if foo == null %}yes{% end %}", "foo", null)).isEqualTo("yes");
+    assertThat(render("{% if foo == bar %}yes{% end %}", "foo", null, "bar", null)).isEqualTo("yes");
+    assertThat(render("{% if foo == bar %}yes{% end %}", "foo", new Object(), "bar", null)).isEqualTo("");
+    assertThat(render("{% if foo != bar %}yes{% end %}", "foo", new Object(), "bar", null)).isEqualTo("yes");
+    assertThat(render("{% if foo != null %}yes{% end %}", "foo", new Object(), "bar", null)).isEqualTo("yes");
 
-//    assertThat(render("{% if foo != null && foo.blah == null %}yes{% end %}", "foo", null)).isEqualTo("");
+    assertThat(render("{% if foo != null && foo.blah == null %}yes{% end %}", "foo", null)).isEqualTo("");
 
-//    assertThat(render("{% if foo != null && foo.bar == null %}yes{% end %}", "foo", new Object() {
-//      public Object bar = null;
-//    })).isEqualTo("yes");
+    assertThat(render("{% if foo != null && foo.bar == null %}yes{% end %}", "foo", new Object() {
+      public Object bar = null;
+    })).isEqualTo("yes");
 
     assertThat(render("{% if foo.bar != null && foo.bar.toString() == \"blah\" %}yes{% end %}", "foo", new Object() {
       public Object bar = new Object() {
