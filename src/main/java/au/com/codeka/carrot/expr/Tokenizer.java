@@ -1,21 +1,20 @@
 package au.com.codeka.carrot.expr;
 
 import au.com.codeka.carrot.CarrotException;
-import au.com.codeka.carrot.resource.ResourcePointer;
 import au.com.codeka.carrot.util.LineReader;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayDeque;
-import java.util.Queue;
 
 /**
  * Converts an input {@link Reader} into a stream of {@link Token}s.
  */
 public class Tokenizer {
   private final LineReader reader;
-  @Nullable private Character lookahead;
+  @Nullable
+  private Character lookahead;
   private ArrayDeque<Token> tokens = new ArrayDeque<>();
 
   public Tokenizer(LineReader reader) throws CarrotException {
@@ -46,7 +45,7 @@ public class Tokenizer {
    * is the current one, the 1st is the after that and so on. This can be used to "look ahead" into the token stream.
    *
    * @param offset The offset from "current" that we want to peek. 0 is the current token, 1 is the next and so on.
-   * @param type The {@link TokenType} we want to accept.
+   * @param type   The {@link TokenType} we want to accept.
    * @return True, if the current token is of the given type, or false it's not.
    * @throws CarrotException If there's an error parsing the tokens.
    */
@@ -177,9 +176,13 @@ public class Tokenizer {
       case '=':
         next = nextChar();
         if (next != '=') {
-          throw new CarrotException("Expected ==", reader.getPointer());
+          if (next > 0) {
+            lookahead = (char) next;
+          }
+          token = new Token(TokenType.ASSIGNMENT);
+        } else {
+          token = new Token(TokenType.EQUALITY);
         }
-        token = new Token(TokenType.EQUALITY);
         break;
       case '!':
         next = nextChar();

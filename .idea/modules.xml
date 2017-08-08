@@ -2,6 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/carrot.iml" filepath="$PROJECT_DIR$/.idea/modules/carrot.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/carrot_docs.iml" filepath="$PROJECT_DIR$/.idea/modules/carrot_docs.iml" group="carrot" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/carrot_main.iml" filepath="$PROJECT_DIR$/.idea/modules/carrot_main.iml" group="carrot" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/carrot_test.iml" filepath="$PROJECT_DIR$/.idea/modules/carrot_test.iml" group="carrot" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/git.iml" filepath="$PROJECT_DIR$/.idea/modules/git.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/git_docs.iml" filepath="$PROJECT_DIR$/.idea/modules/git_docs.iml" group="git" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/git_main.iml" filepath="$PROJECT_DIR$/.idea/modules/git_main.iml" group="git" />

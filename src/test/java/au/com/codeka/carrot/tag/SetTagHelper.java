@@ -5,6 +5,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
+import java.util.Arrays;
+
 import static au.com.codeka.carrot.util.RenderHelper.render;
 import static com.google.common.truth.Truth.assertThat;
 
@@ -24,4 +26,17 @@ public class SetTagHelper {
     assertThat(render("{% set foo %}Hello <b>World</b>{% end %}foo={{ html.safe(foo) }}"))
         .isEqualTo("foo=Hello <b>World</b>");
   }
+
+  @Test
+  public void testExpression() throws CarrotException {
+    assertThat(render("{% set foo = 'bar' %}foo={{ foo }}"))
+        .isEqualTo("foo=bar");
+  }
+
+  @Test
+  public void testExpansion() throws CarrotException {
+    assertThat(render("{% set foo, bar = baz %}foo={{ foo }}, bar={{ bar }}", "baz", Arrays.asList("bing", "bong")))
+        .isEqualTo("foo=bing, bar=bong");
+  }
+
 }

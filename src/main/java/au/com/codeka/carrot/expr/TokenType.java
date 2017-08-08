@@ -28,6 +28,9 @@ public enum TokenType {
   /** Right-square-bracket: ] */
   RSQUARE(false),
 
+  /** Single Equals: = */
+  ASSIGNMENT(false),
+
   COMMA(false),
   DOT(false),
   NOT(false),
