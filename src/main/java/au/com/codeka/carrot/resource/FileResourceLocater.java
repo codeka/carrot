@@ -68,7 +68,7 @@ public class FileResourceLocater implements ResourceLocater {
   }
 
   /** Our version of {@link ResourceName} that represents file system files. */
-  private static class FileResourceName extends ResourceName {
+  private static class FileResourceName extends AbstractResourceName {
     private final File file;
 
     public FileResourceName(@Nullable ResourceName parent, String name, File file) {
