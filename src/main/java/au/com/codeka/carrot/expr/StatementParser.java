@@ -101,6 +101,7 @@ public class StatementParser {
   public Expression parseExpression() throws CarrotException {
     boolean not = false;
     if (tokenizer.accept(TokenType.NOT)) {
+      tokenizer.expect(TokenType.NOT);
       not = true;
     }
 

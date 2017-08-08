@@ -120,6 +120,11 @@ public class IfTagTest {
     assertThat(render("{% if foo != 123 %}yes{% end %}", "foo", "123")).isEqualTo("");
   }
 
+  @Test
+  public void testIfNot() throws CarrotException {
+    assertThat(render("{% if !foo %}yes{% else %}no{% end %}", "foo", true)).isEqualTo("no");
+    assertThat(render("{% if !foo %}yes{% else %}no{% end %}", "foo", false)).isEqualTo("yes");
+  }
 
   @Test
   public void testNulls() throws CarrotException {
