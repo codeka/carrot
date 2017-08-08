@@ -4,13 +4,11 @@ import au.com.codeka.carrot.CarrotException;
 import au.com.codeka.carrot.Configuration;
 import au.com.codeka.carrot.Scope;
 import au.com.codeka.carrot.util.Log;
-import au.com.codeka.carrot.util.SafeString;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.NoSuchElementException;
 
 /**
  * A function identifier and a list of arguments to that function. See {@link StatementParser} for the full EBNF.
@@ -67,7 +65,7 @@ public class Function {
 
   /**
    * Attempts a basic sort of overload matching, looking for a method on the given class that we can call.
-   *
+   * <p>
    * <p>Unlike normal Java overload resolution, we just return the <em>first</em> method that matches close enough. So
    * if there's a method that takes an int and one that takes a long (say), we make no guarantee about which one will
    * be returned.</p>
@@ -98,14 +96,15 @@ public class Function {
         continue;
       }
 
-      if (method.getParameterCount() != paramTypes.length) {
+      Class<?>[] methodParamTypes = method.getParameterTypes();
+
+      if (methodParamTypes.length != paramTypes.length) {
         Log.debug(config, "Wrong number of arguments: %d: %s", paramTypes.length, method);
         candidates.add(method.toString());
         continue;
       }
 
       boolean allMatch = true;
-      Class<?>[] methodParamTypes = method.getParameterTypes();
       for (int i = 0; i < methodParamTypes.length; i++) {
         if (!methodParamTypes[i].isAssignableFrom(paramTypes[i])) {
           Object convertedValue = convertType(methodParamTypes[i], paramValues[i]);
@@ -121,15 +120,17 @@ public class Function {
         }
       }
       if (allMatch) {
-        for (int i = 0; i < method.getParameterCount(); i++) {
+        for (int i = 0; i < methodParamTypes.length; i++) {
           paramValues[i] = convertType(method.getParameterTypes()[i], paramValues[i]);
         }
         return method;
       }
     }
 
-    throw new CarrotException(String.format("No matching method '%s' found on class %s, candidates: [%s]",
-        name, cls.getName(), String.join(",", candidates)));
+    // ArrayList inherits `toString()` from AbstractCollection which renders the elements as a comma separated list in "[ ]".
+    // see https://docs.oracle.com/javase/7/docs/api/java/util/AbstractCollection.html#toString()
+    throw new CarrotException(String.format("No matching method '%s' found on class %s, candidates: %s",
+        name, cls.getName(), candidates.toString()));
   }
 
   /**
