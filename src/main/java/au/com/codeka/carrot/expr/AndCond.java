@@ -27,10 +27,15 @@ public class AndCond {
   }
 
   public Object evaluate(Configuration config, Scope scope) throws CarrotException {
-    Object value = orConds.get(0).evaluate(config, scope);
-    for (int i = 1; i < orConds.size(); i++) {
-      value = ValueHelper.isTrue(value) || ValueHelper.isTrue(orConds.get(i).evaluate(config, scope));
+    Object value = false;
+    for (OrCond orCond : orConds) {
+      value = orCond.evaluate(config, scope);
+      if (ValueHelper.isTrue(value)) {
+        // no need to continue, the result is definitely true
+        break;
+      }
     }
+    // always return the last value
     return value;
   }
 
