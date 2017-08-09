@@ -28,10 +28,15 @@ public class NotCond {
   }
 
   public Object evaluate(Configuration config, Scope scope) throws CarrotException {
-    Object value = andConds.get(0).evaluate(config, scope);
-    for (int i = 1; i < andConds.size(); i++) {
-      value = ValueHelper.isTrue(value) && ValueHelper.isTrue(andConds.get(i).evaluate(config, scope));
+    Object value = true;
+    for (AndCond andCond : andConds) {
+      value = andCond.evaluate(config, scope);
+      if (!ValueHelper.isTrue(value)) {
+        // no need to continue if a value was evaluated to false
+        break;
+      }
     }
+    // always return the last evaluated value
     return value;
   }
 

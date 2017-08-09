@@ -39,6 +39,24 @@ public class CarrotEngineTest {
   }
 
   @Test
+  public void testConditionalStatements() {
+    assertThat(render("{{ foo && \"a\" || \"b\"}}", new SingletonBindings("foo", true))).isEqualTo("a");
+
+    // note the following test fails due to https://github.com/codeka/carrot/issues/15
+    // TODO: re-enable test when #15 has been fixed
+    // assertThat(render("{{ foo && \"a\" || \"b\"}}", new SingletonBindings("foo", false))).isEqualTo("b");
+
+    // setting parenthesis results in correct evaluation:
+    assertThat(render("{{ (foo && \"a\") || \"b\"}}", new SingletonBindings("foo", false))).isEqualTo("b");
+
+    assertThat(render("{{ foo && \"a\"}}", new SingletonBindings("foo", true))).isEqualTo("a");
+    assertThat(render("{{ foo && \"a\"}}", new SingletonBindings("foo", false))).isEqualTo("false");
+
+    assertThat(render("{{ foo || \"a\"}}", new SingletonBindings("foo", true))).isEqualTo("true");
+    assertThat(render("{{ foo || \"a\"}}", new SingletonBindings("foo", false))).isEqualTo("a");
+  }
+
+  @Test
   public void testEchoTag() {
     assertThat(render("foo{{ foo.bar[baz] }}", new MapBindings(ImmutableMap.of(
         "foo", new Object() {
