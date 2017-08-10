@@ -22,19 +22,19 @@ import java.util.List;
  *     | literal
  *     | "(" expression ")"
  *
- *   unary-term = ["!"] value
+ *   unary-term = ["!"] unary-term
  *
- *   multiplicative-term = unnary-term [("*" | "/") unary-term]
+ *   multiplicative-term = unnary-term [("*" | "/") multiplicative-term]
  *
- *   additive-term = multiplicative-term [("+" | "-") multiplicative-term]
+ *   additive-term = multiplicative-term [("+" | "-") additive-term]
  *
- *   relational-term = additive-term [("&lt;" | &lt;=" | "&gt;" | &gt;=") additive-term]
+ *   relational-term = additive-term [("&lt;" | &lt;=" | "&gt;" | &gt;=") relational-term]
  *
- *   equality-term = relational-term [("==" | "!=") relational-term]
+ *   equality-term = relational-term [("==" | "!=") equality-term]
  *
- *   and-term = equality-term ["&amp;&amp;" equality-term]
+ *   and-term = equality-term ["&amp;&amp;" and-term]
  *
- *   or-term = and-term ["||" and-term]
+ *   or-term = and-term ["||" or-term]
  *
  *   expression = or-term
  *

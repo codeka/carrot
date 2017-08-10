@@ -23,7 +23,7 @@ public final class UnaryTermParser implements TermParser {
   @Override
   public Term parse(Tokenizer tokenizer) throws CarrotException {
     if (tokenizer.accept(tokenTypes)) {
-      return new UnaryTerm(tokenizer.expect(tokenTypes).getType().unaryOperator(), termParser.parse(tokenizer));
+      return new UnaryTerm(tokenizer.expect(tokenTypes).getType().unaryOperator(), this.parse(tokenizer));
     }
     return termParser.parse(tokenizer);
   }

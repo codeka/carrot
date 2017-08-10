@@ -24,7 +24,7 @@ public final class BinaryTermParser implements TermParser {
   public Term parse(Tokenizer tokenizer) throws CarrotException {
     Term left = termParser.parse(tokenizer);
     if (tokenizer.accept(tokenTypes)) {
-      return new BinaryTerm(left, tokenizer.expect(tokenTypes).getType().binaryOperator(), termParser.parse(tokenizer));
+      return new BinaryTerm(left, tokenizer.expect(tokenTypes).getType().binaryOperator(), this.parse(tokenizer));
     }
     return left;
   }
