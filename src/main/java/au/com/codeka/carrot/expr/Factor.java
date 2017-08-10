@@ -58,7 +58,7 @@ public class Factor {
     }
   }
 
-  /** Returns a string representation of this {@link Term}, useful for debugging. */
+  /** Returns a string representation of this term, useful for debugging. */
   @Override
   public String toString() {
     if (variable != null) {
