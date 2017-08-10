@@ -4,12 +4,8 @@
 build/
 
 # Ignore IntelliJ files
-.idea/workspace.xml
-.idea/tasks.xml
-.idea/misc.xml
-.idea/modules.xml
-.idea/libraries/
-.idea/uiDesigner.xml
+.idea/
+!.idea/codeStyleSettings.xml
 *.iml
 local.properties
 
