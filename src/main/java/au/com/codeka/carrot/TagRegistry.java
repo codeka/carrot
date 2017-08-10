@@ -25,6 +25,7 @@ public class TagRegistry {
     add("for", ForTag.class);
     add("else", ElseTag.class);
     add("extends", ExtendsTag.class);
+    add("include", IncludeTag.class);
     add("block", BlockTag.class);
     add("set", SetTag.class);
     add(new TagMatcher() {

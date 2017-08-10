@@ -1,0 +1,43 @@
+{% extends "_skel/skeleton.html" %}
+{% block "title" %}Include tag{% end %}
+{% block "content" %}
+<h2>Include tag</h2>
+
+<code><pre>{\% include "foo.html" %}</pre></code>
+
+<p>The <code>include</code> tag is a simple means for including one template into the current output. Useful for
+    pieces of common functionality and the like.</p>
+
+<h3>Examples</h3>
+
+<p>To use <code>include</code> is very simple:</p>
+
+<p>foo.html</p>
+
+{% set someHtml %}  <p>Hello World</p>{% end %}
+<code><pre>{{ someHtml }}</pre></code>
+
+<p>content.html</p>
+
+{% set someHtml %}  <p>Blah blah blah</p>
+  {\% include "foo.html" %}
+  <p>Yada yada yada</p>{% end %}
+<code><pre>{{ someHtml }}</pre></code>
+
+<p>It would output the following:</p>
+
+{% set someHtml %}  <p>Blah blah blah</p>
+  <p>Hello World</p>
+  <p>Yada yada yada</p>{% end %}
+<code><pre>{{ someHtml }}</pre></code>
+
+<hr>
+<div class="bottom-nav">
+    <div class="back">
+        <a href="{{basePath}}tags/extends.html">← Extends tag</a>
+    </div>
+    <div class="next">
+        <a href="{{basePath}}tags/custom.html">Custom tags →</a>
+    </div>
+</div>
+{% end %}
