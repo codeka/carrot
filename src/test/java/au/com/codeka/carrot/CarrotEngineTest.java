@@ -39,6 +39,31 @@ public class CarrotEngineTest {
   }
 
   @Test
+  public void testOperatorPrecdence() {
+    Map<String, Object> context = ImmutableMap.of("true", (Object) true, "false", false);
+
+    assertThat(render("{{ 1 + 1 * 2 }}", new MapBindings(context))).isEqualTo("3");
+    assertThat(render("{{ (1 + 1) * 2 }}", new MapBindings(context))).isEqualTo("4");
+    assertThat(render("{{ 2 * 2 + 2 }}", new MapBindings(context))).isEqualTo("6");
+    assertThat(render("{{ 2 * (2 + 2) }}", new MapBindings(context))).isEqualTo("8");
+  }
+
+
+  @Test
+  public void testConditionalStatements() {
+    assertThat(render("{{ foo && \"a\" || \"b\"}}", new SingletonBindings("foo", true))).isEqualTo("a");
+
+    assertThat(render("{{ foo && \"a\" || \"b\"}}", new SingletonBindings("foo", false))).isEqualTo("b");
+    assertThat(render("{{ (foo && \"a\") || \"b\"}}", new SingletonBindings("foo", false))).isEqualTo("b");
+
+    assertThat(render("{{ foo && \"a\"}}", new SingletonBindings("foo", true))).isEqualTo("a");
+    assertThat(render("{{ foo && \"a\"}}", new SingletonBindings("foo", false))).isEqualTo("false");
+
+    assertThat(render("{{ foo || \"a\"}}", new SingletonBindings("foo", true))).isEqualTo("true");
+    assertThat(render("{{ foo || \"a\"}}", new SingletonBindings("foo", false))).isEqualTo("a");
+  }
+
+  @Test
   public void testEchoTag() {
     assertThat(render("foo{{ foo.bar[baz] }}", new MapBindings(ImmutableMap.of(
         "foo", new Object() {

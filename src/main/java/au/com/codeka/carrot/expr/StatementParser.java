@@ -1,6 +1,8 @@
 package au.com.codeka.carrot.expr;
 
 import au.com.codeka.carrot.CarrotException;
+import au.com.codeka.carrot.expr.binary.BinaryTermParser;
+import au.com.codeka.carrot.expr.unary.UnaryTermParser;
 import au.com.codeka.carrot.tag.Tag;
 import au.com.codeka.carrot.tmpl.TagNode;
 
@@ -13,24 +15,28 @@ import java.util.List;
  * {@link Tag} in a {@link TagNode}, and has the following pseudo-EBNF grammar:
  * <p>
  * <pre><code>
- *   expression = ["!"] notcond
  *
- *   notcond = andcond {"&amp;&amp;" andcond}
- *
- *   andcond = orcond {"||" orcond}
- *
- *   orcond =
- *     comparator [("=="|"!="|"&lt;"|"&lt;="|"&gt;="|"&gt;") comparator]
- *
- *   comparator = ["+"|"-"] term {("+"|"-") term}
- *
- *   term = factor {("*" | "/") factor}
- *
- *   factor =
+ *  value =
  *     variable
  *     | number
  *     | literal
  *     | "(" expression ")"
+ *
+ *   unary-term = ["!"] value
+ *
+ *   multiplicative-term = unnary-term [("*" | "/") unary-term]
+ *
+ *   additive-term = multiplicative-term [("+" | "-") multiplicative-term]
+ *
+ *   relational-term = additive-term [("<" | "<=" | ">" | ">=") additive-term]
+ *
+ *   equality-term = relational-term [("==" | "!=") relational-term]
+ *
+ *   and-term = equality-term ["&&" equality-term]
+ *
+ *   or-term = and-term ["||" and-term]
+ *
+ *   expression = or-term
  *
  *   variable = identifier [func-call] ["[" expression "]"] ["." variable]
  *
@@ -46,9 +52,33 @@ import java.util.List;
  */
 public class StatementParser {
   private final Tokenizer tokenizer;
+  private final TermParser termParser;
 
   public StatementParser(Tokenizer tokenizer) {
     this.tokenizer = tokenizer;
+
+    /*
+     * Build a TermParser tree. Each TermParser receives a factory for the "sub-term" and a list of acceptable TokenTypes.
+     *
+     * This reflects the upper part of the grammar above.
+     *
+     * Operation precedence is given by the nesting level of a factory, deeper factories have precedence over shallow factories.
+     */
+    termParser = new BinaryTermParser(
+        new BinaryTermParser(
+            new BinaryTermParser(
+                new BinaryTermParser(
+                    new BinaryTermParser(
+                        new BinaryTermParser(
+                            new UnaryTermParser(
+                                new ValueParser(this),
+                                TokenType.NOT),
+                            TokenType.MULTIPLY, TokenType.DIVIDE),
+                        TokenType.PLUS, TokenType.MINUS),
+                    TokenType.LESS_THAN, TokenType.LESS_THAN_OR_EQUAL, TokenType.GREATER_THAN, TokenType.GREATER_THAN_OR_EQUAL),
+                TokenType.EQUALITY, TokenType.INEQUALITY),
+            TokenType.LOGICAL_AND),
+        TokenType.LOGICAL_OR);
   }
 
   /**
@@ -106,52 +136,11 @@ public class StatementParser {
     return true;
   }
 
+  // TODO: consider to return the plain Term instead. Technically Expression and Term are equivalent.
   public Expression parseExpression() throws CarrotException {
-    boolean not = false;
-    if (tokenizer.accept(TokenType.NOT)) {
-      tokenizer.expect(TokenType.NOT);
-      not = true;
-    }
-
-    return new Expression(not, parseNotCond());
+    return new Expression(termParser.parse(tokenizer));
   }
 
-  NotCond parseNotCond() throws CarrotException {
-    NotCond.Builder notCondBuilder = new NotCond.Builder(parseAndCond());
-    while (tokenizer.accept(TokenType.LOGICAL_AND)) {
-      tokenizer.expect(TokenType.LOGICAL_AND);
-      notCondBuilder.addAndCond(parseAndCond());
-    }
-    return notCondBuilder.build();
-  }
-
-  AndCond parseAndCond() throws CarrotException {
-    AndCond.Builder andCondBuilder = new AndCond.Builder(parseOrCond());
-    while (tokenizer.accept(TokenType.LOGICAL_OR)) {
-      tokenizer.expect(TokenType.LOGICAL_OR);
-      andCondBuilder.addOrCond(parseOrCond());
-    }
-    return andCondBuilder.build();
-  }
-
-  OrCond parseOrCond() throws CarrotException {
-    Comparator lhs = parseComparator();
-    TokenType[] validTypes = new TokenType[]{
-        TokenType.EQUALITY,
-        TokenType.INEQUALITY,
-        TokenType.LESS_THAN,
-        TokenType.LESS_THAN_OR_EQUAL,
-        TokenType.GREATER_THAN_OR_EQUAL,
-        TokenType.GREATER_THAN
-    };
-    if (tokenizer.accept(validTypes)) {
-      Token operator = tokenizer.expect(validTypes);
-      Comparator rhs = parseComparator();
-      return new OrCond(lhs, operator, rhs);
-    } else {
-      return new OrCond(lhs);
-    }
-  }
 
   Variable parseVariable() throws CarrotException {
     Identifier ident = parseIdentifier();
@@ -209,41 +198,5 @@ public class StatementParser {
     }
 
     throw tokenizer.unexpected("Variable, number, string or expression expected.");
-  }
-
-  Term parseTerm() throws CarrotException {
-    Token prefix;
-    if (tokenizer.accept(TokenType.MULTIPLY) || tokenizer.accept(TokenType.DIVIDE)) {
-      prefix = tokenizer.expect(TokenType.MULTIPLY, TokenType.DIVIDE);
-    } else {
-      prefix = null;
-    }
-
-    Factor factor = parseFactor();
-    Term.Builder termBuilder = new Term.Builder(prefix, factor);
-    while (tokenizer.accept(TokenType.MULTIPLY) || tokenizer.accept(TokenType.DIVIDE)) {
-      prefix = tokenizer.expect(TokenType.MULTIPLY, TokenType.DIVIDE);
-      termBuilder.addFactor(prefix, parseFactor());
-    }
-
-    return termBuilder.build();
-  }
-
-  Comparator parseComparator() throws CarrotException {
-    Token prefix;
-    if (tokenizer.accept(TokenType.PLUS) || tokenizer.accept(TokenType.MINUS)) {
-      prefix = tokenizer.expect(TokenType.PLUS, TokenType.MINUS);
-    } else {
-      prefix = null;
-    }
-
-    Term term = parseTerm();
-    Comparator.Builder exprBuilder = new Comparator.Builder(prefix, term);
-    while (tokenizer.accept(TokenType.PLUS) || tokenizer.accept(TokenType.MINUS)) {
-      prefix = tokenizer.expect(TokenType.PLUS, TokenType.MINUS);
-      exprBuilder.addTerm(prefix, parseTerm());
-    }
-
-    return exprBuilder.build();
   }
 }
