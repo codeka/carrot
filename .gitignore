@@ -6,7 +6,10 @@ build/
 # Ignore IntelliJ files
 .idea/workspace.xml
 .idea/tasks.xml
+.idea/misc.xml
+.idea/modules.xml
 .idea/libraries/
+.idea/uiDesigner.xml
 *.iml
 local.properties
 
