@@ -39,10 +39,17 @@ public class CarrotEngineTest {
   }
 
   @Test
+  public void testIterationLoopAndConditionalsTag() {
+    assertThat(render("{% for a in \"foo\", \"bar\", \"baz\" %}{{ a }}{{ !loop.last && \", \" || \"\" }}{% end %}", new EmptyBindings())).isEqualTo("foo, bar, baz");
+  }
+
+  @Test
   public void testOperatorPrecdence() {
     Map<String, Object> context = ImmutableMap.of("true", (Object) true, "false", false);
 
     assertThat(render("{{ 1 + 1 * 2 }}", new MapBindings(context))).isEqualTo("3");
+    assertThat(render("{{ 1 + 2 * 4 + 10 }}", new MapBindings(context))).isEqualTo("19");
+    assertThat(render("{{ 1 + 1 + 1 * 2 }}", new MapBindings(context))).isEqualTo("4");
     assertThat(render("{{ (1 + 1) * 2 }}", new MapBindings(context))).isEqualTo("4");
     assertThat(render("{{ 2 * 2 + 2 }}", new MapBindings(context))).isEqualTo("6");
     assertThat(render("{{ 2 * (2 + 2) }}", new MapBindings(context))).isEqualTo("8");

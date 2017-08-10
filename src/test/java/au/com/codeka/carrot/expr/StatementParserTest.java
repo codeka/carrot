@@ -51,6 +51,15 @@ public class StatementParserTest {
     assertThat(createStatementParser("!!!1").parseExpression().evaluate(new Configuration(), new Scope(new EmptyBindings()))).isEqualTo(false);
   }
 
+  @SuppressWarnings("unchecked")
+  @Test
+  public void testIterableTerms() throws CarrotException {
+    assertThat((Iterable<Object>) createStatementParser("1, 2").parseTermsIterable().evaluate(new Configuration(), new Scope(new EmptyBindings()))).containsAllOf(1L, 2L);
+    assertThat((Iterable<Object>) createStatementParser("1, 2, 3").parseTermsIterable().evaluate(new Configuration(), new Scope(new EmptyBindings()))).containsAllOf(1L, 2L, 3L);
+    assertThat((Iterable<Object>) createStatementParser("1, 2 + 5, \"3\", 4").parseTermsIterable().evaluate(new Configuration(), new Scope(new EmptyBindings()))).containsAllOf(1L, 7L, "3", 4L);
+  }
+
+
   private StatementParser createStatementParser(String str) throws CarrotException {
     return new StatementParser(new Tokenizer(new LineReader(new ResourcePointer(null), new StringReader(str))));
   }
