@@ -22,8 +22,7 @@ import java.util.List;
  */
 public class SetTag extends Tag {
   private List<Identifier> identifiers;
-  @Nullable
-  private Expression expression;
+  @Nullable private Expression expression;
 
   @Override
   public boolean isBlockTag() {

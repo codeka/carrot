@@ -3,16 +3,50 @@
 {% block "content" %}
 <h2>Set tag</h2>
 
-<code><pre>{\% set &lt;identifier&gt; %}
+<code><pre>{\% set foo = "bar" %}
+{\% set foo, bar = arr %}
+{\% set &lt;identifier&gt; %}
   content
 {\% end %}</pre></code>
 
-<p>The <code>{\% set %}</code> tag can be used to set the value of a variable in the current scope to the value of
-the tag's contents. It's best described with an example.</p>
+<p>The <code>{\% set %}</code> tag can be used to set the value of a variable in the current scope to a given value,
+  to the value of the tag's contents, or to unpack an array variable. It's best described with an example.</p>
 
 <h3>Example</h3>
 
-<p>Given the template:</p>
+<p>First, the simplest form:</p>
+
+<pre><code>{\% set foo = "bar" %}
+{\{ foo }}</code></pre>
+
+<p>This would simply output the string "bar". You can of course also do more complicated logic, like:</p>
+
+<pre><code>{\% set foo = 1 + 2 %}
+{\{ foo }}</code></pre>
+
+<p>This would output "3", as you would expect.</p>
+
+<p>You can also use <code>set</code> to expand an array variable, like so:</p>
+
+<pre><code>{\% set foo, bar = arr %}
+foo = {\{ foo }}
+bar = {\{ bar }}</code></pre>
+
+<p>Assuming the follow code:</p>
+
+<code><pre>  CarrotEngine engine = new CarrotEngine();
+  engine.getConfig().setResourceLocator(...);
+
+  Bindings bindings = new SingletonBindings("arr", new int[] { 123, 456 });
+  System.out.println(engine.process("filename.html", bindings));
+</pre></code>
+
+<p>You'll get the following output:</p>
+
+<pre><code>foo = 123
+bar = 456</code></pre>
+
+<p>Finally, the "block" form of <code>{\% set %}</code>, given the template:</p>
 
 {% set someHtml %}Here is some <b>HTML</b>!{% end %}
 

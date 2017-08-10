@@ -34,6 +34,12 @@ public class SetTagHelper {
   }
 
   @Test
+  public void testNumericExpression() throws CarrotException {
+    assertThat(render("{% set foo = 1 + 2 %}foo={{ foo }}"))
+        .isEqualTo("foo=3");
+  }
+
+  @Test
   public void testExpansion() throws CarrotException {
     assertThat(render("{% set foo, bar = baz %}foo={{ foo }}, bar={{ bar }}", "baz", Arrays.asList("bing", "bong")))
         .isEqualTo("foo=bing, bar=bong");
