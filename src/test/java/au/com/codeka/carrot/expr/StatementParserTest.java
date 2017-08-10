@@ -16,19 +16,6 @@ import static com.google.common.truth.Truth.assertThat;
  */
 @RunWith(JUnit4.class)
 public class StatementParserTest {
-  @Test
-  public void testComparatorThreeTerms() throws CarrotException {
-    StatementParser parser = createStatementParser("one + 2 - \"three\"");
-    Comparator comp = parser.parseComparator();
-    assertThat(comp.toString()).isEqualTo("one PLUS 2 MINUS \"three\"");
-  }
-
-  @Test
-  public void testComparatorTermsAndFactors() throws CarrotException {
-    StatementParser parser = createStatementParser("one + 2 * 3 - \"three\"");
-    Comparator comp = parser.parseComparator();
-    assertThat(comp.toString()).isEqualTo("one PLUS 2 MULTIPLY 3 MINUS \"three\"");
-  }
 
   @Test
   public void testVariable() throws CarrotException {
