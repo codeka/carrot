@@ -8,6 +8,7 @@ import au.com.codeka.carrot.bindings.SingletonBindings;
 import au.com.codeka.carrot.expr.Expression;
 import au.com.codeka.carrot.expr.Identifier;
 import au.com.codeka.carrot.expr.StatementParser;
+import au.com.codeka.carrot.expr.TokenType;
 import au.com.codeka.carrot.tmpl.Node;
 import au.com.codeka.carrot.tmpl.TagNode;
 
@@ -37,10 +38,7 @@ public class ForTag extends Tag {
   @Override
   public void parseStatement(StatementParser stmtParser) throws CarrotException {
     loopIdentifiers = stmtParser.parseIdentifierList();
-    Identifier inIdentifier = stmtParser.parseIdentifier();
-    if (!inIdentifier.evaluate().equalsIgnoreCase("in")) {
-      throw new CarrotException("Expected 'in'.");
-    }
+    stmtParser.parseToken(TokenType.IN);
     loopExpression = stmtParser.parseExpression();
   }
 

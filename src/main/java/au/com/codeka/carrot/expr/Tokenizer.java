@@ -259,7 +259,22 @@ public class Tokenizer {
           if (next > 0) {
             lookahead = (char) next;
           }
-          token = new Token(TokenType.IDENTIFIER, identifier);
+          switch (identifier) {
+            case "or":
+              token = new Token(TokenType.LOGICAL_OR, identifier);
+              break;
+            case "and":
+              token = new Token(TokenType.LOGICAL_AND, identifier);
+              break;
+            case "not":
+              token = new Token(TokenType.NOT, identifier);
+              break;
+            case "in":
+              token = new Token(TokenType.IN, identifier);
+              break;
+            default:
+              token = new Token(TokenType.IDENTIFIER, identifier);
+          }
         } else {
           throw new CarrotException("Unexpected character: " + (char) ch, reader.getPointer());
         }
