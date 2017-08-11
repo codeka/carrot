@@ -12,7 +12,7 @@ import java.util.Collections;
  *
  * @author Marten Gajda
  */
-public class IterableTerm implements Term {
+public final class IterableTerm implements Term {
   private final Term left;
 
   public IterableTerm(Term left) {

@@ -11,7 +11,7 @@ import java.util.Collections;
  *
  * @author Marten Gajda
  */
-public class EmptyTerm implements Term {
+public final class EmptyTerm implements Term {
   @Override
   public Object evaluate(Configuration config, Scope scope) throws CarrotException {
     return Collections.emptyList();

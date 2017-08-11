@@ -59,15 +59,20 @@ public class CarrotEngineTest {
   @Test
   public void testConditionalStatements() {
     assertThat(render("{{ foo && \"a\" || \"b\"}}", new SingletonBindings("foo", true))).isEqualTo("a");
-
     assertThat(render("{{ foo && \"a\" || \"b\"}}", new SingletonBindings("foo", false))).isEqualTo("b");
     assertThat(render("{{ (foo && \"a\") || \"b\"}}", new SingletonBindings("foo", false))).isEqualTo("b");
-
     assertThat(render("{{ foo && \"a\"}}", new SingletonBindings("foo", true))).isEqualTo("a");
     assertThat(render("{{ foo && \"a\"}}", new SingletonBindings("foo", false))).isEqualTo("false");
-
     assertThat(render("{{ foo || \"a\"}}", new SingletonBindings("foo", true))).isEqualTo("true");
     assertThat(render("{{ foo || \"a\"}}", new SingletonBindings("foo", false))).isEqualTo("a");
+
+    assertThat(render("{{ foo and \"a\" or \"b\"}}", new SingletonBindings("foo", true))).isEqualTo("a");
+    assertThat(render("{{ foo and \"a\" or \"b\"}}", new SingletonBindings("foo", false))).isEqualTo("b");
+    assertThat(render("{{ (foo and \"a\") or \"b\"}}", new SingletonBindings("foo", false))).isEqualTo("b");
+    assertThat(render("{{ foo and \"a\"}}", new SingletonBindings("foo", true))).isEqualTo("a");
+    assertThat(render("{{ foo and \"a\"}}", new SingletonBindings("foo", false))).isEqualTo("false");
+    assertThat(render("{{ foo or \"a\"}}", new SingletonBindings("foo", true))).isEqualTo("true");
+    assertThat(render("{{ foo or \"a\"}}", new SingletonBindings("foo", false))).isEqualTo("a");
   }
 
   @Test
