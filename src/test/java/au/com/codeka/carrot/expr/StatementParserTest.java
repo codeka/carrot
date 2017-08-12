@@ -42,13 +42,13 @@ public class StatementParserTest {
 
   @Test
   public void testBinaryOperation() throws CarrotException {
-    assertThat(createStatementParser("1+1").parseExpression().evaluate(new Configuration(), new Scope(new EmptyBindings()))).isEqualTo(2);
-    assertThat(createStatementParser("1+1+1").parseExpression().evaluate(new Configuration(), new Scope(new EmptyBindings()))).isEqualTo(3);
-    assertThat(createStatementParser("1+1+1+1").parseExpression().evaluate(new Configuration(), new Scope(new EmptyBindings()))).isEqualTo(4);
-    assertThat(createStatementParser("1").parseExpression().evaluate(new Configuration(), new Scope(new EmptyBindings()))).isEqualTo(1);
-    assertThat(createStatementParser("!1").parseExpression().evaluate(new Configuration(), new Scope(new EmptyBindings()))).isEqualTo(false);
-    assertThat(createStatementParser("!!1").parseExpression().evaluate(new Configuration(), new Scope(new EmptyBindings()))).isEqualTo(true);
-    assertThat(createStatementParser("!!!1").parseExpression().evaluate(new Configuration(), new Scope(new EmptyBindings()))).isEqualTo(false);
+    assertThat(createStatementParser("1+1").parseTerm().evaluate(new Configuration(), new Scope(new EmptyBindings()))).isEqualTo(2);
+    assertThat(createStatementParser("1+1+1").parseTerm().evaluate(new Configuration(), new Scope(new EmptyBindings()))).isEqualTo(3);
+    assertThat(createStatementParser("1+1+1+1").parseTerm().evaluate(new Configuration(), new Scope(new EmptyBindings()))).isEqualTo(4);
+    assertThat(createStatementParser("1").parseTerm().evaluate(new Configuration(), new Scope(new EmptyBindings()))).isEqualTo(1);
+    assertThat(createStatementParser("!1").parseTerm().evaluate(new Configuration(), new Scope(new EmptyBindings()))).isEqualTo(false);
+    assertThat(createStatementParser("!!1").parseTerm().evaluate(new Configuration(), new Scope(new EmptyBindings()))).isEqualTo(true);
+    assertThat(createStatementParser("!!!1").parseTerm().evaluate(new Configuration(), new Scope(new EmptyBindings()))).isEqualTo(false);
   }
 
   @SuppressWarnings("unchecked")

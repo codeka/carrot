@@ -21,25 +21,11 @@ public final class ValueParser implements TermParser {
 
   @Override
   public Term parse(Tokenizer tokenizer) throws CarrotException {
-
-    if (tokenizer.accept(TokenType.LPAREN)) {
-      tokenizer.expect(TokenType.LPAREN);
-      Expression expr = statementParser.parseExpression();
-      tokenizer.expect(TokenType.RPAREN);
-
-      return new TermAdapter(new Factor(expr));
-    }
-    if (tokenizer.accept(TokenType.STRING_LITERAL)) {
-      return new TermAdapter(new Factor(statementParser.parseString()));
-    }
-    if (tokenizer.accept(TokenType.NUMBER_LITERAL)) {
-      return new TermAdapter(new Factor(statementParser.parseNumber()));
-    }
     if (tokenizer.accept(TokenType.IDENTIFIER)) {
       return new TermAdapter(new Factor(statementParser.parseVariable()));
     }
 
-    return new EmptyTerm();
+    return EmptyTerm.INSTANCE;
   }
 
   private static class TermAdapter implements Term {

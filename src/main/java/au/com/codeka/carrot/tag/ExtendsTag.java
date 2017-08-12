@@ -2,10 +2,10 @@ package au.com.codeka.carrot.tag;
 
 import au.com.codeka.carrot.CarrotEngine;
 import au.com.codeka.carrot.CarrotException;
-import au.com.codeka.carrot.bindings.SingletonBindings;
-import au.com.codeka.carrot.expr.Expression;
-import au.com.codeka.carrot.expr.StatementParser;
 import au.com.codeka.carrot.Scope;
+import au.com.codeka.carrot.bindings.SingletonBindings;
+import au.com.codeka.carrot.expr.StatementParser;
+import au.com.codeka.carrot.expr.Term;
 import au.com.codeka.carrot.resource.ResourceName;
 import au.com.codeka.carrot.tmpl.Node;
 import au.com.codeka.carrot.tmpl.TagNode;
@@ -20,9 +20,9 @@ import static au.com.codeka.carrot.util.Preconditions.checkNotNull;
 
 /**
  * The "extends" tag is used to base one template off of another one.
- *
- * <p>You would make a "skeleton" template like so:
- * <code>
+ * <p>
+ * You would make a "skeleton" template like so:
+ * <pre><code>
  *   &lt;html&gt;
  *     &lt;head&gt;
  *       &lt;title&gt;Page title&lt;/title&gt;
@@ -32,20 +32,22 @@ import static au.com.codeka.carrot.util.Preconditions.checkNotNull;
  *     &lt;/body&gt;
  *   &lt;/html&gt;
  * </code>
- *
- * <p>And another file to "extend" it, like so:
- * <code>
+   </pre>
+ * <p>
+ * And another file to "extend" it, like so:
+ * <pre><code>
  *   {% extends "skeleton.html" %}
  *   {% block "content" %}
  *     bar
  *   {% end %}
  * </code>
- *
+ * </pre>
+ * <p>
  * <p>The contents of the second file will then be the contents of the skeleton file, and the "content" block will
  * be replaced with the content inside the block.
  */
 public class ExtendsTag extends Tag {
-  private Expression skeletonNameExpr;
+  private Term skeletonNameExpr;
 
   @Override
   public boolean isBlockTag() {
@@ -54,7 +56,7 @@ public class ExtendsTag extends Tag {
 
   @Override
   public void parseStatement(StatementParser stmtParser) throws CarrotException {
-    skeletonNameExpr = stmtParser.parseExpression();
+    skeletonNameExpr = stmtParser.parseTerm();
   }
 
   @Override

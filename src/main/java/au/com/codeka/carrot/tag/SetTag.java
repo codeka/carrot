@@ -5,9 +5,9 @@ import au.com.codeka.carrot.CarrotException;
 import au.com.codeka.carrot.Scope;
 import au.com.codeka.carrot.bindings.IterableExpansionBindings;
 import au.com.codeka.carrot.bindings.SingletonBindings;
-import au.com.codeka.carrot.expr.Expression;
 import au.com.codeka.carrot.expr.Identifier;
 import au.com.codeka.carrot.expr.StatementParser;
+import au.com.codeka.carrot.expr.Term;
 import au.com.codeka.carrot.tmpl.TagNode;
 
 import javax.annotation.Nullable;
@@ -22,7 +22,8 @@ import java.util.List;
  */
 public class SetTag extends Tag {
   private List<Identifier> identifiers;
-  @Nullable private Expression expression;
+  @Nullable
+  private Term expression;
 
   @Override
   public boolean isBlockTag() {
@@ -34,7 +35,7 @@ public class SetTag extends Tag {
     identifiers = stmtParser.parseIdentifierList();
 
     if (stmtParser.isAssignment()) {
-      expression = stmtParser.parseExpression();
+      expression = stmtParser.parseTerm();
     } else if (identifiers.size() != 1) {
       throw new CarrotException("Block assignment does not support unpacking.");
     }
