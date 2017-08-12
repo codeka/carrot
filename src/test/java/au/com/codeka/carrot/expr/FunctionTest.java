@@ -11,7 +11,6 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import java.io.StringReader;
-import java.util.HashMap;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.fail;
@@ -23,7 +22,7 @@ import static org.junit.Assert.fail;
 public class FunctionTest {
   @Test
   public void testMethodNotFound() {
-    Function f = new Function.Builder(new Identifier(new Token(TokenType.IDENTIFIER, "foo"))).build();
+    Function f = new Function(new Identifier(new Token(TokenType.IDENTIFIER, "foo")), new EmptyTerm());
     try {
       f.evaluate(new Object(), new Configuration(), new Scope(new EmptyBindings()));
       fail("CarrotException expected.");
@@ -34,9 +33,7 @@ public class FunctionTest {
 
   @Test
   public void testWrongNumberOfParameters() {
-    Function f = new Function.Builder(new Identifier(new Token(TokenType.IDENTIFIER, "foo")))
-        .addParam(parseExpression("12"))
-        .build();
+    Function f = new Function(new Identifier(new Token(TokenType.IDENTIFIER, "foo")), parseExpression("12"));
 
     try {
       f.evaluate(new FooWithTwoArgs(), new Configuration(), new Scope(new EmptyBindings()));
@@ -50,10 +47,7 @@ public class FunctionTest {
 
   @Test
   public void testInconvertibleTypes() {
-    Function f = new Function.Builder(new Identifier(new Token(TokenType.IDENTIFIER, "foo")))
-        .addParam(parseExpression("\"Hello\""))
-        .addParam(parseExpression("\"World\""))
-        .build();
+    Function f = new Function(new Identifier(new Token(TokenType.IDENTIFIER, "foo")),parseExpression("\"Hello\", \"World\""));
 
     try {
       f.evaluate(new FooWithTwoArgs(), new Configuration(), new Scope(new EmptyBindings()));
@@ -71,10 +65,10 @@ public class FunctionTest {
     }
   }
 
-  private Expression parseExpression(String expr) {
+  private Term parseExpression(String expr) {
     try {
       return new StatementParser(
-          new Tokenizer(new LineReader(new ResourcePointer(null), new StringReader(expr)))).parseExpression();
+          new Tokenizer(new LineReader(new ResourcePointer(null), new StringReader(expr)))).parseTermsIterable();
     } catch (CarrotException e) {
       fail(e.getMessage());
       throw new RuntimeException(); // Won't get here.

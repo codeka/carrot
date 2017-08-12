@@ -21,18 +21,42 @@ public final class ValueParser implements TermParser {
 
   @Override
   public Term parse(Tokenizer tokenizer) throws CarrotException {
-    final Factor factor = statementParser.parseFactor();
-    // return an adapter which adapts the old `Factor` to the new `Term`
-    return new Term() {
-      @Override
-      public Object evaluate(Configuration config, Scope scope) throws CarrotException {
-        return factor.evaluate(config, scope);
-      }
 
-      @Override
-      public String toString() {
-        return factor.toString();
-      }
-    };
+    if (tokenizer.accept(TokenType.LPAREN)) {
+      tokenizer.expect(TokenType.LPAREN);
+      Expression expr = statementParser.parseExpression();
+      tokenizer.expect(TokenType.RPAREN);
+
+      return new TermAdapter(new Factor(expr));
+    }
+    if (tokenizer.accept(TokenType.STRING_LITERAL)) {
+      return new TermAdapter(new Factor(statementParser.parseString()));
+    }
+    if (tokenizer.accept(TokenType.NUMBER_LITERAL)) {
+      return new TermAdapter(new Factor(statementParser.parseNumber()));
+    }
+    if (tokenizer.accept(TokenType.IDENTIFIER)) {
+      return new TermAdapter(new Factor(statementParser.parseVariable()));
+    }
+
+    return new EmptyTerm();
+  }
+
+  private static class TermAdapter implements Term {
+    private final Factor factor;
+
+    public TermAdapter(Factor factor) {
+      this.factor = factor;
+    }
+
+    @Override
+    public Object evaluate(Configuration config, Scope scope) throws CarrotException {
+      return factor.evaluate(config, scope);
+    }
+
+    @Override
+    public String toString() {
+      return factor.toString();
+    }
   }
 }

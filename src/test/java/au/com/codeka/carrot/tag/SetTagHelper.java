@@ -45,4 +45,18 @@ public class SetTagHelper {
         .isEqualTo("foo=bing, bar=bong");
   }
 
+
+  @Test
+  public void testIterableExpansion() throws CarrotException {
+    assertThat(render("{% set foo, bar = \"bing\", \"bong\" %}foo={{ foo }}, bar={{ bar }}"))
+        .isEqualTo("foo=bing, bar=bong");
+  }
+
+  @Test
+  public void testSwap() throws CarrotException {
+    assertThat(render("{% set foo, bar = \"bing\", \"bong\" %}{% set foo, bar = bar, foo %}foo={{ foo }}, bar={{ bar }}"))
+        .isEqualTo("foo=bong, bar=bing");
+    assertThat(render("{% set foo, bar, baz = \"bing\", \"bong\", \"bang\" %}{% set foo, bar, baz = bar, baz, foo %}foo={{ foo }}, bar={{ bar }}, baz={{ baz }}"))
+        .isEqualTo("foo=bong, bar=bang, baz=bing");
+  }
 }

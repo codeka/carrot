@@ -5,7 +5,9 @@ import au.com.codeka.carrot.expr.Identifier;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 /**
  * {@link Bindings} which expand an {@link Iterable} into multiple variables (given in an {@link Iterable} as well).
@@ -21,29 +23,27 @@ import java.util.Iterator;
  * @author Marten Gajda
  */
 public final class IterableExpansionBindings implements Bindings {
-  private final Iterable<Identifier> identifiers;
-  private final Iterable<Object> values;
+  private final Map<String, Object> map = new HashMap<>();
 
   public IterableExpansionBindings(Iterable<Identifier> identifiers, Iterable<Object> values) {
-    this.identifiers = identifiers;
-    this.values = values;
+    // map the identifiers eagerly, otherwise the swap operation doesn't seem to work as expected
+    Iterator<Object> valueIterator = values.iterator();
+    for (Identifier identifier : identifiers) {
+      if (!valueIterator.hasNext()) {
+        break;
+      }
+      map.put(identifier.evaluate(), valueIterator.next());
+    }
   }
 
   @Nullable
   @Override
   public Object resolve(@Nonnull String key) {
-    Iterator<Object> values = this.values.iterator();
-    for (Identifier identifier : identifiers) {
-      Object nextValue = values.next();
-      if (key.equals(identifier.evaluate())) {
-        return nextValue;
-      }
-    }
-    return null;
+    return map.get(key);
   }
 
   @Override
   public boolean isEmpty() {
-    return !values.iterator().hasNext();
+    return map.isEmpty();
   }
 }

@@ -13,67 +13,75 @@ public enum TokenType {
   /**
    * An unknown token, or the end of the stream.
    */
-  EOF(false, null, null),
+  EOF(false),
 
   /**
    * A string literal "like this".
    */
-  STRING_LITERAL(true, null, null),
+  STRING_LITERAL(true),
 
   /**
    * A number literal, like 12 or 12.34.
    */
-  NUMBER_LITERAL(true, null, null),
+  NUMBER_LITERAL(true),
 
   /**
    * A Java-style identifier like foo or bar.
    */
-  IDENTIFIER(true, null, null),
+  IDENTIFIER(true),
 
   /**
    * Left-parenthesis: (
    */
-  LPAREN(false, null, null),
+  LPAREN(false),
 
   /**
-   * Right-parenthesis: (
+   * Right-parenthesis: )
    */
-  RPAREN(false, null, null),
+  RPAREN(false),
 
   /**
    * Left-square-bracket: [
    */
-  LSQUARE(false, null, null),
+  LSQUARE(false),
 
   /**
    * Right-square-bracket: ]
    */
-  RSQUARE(false, null, null),
+  RSQUARE(false),
 
   /**
    * Single Equals: =
    */
-  ASSIGNMENT(false, null, null),
+  ASSIGNMENT(false),
 
-  COMMA(false, null, null),
-  DOT(false, null, null),
+  COMMA(false, new IterationOperator()),
+  DOT(false),
   NOT(false, null, new NotOperator()),
-  LOGICAL_AND(false, new AndOperator(), null),
-  LOGICAL_OR(false, new OrOperator(), null),
-  EQUALITY(false, new EqOperator(), null),
-  INEQUALITY(false, new Complement(EQUALITY.binaryOperator), null),
-  LESS_THAN(false, new LessOperator(), null),
-  GREATER_THAN(false, new GreaterOperator(), null),
-  LESS_THAN_OR_EQUAL(false, new Complement(GREATER_THAN.binaryOperator), null),
-  GREATER_THAN_OR_EQUAL(false, new Complement(LESS_THAN.binaryOperator), null),
+  LOGICAL_AND(false, new AndOperator()),
+  LOGICAL_OR(false, new OrOperator()),
+  EQUALITY(false, new EqOperator()),
+  INEQUALITY(false, new Complement(EQUALITY.binaryOperator)),
+  LESS_THAN(false, new LessOperator()),
+  GREATER_THAN(false, new GreaterOperator()),
+  LESS_THAN_OR_EQUAL(false, new Complement(GREATER_THAN.binaryOperator)),
+  GREATER_THAN_OR_EQUAL(false, new Complement(LESS_THAN.binaryOperator)),
   PLUS(false, new AddOperator(), new PlusOperator()),
   MINUS(false, new SubOperator(), new MinusOperator()),
-  MULTIPLY(false, new MulOperator(), null),
-  DIVIDE(false, new DivOperator(), null);
+  MULTIPLY(false, new MulOperator()),
+  DIVIDE(false, new DivOperator());
 
   private final boolean hasValue;
   private final BinaryOperator binaryOperator;
   private final UnaryOperator unaryOperator;
+
+  TokenType(boolean hasValue) {
+    this(hasValue, null, null);
+  }
+
+  TokenType(boolean hasValue, BinaryOperator binaryOperator) {
+    this(hasValue, binaryOperator, null);
+  }
 
   TokenType(boolean hasValue, BinaryOperator binaryOperator, UnaryOperator unaryOperator) {
     this.hasValue = hasValue;

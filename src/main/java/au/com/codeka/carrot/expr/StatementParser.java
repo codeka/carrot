@@ -2,6 +2,8 @@ package au.com.codeka.carrot.expr;
 
 import au.com.codeka.carrot.CarrotException;
 import au.com.codeka.carrot.expr.binary.BinaryTermParser;
+import au.com.codeka.carrot.expr.binary.LaxIterationTermParser;
+import au.com.codeka.carrot.expr.binary.StrictIterationTermParser;
 import au.com.codeka.carrot.expr.unary.UnaryTermParser;
 import au.com.codeka.carrot.tag.Tag;
 import au.com.codeka.carrot.tmpl.TagNode;
@@ -21,6 +23,7 @@ import java.util.List;
  *     | number
  *     | literal
  *     | "(" expression ")"
+ *     | empty-term
  *
  *   unary-term = ["!"] unary-term
  *
@@ -36,11 +39,13 @@ import java.util.List;
  *
  *   or-term = and-term ["||" or-term]
  *
- *   expression = or-term
+ *   emtpy-term =
+ *
+ *   expression = or-term ["," expression]
  *
  *   variable = identifier [func-call] ["[" expression "]"] ["." variable]
  *
- *   func-call = "." identifier "(" expression {"," expression} ")"
+ *   func-call = "." identifier "(" expression ")"
  *
  *   identifier = "any valid Java identifier"
  *   number = "and valid Java number"
@@ -52,19 +57,21 @@ import java.util.List;
  */
 public class StatementParser {
   private final Tokenizer tokenizer;
-  private final TermParser termParser;
+  private final TermParser expressionParser;
+  private final TermParser iterableParser;
 
   public StatementParser(Tokenizer tokenizer) {
     this.tokenizer = tokenizer;
 
+
     /*
-     * Build a TermParser tree. Each TermParser receives a factory for the "sub-term" and a list of acceptable TokenTypes.
+     * Build a TermParser tree. Each TermParser receives a parser for the "sub-term" and a list of acceptable TokenTypes.
      *
      * This reflects the upper part of the grammar above.
      *
-     * Operation precedence is given by the nesting level of a factory, deeper factories have precedence over shallow factories.
+     * Operation precedence is given by the nesting level of a parser, deeper parsers have precedence over shallow factories.
      */
-    termParser = new BinaryTermParser(
+    TermParser base = new BinaryTermParser(
         new BinaryTermParser(
             new BinaryTermParser(
                 new BinaryTermParser(
@@ -79,6 +86,12 @@ public class StatementParser {
                 TokenType.EQUALITY, TokenType.INEQUALITY),
             TokenType.LOGICAL_AND),
         TokenType.LOGICAL_OR);
+
+    // the generic expression uses a lax iteration parser
+    expressionParser = new LaxIterationTermParser(base);
+
+    // a special parser which enforces all results to be an iterable, even if it's not an iteration
+    iterableParser = new StrictIterationTermParser(base);
   }
 
   /**
@@ -138,9 +151,13 @@ public class StatementParser {
 
   // TODO: consider to return the plain Term instead. Technically Expression and Term are equivalent.
   public Expression parseExpression() throws CarrotException {
-    return new Expression(termParser.parse(tokenizer));
+    return new Expression(expressionParser.parse(tokenizer));
   }
 
+  // TODO: at present we keep this only to test the result, check if the current tests are sufficient
+  public Term parseTermsIterable() throws CarrotException {
+    return iterableParser.parse(tokenizer);
+  }
 
   Variable parseVariable() throws CarrotException {
     Identifier ident = parseIdentifier();
@@ -153,18 +170,12 @@ public class StatementParser {
       tokenizer.expect(TokenType.DOT);
       Identifier funcNameIdentifier = parseIdentifier();
       tokenizer.expect(TokenType.LPAREN);
-      Function.Builder argsBuilder = new Function.Builder(funcNameIdentifier);
-      boolean first = true;
-      while (!tokenizer.accept(TokenType.RPAREN)) {
-        if (!first) {
-          tokenizer.expect(TokenType.COMMA);
-        }
-        first = false;
-        Expression expr = parseExpression();
-        argsBuilder.addParam(expr);
+      Term params = new EmptyTerm();
+      if (!tokenizer.accept(TokenType.RPAREN)) {
+        params = iterableParser.parse(tokenizer);
       }
       tokenizer.expect(TokenType.RPAREN);
-      args = argsBuilder.build();
+      args = new Function(funcNameIdentifier, params);
     }
     if (tokenizer.accept(TokenType.LSQUARE)) {
       tokenizer.expect(TokenType.LSQUARE);
@@ -177,26 +188,5 @@ public class StatementParser {
     }
 
     return new Variable(ident, args, accessExpression, dotVariable);
-  }
-
-  Factor parseFactor() throws CarrotException {
-    if (tokenizer.accept(TokenType.LPAREN)) {
-      tokenizer.expect(TokenType.LPAREN);
-      Expression expr = parseExpression();
-      tokenizer.expect(TokenType.RPAREN);
-
-      return new Factor(expr);
-    }
-    if (tokenizer.accept(TokenType.STRING_LITERAL)) {
-      return new Factor(parseString());
-    }
-    if (tokenizer.accept(TokenType.NUMBER_LITERAL)) {
-      return new Factor(parseNumber());
-    }
-    if (tokenizer.accept(TokenType.IDENTIFIER)) {
-      return new Factor(parseVariable());
-    }
-
-    throw tokenizer.unexpected("Variable, number, string or expression expected.");
   }
 }

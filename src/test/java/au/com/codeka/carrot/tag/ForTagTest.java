@@ -3,6 +3,7 @@ package au.com.codeka.carrot.tag;
 import au.com.codeka.carrot.CarrotEngine;
 import au.com.codeka.carrot.CarrotException;
 import au.com.codeka.carrot.Configuration;
+import au.com.codeka.carrot.bindings.EmptyBindings;
 import au.com.codeka.carrot.bindings.MapBindings;
 import au.com.codeka.carrot.resource.MemoryResourceLocator;
 import org.junit.Test;
@@ -50,6 +51,28 @@ public class ForTagTest {
     assertThat(render("Hello {% for x, y, z in values %} -{{ x }}/{{ y }}/{{ z }}- {% end %} World", context))
         .isEqualTo("Hello  -foo/bar/baz-  -1/2/3-  -a/b/c-  World");
   }
+
+  @Test
+  public void testIterableLoop() throws CarrotException {
+    Map<String, Object> context = new HashMap<>();
+    assertThat(render("Hello {% for a in 1, 2, 3 %} -{{ a }}- {% end %} World", context))
+        .isEqualTo("Hello  -1-  -2-  -3-  World");
+  }
+
+  @Test
+  public void testIterableLoopExpansion() throws CarrotException {
+    Map<String, Object> context = new HashMap<>();
+    assertThat(render("Hello {% for number, letter in (1, \"a\"), (2, \"b\"), (3, \"c\") %} {{ number }}:{{ letter }} {% end %} World", context))
+        .isEqualTo("Hello  1:a  2:b  3:c  World");
+  }
+
+  @Test
+  public void testSingleLoopExpansion() throws CarrotException {
+    assertThat(render("Hello {% for number in 1,  %} {{ number }} {% end %} World", new HashMap<String, Object>())).isEqualTo("Hello  1  World");
+    assertThat(render("Hello {% for number in 1, 2 %} {{ number }} {% end %} World", new HashMap<String, Object>())).isEqualTo("Hello  1  2  World");
+    assertThat(render("Hello {% for number in 1, 2, %} {{ number }} {% end %} World", new HashMap<String, Object>())).isEqualTo("Hello  1  2  World");
+  }
+
 
   @Test
   public void testMapExpansionLoop() throws CarrotException {
