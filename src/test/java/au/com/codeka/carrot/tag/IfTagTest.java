@@ -5,6 +5,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
+import java.util.Arrays;
+
 import static au.com.codeka.carrot.util.RenderHelper.render;
 import static com.google.common.truth.Truth.assertThat;
 
@@ -125,6 +127,16 @@ public class IfTagTest {
     assertThat(render("{% if !foo %}yes{% else %}no{% end %}", "foo", true)).isEqualTo("no");
     assertThat(render("{% if !foo %}yes{% else %}no{% end %}", "foo", false)).isEqualTo("yes");
   }
+
+
+  @Test
+  public void testIfIn() throws CarrotException {
+    assertThat(render("{% if foo in (1,2,3) %}yes{% else %}no{% end %}", "foo", 2L)).isEqualTo("yes");
+    assertThat(render("{% if foo in (1,2,3) %}yes{% else %}no{% end %}", "foo", 4L)).isEqualTo("no");
+    assertThat(render("{% if foo in list %}yes{% else %}no{% end %}", "foo", 2,"list",Arrays.asList(1,2,3))).isEqualTo("yes");
+    assertThat(render("{% if foo in list %}yes{% else %}no{% end %}", "foo", 4,"list",Arrays.asList(1,2,3))).isEqualTo("no");
+  }
+
 
   @Test
   public void testNulls() throws CarrotException {

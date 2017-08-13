@@ -31,7 +31,7 @@ import java.util.List;
  *
  *   additive-term = multiplicative-term [("+" | "-") additive-term]
  *
- *   relational-term = additive-term [("&lt;" | &lt;=" | "&gt;" | &gt;=") relational-term]
+ *   relational-term = additive-term [("&lt;" | &lt;=" | "&gt;" | &gt;=" | "in") relational-term]
  *
  *   equality-term = relational-term [("==" | "!=") equality-term]
  *
@@ -82,7 +82,7 @@ public class StatementParser {
                                 TokenType.NOT),
                             TokenType.MULTIPLY, TokenType.DIVIDE),
                         TokenType.PLUS, TokenType.MINUS),
-                    TokenType.LESS_THAN, TokenType.LESS_THAN_OR_EQUAL, TokenType.GREATER_THAN, TokenType.GREATER_THAN_OR_EQUAL),
+                    TokenType.LESS_THAN, TokenType.LESS_THAN_OR_EQUAL, TokenType.GREATER_THAN, TokenType.GREATER_THAN_OR_EQUAL, TokenType.IN),
                 TokenType.EQUALITY, TokenType.INEQUALITY),
             TokenType.LOGICAL_AND),
         TokenType.LOGICAL_OR);
@@ -119,6 +119,11 @@ public class StatementParser {
 
   public Identifier parseIdentifier() throws CarrotException {
     return new Identifier(tokenizer.expect(TokenType.IDENTIFIER));
+  }
+
+
+  public Token parseToken(TokenType type) throws CarrotException {
+    return tokenizer.expect(type);
   }
 
   public List<Identifier> parseIdentifierList() throws CarrotException {
