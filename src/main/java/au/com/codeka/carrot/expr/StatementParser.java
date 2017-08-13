@@ -1,16 +1,16 @@
 package au.com.codeka.carrot.expr;
 
 import au.com.codeka.carrot.CarrotException;
+import au.com.codeka.carrot.expr.accessible.AccessTermParser;
 import au.com.codeka.carrot.expr.binary.BinaryTermParser;
 import au.com.codeka.carrot.expr.binary.LaxIterationTermParser;
 import au.com.codeka.carrot.expr.binary.StrictIterationTermParser;
 import au.com.codeka.carrot.expr.unary.UnaryTermParser;
-import au.com.codeka.carrot.expr.values.ExpressionTermParser;
-import au.com.codeka.carrot.expr.values.NumberTermParser;
-import au.com.codeka.carrot.expr.values.StringTermParser;
+import au.com.codeka.carrot.expr.values.*;
 import au.com.codeka.carrot.tag.Tag;
 import au.com.codeka.carrot.tmpl.TagNode;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.LinkedList;
 import java.util.List;
@@ -62,6 +62,7 @@ public class StatementParser {
   private final Tokenizer tokenizer;
   private final TermParser expressionParser;
   private final TermParser iterableParser;
+  private final TermParser strictIdentifierParser;
 
   public StatementParser(Tokenizer tokenizer) {
     this.tokenizer = tokenizer;
@@ -74,6 +75,9 @@ public class StatementParser {
      *
      * Operation precedence is given by the nesting level of a parser, deeper parsers have precedence over shallow factories.
      */
+
+    strictIdentifierParser = new IdentifierTermParser(new ErrorTermParser());
+
     TermParser base = new BinaryTermParser(
         new BinaryTermParser(
             new BinaryTermParser(
@@ -84,7 +88,20 @@ public class StatementParser {
                                 new NumberTermParser(
                                     new StringTermParser(
                                         new ExpressionTermParser(
-                                            new ValueParser(this),
+                                            new AccessTermParser(
+                                                new TermParser() {
+                                                  @Override
+                                                  public Term parse(Tokenizer tokenizer) throws CarrotException {
+                                                    return expressionParser.parse(tokenizer);
+                                                  }
+                                                },
+                                                strictIdentifierParser,
+                                                new TermParser() {
+                                                  @Override
+                                                  public Term parse(Tokenizer tokenizer) throws CarrotException {
+                                                    return iterableParser.parse(tokenizer);
+                                                  }
+                                                }),
                                             new TermParser() {
                                               @Override
                                               public Term parse(Tokenizer tokenizer) throws CarrotException {
@@ -131,12 +148,14 @@ public class StatementParser {
     return null;
   }
 
+  @Nonnull
   public Identifier parseIdentifier() throws CarrotException {
     return new Identifier(tokenizer.expect(TokenType.IDENTIFIER));
   }
 
 
-  public Token parseToken(TokenType type) throws CarrotException {
+  @Nonnull
+  public Token parseToken(@Nonnull TokenType type) throws CarrotException {
     return tokenizer.expect(type);
   }
 
@@ -168,36 +187,5 @@ public class StatementParser {
   // TODO: at present we keep this only to test the result, check if the current tests are sufficient
   public Term parseTermsIterable() throws CarrotException {
     return iterableParser.parse(tokenizer);
-  }
-
-  Variable parseVariable() throws CarrotException {
-    Identifier ident = parseIdentifier();
-    Term accessExpression = null;
-    Variable dotVariable = null;
-    Function args = null;
-    if (tokenizer.accept(0, TokenType.DOT)
-        && tokenizer.accept(1, TokenType.IDENTIFIER)
-        && tokenizer.accept(2, TokenType.LPAREN)) {
-      tokenizer.expect(TokenType.DOT);
-      Identifier funcNameIdentifier = parseIdentifier();
-      tokenizer.expect(TokenType.LPAREN);
-      Term params = EmptyTerm.INSTANCE;
-      if (!tokenizer.accept(TokenType.RPAREN)) {
-        params = iterableParser.parse(tokenizer);
-      }
-      tokenizer.expect(TokenType.RPAREN);
-      args = new Function(funcNameIdentifier, params);
-    }
-    if (tokenizer.accept(TokenType.LSQUARE)) {
-      tokenizer.expect(TokenType.LSQUARE);
-      accessExpression = expressionParser.parse(tokenizer);
-      tokenizer.expect(TokenType.RSQUARE);
-    }
-    if (tokenizer.accept(TokenType.DOT)) {
-      tokenizer.expect(TokenType.DOT);
-      dotVariable = parseVariable();
-    }
-
-    return new Variable(ident, args, accessExpression, dotVariable);
   }
 }

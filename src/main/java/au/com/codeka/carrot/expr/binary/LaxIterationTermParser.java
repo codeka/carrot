@@ -26,7 +26,7 @@ public final class LaxIterationTermParser implements TermParser {
       tokenizer.expect(TokenType.COMMA);
       // We're in an iteration, parse all remaining elements with the strict parser
       Term right = iterationTermParser.parse(tokenizer);
-      return right instanceof EmptyTerm ? new IterableTerm(left) : new BinaryTerm(left, TokenType.COMMA.binaryOperator(), right);
+      return right instanceof EmptyTerm ? new IterationTerm(left) : new BinaryTerm(left, TokenType.COMMA.binaryOperator(), right);
     }
     return left;
   }

@@ -5,6 +5,7 @@ import au.com.codeka.carrot.resource.AbstractResourceName;
 import au.com.codeka.carrot.resource.ResourceLocater;
 import au.com.codeka.carrot.resource.ResourceName;
 import com.google.common.collect.ImmutableMap;
+import org.dmfs.iterables.ArrayIterable;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.Test;
@@ -60,6 +61,13 @@ public class CarrotEngineTest {
     assertThat(render("{{ 1200 / 20 / 5 }}", new EmptyBindings())).isEqualTo("12");
     assertThat(render("{{ 10 - 5 - 3 }}", new EmptyBindings())).isEqualTo("2");
   }
+
+  @Test
+  public void testIterationAccess() {
+    assertThat(render("{{ iterable[2] }}", new SingletonBindings("iterable", new ArrayIterable<>("a", "b", "c", "d")))).isEqualTo("c");
+    assertThat(render("{% set values = \"a\", \"b\", \"c\", \"d\" %}{{ values[2] }}", new EmptyBindings())).isEqualTo("c");
+  }
+
 
   @Test
   public void testConditionalStatements() {

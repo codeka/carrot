@@ -1,10 +1,14 @@
 package au.com.codeka.carrot.expr.values;
 
 import au.com.codeka.carrot.CarrotException;
-import au.com.codeka.carrot.expr.*;
+import au.com.codeka.carrot.expr.Term;
+import au.com.codeka.carrot.expr.TermParser;
+import au.com.codeka.carrot.expr.TokenType;
+import au.com.codeka.carrot.expr.Tokenizer;
 
 /**
- * A {@link TermParser} which parses a constant string {@link Term} or delegates to another parser if there is no string.
+ * A {@link TermParser} which parses an expression {@link Term} in parenthesis or delegates to another parser if there is
+ * no opening parenthesis.
  *
  * @author Marten Gajda
  */
@@ -13,6 +17,12 @@ public final class ExpressionTermParser implements TermParser {
   private final TermParser delegate;
   private final TermParser expressionParser;
 
+  /**
+   * Creates an {@link ExpressionTermParser}.
+   *
+   * @param delegate         the "fallback" {@link TermParser} in case no opening parenthesis has been found.
+   * @param expressionParser the {@link TermParser} to parse the expression in parenthesis.
+   */
   public ExpressionTermParser(TermParser delegate, TermParser expressionParser) {
     this.delegate = delegate;
     this.expressionParser = expressionParser;
@@ -21,7 +31,7 @@ public final class ExpressionTermParser implements TermParser {
   @Override
   public Term parse(Tokenizer tokenizer) throws CarrotException {
     if (!tokenizer.accept(TokenType.LPAREN)) {
-      // not a number, delegate to the next parser
+      // delegate to the next parser
       return delegate.parse(tokenizer);
     }
     // consume the "(".
@@ -29,7 +39,7 @@ public final class ExpressionTermParser implements TermParser {
     // parse the expression in between
     Term term = expressionParser.parse(tokenizer);
     // consume the ")".
-    tokenizer.expect(TokenType.RPAREN);
+    tokenizer.expect(TokenType.LPAREN.closingType());
     return term;
   }
 }
