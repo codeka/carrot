@@ -45,16 +45,21 @@ public class CarrotEngineTest {
 
   @Test
   public void testOperatorPrecdence() {
-    Map<String, Object> context = ImmutableMap.of("true", (Object) true, "false", false);
-
-    assertThat(render("{{ 1 + 1 * 2 }}", new MapBindings(context))).isEqualTo("3");
-    assertThat(render("{{ 1 + 2 * 4 + 10 }}", new MapBindings(context))).isEqualTo("19");
-    assertThat(render("{{ 1 + 1 + 1 * 2 }}", new MapBindings(context))).isEqualTo("4");
-    assertThat(render("{{ (1 + 1) * 2 }}", new MapBindings(context))).isEqualTo("4");
-    assertThat(render("{{ 2 * 2 + 2 }}", new MapBindings(context))).isEqualTo("6");
-    assertThat(render("{{ 2 * (2 + 2) }}", new MapBindings(context))).isEqualTo("8");
+    assertThat(render("{{ 1 + 1 * 2 }}", new EmptyBindings())).isEqualTo("3");
+    assertThat(render("{{ 1 + 2 * 4 + 10 }}", new EmptyBindings())).isEqualTo("19");
+    assertThat(render("{{ 1 + 1 + 1 * 2 }}", new EmptyBindings())).isEqualTo("4");
+    assertThat(render("{{ (1 + 1) * 2 }}", new EmptyBindings())).isEqualTo("4");
+    assertThat(render("{{ 2 * 2 + 2 }}", new EmptyBindings())).isEqualTo("6");
+    assertThat(render("{{ 2 * (2 + 2) }}", new EmptyBindings())).isEqualTo("8");
   }
 
+
+
+  @Test
+  public void testOperatorAssociativity() {
+    assertThat(render("{{ 1200 / 20 / 5 }}", new EmptyBindings())).isEqualTo("12");
+    assertThat(render("{{ 10 - 5 - 3 }}", new EmptyBindings())).isEqualTo("2");
+  }
 
   @Test
   public void testConditionalStatements() {
