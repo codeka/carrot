@@ -69,7 +69,8 @@ public enum TokenType {
   PLUS(false, new AddOperator(), new PlusOperator()),
   MINUS(false, new SubOperator(), new MinusOperator()),
   MULTIPLY(false, new MulOperator()),
-  DIVIDE(false, new DivOperator());
+  DIVIDE(false, new DivOperator()),
+  IN(false, new InOperator());
 
   private final boolean hasValue;
   private final BinaryOperator binaryOperator;
