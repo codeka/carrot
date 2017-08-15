@@ -31,13 +31,16 @@ public class ValueHelper {
     } else if (value instanceof String) {
       return !((String) value).isEmpty();
     } else if (value instanceof CharSequence) {
-      return ((CharSequence) value).length()>0;
+      return ((CharSequence) value).length() > 0;
     } else if (value instanceof Collection) {
       return !((Collection) value).isEmpty();
     } else if (value instanceof Map) {
       return !((Map) value).isEmpty();
     } else if (value instanceof Bindings) {
       return !((Bindings) value).isEmpty();
+    } else if (value instanceof Iterable) {
+      // evaluate non-empty iterables to true, empty iterables to false
+      return !((Iterable) value).iterator().hasNext();
     } else {
       // any unknown non-null, non-boolean value evaluates to true
       return true;
@@ -230,7 +233,6 @@ public class ValueHelper {
    * @param lhs The left-hand side you want to test for equality.
    * @param rhs The right-hand side you want to test for equality.
    * @return A value to indicate whether the value is true or false.
-   *
    * @throws CarrotException If there's an error evaluating the objects.
    */
   public static boolean isEqual(Object lhs, Object rhs) throws CarrotException {
@@ -247,7 +249,7 @@ public class ValueHelper {
    * @param lhs The left hand side to compare.
    * @param rhs The right hand side to compare.
    * @return Less than zero if lhs is less than rhs, zero if lhs is equal to rhs, and greater than zero if lhs is
-   *     greater than rhs.
+   * greater than rhs.
    * @throws CarrotException if either of the objects cannot be converted to numbers.
    */
   public static int compare(Object lhs, Object rhs) throws CarrotException {
@@ -271,7 +273,6 @@ public class ValueHelper {
    * Performs HTML-escaping of the given value.
    *
    * @param value The value to escape. If the value is {@link SafeString}, then no escaping will be done.
-   *
    * @return The HTML-escaped version of the string.
    */
   // TODO: without pulling in any other deps (e.g. Jakarta Commons) is this as comprehensive as it needs to be?
@@ -295,10 +296,10 @@ public class ValueHelper {
     if (object instanceof JSONObject) {
       return new JsonObjectBindings((JSONObject) object);
     } else if (object instanceof JSONArray) {
-       return new JsonArrayBindings((JSONArray) object);
+      return new JsonArrayBindings((JSONArray) object);
     } else if (JSONObject.NULL.equals(object)) {
       return null;
     }
-      return object;
-    }
+    return object;
+  }
 }

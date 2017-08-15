@@ -3,6 +3,7 @@ package au.com.codeka.carrot.expr;
 import au.com.codeka.carrot.CarrotException;
 import au.com.codeka.carrot.util.LineReader;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.io.IOException;
 import java.io.Reader;
@@ -68,7 +69,7 @@ public class Tokenizer {
    * @return The next {@link Token}, if it's of the given type.
    * @throws CarrotException If there's an error parsing the token, or if it's not of the given type.
    */
-  @Nullable
+  @Nonnull
   public Token expect(TokenType... types) throws CarrotException {
     for (TokenType type : types) {
       if (tokens.peek().getType() == type) {
@@ -261,16 +262,16 @@ public class Tokenizer {
           }
           switch (identifier) {
             case "or":
-              token = new Token(TokenType.LOGICAL_OR, identifier);
+              token = new Token(TokenType.LOGICAL_OR);
               break;
             case "and":
-              token = new Token(TokenType.LOGICAL_AND, identifier);
+              token = new Token(TokenType.LOGICAL_AND);
               break;
             case "not":
-              token = new Token(TokenType.NOT, identifier);
+              token = new Token(TokenType.NOT);
               break;
             case "in":
-              token = new Token(TokenType.IN, identifier);
+              token = new Token(TokenType.IN);
               break;
             default:
               token = new Token(TokenType.IDENTIFIER, identifier);
