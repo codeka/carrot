@@ -40,4 +40,9 @@ public class MapBindingsTest {
     bindings.put("key1", "value");
     assertThat(new MapBindings(bindings).isEmpty(), CoreMatchers.is(false));
   }
+
+  @Test(expected = UnsupportedOperationException.class)
+  public void testRemove() throws Exception {
+    new MapBindings(new HashMap<String, Object>()).iterator().remove();
+  }
 }
