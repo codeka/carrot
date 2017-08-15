@@ -29,6 +29,9 @@ public class LoopVarBindingsTest {
     assertThat(new LoopVarBindings(3, 2).resolve("first"), CoreMatchers.<Object>is(false));
     assertThat(new LoopVarBindings(3, 2).resolve("last"), CoreMatchers.<Object>is(true));
     assertThat(new LoopVarBindings(3, 2).resolve("length"), CoreMatchers.<Object>is(3));
+
+
+    assertThat(new LoopVarBindings(3, 2).resolve("xyz"), CoreMatchers.nullValue());
   }
 
   @Test
