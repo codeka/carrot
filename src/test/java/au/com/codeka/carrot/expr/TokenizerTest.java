@@ -43,10 +43,24 @@ public class TokenizerTest {
     assertThat(tokenizer.expect(TokenType.LOGICAL_AND)).isNotNull();
     assertThat(tokenizer.expect(TokenType.IDENTIFIER).getValue()).isEqualTo("b");
 
+    tokenizer = createTokenizer("a and b");
+    assertThat(tokenizer.expect(TokenType.IDENTIFIER).getValue()).isEqualTo("a");
+    assertThat(tokenizer.expect(TokenType.LOGICAL_AND)).isNotNull();
+    assertThat(tokenizer.expect(TokenType.IDENTIFIER).getValue()).isEqualTo("b");
+
     tokenizer = createTokenizer("a || b");
     assertThat(tokenizer.expect(TokenType.IDENTIFIER).getValue()).isEqualTo("a");
     assertThat(tokenizer.expect(TokenType.LOGICAL_OR)).isNotNull();
     assertThat(tokenizer.expect(TokenType.IDENTIFIER).getValue()).isEqualTo("b");
+
+    tokenizer = createTokenizer("a or b");
+    assertThat(tokenizer.expect(TokenType.IDENTIFIER).getValue()).isEqualTo("a");
+    assertThat(tokenizer.expect(TokenType.LOGICAL_OR)).isNotNull();
+    assertThat(tokenizer.expect(TokenType.IDENTIFIER).getValue()).isEqualTo("b");
+
+    tokenizer = createTokenizer("not a");
+    assertThat(tokenizer.expect(TokenType.NOT)).isNotNull();
+    assertThat(tokenizer.expect(TokenType.IDENTIFIER).getValue()).isEqualTo("a");
 
     try {
       tokenizer = createTokenizer("a & b");
@@ -159,6 +173,67 @@ public class TokenizerTest {
     } catch (CarrotException e) {
       assertThat(e.getMessage()).isEqualTo("???\n1: a + + b\n        ^\nExpected token of type IDENTIFIER, NUMBER_LITERAL or STRING_LITERAL, got PLUS");
     }
+  }
+
+  @Test
+  public void testEndOfStream() throws CarrotException {
+    Tokenizer tokenizer = createTokenizer("a =");
+    assertThat(tokenizer.expect(TokenType.IDENTIFIER).getValue()).isEqualTo("a");
+    assertThat(tokenizer.expect(TokenType.ASSIGNMENT).getType()).isEqualTo(TokenType.ASSIGNMENT);
+
+    tokenizer = createTokenizer("b <");
+    assertThat(tokenizer.expect(TokenType.IDENTIFIER).getValue()).isEqualTo("b");
+    assertThat(tokenizer.expect(TokenType.LESS_THAN).getType()).isEqualTo(TokenType.LESS_THAN);
+
+    tokenizer = createTokenizer("c >");
+    assertThat(tokenizer.expect(TokenType.IDENTIFIER).getValue()).isEqualTo("c");
+    assertThat(tokenizer.expect(TokenType.GREATER_THAN).getType()).isEqualTo(TokenType.GREATER_THAN);
+
+    try {
+      tokenizer = createTokenizer("d \"foo");
+      assertThat(tokenizer.expect(TokenType.IDENTIFIER).getValue()).isEqualTo("d");
+      tokenizer.expect(TokenType.STRING_LITERAL);
+      fail("Expected CarrotException");
+    } catch (CarrotException e) {
+      assertThat(e.getMessage()).isEqualTo("???\n1: d \"foo\n         ^\nUnexpected end-of-file waiting for \"");
+    }
+  }
+
+  @Test
+  public void testUnexpectedCharacter() {
+    try {
+      Tokenizer tokenizer = createTokenizer("foo \u263a bar");
+      assertThat(tokenizer.expect(TokenType.IDENTIFIER).getValue()).isEqualTo("foo");
+      tokenizer.expect(TokenType.IDENTIFIER);
+      fail("Expected CarrotException");
+    } catch (CarrotException e) {
+      assertThat(e.getMessage()).isEqualTo("???\n1: foo \u263a bar\n        ^\nUnexpected character: \u263a");
+    }
+  }
+
+  @Test
+  public void testTokenEqualsToString() {
+    Token t1 = new Token(TokenType.ASSIGNMENT);
+    Token t2 = new Token(TokenType.EQUALITY);
+    Token t3 = new Token(TokenType.IDENTIFIER, "foo");
+    Token t4 = new Token(TokenType.IDENTIFIER, "bar");
+    Token t5 = new Token(TokenType.IDENTIFIER, new String("bar") /* don't intern */);
+
+    assertThat(t1).isNotEqualTo(t2);
+    assertThat(t2).isNotEqualTo(t1);
+    assertThat(t3).isNotEqualTo(new Object());
+    assertThat(t4).isEqualTo(t5);
+    assertThat(t3).isNotEqualTo(t4);
+    assertThat(t1).isEqualTo(new Token(TokenType.ASSIGNMENT));
+
+    assertThat(t1.toString()).isEqualTo("ASSIGNMENT");
+    assertThat(t2.toString()).isEqualTo("EQUALITY");
+    assertThat(t3.toString()).isEqualTo("IDENTIFIER <foo>");
+    assertThat(t4.toString()).isEqualTo("IDENTIFIER <bar>");
+    assertThat(t5.toString()).isEqualTo("IDENTIFIER <bar>");
+
+    assertThat(t1.hashCode()).isNotEqualTo(t2.hashCode());
+    assertThat(t4.hashCode()).isEqualTo(t5.hashCode());
   }
 
   private static Tokenizer createTokenizer(String str) throws CarrotException {
