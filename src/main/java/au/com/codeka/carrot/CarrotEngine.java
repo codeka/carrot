@@ -1,6 +1,6 @@
 package au.com.codeka.carrot;
 
-import au.com.codeka.carrot.bindings.SingletonBindings;
+import au.com.codeka.carrot.bindings.MapBindings;
 import au.com.codeka.carrot.helpers.HtmlHelper;
 import au.com.codeka.carrot.resource.ResourceLocater;
 import au.com.codeka.carrot.resource.ResourceName;
@@ -20,7 +20,7 @@ import java.io.Writer;
  */
 public class CarrotEngine {
   private final Configuration config;
-  private final Bindings globalBindings;
+  private final MapBindings globalBindings;
   private final ParseCache parseCache;
   private final TemplateParser templateParser;
 
@@ -42,7 +42,9 @@ public class CarrotEngine {
    */
   public CarrotEngine(Configuration config) {
     this.config = config;
-    this.globalBindings = new SingletonBindings("html", new HtmlHelper());
+    this.globalBindings = MapBindings.newBuilder()
+        .set("html", new HtmlHelper())
+        .build();
     this.parseCache = new ParseCache(config);
     this.templateParser = new TemplateParser(config);
   }
@@ -59,7 +61,7 @@ public class CarrotEngine {
    * @return A map of the global variables. These bindings will be accessible in all templates processed by this
    * {@link CarrotEngine}.
    */
-  public Bindings globalBindings() {
+  public MapBindings getGlobalBindings() {
     return globalBindings;
   }
 

@@ -30,7 +30,6 @@ public class HtmlHelper {
     return new SafeString(ValueHelper.escape(html));
   }
 
-
   /**
    * Escape the HTML. This variant takes a {@link SafeString}, and because we already know a safe string is safe
    * to output, we <em>won't</em> escape it again.
