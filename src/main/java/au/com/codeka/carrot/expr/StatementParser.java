@@ -5,6 +5,9 @@ import au.com.codeka.carrot.expr.binary.BinaryTermParser;
 import au.com.codeka.carrot.expr.binary.LaxIterationTermParser;
 import au.com.codeka.carrot.expr.binary.StrictIterationTermParser;
 import au.com.codeka.carrot.expr.unary.UnaryTermParser;
+import au.com.codeka.carrot.expr.values.ExpressionTermParser;
+import au.com.codeka.carrot.expr.values.NumberTermParser;
+import au.com.codeka.carrot.expr.values.StringTermParser;
 import au.com.codeka.carrot.tag.Tag;
 import au.com.codeka.carrot.tmpl.TagNode;
 
@@ -78,7 +81,18 @@ public class StatementParser {
                     new BinaryTermParser(
                         new BinaryTermParser(
                             new UnaryTermParser(
-                                new ValueParser(this),
+                                new NumberTermParser(
+                                    new StringTermParser(
+                                        new ExpressionTermParser(
+                                            new ValueParser(this),
+                                            new TermParser() {
+                                              @Override
+                                              public Term parse(Tokenizer tokenizer) throws CarrotException {
+                                                return expressionParser.parse(tokenizer);
+                                              }
+                                            })
+                                    )
+                                ),
                                 TokenType.NOT),
                             TokenType.MULTIPLY, TokenType.DIVIDE),
                         TokenType.PLUS, TokenType.MINUS),
@@ -137,14 +151,6 @@ public class StatementParser {
     return result;
   }
 
-  public NumberLiteral parseNumber() throws CarrotException {
-    return new NumberLiteral(tokenizer.expect(TokenType.NUMBER_LITERAL));
-  }
-
-  public StringLiteral parseString() throws CarrotException {
-    return new StringLiteral(tokenizer.expect(TokenType.STRING_LITERAL));
-  }
-
   public boolean isAssignment() throws CarrotException {
     if (!tokenizer.accept(TokenType.ASSIGNMENT)) {
       return false;
@@ -154,10 +160,10 @@ public class StatementParser {
     return true;
   }
 
-  // TODO: consider to return the plain Term instead. Technically Expression and Term are equivalent.
-  public Expression parseExpression() throws CarrotException {
-    return new Expression(expressionParser.parse(tokenizer));
+  public Term parseTerm() throws CarrotException {
+    return expressionParser.parse(tokenizer);
   }
+
 
   // TODO: at present we keep this only to test the result, check if the current tests are sufficient
   public Term parseTermsIterable() throws CarrotException {
@@ -166,7 +172,7 @@ public class StatementParser {
 
   Variable parseVariable() throws CarrotException {
     Identifier ident = parseIdentifier();
-    Expression accessExpression = null;
+    Term accessExpression = null;
     Variable dotVariable = null;
     Function args = null;
     if (tokenizer.accept(0, TokenType.DOT)
@@ -175,7 +181,7 @@ public class StatementParser {
       tokenizer.expect(TokenType.DOT);
       Identifier funcNameIdentifier = parseIdentifier();
       tokenizer.expect(TokenType.LPAREN);
-      Term params = new EmptyTerm();
+      Term params = EmptyTerm.INSTANCE;
       if (!tokenizer.accept(TokenType.RPAREN)) {
         params = iterableParser.parse(tokenizer);
       }
@@ -184,7 +190,7 @@ public class StatementParser {
     }
     if (tokenizer.accept(TokenType.LSQUARE)) {
       tokenizer.expect(TokenType.LSQUARE);
-      accessExpression = parseExpression();
+      accessExpression = expressionParser.parse(tokenizer);
       tokenizer.expect(TokenType.RSQUARE);
     }
     if (tokenizer.accept(TokenType.DOT)) {

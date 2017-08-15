@@ -5,9 +5,9 @@ import au.com.codeka.carrot.bindings.Composite;
 import au.com.codeka.carrot.bindings.IterableExpansionBindings;
 import au.com.codeka.carrot.bindings.LoopVarBindings;
 import au.com.codeka.carrot.bindings.SingletonBindings;
-import au.com.codeka.carrot.expr.Expression;
 import au.com.codeka.carrot.expr.Identifier;
 import au.com.codeka.carrot.expr.StatementParser;
+import au.com.codeka.carrot.expr.Term;
 import au.com.codeka.carrot.expr.TokenType;
 import au.com.codeka.carrot.tmpl.Node;
 import au.com.codeka.carrot.tmpl.TagNode;
@@ -21,7 +21,7 @@ import java.util.List;
  */
 public class ForTag extends Tag {
   private List<Identifier> loopIdentifiers;
-  private Expression loopExpression;
+  private Term loopExpression;
 
   @Override
   public boolean isBlockTag() {
@@ -39,7 +39,7 @@ public class ForTag extends Tag {
   public void parseStatement(StatementParser stmtParser) throws CarrotException {
     loopIdentifiers = stmtParser.parseIdentifierList();
     stmtParser.parseToken(TokenType.IN);
-    loopExpression = stmtParser.parseExpression();
+    loopExpression = stmtParser.parseTerm();
   }
 
   @Override

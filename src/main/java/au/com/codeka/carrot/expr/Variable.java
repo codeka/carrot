@@ -24,13 +24,13 @@ import java.util.Map;
 public class Variable {
   private final Identifier identifier;
   @Nullable private final Function function;
-  @Nullable private final Expression accessExpression;
+  @Nullable private final Term accessExpression;
   @Nullable private final Variable dotVariable;
 
   public Variable(
       Identifier identifier,
       @Nullable Function function,
-      @Nullable Expression accessExpression,
+      @Nullable Term accessExpression,
       @Nullable Variable dotVariable) {
     this.identifier = identifier;
     this.function = function;

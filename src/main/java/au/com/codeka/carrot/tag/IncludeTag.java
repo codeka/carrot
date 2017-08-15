@@ -3,8 +3,8 @@ package au.com.codeka.carrot.tag;
 import au.com.codeka.carrot.CarrotEngine;
 import au.com.codeka.carrot.CarrotException;
 import au.com.codeka.carrot.Scope;
-import au.com.codeka.carrot.expr.Expression;
 import au.com.codeka.carrot.expr.StatementParser;
+import au.com.codeka.carrot.expr.Term;
 import au.com.codeka.carrot.resource.ResourceName;
 import au.com.codeka.carrot.tmpl.TagNode;
 
@@ -13,19 +13,19 @@ import java.io.Writer;
 
 /**
  * The "include" tag is used to include the contents of another template.
- *
+ * <p>
  * <p>Using the include tag is very simple:
- *
+ * <p>
  * <code>
- *   {% include "foo.html" %}
+ * {% include "foo.html" %}
  * </code>
  */
 public class IncludeTag extends Tag {
-  private Expression templateNameExpr;
+  private Term templateNameExpr;
 
   @Override
   public void parseStatement(StatementParser stmtParser) throws CarrotException {
-    templateNameExpr = stmtParser.parseExpression();
+    templateNameExpr = stmtParser.parseTerm();
   }
 
   @Override
