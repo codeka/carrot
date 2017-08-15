@@ -31,24 +31,24 @@ public enum TokenType {
   IDENTIFIER(true),
 
   /**
-   * Left-parenthesis: (
-   */
-  LPAREN(false),
-
-  /**
    * Right-parenthesis: )
    */
   RPAREN(false),
 
   /**
-   * Left-square-bracket: [
+   * Left-parenthesis: (
    */
-  LSQUARE(false),
+  LPAREN(false, RPAREN),
 
   /**
    * Right-square-bracket: ]
    */
   RSQUARE(false),
+
+  /**
+   * Left-square-bracket: [
+   */
+  LSQUARE(false, RSQUARE),
 
   /**
    * Single Equals: =
@@ -75,19 +75,29 @@ public enum TokenType {
   private final boolean hasValue;
   private final BinaryOperator binaryOperator;
   private final UnaryOperator unaryOperator;
+  private final TokenType closingToken;
 
   TokenType(boolean hasValue) {
-    this(hasValue, null, null);
+    this(hasValue, null, null, null);
+  }
+
+  TokenType(boolean hasValue, TokenType closingToken) {
+    this(hasValue, null, null, closingToken);
   }
 
   TokenType(boolean hasValue, BinaryOperator binaryOperator) {
-    this(hasValue, binaryOperator, null);
+    this(hasValue, binaryOperator, null, null);
   }
 
   TokenType(boolean hasValue, BinaryOperator binaryOperator, UnaryOperator unaryOperator) {
+    this(hasValue, binaryOperator, unaryOperator, null);
+  }
+
+  TokenType(boolean hasValue, BinaryOperator binaryOperator, UnaryOperator unaryOperator, TokenType closingToken) {
     this.hasValue = hasValue;
     this.binaryOperator = binaryOperator;
     this.unaryOperator = unaryOperator;
+    this.closingToken = closingToken;
   }
 
   public boolean hasValue() {
@@ -106,5 +116,10 @@ public enum TokenType {
       throw new UnsupportedOperationException(String.format("%s is not an unary operator", this.toString()));
     }
     return unaryOperator;
+  }
+
+
+  public TokenType closingType() {
+    return closingToken;
   }
 }

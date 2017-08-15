@@ -23,7 +23,7 @@ public class IfTagTest {
   @Test
   public void testEnumEquality() throws CarrotException {
     assertThat(render(
-              "{% if someEnum.toString() == \"TWO\" %}"
+        "{% if someEnum.toString() == \"TWO\" %}"
             + "SomeEnum is TWO"
             + "{% end %}",
         "someEnum", SomeEnum.TWO))
@@ -133,8 +133,8 @@ public class IfTagTest {
   public void testIfIn() throws CarrotException {
     assertThat(render("{% if foo in (1,2,3) %}yes{% else %}no{% end %}", "foo", 2L)).isEqualTo("yes");
     assertThat(render("{% if foo in (1,2,3) %}yes{% else %}no{% end %}", "foo", 4L)).isEqualTo("no");
-    assertThat(render("{% if foo in list %}yes{% else %}no{% end %}", "foo", 2,"list",Arrays.asList(1,2,3))).isEqualTo("yes");
-    assertThat(render("{% if foo in list %}yes{% else %}no{% end %}", "foo", 4,"list",Arrays.asList(1,2,3))).isEqualTo("no");
+    assertThat(render("{% if foo in list %}yes{% else %}no{% end %}", "foo", 2, "list", Arrays.asList(1, 2, 3))).isEqualTo("yes");
+    assertThat(render("{% if foo in list %}yes{% else %}no{% end %}", "foo", 4, "list", Arrays.asList(1, 2, 3))).isEqualTo("no");
   }
 
 
