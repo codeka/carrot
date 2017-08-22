@@ -24,7 +24,7 @@ public class ParseCache {
     if (cacheEntryRef != null) {
       CacheEntry cacheEntry = cacheEntryRef.get();
       if (cacheEntry != null) {
-        long modifiedTime = config.getResourceLocater().getModifiedTime(resourceName);
+        long modifiedTime = config.getResourceLocator().getModifiedTime(resourceName);
         if (modifiedTime != cacheEntry.modifiedTime) {
           cache.remove(resourceName);
           return null;
@@ -38,7 +38,7 @@ public class ParseCache {
   }
 
   public void addNode(ResourceName resourceName, Node node) throws CarrotException {
-    long modifiedTime = config.getResourceLocater().getModifiedTime(resourceName);
+    long modifiedTime = config.getResourceLocator().getModifiedTime(resourceName);
     cache.put(resourceName, new WeakReference<>(new CacheEntry(node, modifiedTime)));
   }
 

@@ -4,15 +4,15 @@ import au.com.codeka.carrot.CarrotException;
 import au.com.codeka.carrot.Configuration;
 
 import javax.annotation.Nullable;
-import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
- * A simple {@link ResourceLocater} that just keeps stuff in memory.
+ * A simple {@link ResourceLocator} that just keeps stuff in memory.
  */
-public class MemoryResourceLocator implements ResourceLocater {
+public class MemoryResourceLocator implements ResourceLocator {
   private final Map<String, String> resources;
 
   /**
@@ -53,6 +53,31 @@ public class MemoryResourceLocator implements ResourceLocater {
     }
 
     return new StringReader(resources.get(name));
+  }
+
+  /**
+   * A builder for {@link MemoryResourceLocator}.
+   */
+  public static class Builder implements ResourceLocator.Builder {
+    private final Map<String, String> resources;
+
+    public Builder() {
+      this(new TreeMap<String, String>());
+    }
+
+    public Builder(Map<String, String> resources) {
+      this.resources = resources;
+    }
+
+    public Builder add(String name, String value) {
+      resources.put(name, value);
+      return this;
+    }
+
+    @Override
+    public ResourceLocator build(Configuration config) {
+      return new MemoryResourceLocator(resources);
+    }
   }
 
   /** Our version of {@link ResourceName} that represents file system files. */

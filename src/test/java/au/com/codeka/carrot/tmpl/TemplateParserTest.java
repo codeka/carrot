@@ -77,7 +77,7 @@ public class TemplateParserTest {
   }
 
   private Node parseTemplate(String input) {
-    TemplateParser templateParser = new TemplateParser(new Configuration());
+    TemplateParser templateParser = new TemplateParser(new Configuration.Builder().build());
     try {
       Node node =
           templateParser.parse(new Tokenizer(new LineReader(new ResourcePointer(null), new StringReader(input))));

@@ -1,7 +1,7 @@
 package au.com.codeka.carrot;
 
 import au.com.codeka.carrot.bindings.MapBindings;
-import au.com.codeka.carrot.resource.FileResourceLocater;
+import au.com.codeka.carrot.resource.FileResourceLocator;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,8 +14,10 @@ class BuildDocs {
     String inputDir = args[0];
     String outputDir = args[1];
 
-    CarrotEngine engine = new CarrotEngine();
-    engine.getConfig().setResourceLocater(new FileResourceLocater(engine.getConfig(), inputDir));
+    CarrotEngine engine = new CarrotEngine(
+        new Configuration.Builder()
+            .setResourceLocater(new FileResourceLocator.Builder(inputDir))
+            .build());
     processDirectory(engine, 0, inputDir, outputDir);
   }
 

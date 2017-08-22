@@ -53,24 +53,22 @@ public class IncludeTagTest {
   }
 
   private CarrotEngine createEngine(String... nameValues) {
-    CarrotEngine engine = new CarrotEngine();
-    engine.getConfig().setLogger(new Configuration.Logger()
-    {
-      @Override
-      public void print(int level, String msg)
-      {
-        System.err.println(msg);
-      }
-    });
-    engine.getConfig().setResourceLocater(createResources(nameValues));
-    return engine;
+    return new CarrotEngine(new Configuration.Builder()
+        .setLogger(new Configuration.Logger() {
+          @Override
+          public void print(int level, String msg) {
+            System.err.println(msg);
+          }
+        })
+        .setResourceLocater(createResources(nameValues))
+        .build());
   }
 
-  private MemoryResourceLocator createResources(String... nameValues) {
+  private MemoryResourceLocator.Builder createResources(String... nameValues) {
     Map<String, String> resources = new TreeMap<>();
     for (int i = 0; i < nameValues.length; i += 2) {
       resources.put(nameValues[i], nameValues[i+1]);
     }
-    return new MemoryResourceLocator(resources);
+    return new MemoryResourceLocator.Builder(resources);
   }
 }

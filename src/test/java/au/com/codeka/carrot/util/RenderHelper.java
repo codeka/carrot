@@ -15,23 +15,17 @@ import java.util.TreeMap;
  */
 public class RenderHelper {
   public static String render(String content, Object... bindings) throws CarrotException {
-    CarrotEngine engine = new CarrotEngine();
-    engine.getConfig().setLogger(new Configuration.Logger()
-    {
-      @Override
-      public void print(int level, String msg)
-      {
-        if (level > Configuration.Logger.LEVEL_DEBUG)
-        {
-          System.err.println(msg);
-        }
-      }
-    });
-
-    Map<String, String> resources = new TreeMap<>();
-    resources.put("index", content);
-    MemoryResourceLocator resourceLocator = new MemoryResourceLocator(resources);
-    engine.getConfig().setResourceLocater(resourceLocator);
+    CarrotEngine engine = new CarrotEngine(new Configuration.Builder()
+        .setLogger(new Configuration.Logger() {
+          @Override
+          public void print(int level, String msg) {
+            if (level > Configuration.Logger.LEVEL_DEBUG) {
+              System.err.println(msg);
+            }
+          }
+        })
+        .setResourceLocater(new MemoryResourceLocator.Builder().add("index", content))
+        .build());
 
     Map<String, Object> bindingsMap = new HashMap<>();
     for (int i = 0; i < bindings.length; i += 2) {

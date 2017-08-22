@@ -1,9 +1,9 @@
 package au.com.codeka.carrot.resource;
 
 import au.com.codeka.carrot.CarrotException;
+import au.com.codeka.carrot.Configuration;
 
 import javax.annotation.Nullable;
-import java.io.IOException;
 import java.io.Reader;
 
 /**
@@ -11,7 +11,7 @@ import java.io.Reader;
  *
  * <p>While conceptually file-based, this could actually be implemented on top of anything.
  */
-public interface ResourceLocater {
+public interface ResourceLocator {
   /**
    * Searches for a resource with the given name, returns the full path to it.
    *
@@ -42,7 +42,7 @@ public interface ResourceLocater {
    * <p>The value is used to determine whether we need to flush our caches, and this function will be called for every
    * request to render a template, so calling this needs to be quick.
    *
-   * <p>Zero indicates this {@link ResourceLocater} doesn't support modification detection, and resources will be cached
+   * <p>Zero indicates this {@link ResourceLocator} doesn't support modification detection, and resources will be cached
    * indefinitely.
    *
    * @param resourceName The {@link ResourceName} of the resource.
@@ -59,4 +59,8 @@ public interface ResourceLocater {
    * @throws CarrotException If the resource cannot be found.
    */
   Reader getReader(ResourceName resourceName) throws CarrotException;
+
+  interface Builder {
+    ResourceLocator build(Configuration config);
+  }
 }

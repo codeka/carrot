@@ -14,34 +14,16 @@ public class TagRegistry {
     boolean isMatch(String tagName);
   }
 
+  public static Builder newBuilder() {
+    return new Builder();
+  }
+
   private final Configuration config;
-  private final ArrayList<Entry> entries = new ArrayList<>();
+  private final ArrayList<Entry> entries;
 
-  public TagRegistry(Configuration config) {
+  private TagRegistry(Configuration config, ArrayList<Entry> entries) {
     this.config = config;
-
-    add("echo", EchoTag.class);
-    add("if", IfTag.class);
-    add("for", ForTag.class);
-    add("else", ElseTag.class);
-    add("extends", ExtendsTag.class);
-    add("include", IncludeTag.class);
-    add("block", BlockTag.class);
-    add("set", SetTag.class);
-    add(new TagMatcher() {
-      @Override
-      public boolean isMatch(String tagName) {
-        return tagName.toLowerCase().startsWith("end");
-      }
-    }, EndTag.class);
-  }
-
-  public void add(String name, Class<? extends Tag> tagClass) {
-    add(new DefaultTagMatcher(name), tagClass);
-  }
-
-  public void add(TagMatcher tagMatcher, Class<? extends Tag> tagClass) {
-    entries.add(new Entry(tagMatcher, tagClass));
+    this.entries = entries;
   }
 
   public Tag createTag(String tagName) {
@@ -68,7 +50,7 @@ public class TagRegistry {
     }
   }
 
-  private class DefaultTagMatcher implements TagMatcher {
+  private static class DefaultTagMatcher implements TagMatcher {
     private final String tagName;
 
     public DefaultTagMatcher(String tagName) {
@@ -78,6 +60,40 @@ public class TagRegistry {
     @Override
     public boolean isMatch(String tagName) {
       return tagName.equalsIgnoreCase(this.tagName);
+    }
+  }
+
+  public static class Builder {
+    private final ArrayList<Entry> entries = new ArrayList<>();
+
+    public Builder() {
+      add("echo", EchoTag.class);
+      add("if", IfTag.class);
+      add("for", ForTag.class);
+      add("else", ElseTag.class);
+      add("extends", ExtendsTag.class);
+      add("block", BlockTag.class);
+      add("set", SetTag.class);
+      add("include", IncludeTag.class);
+      add(new TagMatcher() {
+        @Override
+        public boolean isMatch(String tagName) {
+          return tagName.toLowerCase().startsWith("end");
+        }
+      }, EndTag.class);
+    }
+
+    public Builder add(String name, Class<? extends Tag> tagClass) {
+      return add(new DefaultTagMatcher(name), tagClass);
+    }
+
+    public Builder add(TagMatcher tagMatcher, Class<? extends Tag> tagClass) {
+      entries.add(new Entry(tagMatcher, tagClass));
+      return this;
+    }
+
+    public TagRegistry build(Configuration config) {
+      return new TagRegistry(config, entries);
     }
   }
 }

@@ -1,9 +1,7 @@
 package au.com.codeka.carrot;
 
 import au.com.codeka.carrot.bindings.*;
-import au.com.codeka.carrot.resource.AbstractResourceName;
-import au.com.codeka.carrot.resource.ResourceLocater;
-import au.com.codeka.carrot.resource.ResourceName;
+import au.com.codeka.carrot.resource.MemoryResourceLocator;
 import com.google.common.collect.ImmutableMap;
 import org.dmfs.iterables.ArrayIterable;
 import org.json.JSONArray;
@@ -13,8 +11,6 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import javax.annotation.Nullable;
-import java.io.Reader;
-import java.io.StringReader;
 import java.util.Map;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -41,7 +37,11 @@ public class CarrotEngineTest {
 
   @Test
   public void testIterationLoopAndConditionalsTag() {
-    assertThat(render("{% for a in \"foo\", \"bar\", \"baz\" %}{{ a }}{{ !loop.last && \", \" || \"\" }}{% end %}", new EmptyBindings())).isEqualTo("foo, bar, baz");
+    assertThat(
+        render(
+            "{% for a in \"foo\", \"bar\", \"baz\" %}{{ a }}{{ !loop.last && \", \" || \"\" }}{% end %}",
+            new EmptyBindings()))
+        .isEqualTo("foo, bar, baz");
   }
 
   @Test
@@ -54,8 +54,6 @@ public class CarrotEngineTest {
     assertThat(render("{{ 2 * (2 + 2) }}", new EmptyBindings())).isEqualTo("8");
   }
 
-
-
   @Test
   public void testOperatorAssociativity() {
     assertThat(render("{{ 1200 / 20 / 5 }}", new EmptyBindings())).isEqualTo("12");
@@ -64,10 +62,17 @@ public class CarrotEngineTest {
 
   @Test
   public void testIterationAccess() {
-    assertThat(render("{{ iterable[2] }}", new SingletonBindings("iterable", new ArrayIterable<>("a", "b", "c", "d")))).isEqualTo("c");
-    assertThat(render("{% set values = \"a\", \"b\", \"c\", \"d\" %}{{ values[2] }}", new EmptyBindings())).isEqualTo("c");
+    assertThat(
+        render(
+            "{{ iterable[2] }}",
+            new SingletonBindings("iterable", new ArrayIterable<>("a", "b", "c", "d"))))
+        .isEqualTo("c");
+    assertThat(
+        render(
+            "{% set values = \"a\", \"b\", \"c\", \"d\" %}{{ values[2] }}",
+            new EmptyBindings()))
+        .isEqualTo("c");
   }
-
 
   @Test
   public void testConditionalStatements() {
@@ -101,141 +106,105 @@ public class CarrotEngineTest {
 
   @Test
   public void testAutoEscape() {
-    CarrotEngine engine = createEngine();
-    assertThat(render(engine, "{{ \"Some <b>HTML</b> here\" }}", new EmptyBindings()))
+    assertThat(render("{{ \"Some <b>HTML</b> here\" }}", new EmptyBindings()))
         .isEqualTo("Some &lt;b&gt;HTML&lt;/b&gt; here");
 
-    engine.getConfig().setAutoEscape(false);
-    assertThat(render(engine, "{{ \"Some <b>HTML</b> here\" }}", new EmptyBindings()))
+    assertThat(
+        render(
+            new Configuration.Builder().setAutoEscape(false),
+            "{{ \"Some <b>HTML</b> here\" }}",
+            new EmptyBindings()))
         .isEqualTo("Some <b>HTML</b> here");
 
-    engine.getConfig().setAutoEscape(true);
-    assertThat(render(engine, "{{ \"Some <b>HTML</b> here\" }}", new EmptyBindings()))
+    assertThat(
+        render(
+            new Configuration.Builder().setAutoEscape(true),
+            "{{ \"Some <b>HTML</b> here\" }}",
+            new EmptyBindings()))
         .isEqualTo("Some &lt;b&gt;HTML&lt;/b&gt; here");
   }
 
   @Test
   public void testNestedBindings() {
-    assertThat(render("foo{{ $map.foo.bar[$map.baz] }}", new Composite(new SingletonBindings("$map", new MapBindings(ImmutableMap.of(
-        "foo", new Object() {
-          public Map<String, String> getBar() {
-            return ImmutableMap.of("hello", "World");
-          }
-        },
-        "baz", "hello")))))).isEqualTo("fooWorld");
+    assertThat(
+        render(
+            "foo{{ $map.foo.bar[$map.baz] }}",
+            new Composite(
+                new SingletonBindings("$map", new MapBindings(
+                    ImmutableMap.of(
+                        "foo",
+                        new Object() {
+                          public Map<String, String> getBar() {
+                            return ImmutableMap.of("hello", "World");
+                          }
+                        },
+                        "baz",
+                        "hello"))))))
+        .isEqualTo("fooWorld");
   }
-
 
   @Test
   public void testJsonObjectIterable() {
-    //language=TEXT
-    assertThat(render("{% for item in $json %}{{ item.key }} -> {{ item.value }}\n{% end %}", new SingletonBindings("$json", new JsonObjectBindings(new JSONObject("{\n" +
-        "  \"key1\": \"a\",\n" +
-        "  \"key2\": 2,\n" +
-        "  \"key3\": true,\n" +
-        "  \"key4\": null\n" +
-        "}"))))).isEqualTo("key1 -> a\n" +
-        "key2 -> 2\n" +
-        "key3 -> true\n" +
-        "key4 -> \n");
+    assertThat(
+        render(
+            "{% for item in $json %}{{ item.key }} -> {{ item.value }}\n{% end %}",
+            new SingletonBindings(
+                "$json",
+                new JsonObjectBindings(
+                    new JSONObject("{ \"key1\": \"a\", \"key2\": 2, \"key3\": true, \"key4\": null }")))))
+        .isEqualTo("key1 -> a\nkey2 -> 2\nkey3 -> true\nkey4 -> \n");
   }
 
 
   @Test
   public void testJsonObjectIterableAlternativeNotation() {
-    //language=TEXT
-    assertThat(render("{% for key, value in $json %}{{ key }} -> {{ value }}\n{% end %}", new SingletonBindings("$json", new JsonObjectBindings(new JSONObject("{\n" +
-        "  \"key1\": \"a\",\n" +
-        "  \"key2\": 2,\n" +
-        "  \"key3\": true,\n" +
-        "  \"key4\": null\n" +
-        "}"))))).isEqualTo("key1 -> a\n" +
-        "key2 -> 2\n" +
-        "key3 -> true\n" +
-        "key4 -> \n");
+    assertThat(
+        render(
+            "{% for key, value in $json %}{{ key }} -> {{ value }}\n{% end %}",
+            new SingletonBindings(
+                "$json",
+                new JsonObjectBindings(
+                    new JSONObject("{\"key1\": \"a\", \"key2\": 2, \"key3\": true, \"key4\": null }")))))
+        .isEqualTo("key1 -> a\nkey2 -> 2\nkey3 -> true\nkey4 -> \n");
   }
 
   @Test
   public void testNestedJsonObjectIterable() {
-    assertThat(render("{% for item in $json.map %}{{ item.key }} -> {{ $json.map[item.key] }}\n{% end %}", new SingletonBindings("$json", new JsonObjectBindings(new JSONObject("{\n" +
-        "  \"map\": {\n" +
-        "    \"key1\": \"a\",\n" +
-        "    \"key2\": 2,\n" +
-        "    \"key3\": true,\n" +
-        "    \"key4\": null\n" +
-        "  }\n" +
-        "}"))))).isEqualTo("key1 -> a\n" +
-        "key2 -> 2\n" +
-        "key3 -> true\n" +
-        "key4 -> \n");
+    assertThat(render(
+        "{% for item in $json.map %}{{ item.key }} -> {{ $json.map[item.key] }}\n{% end %}",
+        new SingletonBindings(
+            "$json",
+            new JsonObjectBindings(
+                new JSONObject(
+                    "{ \"map\": { \"key1\": \"a\", \"key2\": 2, \"key3\": true, \"key4\": null } }")))))
+        .isEqualTo("key1 -> a\nkey2 -> 2\nkey3 -> true\nkey4 -> \n");
   }
 
   @Test
   public void testJsonArrayIterable() {
-    //language=TEXT
     assertThat(render("{% for value in $json %}{{ value }}{% end %}",
         new SingletonBindings("$json", new JsonArrayBindings(new JSONArray("[ \"a\", 2, true, null]")))))
         .isEqualTo("a2true");
   }
 
-  private CarrotEngine createEngine() {
-    CarrotEngine engine = new CarrotEngine();
-    engine.getConfig().setLogger(new Configuration.Logger() {
-      @Override
-      public void print(int level, String msg) {
-        System.err.println(msg);
-      }
-    });
-    return engine;
-  }
-
   private String render(String template, @Nullable Bindings bindings) {
-    return render(createEngine(), template, bindings);
+    return render(new Configuration.Builder(), template, bindings);
   }
 
-  private String render(CarrotEngine engine, String template, @Nullable Bindings bindings) {
-    engine.getConfig().setResourceLocater(new TestResourceLocator(template));
+  private String render(Configuration.Builder configBuilder, String template, @Nullable Bindings bindings) {
+    CarrotEngine engine = new CarrotEngine(configBuilder
+        .setLogger(new Configuration.Logger() {
+          @Override
+          public void print(int level, String msg) {
+            System.err.println(msg);
+          }
+        })
+        .setResourceLocater(new MemoryResourceLocator.Builder().add("index.html", template))
+        .build());
     try {
-      return engine.process("", bindings);
+      return engine.process("index.html", bindings);
     } catch (CarrotException e) {
       throw new RuntimeException(e);
-    }
-  }
-
-  /**
-   * A test {@link ResourceLocater} that simple returns a static string content.
-   */
-  private class TestResourceLocator implements ResourceLocater {
-    private String content;
-
-    public TestResourceLocator(String content) {
-      this.content = content;
-    }
-
-    @Override
-    public ResourceName findResource(@Nullable ResourceName parent, String name) throws CarrotException {
-      return new AbstractResourceName(parent, name) {
-        @Nullable
-        @Override
-        public ResourceName getParent() {
-          return null;
-        }
-      };
-    }
-
-    @Override
-    public ResourceName findResource(String name) throws CarrotException {
-      return findResource(null, name);
-    }
-
-    @Override
-    public long getModifiedTime(ResourceName resourceName) throws CarrotException {
-      return 0;
-    }
-
-    @Override
-    public Reader getReader(ResourceName resourceName) throws CarrotException {
-      return new StringReader(content);
     }
   }
 }

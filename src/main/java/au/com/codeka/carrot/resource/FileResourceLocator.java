@@ -7,19 +7,19 @@ import au.com.codeka.carrot.Configuration;
 import javax.annotation.Nullable;
 import java.io.*;
 
-/** An implementation of {@link ResourceLocater} that loads files from the file system. */
-public class FileResourceLocater implements ResourceLocater {
+/** An implementation of {@link ResourceLocator} that loads files from the file system. */
+public class FileResourceLocator implements ResourceLocator {
   private final Configuration config;
   private final File baseFile;
 
   /**
-   * Constructs a new {@link FileResourceLocater} using the given {@link Configuration} and base path to search for
+   * Constructs a new {@link FileResourceLocator} using the given {@link Configuration} and base path to search for
    * resources in.
    *
    * @param config The {@link Configuration} you used to construct the {@link CarrotEngine}.
    * @param basePath The path path to search for resources in.
    */
-  public FileResourceLocater(Configuration config, String basePath) {
+  public FileResourceLocator(Configuration config, String basePath) {
     this.config = config;
     this.baseFile = new File(basePath);
   }
@@ -64,6 +64,30 @@ public class FileResourceLocater implements ResourceLocater {
           new FileInputStream(((FileResourceName) resourceName).getFile()), config.getEncoding());
     } catch (IOException e) {
       throw new CarrotException(e);
+    }
+  }
+
+  /**
+   * A builder for {@link FileResourceLocator}.
+   */
+  public static class Builder implements ResourceLocator.Builder {
+    private String basePath;
+
+    public Builder() {
+    }
+
+    public Builder(String basePath) {
+      this.basePath = basePath;
+    }
+
+    public Builder setBasePath(String basePath) {
+      this.basePath = basePath;
+      return this;
+    }
+
+    @Override
+    public ResourceLocator build(Configuration config) {
+      return new FileResourceLocator(config, basePath);
     }
   }
 

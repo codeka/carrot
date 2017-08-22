@@ -86,7 +86,7 @@ public class ExtendsTag extends Tag {
     }
 
     // TODO: we should locate the resource with the current parent.
-    ResourceName resourceName = engine.getConfig().getResourceLocater().findResource(null, skeletonName);
+    ResourceName resourceName = engine.getConfig().getResourceLocator().findResource(null, skeletonName);
 
     scope.push(new SingletonBindings("__blocks", blockTags));
     engine.process(writer, resourceName, scope);

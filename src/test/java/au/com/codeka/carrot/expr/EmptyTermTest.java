@@ -14,7 +14,9 @@ import static com.google.common.truth.Truth.assertThat;
 public class EmptyTermTest {
   @Test
   public void testEvaluate() throws Exception {
-    assertThat(((Iterable) new EmptyTerm().evaluate(new Configuration(), new Scope(new EmptyBindings()))).iterator().hasNext()).isFalse();
+    assertThat(((Iterable) new EmptyTerm().evaluate(
+        new Configuration.Builder().build(),
+        new Scope(new EmptyBindings()))).iterator().hasNext()).isFalse();
   }
 
   @Test

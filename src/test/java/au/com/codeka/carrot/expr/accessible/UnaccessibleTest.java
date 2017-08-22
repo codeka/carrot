@@ -18,7 +18,7 @@ import static org.junit.Assert.fail;
 public class UnaccessibleTest {
   @Test
   public void testEvaluate() throws Exception {
-    final Configuration testConfiguration = new Configuration();
+    final Configuration testConfiguration = new Configuration.Builder().build();
     final Scope testScope = new Scope(new EmptyBindings());
     final Object testResult = new Object();
 
@@ -40,7 +40,7 @@ public class UnaccessibleTest {
         fail("evaluate called");
         return null;
       }
-    }).callable(new Configuration(), new Scope(new EmptyBindings())).call(new HashSet<>());
+    }).callable(new Configuration.Builder().build(), new Scope(new EmptyBindings())).call(new HashSet<>());
   }
 
 }

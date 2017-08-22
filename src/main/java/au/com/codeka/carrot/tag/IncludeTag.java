@@ -34,7 +34,7 @@ public class IncludeTag extends Tag {
     String templateName = templateNameExpr.evaluate(engine.getConfig(), scope).toString();
 
     // TODO: we should locate the resource with the current parent.
-    ResourceName resourceName = engine.getConfig().getResourceLocater().findResource(null, templateName);
+    ResourceName resourceName = engine.getConfig().getResourceLocator().findResource(null, templateName);
 
     // TODO: allow you to pass something specific as the new context?
     engine.process(writer, resourceName, scope);
