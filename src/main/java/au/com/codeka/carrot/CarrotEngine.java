@@ -32,8 +32,21 @@ public class CarrotEngine {
    *  @param config The {@link Configuration} to construct this engine with.
    */
   public CarrotEngine(Configuration config) {
+    this(config, new MapBindings.Builder());
+  }
+
+  /**
+   * Constructs a new {@link CarrotEngine} with the given {@link Configuration} and initial set of global bindings.
+   *
+   * <p>The configuration is immutable, so you should create it with all of the settings you need first.
+   *
+   *  @param config The {@link Configuration} to construct this engine with.
+   * @param globalBindingsBuilder A {@link MapBindings.Builder} that you can pre-configure with some global objects
+   *                              that you want to access from every template rendered by this engine.
+   */
+  public CarrotEngine(Configuration config, MapBindings.Builder globalBindingsBuilder) {
     this.config = config;
-    this.globalBindings = MapBindings.newBuilder()
+    this.globalBindings = globalBindingsBuilder
         .set("html", new HtmlHelper())
         .build();
     this.parseCache = new ParseCache(config);
