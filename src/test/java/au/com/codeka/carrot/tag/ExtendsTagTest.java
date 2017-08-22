@@ -82,7 +82,7 @@ public class ExtendsTagTest {
                 System.err.println(msg);
               }
             })
-        .setResourceLocater(createResources(nameValues))
+        .setResourceLocator(createResources(nameValues))
         .build());
     return engine;
   }

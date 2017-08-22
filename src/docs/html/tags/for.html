@@ -62,8 +62,7 @@
 
 <p>First, let's assume we have the follow code to render the template set up:</p>
 
-<code><pre>  CarrotEngine engine = new CarrotEngine();
-  engine.getConfig().setResourceLocator(...);
+<code><pre>  CarrotEngine engine = new CarrotEngine(...);
 
   Bindings bindings = new MapBindings(ImmutableMap.&lt;String, Object&gt;builder()
       .put("users", Lists.newArrayList(
@@ -112,8 +111,7 @@
 
 <p>Now, let's assume we have the follow code to render the template set up:</p>
 
-<code><pre>  CarrotEngine engine = new CarrotEngine();
-  engine.getConfig().setResourceLocator(...);
+<code><pre>  CarrotEngine engine = new CarrotEngine(...);
 
   Bindings bindings = new MapBindings(ImmutableMap.&lt;String, Object&gt;builder()
       .put("user", ImmutableMap.of(
@@ -146,7 +144,7 @@
   </div>{% end %}
 <code><pre>{{ someHtml }}</pre></code>
 
-<p>(Though not nessecarily in that order. If you want the output to be ordered, use a <code>TreeMap</code>, which
+<p>(Though not necessarily in that order. If you want the output to be ordered, use a <code>TreeMap</code>, which
   defines the order of keys to be ascending order.)</p>
 
 <hr>

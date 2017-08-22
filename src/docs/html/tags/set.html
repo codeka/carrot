@@ -34,8 +34,7 @@ bar = {\{ bar }}</code></pre>
 
 <p>Assuming the follow code:</p>
 
-<code><pre>  CarrotEngine engine = new CarrotEngine();
-  engine.getConfig().setResourceLocator(...);
+<code><pre>  CarrotEngine engine = new CarrotEngine(...);
 
   Bindings bindings = new SingletonBindings("arr", new int[] { 123, 456 });
   System.out.println(engine.process("filename.html", bindings));

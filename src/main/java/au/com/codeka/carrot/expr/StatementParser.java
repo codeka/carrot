@@ -18,9 +18,8 @@ import java.util.List;
 /**
  * StatementParser is used to parse expressions. Expressions are used to refer to everything that appears after the
  * {@link Tag} in a {@link TagNode}, and has the following pseudo-EBNF grammar:
- * <p>
- * <pre><code>
  *
+ * <pre><code>
  *  value =
  *     variable
  *     | number
@@ -54,7 +53,7 @@ import java.util.List;
  *   number = "and valid Java number"
  *   literal = """ anything """
  * </code></pre>
- * <p>
+ *
  * <p>The statement parser allows you to extract any sub-element from a string as well (for example, the ForTag
  * wants to pull off it's arguments an identifier followed by the identifier "in" followed by a statement.
  */

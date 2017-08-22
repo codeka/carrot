@@ -8,9 +8,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 /**
- * {@link Bindings} based on the content of a {@link Map}
- *
- * @author Marten Gajda
+ * {@link Bindings} based on the content of a {@link Map}.
  */
 public final class MapBindings implements Bindings, Iterable<EntryBindings> {
   private final Map<String, Object> values;
@@ -21,11 +19,6 @@ public final class MapBindings implements Bindings, Iterable<EntryBindings> {
 
   public MapBindings(Map<String, Object> values) {
     this.values = values;
-  }
-
-  /** Set the specified key to the specified value. */
-  public void set(String key, Object value) {
-    values.put(key, value);
   }
 
   @Override

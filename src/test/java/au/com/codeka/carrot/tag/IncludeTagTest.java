@@ -60,7 +60,7 @@ public class IncludeTagTest {
             System.err.println(msg);
           }
         })
-        .setResourceLocater(createResources(nameValues))
+        .setResourceLocator(createResources(nameValues))
         .build());
   }
 

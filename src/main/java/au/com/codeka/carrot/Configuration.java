@@ -28,11 +28,7 @@ public class Configuration {
       Logger logger,
       boolean autoEscape) {
     this.encoding = encoding;
-    if (resourceLocatorBuilder != null) {
-      this.resourceLocator = resourceLocatorBuilder.build(this);
-    } else {
-      this.resourceLocator = new MemoryResourceLocator.Builder().build(this);
-    }
+    this.resourceLocator = resourceLocatorBuilder.build(this);
     this.tagRegistry = tagRegistryBuilder.build(this);
     this.logger = logger;
     this.autoEscape = autoEscape;
@@ -61,7 +57,7 @@ public class Configuration {
 
   public static class Builder {
     private String encoding;
-    private ResourceLocator.Builder resourceLocaterBuilder;
+    private ResourceLocator.Builder resourceLocatorBuilder;
     private TagRegistry.Builder tagRegistryBuilder;
     private Logger logger;
     private boolean autoEscape;
@@ -69,7 +65,6 @@ public class Configuration {
     public Builder() {
       encoding = "utf-8";
       autoEscape = true;
-      tagRegistryBuilder = new TagRegistry.Builder();
     }
 
     public Builder setEncoding(String encoding) {
@@ -77,8 +72,13 @@ public class Configuration {
       return this;
     }
 
-    public Builder setResourceLocater(ResourceLocator.Builder resourceLocaterBuilder) {
-      this.resourceLocaterBuilder = resourceLocaterBuilder;
+    public Builder setResourceLocator(ResourceLocator.Builder resourceLocatorBuilder) {
+      this.resourceLocatorBuilder = resourceLocatorBuilder;
+      return this;
+    }
+
+    public Builder setTagRegistry(TagRegistry.Builder tagRegistryBuilder) {
+      this.tagRegistryBuilder = tagRegistryBuilder;
       return this;
     }
 
@@ -95,6 +95,7 @@ public class Configuration {
      *
      * @param value If true, output will be automatically HTML-escaped. If false, it would be as if all output is wrapped
      *              in <code>html.safe()</code> by default.
+     * @return The current {@link Builder}.
      */
     public Builder setAutoEscape(boolean value) {
       this.autoEscape = value;
@@ -109,8 +110,8 @@ public class Configuration {
     public Configuration build() {
       return new Configuration(
           encoding,
-          resourceLocaterBuilder,
-          tagRegistryBuilder,
+          resourceLocatorBuilder == null ? new MemoryResourceLocator.Builder() : resourceLocatorBuilder,
+          tagRegistryBuilder == null ? new TagRegistry.Builder() : tagRegistryBuilder,
           logger,
           autoEscape);
     }

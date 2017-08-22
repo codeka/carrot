@@ -13,12 +13,12 @@ import java.io.Writer;
 
 /**
  * The "include" tag is used to include the contents of another template.
- * <p>
+ *
  * <p>Using the include tag is very simple:
- * <p>
- * <code>
+ *
+ * <pre><code>
  * {% include "foo.html" %}
- * </code>
+ * </code></pre>
  */
 public class IncludeTag extends Tag {
   private Term templateNameExpr;

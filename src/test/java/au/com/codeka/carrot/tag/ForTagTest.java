@@ -156,7 +156,7 @@ public class ForTagTest {
                 System.err.println(msg);
               }
             })
-        .setResourceLocater(new MemoryResourceLocator.Builder().add("index", content))
+        .setResourceLocator(new MemoryResourceLocator.Builder().add("index", content))
         .build());
     return engine.process("index", new MapBindings(bindings));
   }

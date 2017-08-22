@@ -199,7 +199,7 @@ public class CarrotEngineTest {
             System.err.println(msg);
           }
         })
-        .setResourceLocater(new MemoryResourceLocator.Builder().add("index.html", template))
+        .setResourceLocator(new MemoryResourceLocator.Builder().add("index.html", template))
         .build());
     try {
       return engine.process("index.html", bindings);

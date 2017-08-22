@@ -20,8 +20,7 @@ import static au.com.codeka.carrot.util.Preconditions.checkNotNull;
 
 /**
  * The "extends" tag is used to base one template off of another one.
- * <p>
- * You would make a "skeleton" template like so:
+ * <p>You would make a "skeleton" template like so:
  * <pre><code>
  *   &lt;html&gt;
  *     &lt;head&gt;
@@ -33,8 +32,7 @@ import static au.com.codeka.carrot.util.Preconditions.checkNotNull;
  *   &lt;/html&gt;
  * </code>
    </pre>
- * <p>
- * And another file to "extend" it, like so:
+ * <p>And another file to "extend" it, like so:
  * <pre><code>
  *   {% extends "skeleton.html" %}
  *   {% block "content" %}
@@ -42,7 +40,7 @@ import static au.com.codeka.carrot.util.Preconditions.checkNotNull;
  *   {% end %}
  * </code>
  * </pre>
- * <p>
+ *
  * <p>The contents of the second file will then be the contents of the skeleton file, and the "content" block will
  * be replaced with the content inside the block.
  */

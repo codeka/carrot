@@ -3,9 +3,9 @@ package au.com.codeka.carrot.resource;
 import javax.annotation.Nullable;
 
 /**
- * The "name" of a resolved resource (usually a file, but not nessecarily). You can pass this to a resource locator
+ * The "name" of a resolved resource (usually a file, but not necessarily). You can pass this to a resource locator
  * to get the actual contents of the resource.
- * <p>
+ *
  * <p>{@link ResourceName}s may be related to a parent {@link ResourceName}. They may not necessarily be direct
  * children of the parent, in which case children will always be separated by a forward slash '/'.
  */

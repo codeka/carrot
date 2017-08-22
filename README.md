@@ -18,18 +18,18 @@ With Maven:
     <dependency>
       <groupId>au.com.codeka</groupId>
       <artifactId>carrot</artifactId>
-      <version>2.3.0</version>
+      <version>2.4.0</version>
     </dependency>
 
 With Gradle:
 
-    compile 'au.com.codeka:carrot:2.3.0'
+    compile 'au.com.codeka:carrot:2.4.0'
 
 First, you need to create a `CarrotEngine`, which will hold the environment for parsing templates and processing them:
 
-    CarrotEngine engine = new CarrotEngine();
-    Configuration config = engine.getConfiguration();
-    config.setResourceLocator(new FileResourceLocator(config, "path/to/templates"));
+    CarrotEngine engine = new CarrotEngine(new Configuration.Builder()
+         .setResourceLocator(new FileResourceLocator.Builder("path/to/templates"))
+         .build());
 
 Typically, you'll have a "skeleton" template and a "body" template, where the skeleton defines the overall HTML
 structure that all your pages share, and the body template is the custom things just for that page. The way you do this

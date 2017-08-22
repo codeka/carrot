@@ -24,7 +24,7 @@ public class RenderHelper {
             }
           }
         })
-        .setResourceLocater(new MemoryResourceLocator.Builder().add("index", content))
+        .setResourceLocator(new MemoryResourceLocator.Builder().add("index", content))
         .build());
 
     Map<String, Object> bindingsMap = new HashMap<>();

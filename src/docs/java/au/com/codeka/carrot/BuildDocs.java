@@ -16,7 +16,7 @@ class BuildDocs {
 
     CarrotEngine engine = new CarrotEngine(
         new Configuration.Builder()
-            .setResourceLocater(new FileResourceLocator.Builder(inputDir))
+            .setResourceLocator(new FileResourceLocator.Builder(inputDir))
             .build());
     processDirectory(engine, 0, inputDir, outputDir);
   }

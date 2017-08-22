@@ -11,8 +11,11 @@ the built-in tags can do that a custom tag could not also do.</p>
   <a href="{{basePath}}javadoc/au/com/codeka/carrot/tag/Tag.html">Tag</a>, and register it in the tag registry, like
   so:</p>
 
-<code><pre>  CarrotEngine engine = new CarrotEngine();
-  engine.getConfig().getTagRegistry().add("mytag", MyTag.class);</pre></code>
+<code><pre>  CarrotEngine engine = new CarrotEngine(
+      new Configuration.Builder()
+          .setTagRegistry(
+              new TagRegistry.Builder().add("mytag", MyTag.class))
+      .build());</pre></code>
 
 <p>Then, whenever the engine encounters a <code>{\% mytag %}</code> it will call your tag's code to render the
   result.</p>
