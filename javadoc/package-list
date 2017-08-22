@@ -1,6 +1,10 @@
 au.com.codeka.carrot
 au.com.codeka.carrot.bindings
 au.com.codeka.carrot.expr
+au.com.codeka.carrot.expr.accessible
+au.com.codeka.carrot.expr.binary
+au.com.codeka.carrot.expr.unary
+au.com.codeka.carrot.expr.values
 au.com.codeka.carrot.helpers
 au.com.codeka.carrot.resource
 au.com.codeka.carrot.tag

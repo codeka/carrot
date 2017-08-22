@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Carrot &bull; Include tag</title>
+  <link rel="shortcut icon" href="../favicon.ico">
+  <link rel="stylesheet" href="../css/site.css">
+  
+</head>
+<body>
+  <section id="header"><div class="header-bg">
+    <img src="../img/carrot-48.png" width="48" height="48" alt="Logo" />
+    <h1>Carrot<span>A templating engine for Java</span></h1>
+  </div></section>
+
+  <section id="maincontent">
+    <section id="navmenu"><div class="navmenu-bg">
+      <ul>
+        <li><a href="../index.html">Introduction</a>
+        <li><a href="../getting-started.html">Getting started</a>
+        <li><a href="../template-language.html">Template language</a>
+          <ul>
+            <li><a href="../tags/echo.html">Echo tag</a>
+            <li><a href="../tags/if.html">If tag</a>
+            <li><a href="../tags/for.html">For tag</a>
+            <li><a href="../tags/set.html">Set tag</a>
+            <li><a href="../tags/extends.html">Extends tag</a>
+            <li><a href="../tags/include.html">Include tag</a>
+            <li><a href="../tags/custom.html">Custom tags</a>
+          </ul>
+        <li><a href="../expressions.html">Expressions</a>
+        <li><a href="../helpers.html">Helpers</a>
+      </ul>
+      <ul>
+        <li><a href="../javadoc/">Javadoc</a></li>
+        <li><a href="https://github.com/codeka/carrot">Github</a></li>
+        <li><a href="https://github.com/codeka/carrot/issues">File an issue</a></li>
+      </ul>
+      <p class="copyright">Copyright &copy; Dean Harding</p>
+    </div></section>
+    <section id="content">
+<h2>Include tag</h2>
+
+<code><pre>{% include "foo.html" %}</pre></code>
+
+<p>The <code>include</code> tag is a simple means for including one template into the current output. Useful for
+    pieces of common functionality and the like.</p>
+
+<h3>Examples</h3>
+
+<p>To use <code>include</code> is very simple:</p>
+
+<p>foo.html</p>
+
+
+<code><pre>  &lt;p&gt;Hello World&lt;/p&gt;</pre></code>
+
+<p>content.html</p>
+
+
+<code><pre>  &lt;p&gt;Blah blah blah&lt;/p&gt;
+  {% include "foo.html" %}
+  &lt;p&gt;Yada yada yada&lt;/p&gt;</pre></code>
+
+<p>It would output the following:</p>
+
+
+<code><pre>  &lt;p&gt;Blah blah blah&lt;/p&gt;
+  &lt;p&gt;Hello World&lt;/p&gt;
+  &lt;p&gt;Yada yada yada&lt;/p&gt;</pre></code>
+
+<hr>
+<div class="bottom-nav">
+    <div class="back">
+        <a href="../tags/extends.html">← Extends tag</a>
+    </div>
+    <div class="next">
+        <a href="../tags/custom.html">Custom tags →</a>
+    </div>
+</div>
+</section>
+  </section>
+</body>
+</html>

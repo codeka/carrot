@@ -24,6 +24,7 @@
             <li><a href="../tags/for.html">For tag</a>
             <li><a href="../tags/set.html">Set tag</a>
             <li><a href="../tags/extends.html">Extends tag</a>
+            <li><a href="../tags/include.html">Include tag</a>
             <li><a href="../tags/custom.html">Custom tags</a>
           </ul>
         <li><a href="../expressions.html">Expressions</a>
@@ -43,14 +44,29 @@
   content
 {% else %}
   content
+{% end %}
+
+{% for key, value in &lt;map&gt; %}
+  {{ key }} = {{ value }}
+{% end %}
+
+{% for a, b, c in &lt;arrayOfArrays&gt; %}
+  {{ a }} - {{ b }} - {{ c }}
 {% end %}</pre></code>
 
 <p>The for tag evaluates the expression and, assuming it is a collection of some kind, iterates the collection,
-  rendering it's content for each iteration of the loop. Inside the loop, the given <code>identifier</code> is available
-  for you to reference.</p>
+  rendering its content for each iteration of the loop. Inside the loop, the given <code>identifier</code>
+  (or <code>identifiers</code> is available for you to reference.</p>
 
 <p>If you have an <code>{% else %}</code> block after the <code>{% for %}</code> block, the else block will be
   output if the collection is empty.</p>
+
+<p>You can iterate a map and look at just the keys, or use the <code>key, value</code> syntax to capture both the
+  key and the value (note: iteration of the Map happens in whatever order the Map defines, so for example
+  <code>HashMap</code> will iterate in random order).</p>
+
+<p>If you are iterating a collection of collections, you can use the <code>a, b, c</code> syntax to "expand" the
+  inner array, for easier access.</p>
 
 <p>In addition to the <code>identifier</code>, a special <code>loop</code> object is available inside the contents of
   for loop, with some additional information about the loop. The loop variable has the following properties:</p>
@@ -83,8 +99,7 @@
 
 <p>First, let's assume we have the follow code to render the template set up:</p>
 
-<code><pre>  CarrotEngine engine = new CarrotEngine();
-  engine.getConfig().setResourceLocator(...);
+<code><pre>  CarrotEngine engine = new CarrotEngine(...);
 
   Bindings bindings = new MapBindings(ImmutableMap.&lt;String, Object&gt;builder()
       .put("users", Lists.newArrayList(
@@ -130,6 +145,44 @@
 <p>Would output the following:</p>
 
 <code><pre>You don't have any admin users.</pre></code>
+
+<p>Now, let's assume we have the follow code to render the template set up:</p>
+
+<code><pre>  CarrotEngine engine = new CarrotEngine(...);
+
+  Bindings bindings = new MapBindings(ImmutableMap.&lt;String, Object&gt;builder()
+      .put("user", ImmutableMap.of(
+          "id", 1234,
+          "firstName", "Dean",
+          "lastName", "Harding"))
+      .build());
+
+  System.out.println(engine.process("filename.html", bindings));
+</pre></code>
+
+<p>And the following template:</p>
+
+<code><pre>  {% for key, value in user %}
+    &lt;div&gt;
+      {{ key }}: {{ value }}
+    &lt;/div&gt;
+  {% end %}</pre></code>
+
+<p>It would output the following:</p>
+
+
+<code><pre>  &lt;div&gt;
+    id: 1234
+  &lt;/div&gt;
+  &lt;div&gt;
+    firstName: Dean
+  &lt;/div&gt;
+  &lt;div&gt;
+    lastName: Harding
+  &lt;/div&gt;</pre></code>
+
+<p>(Though not necessarily in that order. If you want the output to be ordered, use a <code>TreeMap</code>, which
+  defines the order of keys to be ascending order.)</p>
 
 <hr>
 <div class="bottom-nav">

@@ -24,6 +24,7 @@
             <li><a href="tags/for.html">For tag</a>
             <li><a href="tags/set.html">Set tag</a>
             <li><a href="tags/extends.html">Extends tag</a>
+            <li><a href="tags/include.html">Include tag</a>
             <li><a href="tags/custom.html">Custom tags</a>
           </ul>
         <li><a href="expressions.html">Expressions</a>
@@ -75,6 +76,7 @@ simple echos the evaluation of the expression inside the tag.</p>
 {% if &lt;expr&gt; %}...{% end %}
 {% for identifier in &lt;expr&gt; %}...{% end %}
 {% extends &lt;expr&gt; %}...{% end %}
+{% include &lt;expr&gt; %}
 {% block &lt;expr&gt; %}...{% end %}</pre></code>
 
 <p>Tags are where most of the interesting work happens in your template. See the following pages for details, but
@@ -85,8 +87,11 @@ children and can optionally output their children.</p>
 <p>You can register your own classes as tags like so:</p>
 
 <code><pre>
-  CarrotEngine engine = ...;
-  engine.getConfig().getTagRegistry().add("tagName", MyTag.class);
+  CarrotEngine engine = new CarrotEngine(
+      new Configuration.Builder()
+          .setTagRegistry(
+              new TagRegistry.Builder().add("tagName", MyTag.class))
+      .build());
 </pre></code>
 
 <p>Your tag class must inherit from <a href="javadoc/au/com/codeka/carrot/tag/Tag.html">Tag</a>. More
