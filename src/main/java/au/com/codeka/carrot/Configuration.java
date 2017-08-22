@@ -67,6 +67,7 @@ public class Configuration {
     private boolean autoEscape;
 
     public Builder() {
+      encoding = "utf-8";
       autoEscape = true;
       tagRegistryBuilder = new TagRegistry.Builder();
     }
