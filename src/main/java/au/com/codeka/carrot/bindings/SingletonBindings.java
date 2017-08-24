@@ -3,6 +3,7 @@ package au.com.codeka.carrot.bindings;
 import au.com.codeka.carrot.Bindings;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.Iterator;
 
@@ -15,7 +16,7 @@ public final class SingletonBindings implements Bindings, Iterable<EntryBindings
   private final String key;
   private final Object value;
 
-  public SingletonBindings(@Nonnull String key, Object value) {
+  public SingletonBindings(@Nonnull String key, @Nullable Object value) {
     this.key = key;
     this.value = value;
   }

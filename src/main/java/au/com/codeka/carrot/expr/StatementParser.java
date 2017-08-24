@@ -1,5 +1,6 @@
 package au.com.codeka.carrot.expr;
 
+import au.com.codeka.carrot.CarrotEngine;
 import au.com.codeka.carrot.CarrotException;
 import au.com.codeka.carrot.expr.accessible.AccessTermParser;
 import au.com.codeka.carrot.expr.binary.BinaryTermParser;
@@ -156,6 +157,15 @@ public class StatementParser {
   @Nonnull
   public Token parseToken(@Nonnull TokenType type) throws CarrotException {
     return tokenizer.expect(type);
+  }
+
+  /** Attempts to parse an identifier list. If there's no identifier to begin the list, returns null. */
+  public List<Identifier> maybeParseIdentifierList() throws CarrotException {
+    if (!tokenizer.accept(TokenType.IDENTIFIER)) {
+      return null;
+    }
+
+    return parseIdentifierList();
   }
 
   public List<Identifier> parseIdentifierList() throws CarrotException {

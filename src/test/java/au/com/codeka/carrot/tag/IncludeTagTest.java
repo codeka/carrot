@@ -44,6 +44,26 @@ public class IncludeTagTest {
     assertThat(result).isEqualTo("StuffHelloBarWorldBlah");
   }
 
+  @Test
+  public void testNewContextValueSingle() {
+    CarrotEngine engine = createEngine(
+        "foo", "Hello{{foo}}World",
+        "index", "Stuff{% include \"foo\" foo = \"Bar\" %}Blah"
+    );
+    String result = render(engine, "index", new EmptyBindings());
+    assertThat(result).isEqualTo("StuffHelloBarWorldBlah");
+  }
+
+  @Test
+  public void testNewContextValueMultiple() {
+    CarrotEngine engine = createEngine(
+        "foo", "Hello{{foo}}World{{bar}}",
+        "index", "Stuff{% include \"foo\" foo, bar = (\"xyz\", 123) %}Blah"
+    );
+    String result = render(engine, "index", new EmptyBindings());
+    assertThat(result).isEqualTo("StuffHelloxyzWorld123Blah");
+  }
+
   private String render(CarrotEngine engine, String templateName, @Nullable Bindings bindings) {
     try {
       return engine.process(templateName, bindings);
