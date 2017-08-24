@@ -27,7 +27,9 @@ public final class AccessOperator implements BinaryOperator {
   }
 
   private Object access(Object value, Object accessor) throws CarrotException {
-    if (value instanceof Map) {
+    if (value == null) {
+      return null;
+    } else if (value instanceof Map) {
       Map map = (Map) value;
       return map.get(accessor);
     } else if (value instanceof Bindings) {

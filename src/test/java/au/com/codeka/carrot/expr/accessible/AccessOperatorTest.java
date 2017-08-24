@@ -29,6 +29,10 @@ public class AccessOperatorTest {
     assertThat(new AccessOperator().apply(new ArrayIterable<>("a", "b", "c"), new MockLazyTerm(2L))).isEqualTo("c");
   }
 
+  @Test
+  public void testNull() throws Exception {
+    assertThat(new AccessOperator().apply(null, new MockLazyTerm(0))).isNull();
+  }
 
   private final class FieldTestClass {
     public final String a = "A";
