@@ -11,6 +11,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 
+import static au.com.codeka.carrot.util.RenderHelper.render;
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.fail;
 
@@ -57,6 +58,28 @@ public class MethodTermTest {
                 return testParams;
               }
             }).evaluate(testConfiguration, testScope)).isSameAs(testResult);
+  }
+
+  @Test
+  public void testNullParameters() throws CarrotException {
+    final Object nullTester = new Object() {
+      @SuppressWarnings("unused") // Used by the engine.
+      public boolean isValueNull(String val) {
+        return (val == null);
+      }
+    };
+
+    assertThat(render("{% if obj.isValueNull(null) %}yep{% end %}",
+        "obj", nullTester)
+    ).isEqualTo("yep");
+    assertThat(render("{% if obj.isValueNull(foo) %}yep{% end %}",
+        "obj", nullTester,
+        "foo", null)
+    ).isEqualTo("yep");
+    assertThat(render("{% if obj.isValueNull(foo) %}yep{% end %}",
+        "obj", nullTester,
+        "foo", "foo")
+    ).isEmpty();
   }
 
   @Test

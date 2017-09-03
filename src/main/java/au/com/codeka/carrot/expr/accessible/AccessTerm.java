@@ -54,7 +54,11 @@ public final class AccessTerm implements AccessibleTerm {
         List<Class<?>> paramTypes = new ArrayList<>();
         List<Object> paramValues = new ArrayList<>();
         for (Object p : args) {
-          paramTypes.add(p.getClass());
+          if (p == null) {
+            paramTypes.add(Object.class);
+          } else {
+            paramTypes.add(p.getClass());
+          }
           paramValues.add(p);
         }
 
@@ -110,6 +114,13 @@ public final class AccessTerm implements AccessibleTerm {
 
           boolean allMatch = true;
           for (int i = 0; i < methodParamTypes.length; i++) {
+            // Special case for passing null values in, any nullable type is acceptable
+            if (paramValues.get(i) == null) {
+              if (!methodParamTypes[i].isPrimitive()) {
+                // TODO: only if it's decorated with @Nonnull or something should be disallow this.
+                continue;
+              }
+            }
             if (!methodParamTypes[i].isAssignableFrom(paramTypes.get(i))) {
               Object convertedValue = convertType(methodParamTypes[i], paramValues.get(i));
               if (convertedValue != null) {
@@ -147,7 +158,7 @@ public final class AccessTerm implements AccessibleTerm {
       @Nullable
       private Object convertType(Class<?> outputType, Object value) {
         if (value == null) {
-          throw new NullPointerException("Value cannot be null.");
+          return null;
         }
         if (outputType.equals(value.getClass())) {
           return value;
