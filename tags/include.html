@@ -68,6 +68,29 @@
   &lt;p&gt;Hello World&lt;/p&gt;
   &lt;p&gt;Yada yada yada&lt;/p&gt;</pre></code>
 
+<h3>Passing values</h3>
+
+<p>You can also pass values into the included template, like so:</p>
+
+<p>foo.html</p>
+
+
+<code><pre>  &lt;p&gt;Hello, {{ name }}&lt;/p&gt;</pre></code>
+
+<p>content.html</p>
+
+
+<code><pre>  &lt;p&gt;Blah blah blah&lt;/p&gt;
+  {% include "foo.html" name = "Dean" %}
+  &lt;p&gt;Yada yada yada&lt;/p&gt;</pre></code>
+
+<p>It would output the following:</p>
+
+
+<code><pre>  &lt;p&gt;Blah blah blah&lt;/p&gt;
+  &lt;p&gt;Hello, Dean&lt;/p&gt;
+  &lt;p&gt;Yada yada yada&lt;/p&gt;</pre></code>
+
 <hr>
 <div class="bottom-nav">
     <div class="back">
