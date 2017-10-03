@@ -31,6 +31,29 @@
   <p>Yada yada yada</p>{% end %}
 <code><pre>{{ someHtml }}</pre></code>
 
+<h3>Passing values</h3>
+
+<p>You can also pass values into the included template, like so:</p>
+
+<p>foo.html</p>
+
+{% set someHtml %}  <p>Hello, {\{ name }}</p>{% end %}
+<code><pre>{{ someHtml }}</pre></code>
+
+<p>content.html</p>
+
+{% set someHtml %}  <p>Blah blah blah</p>
+  {\% include "foo.html" name = "Dean" %}
+  <p>Yada yada yada</p>{% end %}
+<code><pre>{{ someHtml }}</pre></code>
+
+<p>It would output the following:</p>
+
+{% set someHtml %}  <p>Blah blah blah</p>
+  <p>Hello, Dean</p>
+  <p>Yada yada yada</p>{% end %}
+<code><pre>{{ someHtml }}</pre></code>
+
 <hr>
 <div class="bottom-nav">
     <div class="back">

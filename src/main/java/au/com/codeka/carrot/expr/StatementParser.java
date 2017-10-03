@@ -159,7 +159,12 @@ public class StatementParser {
     return tokenizer.expect(type);
   }
 
-  /** Attempts to parse an identifier list. If there's no identifier to begin the list, returns null. */
+  /**
+   * Attempts to parse an identifier list. If there's no identifier to begin the list, returns null.
+   *
+   * @return The list of {@link Identifier}s we parsed, or null if we couldn't parse an identifier.
+   * @throws CarrotException if there's some error parsing the identifiers.
+   */
   public List<Identifier> maybeParseIdentifierList() throws CarrotException {
     if (!tokenizer.accept(TokenType.IDENTIFIER)) {
       return null;
