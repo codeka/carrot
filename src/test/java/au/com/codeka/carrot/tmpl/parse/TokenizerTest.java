@@ -180,6 +180,27 @@ public class TokenizerTest {
     assertThat(tokenizer.getNextToken()).isEqualTo(Token.create(TokenType.UNKNOWN, ""));
   }
 
+  @Test
+  public void testOpenTagEndOfInput() throws CarrotException {
+    Tokenizer tokenizer = createTokenizer("hello {");
+    assertThat(tokenizer.getNextToken()).isEqualTo(Token.create(TokenType.FIXED, "hello {"));
+    assertThat(tokenizer.getNextToken()).isEqualTo(Token.create(TokenType.UNKNOWN, ""));
+  }
+
+  @Test
+  public void testCloseTagEndOfInput() throws CarrotException {
+    Tokenizer tokenizer = createTokenizer("hello }");
+    assertThat(tokenizer.getNextToken()).isEqualTo(Token.create(TokenType.FIXED, "hello }"));
+    assertThat(tokenizer.getNextToken()).isEqualTo(Token.create(TokenType.UNKNOWN, ""));
+  }
+
+  @Test
+  public void testPercentEndOfInput() throws CarrotException {
+    Tokenizer tokenizer = createTokenizer("hello %");
+    assertThat(tokenizer.getNextToken()).isEqualTo(Token.create(TokenType.FIXED, "hello %"));
+    assertThat(tokenizer.getNextToken()).isEqualTo(Token.create(TokenType.UNKNOWN, ""));
+  }
+
   private static Tokenizer createTokenizer(String content) {
     return new Tokenizer(new LineReader(new ResourcePointer(null), new StringReader(content)), new TestTokenFactory());
   }

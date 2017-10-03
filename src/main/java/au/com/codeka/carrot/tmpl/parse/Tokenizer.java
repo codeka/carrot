@@ -73,6 +73,7 @@ public class Tokenizer {
         case '{':
           i = getNextChar();
           if (i < 0) {
+            content.append(ch);
             return tokenFactory.create(tokenType, content);
           }
 
@@ -124,6 +125,7 @@ public class Tokenizer {
         case '#':
           i = getNextChar();
           if (i < 0) {
+            content.append(ch);
             return tokenFactory.create(tokenType, content);
           }
 
