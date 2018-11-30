@@ -26,7 +26,7 @@ x > 0 || y > 0{% end %}{{ someHtml }}</code></pre></dd>
 
   <dt>Ternary operator</dt>
   <dd><pre><code>{% set someHtml %}a == 0 ? "zero" : "non-zero"
-foo ? foo : "default"</code></pre>
+foo ? foo : "default"{% end %}{{ someHtml }}</code></pre>
   <p>The ternary operator should be familiar to anybody coming from Java. It evaluates the term before the
     ?, and if true evaluates the term before the :, if false it evaluates to the term after the :.</p>
   <p>You can also use the ternary operator to provide default values when querying a map for a value.</p>
