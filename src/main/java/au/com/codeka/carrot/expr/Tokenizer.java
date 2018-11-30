@@ -160,6 +160,12 @@ public class Tokenizer {
       case '/':
         token = new Token(TokenType.DIVIDE);
         break;
+      case '?':
+        token = new Token(TokenType.QUESTION);
+        break;
+      case ':':
+        token = new Token(TokenType.COLON);
+        break;
       case '&':
         next = nextChar();
         if (next != '&') {

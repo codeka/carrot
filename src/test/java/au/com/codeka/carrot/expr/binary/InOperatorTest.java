@@ -36,5 +36,4 @@ public class InOperatorTest {
   public void testToString() throws Exception {
     assertThat(new InOperator().toString()).isEqualTo("IN");
   }
-
 }

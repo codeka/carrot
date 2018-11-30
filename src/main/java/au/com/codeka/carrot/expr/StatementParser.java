@@ -6,6 +6,7 @@ import au.com.codeka.carrot.expr.accessible.AccessTermParser;
 import au.com.codeka.carrot.expr.binary.BinaryTermParser;
 import au.com.codeka.carrot.expr.binary.LaxIterationTermParser;
 import au.com.codeka.carrot.expr.binary.StrictIterationTermParser;
+import au.com.codeka.carrot.expr.ternary.TernaryTermParser;
 import au.com.codeka.carrot.expr.unary.UnaryTermParser;
 import au.com.codeka.carrot.expr.values.*;
 import au.com.codeka.carrot.tag.Tag;
@@ -42,9 +43,11 @@ import java.util.List;
  *
  *   or-term = and-term ["||" or-term]
  *
+ *   ternary-term = or-term ["?" variable ":" variable]
+ *
  *   emtpy-term =
  *
- *   expression = or-term ["," expression]
+ *   expression = ternary-term ["," expression]
  *
  *   variable = identifier [func-call] ["[" expression "]"] ["." variable]
  *
@@ -117,6 +120,7 @@ public class StatementParser {
                 TokenType.EQUALITY, TokenType.INEQUALITY),
             TokenType.LOGICAL_AND),
         TokenType.LOGICAL_OR);
+    base = new TernaryTermParser(base, base, base, TokenType.QUESTION);
 
     // the generic expression uses a lax iteration parser
     expressionParser = new LaxIterationTermParser(base);

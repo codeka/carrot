@@ -1,6 +1,8 @@
 package au.com.codeka.carrot.expr;
 
 import au.com.codeka.carrot.expr.binary.*;
+import au.com.codeka.carrot.expr.ternary.ComparisonOperator;
+import au.com.codeka.carrot.expr.ternary.TernaryOperator;
 import au.com.codeka.carrot.expr.unary.MinusOperator;
 import au.com.codeka.carrot.expr.unary.NotOperator;
 import au.com.codeka.carrot.expr.unary.PlusOperator;
@@ -70,31 +72,44 @@ public enum TokenType {
   MINUS(false, new SubOperator(), new MinusOperator()),
   MULTIPLY(false, new MulOperator()),
   DIVIDE(false, new DivOperator()),
-  IN(false, new InOperator());
+  IN(false, new InOperator()),
+  COLON(false),
+  QUESTION(new ComparisonOperator(), COLON);
 
   private final boolean hasValue;
   private final BinaryOperator binaryOperator;
   private final UnaryOperator unaryOperator;
+  private final TernaryOperator ternaryOperator;
   private final TokenType closingToken;
 
   TokenType(boolean hasValue) {
-    this(hasValue, null, null, null);
+    this(hasValue, null, null, null, null);
   }
 
   TokenType(boolean hasValue, TokenType closingToken) {
-    this(hasValue, null, null, closingToken);
+    this(hasValue, null, null, null, closingToken);
+  }
+
+  TokenType(TernaryOperator ternaryOperator, TokenType separatorToken) {
+    this(false, ternaryOperator, null, null, separatorToken);
   }
 
   TokenType(boolean hasValue, BinaryOperator binaryOperator) {
-    this(hasValue, binaryOperator, null, null);
+    this(hasValue, null, binaryOperator, null, null);
   }
 
   TokenType(boolean hasValue, BinaryOperator binaryOperator, UnaryOperator unaryOperator) {
-    this(hasValue, binaryOperator, unaryOperator, null);
+    this(hasValue, null, binaryOperator, unaryOperator, null);
   }
 
-  TokenType(boolean hasValue, BinaryOperator binaryOperator, UnaryOperator unaryOperator, TokenType closingToken) {
+  TokenType(
+      boolean hasValue,
+      TernaryOperator ternaryOperator,
+      BinaryOperator binaryOperator,
+      UnaryOperator unaryOperator,
+      TokenType closingToken) {
     this.hasValue = hasValue;
+    this.ternaryOperator = ternaryOperator;
     this.binaryOperator = binaryOperator;
     this.unaryOperator = unaryOperator;
     this.closingToken = closingToken;
@@ -102,6 +117,13 @@ public enum TokenType {
 
   public boolean hasValue() {
     return hasValue;
+  }
+
+  public TernaryOperator ternaryOperator() {
+    if (ternaryOperator == null) {
+      throw new UnsupportedOperationException(String.format("%s is not a ternary operator", this.toString()));
+    }
+    return ternaryOperator;
   }
 
   public BinaryOperator binaryOperator() {
@@ -118,8 +140,11 @@ public enum TokenType {
     return unaryOperator;
   }
 
-
   public TokenType closingType() {
+    return closingToken;
+  }
+
+  public TokenType separatorType() {
     return closingToken;
   }
 }

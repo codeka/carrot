@@ -64,4 +64,13 @@ public class EchoTagTest {
         },
         "b", 2)).isEqualTo("13.5");
   }
+
+  @Test
+  public void testTernary() throws CarrotException {
+    assertThat(render("{{ a == 1 ? \"foo\" : \"bar\"", "a", 1)).isEqualTo("foo");
+    assertThat(render("{{ a == 1 ? \"foo\" : \"bar\"", "a", 2)).isEqualTo("bar");
+    assertThat(render("{{ a ? \"truthy\" : \"falsey\"")).isEqualTo("falsey");
+    assertThat(render("{{ a ? \"truthy\" : \"falsey\"", "a", 0)).isEqualTo("falsey");
+    assertThat(render("{{ a ? \"truthy\" : \"falsey\"", "a", 1)).isEqualTo("truthy");
+  }
 }
