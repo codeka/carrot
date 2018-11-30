@@ -62,7 +62,42 @@ bar != 0
 x &gt; 0 || y &gt; 0</code></pre></dd>
 
   <dt>Ternary operator</dt>
-  <dd><pre><code></section>
+  <dd><pre><code>a == 0 ? "zero" : "non-zero"
+foo ? foo : "default"</code></pre>
+  <p>The ternary operator should be familiar to anybody coming from Java. It evaluates the term before the
+    ?, and if true evaluates the term before the :, if false it evaluates to the term after the :.</p>
+  <p>You can also use the ternary operator to provide default values when querying a map for a value.</p>
+  </dd>
+
+  <dt>Accessor methods</dt>
+  <dd><pre><code>foo.bar.baz
+foo["bar"]
+foo[bar.baz].blah</code></pre>
+  <p>The rules for querying accessor methods are fairly simple. In the case of <code>foo.bar</code>, we will first
+    look for a field on <code>foo</code> call "bar", then we will look for a method on <code>foo</code> called
+    "getBar". If <code>foo</code> is a Map, we will attempt to call <code>Map.get</code>, with the string "bar".</p>
+  <p>In the case of <code>foo[bar]</code>, we will first evaluate the variable <code>bar</code>, and use that value
+    to query <code>foo</code>. Note that whether accessed via <code>.</code> or via <code>[]</code>, the rules are
+    actually the same (that is, we'll still look for a field with the name that <code>bar</code> evaluates to).</p></dd>
+
+  <dt>Method calls</dt>
+  <dd><pre><code>foo.bar()
+foo.bar(x, y)</code></pre>
+  <p>Method calls work exactly as you'd expect. In the case of <code>foo.bar(x, y)</code>, we first try to evaluate
+    <code>x</code> and <code>y</code>. Then we look for a method on <code>foo</code> named "bar", which takes two
+    parameters. The expression evaluates to the return value of the bar method.</p></dd>
+</dl>
+
+<hr>
+<div class="bottom-nav">
+  <div class="back">
+    <a href="tags/custom.html">← Custom tags</a>
+  </div>
+  <div class="next">
+    <a href="helpers.html">Helpers →</a>
+  </div>
+</div>
+</section>
   </section>
 </body>
 </html>
