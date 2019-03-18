@@ -31,3 +31,10 @@ Windows, that's C:\Users\dean\.gradle\gradle.properties, on Mac/Linux that's
   4. Create a new entry in https://github.com/codeka/carrot/releases. The compiled .jar
      can be found in build\libs, and should be attached to the release. Otherwise, mostly
      just cut'n'paste from the previous release and add details about what's changed.
+     
+  5. Update docs
+     1. `gradlew buildDocs`
+     2. Check out the [gh-pages](https://github.com/codeka/carrot/tree/gh-pages) branch
+     3. Completely replace the contents of that branch with the output in build/docs (in
+        particular, make sure files that were not included in build/docs are not in gh-pages)
+     4. `git commit -m "Updated docs" && git push`
