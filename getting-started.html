@@ -57,7 +57,7 @@
   <code>Configuration</code>:</p>
 
 <code><pre>CarrotEngine engine = new CarrotEngine(new Configuration.Builder()
-    .setResourceLocator(new FileResourceLocator("path/to/templates"))
+    .setResourceLocator(new FileResourceLocator.Builder("path/to/templates"))
     .build());</pre></code>
 
 <p>Typically, you'll have a "skeleton" template and a "body" template, where the skeleton defines the overall HTML
