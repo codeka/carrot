@@ -2,6 +2,7 @@ package au.com.codeka.carrot;
 
 import au.com.codeka.carrot.bindings.*;
 import au.com.codeka.carrot.resource.MemoryResourceLocator;
+import au.com.codeka.carrot.tmpl.Node;
 import com.google.common.collect.ImmutableMap;
 import org.dmfs.iterables.ArrayIterable;
 import org.json.JSONArray;
@@ -186,6 +187,14 @@ public class CarrotEngineTest {
         new SingletonBindings("$json", new JsonArrayBindings(new JSONArray("[ \"a\", 2, true, null]")))))
         .isEqualTo("a2true");
   }
+
+  @Test
+  public void testSetValueAndStringConcat() {
+    assertThat(render("{% set a = \"aaa\" %}{% set b = \"bbb\" %}{% set c = a + b %}{{ c }}", null))
+        .isEqualTo("aaabbb");
+
+  }
+
 
   private String render(String template, @Nullable Bindings bindings) {
     return render(new Configuration.Builder(), template, bindings);

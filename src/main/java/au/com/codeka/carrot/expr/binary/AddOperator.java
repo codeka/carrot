@@ -5,6 +5,8 @@ import au.com.codeka.carrot.ValueHelper;
 import au.com.codeka.carrot.expr.Lazy;
 import au.com.codeka.carrot.expr.TokenType;
 
+import java.util.Objects;
+
 /**
  * The binary ADDITION operator like in {@code a + b}.
  *
@@ -13,6 +15,9 @@ import au.com.codeka.carrot.expr.TokenType;
 public final class AddOperator implements BinaryOperator {
   @Override
   public Object apply(Object left, Lazy right) throws CarrotException {
+    if (left instanceof String || right.value() instanceof String) {
+      return Objects.toString(left) + right.value();
+    }
     return ValueHelper.add(left, right.value());
   }
 
