@@ -53,7 +53,7 @@ import java.util.List;
  *
  *   func-call = "." identifier "(" expression ")"
  *
- *   identifier = "any valid Java identifier"
+ *   identifier = "any valid Java identifier, with the added ability to escape via \"
  *   number = "and valid Java number"
  *   literal = """ anything """
  * </code></pre>

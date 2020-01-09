@@ -256,17 +256,23 @@ public class Tokenizer {
           }
           token = new Token(TokenType.NUMBER_LITERAL, value);
         } else if (Character.isJavaIdentifierStart(ch)) {
-          String identifier = "";
-          identifier += (char) ch;
+          StringBuilder identifier = new StringBuilder();
+          identifier.append((char) ch);
           next = nextChar();
-          while (next > 0 && Character.isJavaIdentifierPart(next)) {
-            identifier += (char) next;
+          while (next > 0 && (Character.isJavaIdentifierPart(next) || (char) next == '\\')) {
+            if (next == '\\') {
+              next = nextChar();
+              if (next <= 0) {
+                break;
+              }
+            }
+            identifier.append((char) next);
             next = nextChar();
           }
           if (next > 0) {
             lookahead = (char) next;
           }
-          switch (identifier) {
+          switch (identifier.toString()) {
             case "or":
               token = new Token(TokenType.LOGICAL_OR);
               break;
@@ -280,7 +286,7 @@ public class Tokenizer {
               token = new Token(TokenType.IN);
               break;
             default:
-              token = new Token(TokenType.IDENTIFIER, identifier);
+              token = new Token(TokenType.IDENTIFIER, identifier.toString());
           }
         } else {
           throw new CarrotException("Unexpected character: " + (char) ch, reader.getPointer());

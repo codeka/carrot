@@ -26,6 +26,19 @@ public class TokenizerTest {
   }
 
   @Test
+  public void testIdentifierEscaping() throws CarrotException {
+    Tokenizer tokenizer = createTokenizer("foo\\.bar");
+    assertThat(tokenizer.expect(TokenType.IDENTIFIER).getValue()).isEqualTo("foo.bar");
+
+    tokenizer = createTokenizer("foo\\");
+    assertThat(tokenizer.expect(TokenType.IDENTIFIER).getValue()).isEqualTo("foo");
+
+    tokenizer = createTokenizer("foo\\-value _\\.\\_");
+    assertThat(tokenizer.expect(TokenType.IDENTIFIER).getValue()).isEqualTo("foo-value");
+    assertThat(tokenizer.expect(TokenType.IDENTIFIER).getValue()).isEqualTo("_._");
+  }
+
+  @Test
   public void testParen() throws CarrotException {
     Tokenizer tokenizer = createTokenizer("(foo) (bar)");
     assertThat(tokenizer.expect(TokenType.LPAREN)).isNotNull();
