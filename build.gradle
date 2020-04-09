@@ -54,7 +54,7 @@ task compileBuildDocs(dependsOn: ['classes'], type: JavaCompile) {
 task buildDocs(dependsOn: ['compileBuildDocs', 'buildJavadoc'], type: JavaExec) {
     logging.captureStandardOutput LogLevel.INFO
     inputs.files file("src/docs/html"), sourceSets.docs.output.files
-    outputs.files file("$buildDir/docs")
+    outputs.dir file("$buildDir/docs")
     main "au.com.codeka.carrot.BuildDocs"
     classpath = sourceSets.main.runtimeClasspath + files(sourceSets.docs.output.classesDirs)
     args file("src/docs/html").absolutePath, file("$buildDir/docs").absolutePath
@@ -124,8 +124,8 @@ publishing {
             def snapshotUrl = "https://oss.sonatype.org/content/repositories/snapshots"
             url = version.endsWith('SNAPSHOT') ? snapshotUrl : releaseUrl
             credentials {
-                username NEXUS_USERNAME
-                password NEXUS_PASSWORD
+                username hasProperty('NEXUS_USERNAME') ? NEXUS_USERNAME : ''
+                password hasProperty('NEXUS_PASSWORD') ? NEXUS_PASSWORD : ''
             }
         }
     }
