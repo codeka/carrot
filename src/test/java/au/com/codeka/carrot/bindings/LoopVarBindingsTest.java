@@ -10,7 +10,7 @@ import static org.junit.Assert.assertThat;
  */
 public class LoopVarBindingsTest {
   @Test
-  public void testResolve() throws Exception {
+  public void testResolve() {
     assertThat(new LoopVarBindings(3, 1).resolve("index"), CoreMatchers.<Object>is(1));
     assertThat(new LoopVarBindings(3, 1).resolve("revindex"), CoreMatchers.<Object>is(1));
     assertThat(new LoopVarBindings(3, 1).resolve("first"), CoreMatchers.<Object>is(false));

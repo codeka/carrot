@@ -1,7 +1,7 @@
 package au.com.codeka.carrot.bindings;
 
 import au.com.codeka.carrot.Bindings;
-import au.com.codeka.carrot.ValueHelper;
+import au.com.codeka.carrot.util.ValueHelper;
 import org.json.JSONArray;
 
 import javax.annotation.Nonnull;

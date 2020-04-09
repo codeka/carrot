@@ -2,23 +2,21 @@ package au.com.codeka.carrot.expr.accessible;
 
 import au.com.codeka.carrot.Bindings;
 import au.com.codeka.carrot.CarrotException;
-import au.com.codeka.carrot.ValueHelper;
+import au.com.codeka.carrot.util.ValueHelper;
 import au.com.codeka.carrot.expr.Lazy;
 import au.com.codeka.carrot.expr.binary.BinaryOperator;
-import org.dmfs.iterables.decorators.Filtered;
-import org.dmfs.iterators.filters.Skip;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 /**
- * The accessor operator like in {@code a.b} or {@code a[b]}. It tries to access the key, index, field or method {@code b} of object {@code a}.
- *
- * @author Marten Gajda
+ * The accessor operator like in {@code a.b} or {@code a[b]}. It tries to access the key, index,
+ * field or method {@code b} of object {@code a}.
  */
 public final class AccessOperator implements BinaryOperator {
   @Override
@@ -40,10 +38,19 @@ public final class AccessOperator implements BinaryOperator {
       return list.get(ValueHelper.toNumber(accessor).intValue());
     } else if (value.getClass().isArray()) {
       return Array.get(value, ValueHelper.toNumber(accessor).intValue());
-    } else if (value instanceof Iterable && Number.class.isAssignableFrom(accessor.getClass())) {
-      // provide indexed access to Iterables
-      // beware, for large Iterables this can be very slow
-      return new Filtered<>((Iterable) value, new Skip<>(ValueHelper.toNumber(accessor).intValue())).iterator().next();
+    } else if (value instanceof Iterable) {
+      long index = ValueHelper.toNumber(accessor).longValue();
+      long i = index;
+      Iterator iter = ((Iterable) value).iterator();
+      while (i > 0 && iter.hasNext()) {
+        i--;
+        iter.next();
+      }
+      if (i == 0) {
+        return iter.next();
+      }
+      throw new CarrotException(
+          String.format("Index [%d] out of bounds by %d elements", index, i));
     } else {
       // Do some reflection. First, check for a field with the given name.
       try {
@@ -75,10 +82,9 @@ public final class AccessOperator implements BinaryOperator {
         return method.invoke(value);
       } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
         // Just keep trying.
-        throw new CarrotException(e);
       }
 
-      //   throw new CarrotException("Cannot access key '" + accessor + "' in '" + value + "'");
+      throw new CarrotException("Cannot access key '" + accessor + "' in '" + value + "'");
     }
   }
 }

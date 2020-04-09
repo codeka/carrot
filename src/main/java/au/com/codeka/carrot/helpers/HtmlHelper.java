@@ -2,8 +2,8 @@ package au.com.codeka.carrot.helpers;
 
 import au.com.codeka.carrot.Configuration;
 import au.com.codeka.carrot.Scope;
-import au.com.codeka.carrot.ValueHelper;
 import au.com.codeka.carrot.util.SafeString;
+import au.com.codeka.carrot.util.ValueHelper;
 
 /**
  * Registered in the global {@link Scope} as "html", contains a bunch of functions you can call from your script related

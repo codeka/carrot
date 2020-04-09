@@ -3,7 +3,7 @@ package au.com.codeka.carrot.tag;
 import au.com.codeka.carrot.CarrotEngine;
 import au.com.codeka.carrot.CarrotException;
 import au.com.codeka.carrot.Scope;
-import au.com.codeka.carrot.ValueHelper;
+import au.com.codeka.carrot.util.ValueHelper;
 import au.com.codeka.carrot.expr.StatementParser;
 import au.com.codeka.carrot.expr.Term;
 import au.com.codeka.carrot.tmpl.Node;

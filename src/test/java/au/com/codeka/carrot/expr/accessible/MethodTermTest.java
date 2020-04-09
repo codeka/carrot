@@ -15,9 +15,6 @@ import static au.com.codeka.carrot.util.RenderHelper.render;
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.fail;
 
-/**
- * @author Marten Gajda
- */
 public class MethodTermTest {
   @Test
   public void testEvaluate() throws Exception {
@@ -31,13 +28,13 @@ public class MethodTermTest {
             new AccessibleTerm() {
               @Nonnull
               @Override
-              public Callable callable(@Nonnull Configuration config, @Nonnull Scope scope) throws CarrotException {
+              public Callable callable(@Nonnull Configuration config, @Nonnull Scope scope) {
                 assertThat(config).isSameAs(testConfiguration);
                 assertThat(scope).isSameAs(testScope);
                 return new Callable() {
                   @Nullable
                   @Override
-                  public Object call(@Nonnull Iterable<Object> params) throws CarrotException {
+                  public Object call(@Nonnull Iterable<Object> params) {
                     assertThat(params).isSameAs(testParams);
                     return testResult;
                   }
@@ -45,14 +42,14 @@ public class MethodTermTest {
               }
 
               @Override
-              public Object evaluate(Configuration config, Scope scope) throws CarrotException {
+              public Object evaluate(Configuration config, Scope scope) {
                 fail("Evaluate called");
                 return null;
               }
             },
             new Term() {
               @Override
-              public Object evaluate(Configuration config, Scope scope) throws CarrotException {
+              public Object evaluate(Configuration config, Scope scope) {
                 assertThat(config).isSameAs(testConfiguration);
                 assertThat(scope).isSameAs(testScope);
                 return testParams;
@@ -83,18 +80,18 @@ public class MethodTermTest {
   }
 
   @Test
-  public void testToString() throws Exception {
+  public void testToString() {
     assertThat(new MethodTerm(
         new AccessibleTerm() {
           @Nonnull
           @Override
-          public Callable callable(@Nonnull Configuration config, @Nonnull Scope scope) throws CarrotException {
+          public Callable callable(@Nonnull Configuration config, @Nonnull Scope scope) {
             fail("callable called");
             return null;
           }
 
           @Override
-          public Object evaluate(Configuration config, Scope scope) throws CarrotException {
+          public Object evaluate(Configuration config, Scope scope) {
             fail("Evaluate called");
             return null;
           }
@@ -106,7 +103,7 @@ public class MethodTermTest {
         },
         new Term() {
           @Override
-          public Object evaluate(Configuration config, Scope scope) throws CarrotException {
+          public Object evaluate(Configuration config, Scope scope) {
             fail("Evaluate called");
             return null;
           }

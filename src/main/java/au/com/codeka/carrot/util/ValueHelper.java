@@ -1,5 +1,7 @@
-package au.com.codeka.carrot;
+package au.com.codeka.carrot.util;
 
+import au.com.codeka.carrot.Bindings;
+import au.com.codeka.carrot.CarrotException;
 import au.com.codeka.carrot.bindings.JsonArrayBindings;
 import au.com.codeka.carrot.bindings.JsonObjectBindings;
 import au.com.codeka.carrot.util.SafeString;
@@ -19,9 +21,8 @@ public class ValueHelper {
    *
    * @param value The value to test.
    * @return True if the value is "true-ish", false otherwise.
-   * @throws CarrotException When the value cannot be determined to be true or false.
    */
-  public static boolean isTrue(Object value) throws CarrotException {
+  public static boolean isTrue(Object value) {
     if (value == null) {
       return false;
     } else if (value instanceof Boolean) {

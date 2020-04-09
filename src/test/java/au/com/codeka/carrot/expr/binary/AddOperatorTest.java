@@ -1,14 +1,7 @@
 package au.com.codeka.carrot.expr.binary;
 
-import au.com.codeka.carrot.bindings.Composite;
-import au.com.codeka.carrot.bindings.SingletonBindings;
 import au.com.codeka.carrot.util.MockLazyTerm;
-import com.google.common.collect.ImmutableMap;
-import org.dmfs.iterables.ArrayIterable;
 import org.junit.Test;
-
-import java.util.Arrays;
-import java.util.HashSet;
 
 import static com.google.common.truth.Truth.assertThat;
 

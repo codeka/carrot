@@ -12,9 +12,6 @@ import java.util.HashSet;
 
 import static com.google.common.truth.Truth.assertThat;
 
-/**
- * @author Marten Gajda
- */
 public class InOperatorTest {
   @Test
   public void testApply() throws Exception {
@@ -33,7 +30,7 @@ public class InOperatorTest {
   }
 
   @Test
-  public void testToString() throws Exception {
+  public void testToString() {
     assertThat(new InOperator().toString()).isEqualTo("IN");
   }
 }

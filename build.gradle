@@ -7,10 +7,10 @@ repositories {
 }
 
 dependencies {
-    compile 'com.google.code.findbugs:jsr305:3.0.1'
-    compile 'org.dmfs:iterators:1.5'    // provides Flattened and SingletonIterator
+    implementation 'com.google.code.findbugs:jsr305:3.0.1'
     compileOnly 'org.json:json:20170516'
     testCompile 'junit:junit:4.12'
+    testCompile 'org.dmfs:iterators:1.5'
     testCompile 'com.google.truth:truth:0.31'
     testCompile 'org.json:json:20170516'
 }
@@ -52,7 +52,7 @@ jacocoTestReport {
 task compileBuildDocs(dependsOn: ['classes'], type: JavaCompile) {
     source = sourceSets.docs.java.srcDirs
     classpath = sourceSets.docs.compileClasspath
-    destinationDir = sourceSets.docs.output.classesDir
+    destinationDir = sourceSets.docs.output.classesDirs.singleFile
 }
 
 task buildDocs(dependsOn: ['compileBuildDocs', 'buildJavadoc'], type: JavaExec) {
@@ -60,7 +60,7 @@ task buildDocs(dependsOn: ['compileBuildDocs', 'buildJavadoc'], type: JavaExec) 
     inputs.files file("src/docs/html"), sourceSets.docs.output.files
     outputs.files file("$buildDir/docs")
     main "au.com.codeka.carrot.BuildDocs"
-    classpath = sourceSets.main.runtimeClasspath + files([sourceSets.docs.output.classesDir])
+    classpath = sourceSets.main.runtimeClasspath + files(sourceSets.docs.output.classesDirs)
     args file("src/docs/html").absolutePath, file("$buildDir/docs").absolutePath
 }
 

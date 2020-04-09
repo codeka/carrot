@@ -3,7 +3,7 @@ package au.com.codeka.carrot.expr.values;
 import au.com.codeka.carrot.CarrotException;
 import au.com.codeka.carrot.Configuration;
 import au.com.codeka.carrot.Scope;
-import au.com.codeka.carrot.ValueHelper;
+import au.com.codeka.carrot.util.ValueHelper;
 import au.com.codeka.carrot.expr.*;
 
 /**
