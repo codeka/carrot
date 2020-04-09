@@ -17,7 +17,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":9,"i1":10,"i2":10};
+var methods = {"i0":9,"i1":10,"i2":10,"i3":10};
 var tabs = {65535:["t0","All Methods"],1:["t1","Static Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -114,7 +114,8 @@ var activeTableTab = "activeTableTab";
 <br>
 <pre>public class <span class="typeNameLabel">FixedNode</span>
 extends <a href="../../../../../au/com/codeka/carrot/tmpl/Node.html" title="class in au.com.codeka.carrot.tmpl">Node</a></pre>
-<div class="block">A <a href="../../../../../au/com/codeka/carrot/tmpl/FixedNode.html" title="class in au.com.codeka.carrot.tmpl"><code>FixedNode</code></a> represents the text outside of the {% ... %} tags: the text that's just "fixed".</div>
+<div class="block">A <a href="../../../../../au/com/codeka/carrot/tmpl/FixedNode.html" title="class in au.com.codeka.carrot.tmpl"><code>FixedNode</code></a> represents the text outside of the {% ... %} tags: the text that's just
+ "fixed".</div>
 </li>
 </ul>
 </div>
@@ -142,6 +143,10 @@ extends <a href="../../../../../au/com/codeka/carrot/tmpl/Node.html" title="clas
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../au/com/codeka/carrot/tmpl/FixedNode.html#getContent--">getContent</a></span>()</code>&nbsp;</td>
 </tr>
 <tr id="i2" class="altColor">
+<td class="colFirst"><code>boolean</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../au/com/codeka/carrot/tmpl/FixedNode.html#isWhitespace--">isWhitespace</a></span>()</code>&nbsp;</td>
+</tr>
+<tr id="i3" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../au/com/codeka/carrot/tmpl/FixedNode.html#render-au.com.codeka.carrot.CarrotEngine-java.io.Writer-au.com.codeka.carrot.Scope-">render</a></span>(<a href="../../../../../au/com/codeka/carrot/CarrotEngine.html" title="class in au.com.codeka.carrot">CarrotEngine</a>&nbsp;engine,
       java.io.Writer&nbsp;writer,
@@ -194,6 +199,19 @@ extends <a href="../../../../../au/com/codeka/carrot/tmpl/Node.html" title="clas
 <li class="blockList">
 <h4>getContent</h4>
 <pre>public&nbsp;java.lang.String&nbsp;getContent()</pre>
+</li>
+</ul>
+<a name="isWhitespace--">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>isWhitespace</h4>
+<pre>public&nbsp;boolean&nbsp;isWhitespace()</pre>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>true if this node contains only whitespace.</dd>
+</dl>
 </li>
 </ul>
 <a name="render-au.com.codeka.carrot.CarrotEngine-java.io.Writer-au.com.codeka.carrot.Scope-">

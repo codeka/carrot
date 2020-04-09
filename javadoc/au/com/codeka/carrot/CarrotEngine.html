@@ -109,8 +109,8 @@ var activeTableTab = "activeTableTab";
 <br>
 <pre>public class <span class="typeNameLabel">CarrotEngine</span>
 extends java.lang.Object</pre>
-<div class="block"><a href="../../../../au/com/codeka/carrot/CarrotEngine.html" title="class in au.com.codeka.carrot"><code>CarrotEngine</code></a> is the root of the carrot system. You create an instance of this, make it global or static,
- load templates and process them from here.</div>
+<div class="block"><a href="../../../../au/com/codeka/carrot/CarrotEngine.html" title="class in au.com.codeka.carrot"><code>CarrotEngine</code></a> is the root of the carrot system. You create an instance of this, make it
+ global or static, load templates and process them from here.</div>
 </li>
 </ul>
 </div>
@@ -136,7 +136,8 @@ extends java.lang.Object</pre>
 <tr class="rowColor">
 <td class="colOne"><code><span class="memberNameLink"><a href="../../../../au/com/codeka/carrot/CarrotEngine.html#CarrotEngine-au.com.codeka.carrot.Configuration-au.com.codeka.carrot.bindings.MapBindings.Builder-">CarrotEngine</a></span>(<a href="../../../../au/com/codeka/carrot/Configuration.html" title="class in au.com.codeka.carrot">Configuration</a>&nbsp;config,
             <a href="../../../../au/com/codeka/carrot/bindings/MapBindings.Builder.html" title="class in au.com.codeka.carrot.bindings">MapBindings.Builder</a>&nbsp;globalBindingsBuilder)</code>
-<div class="block">Constructs a new <a href="../../../../au/com/codeka/carrot/CarrotEngine.html" title="class in au.com.codeka.carrot"><code>CarrotEngine</code></a> with the given <a href="../../../../au/com/codeka/carrot/Configuration.html" title="class in au.com.codeka.carrot"><code>Configuration</code></a> and initial set of global bindings.</div>
+<div class="block">Constructs a new <a href="../../../../au/com/codeka/carrot/CarrotEngine.html" title="class in au.com.codeka.carrot"><code>CarrotEngine</code></a> with the given <a href="../../../../au/com/codeka/carrot/Configuration.html" title="class in au.com.codeka.carrot"><code>Configuration</code></a> and initial set of
+ global bindings.</div>
 </td>
 </tr>
 </table>
@@ -216,7 +217,8 @@ extends java.lang.Object</pre>
 <pre>public&nbsp;CarrotEngine(<a href="../../../../au/com/codeka/carrot/Configuration.html" title="class in au.com.codeka.carrot">Configuration</a>&nbsp;config)</pre>
 <div class="block">Constructs a new <a href="../../../../au/com/codeka/carrot/CarrotEngine.html" title="class in au.com.codeka.carrot"><code>CarrotEngine</code></a> with the given <a href="../../../../au/com/codeka/carrot/Configuration.html" title="class in au.com.codeka.carrot"><code>Configuration</code></a>.
 
- <p>The configuration is immutable, so you should create it with all of the settings you need first.</div>
+ <p>The configuration is immutable, so you should create it with all of the settings you need
+ first.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>config</code> - The <a href="../../../../au/com/codeka/carrot/Configuration.html" title="class in au.com.codeka.carrot"><code>Configuration</code></a> to construct this engine with.</dd>
@@ -231,14 +233,17 @@ extends java.lang.Object</pre>
 <h4>CarrotEngine</h4>
 <pre>public&nbsp;CarrotEngine(<a href="../../../../au/com/codeka/carrot/Configuration.html" title="class in au.com.codeka.carrot">Configuration</a>&nbsp;config,
                     <a href="../../../../au/com/codeka/carrot/bindings/MapBindings.Builder.html" title="class in au.com.codeka.carrot.bindings">MapBindings.Builder</a>&nbsp;globalBindingsBuilder)</pre>
-<div class="block">Constructs a new <a href="../../../../au/com/codeka/carrot/CarrotEngine.html" title="class in au.com.codeka.carrot"><code>CarrotEngine</code></a> with the given <a href="../../../../au/com/codeka/carrot/Configuration.html" title="class in au.com.codeka.carrot"><code>Configuration</code></a> and initial set of global bindings.
+<div class="block">Constructs a new <a href="../../../../au/com/codeka/carrot/CarrotEngine.html" title="class in au.com.codeka.carrot"><code>CarrotEngine</code></a> with the given <a href="../../../../au/com/codeka/carrot/Configuration.html" title="class in au.com.codeka.carrot"><code>Configuration</code></a> and initial set of
+ global bindings.
 
- <p>The configuration is immutable, so you should create it with all of the settings you need first.</div>
+ <p>The configuration is immutable, so you should create it with all of the settings you need
+ first.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>config</code> - The <a href="../../../../au/com/codeka/carrot/Configuration.html" title="class in au.com.codeka.carrot"><code>Configuration</code></a> to construct this engine with.</dd>
-<dd><code>globalBindingsBuilder</code> - A <code>MapBindings.Builder</code> that you can pre-configure with some global objects
-                              that you want to access from every template rendered by this engine.</dd>
+<dd><code>globalBindingsBuilder</code> - A <a href="../../../../au/com/codeka/carrot/bindings/MapBindings.Builder.html" title="class in au.com.codeka.carrot.bindings"><code>MapBindings.Builder</code></a> that
+                              you can pre-configure with some global objects that you want to
+                              access from every template rendered by this engine.</dd>
 </dl>
 </li>
 </ul>
@@ -259,8 +264,9 @@ extends java.lang.Object</pre>
 <pre>public&nbsp;<a href="../../../../au/com/codeka/carrot/Configuration.html" title="class in au.com.codeka.carrot">Configuration</a>&nbsp;getConfig()</pre>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>The <a href="../../../../au/com/codeka/carrot/Configuration.html" title="class in au.com.codeka.carrot"><code>Configuration</code></a>. The configuration is mutable, so you are able to modify settings on the value
- returned here and they will take effect on the current <a href="../../../../au/com/codeka/carrot/CarrotEngine.html" title="class in au.com.codeka.carrot"><code>CarrotEngine</code></a>.</dd>
+<dd>The <a href="../../../../au/com/codeka/carrot/Configuration.html" title="class in au.com.codeka.carrot"><code>Configuration</code></a>. The configuration is mutable, so you are able to modify
+ settings on the value returned here and they will take effect on the current
+ <a href="../../../../au/com/codeka/carrot/CarrotEngine.html" title="class in au.com.codeka.carrot"><code>CarrotEngine</code></a>.</dd>
 </dl>
 </li>
 </ul>
@@ -273,8 +279,8 @@ extends java.lang.Object</pre>
 <pre>public&nbsp;<a href="../../../../au/com/codeka/carrot/bindings/MapBindings.html" title="class in au.com.codeka.carrot.bindings">MapBindings</a>&nbsp;getGlobalBindings()</pre>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>A map of the global variables. These bindings will be accessible in all templates processed by this
- <a href="../../../../au/com/codeka/carrot/CarrotEngine.html" title="class in au.com.codeka.carrot"><code>CarrotEngine</code></a>.</dd>
+<dd>A map of the global variables. These bindings will be accessible in all templates
+ processed by this <a href="../../../../au/com/codeka/carrot/CarrotEngine.html" title="class in au.com.codeka.carrot"><code>CarrotEngine</code></a>.</dd>
 </dl>
 </li>
 </ul>
@@ -292,8 +298,8 @@ extends java.lang.Object</pre>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>writer</code> - A <code>Writer</code> to write the results of processing the given template to.</dd>
-<dd><code>resourceName</code> - The <a href="../../../../au/com/codeka/carrot/resource/ResourceName.html" title="interface in au.com.codeka.carrot.resource"><code>ResourceName</code></a> of the template file, which will be located by our configured
-                     <a href="../../../../au/com/codeka/carrot/resource/ResourceLocator.html" title="interface in au.com.codeka.carrot.resource"><code>ResourceLocator</code></a>.</dd>
+<dd><code>resourceName</code> - The <a href="../../../../au/com/codeka/carrot/resource/ResourceName.html" title="interface in au.com.codeka.carrot.resource"><code>ResourceName</code></a> of the template file, which will be located by our
+                     configured <a href="../../../../au/com/codeka/carrot/resource/ResourceLocator.html" title="interface in au.com.codeka.carrot.resource"><code>ResourceLocator</code></a>.</dd>
 <dd><code>scope</code> - The <a href="../../../../au/com/codeka/carrot/Scope.html" title="class in au.com.codeka.carrot"><code>Scope</code></a> we're rendering into.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../../au/com/codeka/carrot/CarrotException.html" title="class in au.com.codeka.carrot">CarrotException</a></code> - Thrown if any errors occur.</dd>

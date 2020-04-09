@@ -144,7 +144,7 @@ extends java.lang.Object</pre>
 
    func-call = "." identifier "(" expression ")"
 
-   identifier = "any valid Java identifier"
+   identifier = "any valid Java identifier, with the added ability to escape via \"
    number = "and valid Java number"
    literal = """ anything """
  </code></pre>
@@ -290,7 +290,7 @@ extends java.lang.Object</pre>
 <h4>maybeParseIdentifier</h4>
 <pre>@Nullable
 public&nbsp;<a href="../../../../../au/com/codeka/carrot/expr/Identifier.html" title="class in au.com.codeka.carrot.expr">Identifier</a>&nbsp;maybeParseIdentifier()
-                                           throws <a href="../../../../../au/com/codeka/carrot/CarrotException.html" title="class in au.com.codeka.carrot">CarrotException</a></pre>
+                                          throws <a href="../../../../../au/com/codeka/carrot/CarrotException.html" title="class in au.com.codeka.carrot">CarrotException</a></pre>
 <div class="block">Tries to parse an identifier from the stream and returns it if we parsed it, otherwise returns null.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
@@ -308,7 +308,7 @@ public&nbsp;<a href="../../../../../au/com/codeka/carrot/expr/Identifier.html" t
 <h4>parseIdentifier</h4>
 <pre>@Nonnull
 public&nbsp;<a href="../../../../../au/com/codeka/carrot/expr/Identifier.html" title="class in au.com.codeka.carrot.expr">Identifier</a>&nbsp;parseIdentifier()
-                                     throws <a href="../../../../../au/com/codeka/carrot/CarrotException.html" title="class in au.com.codeka.carrot">CarrotException</a></pre>
+                                    throws <a href="../../../../../au/com/codeka/carrot/CarrotException.html" title="class in au.com.codeka.carrot">CarrotException</a></pre>
 <dl>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../../../au/com/codeka/carrot/CarrotException.html" title="class in au.com.codeka.carrot">CarrotException</a></code></dd>
@@ -323,8 +323,8 @@ public&nbsp;<a href="../../../../../au/com/codeka/carrot/expr/Identifier.html" t
 <h4>parseToken</h4>
 <pre>@Nonnull
 public&nbsp;<a href="../../../../../au/com/codeka/carrot/expr/Token.html" title="class in au.com.codeka.carrot.expr">Token</a>&nbsp;parseToken(@Nonnull
-                                  <a href="../../../../../au/com/codeka/carrot/expr/TokenType.html" title="enum in au.com.codeka.carrot.expr">TokenType</a>&nbsp;type)
-                           throws <a href="../../../../../au/com/codeka/carrot/CarrotException.html" title="class in au.com.codeka.carrot">CarrotException</a></pre>
+                                 <a href="../../../../../au/com/codeka/carrot/expr/TokenType.html" title="enum in au.com.codeka.carrot.expr">TokenType</a>&nbsp;type)
+                          throws <a href="../../../../../au/com/codeka/carrot/CarrotException.html" title="class in au.com.codeka.carrot">CarrotException</a></pre>
 <dl>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../../../au/com/codeka/carrot/CarrotException.html" title="class in au.com.codeka.carrot">CarrotException</a></code></dd>
