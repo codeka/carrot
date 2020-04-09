@@ -5,7 +5,7 @@ steps...)
 
 ## Prerequisites
 
-Make sure the global gradle.propties file has all the signing details set up (on
+Make sure the global gradle.properties file has all the signing details set up (on
 Windows, that's C:\Users\dean\.gradle\gradle.properties, on Mac/Linux that's
 ~/.gradle/gradle.properties). The contents of the file are saved in Keep.
 
@@ -19,11 +19,11 @@ Windows, that's C:\Users\dean\.gradle\gradle.properties, on Mac/Linux that's
 
   2. Build/Upload
 
-    # gradlew uploadArchives
+    # gradlew publish
 
   3. Publishing
      1. Go to https://oss.sonatype.org
-     2. Find "aucomcodeka" entry
+     2. Find the "aucomcodeka" entry under "Staging Repositories"
      3. Open up the contents, make sure all the JARs and so on are there
      4. Close it, wait a bit
      5. Release it, wait a bit
