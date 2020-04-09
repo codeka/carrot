@@ -18,8 +18,6 @@ import java.util.List;
 
 /**
  * A binary {@link Term}. The left term is the accessed object, the right term is the accessor.
- *
- * @author Marten Gajda
  */
 public final class AccessTerm implements AccessibleTerm {
   private final AccessibleTerm left;
@@ -27,7 +25,8 @@ public final class AccessTerm implements AccessibleTerm {
   private final Term right;
   private final TokenType accessorToken;
 
-  public AccessTerm(AccessibleTerm left, AccessOperator operation, Term right, TokenType accessorToken) {
+  public AccessTerm(
+      AccessibleTerm left, AccessOperator operation, Term right, TokenType accessorToken) {
     this.left = left;
     this.operation = operation;
     this.right = right;
@@ -43,7 +42,8 @@ public final class AccessTerm implements AccessibleTerm {
 
   @Nonnull
   @Override
-  public Callable callable(@Nonnull final Configuration config, @Nonnull final Scope scope) throws CarrotException {
+  public Callable callable(@Nonnull final Configuration config, @Nonnull final Scope scope)
+      throws CarrotException {
     final Object value = left.evaluate(config, scope);
     final Object accessor = right.evaluate(config, scope);
     return new Callable() {
@@ -63,7 +63,8 @@ public final class AccessTerm implements AccessibleTerm {
         }
 
         try {
-          Method method = findMethod(config, value.getClass(), right.toString(), paramTypes, paramValues);
+          Method method = findMethod(
+              config, value.getClass(), right.toString(), paramTypes, paramValues);
           method.setAccessible(true);
           return method.invoke(value, paramValues.toArray());
         } catch (InvocationTargetException | IllegalAccessException e) {
@@ -72,20 +73,22 @@ public final class AccessTerm implements AccessibleTerm {
       }
 
       /**
-       * Attempts a basic sort of overload matching, looking for a method on the given class that we can call.
+       * Attempts a basic sort of overload matching, looking for a method on the given class that we
+       * can call.
        * <p>
-       * <p>Unlike normal Java overload resolution, we just return the <em>first</em> method that matches close enough. So
-       * if there's a method that takes an int and one that takes a long (say), we make no guarantee about which one will
-       * be returned.</p>
+       * <p>Unlike normal Java overload resolution, we just return the <em>first</em> method that
+       * matches close enough. So if there's a method that takes an int and one that takes a long
+       * (say), we make no guarantee about which one will be returned.</p>
        *
        * @param config      The {@link Configuration}.
        * @param cls         The {@link Class} to search for a method for.
-       * @param name        The name of the function we want to search for (not case sensitive, unlike normal Java).
-       * @param paramTypes  The types of the parameters we have. We'll attempt to find a method that matches the given
-       *                    types as closely as possible (for example, a method that takes an int is as good as one that
-       *                    takes longs).
-       * @param paramValues The values we're going to execute. If the types don't match exactly, we may need to convert
-       *                    some of the parameters first.
+       * @param name        The name of the function we want to search for (not case sensitive,
+       *                    unlike normal Java).
+       * @param paramTypes  The types of the parameters we have. We'll attempt to find a method
+       *                    that matches the given types as closely as possible (for example, a
+       *                    method that takes an int is as good as one that takes longs).
+       * @param paramValues The values we're going to execute. If the types don't match exactly,
+       *                    we may need to convert some of the parameters first.
        * @return The {@link Method} that matches the given name and parameter values.
        * @throws CarrotException If no method matches.
        */
@@ -96,8 +99,8 @@ public final class AccessTerm implements AccessibleTerm {
           List<Class<?>> paramTypes,
           List<Object> paramValues) throws CarrotException {
 
-        // This is a list of "candidate" methods that we tried and rejected for whatever reason. Useful in the error
-        // message that we throw if there's no perfect method.
+        // This is a list of "candidate" methods that we tried and rejected for whatever reason.
+        // Useful in the error message that we throw if there's no perfect method.
         ArrayList<String> candidates = new ArrayList<>();
         for (Method method : cls.getMethods()) {
           if (!method.getName().equalsIgnoreCase(name)) {
@@ -127,7 +130,8 @@ public final class AccessTerm implements AccessibleTerm {
                 paramValues.set(i, convertedValue);
               } else {
                 Log.debug(config,
-                    "Param %d (%s) not assignable from %s: %s", i, methodParamTypes[i], paramTypes.get(i), method);
+                    "Param %d (%s) not assignable from %s: %s",
+                    i, methodParamTypes[i], paramTypes.get(i), method);
                 candidates.add(method.toString());
                 allMatch = false;
                 break;
@@ -142,9 +146,11 @@ public final class AccessTerm implements AccessibleTerm {
           }
         }
 
-        // ArrayList inherits `toString()` from AbstractCollection which renders the elements as a comma separated list in "[ ]".
-        // see https://docs.oracle.com/javase/7/docs/api/java/util/AbstractCollection.html#toString()
-        throw new CarrotException(String.format("No matching method '%s' found on class %s, candidates: %s",
+        // ArrayList inherits `toString()` from AbstractCollection which renders the elements as a
+        // comma separated list in "[ ]". see
+        // https://docs.oracle.com/javase/7/docs/api/java/util/AbstractCollection.html#toString()
+        throw new CarrotException(String.format(
+            "No matching method '%s' found on class %s, candidates: %s",
             name, cls.getName(), candidates.toString()));
       }
 
@@ -166,22 +172,28 @@ public final class AccessTerm implements AccessibleTerm {
         if (outputType.isAssignableFrom(value.getClass())) {
           return value;
         }
-        if ((byte.class.equals(outputType) || Byte.class.equals(outputType)) && value instanceof Number) {
+        if ((byte.class.equals(outputType) || Byte.class.equals(outputType))
+            && value instanceof Number) {
           return ((Number) value).byteValue();
         }
-        if ((short.class.equals(outputType) || Short.class.equals(outputType)) && value instanceof Number) {
+        if ((short.class.equals(outputType) || Short.class.equals(outputType))
+            && value instanceof Number) {
           return ((Number) value).shortValue();
         }
-        if ((int.class.equals(outputType) || Integer.class.equals(outputType)) && value instanceof Number) {
+        if ((int.class.equals(outputType) || Integer.class.equals(outputType))
+            && value instanceof Number) {
           return ((Number) value).intValue();
         }
-        if ((long.class.equals(outputType) || Long.class.equals(outputType)) && value instanceof Number) {
+        if ((long.class.equals(outputType) || Long.class.equals(outputType))
+            && value instanceof Number) {
           return ((Number) value).longValue();
         }
-        if ((float.class.equals(outputType) || Float.class.equals(outputType)) && value instanceof Number) {
+        if ((float.class.equals(outputType) || Float.class.equals(outputType))
+            && value instanceof Number) {
           return ((Number) value).floatValue();
         }
-        if ((double.class.equals(outputType) || Double.class.equals(outputType)) && value instanceof Number) {
+        if ((double.class.equals(outputType) || Double.class.equals(outputType))
+            && value instanceof Number) {
           return ((Number) value).doubleValue();
         }
 
@@ -196,6 +208,11 @@ public final class AccessTerm implements AccessibleTerm {
     if (accessorToken.closingType() == null) {
       return String.format("%s %s %s", left.toString(), accessorToken.toString(), right.toString());
     }
-    return String.format("%s %s %s %s", left.toString(), accessorToken.toString(), right.toString(), accessorToken.closingType().toString());
+    return String.format(
+        "%s %s %s %s",
+        left.toString(),
+        accessorToken.toString(),
+        right.toString(),
+        accessorToken.closingType().toString());
   }
 }

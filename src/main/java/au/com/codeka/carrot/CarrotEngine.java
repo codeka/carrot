@@ -15,8 +15,8 @@ import java.io.StringWriter;
 import java.io.Writer;
 
 /**
- * {@link CarrotEngine} is the root of the carrot system. You create an instance of this, make it global or static,
- * load templates and process them from here.
+ * {@link CarrotEngine} is the root of the carrot system. You create an instance of this, make it
+ * global or static, load templates and process them from here.
  */
 public class CarrotEngine {
   private final Configuration config;
@@ -27,7 +27,8 @@ public class CarrotEngine {
   /**
    * Constructs a new {@link CarrotEngine} with the given {@link Configuration}.
    *
-   * <p>The configuration is immutable, so you should create it with all of the settings you need first.
+   * <p>The configuration is immutable, so you should create it with all of the settings you need
+   * first.
    *
    *  @param config The {@link Configuration} to construct this engine with.
    */
@@ -36,13 +37,16 @@ public class CarrotEngine {
   }
 
   /**
-   * Constructs a new {@link CarrotEngine} with the given {@link Configuration} and initial set of global bindings.
+   * Constructs a new {@link CarrotEngine} with the given {@link Configuration} and initial set of
+   * global bindings.
    *
-   * <p>The configuration is immutable, so you should create it with all of the settings you need first.
+   * <p>The configuration is immutable, so you should create it with all of the settings you need
+   * first.
    *
-   *  @param config The {@link Configuration} to construct this engine with.
-   * @param globalBindingsBuilder A {@link MapBindings.Builder} that you can pre-configure with some global objects
-   *                              that you want to access from every template rendered by this engine.
+   * @param config The {@link Configuration} to construct this engine with.
+   * @param globalBindingsBuilder A {@link au.com.codeka.carrot.bindings.MapBindings.Builder} that
+   *                              you can pre-configure with some global objects that you want to
+   *                              access from every template rendered by this engine.
    */
   public CarrotEngine(Configuration config, MapBindings.Builder globalBindingsBuilder) {
     this.config = config;
@@ -54,16 +58,17 @@ public class CarrotEngine {
   }
 
   /**
-   * @return The {@link Configuration}. The configuration is mutable, so you are able to modify settings on the value
-   * returned here and they will take effect on the current {@link CarrotEngine}.
+   * @return The {@link Configuration}. The configuration is mutable, so you are able to modify
+   * settings on the value returned here and they will take effect on the current
+   * {@link CarrotEngine}.
    */
   public Configuration getConfig() {
     return config;
   }
 
   /**
-   * @return A map of the global variables. These bindings will be accessible in all templates processed by this
-   * {@link CarrotEngine}.
+   * @return A map of the global variables. These bindings will be accessible in all templates
+   * processed by this {@link CarrotEngine}.
    */
   public MapBindings getGlobalBindings() {
     return globalBindings;
@@ -73,8 +78,8 @@ public class CarrotEngine {
    * Process the template with the given filename, writing the results to the given {@link Writer}.
    *
    * @param writer A {@link Writer} to write the results of processing the given template to.
-   * @param resourceName The {@link ResourceName} of the template file, which will be located by our configured
-   *                     {@link ResourceLocator}.
+   * @param resourceName The {@link ResourceName} of the template file, which will be located by our
+   *                     configured {@link ResourceLocator}.
    * @param scope The {@link Scope} we're rendering into.
    *
    * @throws CarrotException Thrown if any errors occur.
@@ -85,7 +90,8 @@ public class CarrotEngine {
       Scope scope) throws CarrotException {
     Node node = parseCache.getNode(resourceName);
     if (node == null) {
-      LineReader lineReader = new LineReader(resourceName, config.getResourceLocator().getReader(resourceName));
+      LineReader lineReader =
+          new LineReader(resourceName, config.getResourceLocator().getReader(resourceName));
       node = templateParser.parse(new Tokenizer(lineReader));
       parseCache.addNode(resourceName, node);
     }

@@ -10,7 +10,8 @@ import java.io.IOException;
 import java.io.Writer;
 
 /**
- * A {@link FixedNode} represents the text outside of the {% ... %} tags: the text that's just "fixed".
+ * A {@link FixedNode} represents the text outside of the {% ... %} tags: the text that's just
+ * "fixed".
  */
 public class FixedNode extends Node {
   private String content;
@@ -28,7 +29,7 @@ public class FixedNode extends Node {
     return content;
   }
 
-  /** Returns true if this node contains only whitespace. */
+  /** @return true if this node contains only whitespace. */
   public boolean isWhitespace() {
     return content.trim().isEmpty();
   }

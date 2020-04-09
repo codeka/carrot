@@ -16,11 +16,9 @@ import java.util.Map;
  *    {{ item.key }} -&gt; {{ item.value }}
  * </code></pre>
  * <p>
- * Note: strictly spoken this would not be necessary, because the reflection function resolution would do the
- * same (by calling {@link Map.Entry#getKey()} and {@link Map.Entry#getValue()}. A dedicated {@link Bindings} class is,
- * however, considered better design and certainly faster.
- *
- * @author Marten Gajda
+ * Note: strictly spoken this would not be necessary, because the reflection function resolution
+ * would do the same (by calling {@link Map.Entry#getKey()} and {@link Map.Entry#getValue()}. A
+ * dedicated {@link Bindings} class is, however, considered better design and certainly faster.
  */
 public final class EntryBindings implements Bindings, Iterable<Object> {
   private final Map.Entry<String, Object> entry;
