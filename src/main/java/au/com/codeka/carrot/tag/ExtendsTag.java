@@ -7,6 +7,7 @@ import au.com.codeka.carrot.bindings.SingletonBindings;
 import au.com.codeka.carrot.expr.StatementParser;
 import au.com.codeka.carrot.expr.Term;
 import au.com.codeka.carrot.resource.ResourceName;
+import au.com.codeka.carrot.tmpl.FixedNode;
 import au.com.codeka.carrot.tmpl.Node;
 import au.com.codeka.carrot.tmpl.TagNode;
 import au.com.codeka.carrot.util.Log;
@@ -41,8 +42,8 @@ import static au.com.codeka.carrot.util.Preconditions.checkNotNull;
  * </code>
  * </pre>
  *
- * <p>The contents of the second file will then be the contents of the skeleton file, and the "content" block will
- * be replaced with the content inside the block.
+ * <p>The contents of the second file will then be the contents of the skeleton file, and the
+ * "content" block will be replaced with the content inside the block.
  */
 public class ExtendsTag extends Tag {
   private Term skeletonNameExpr;
@@ -59,23 +60,44 @@ public class ExtendsTag extends Tag {
 
   @Override
   public void render(CarrotEngine engine, Writer writer, TagNode tagNode, Scope scope)
-      throws CarrotException, IOException {
+      throws CarrotException {
     String skeletonName = skeletonNameExpr.evaluate(engine.getConfig(), scope).toString();
 
-    // We take our children, which should all be block tags, add them to a special variable in the scope, and then
-    // just render the template instead.
+    // We take our children, which should all be block tags, add them to a special variable in the
+    // scope, and then just render the template instead.
     Map<String, TagNode> blockTags = new HashMap<>();
 
     checkNotNull(tagNode.getChildren());
     for (Node childNode : tagNode.getChildren()) {
+      if (childNode instanceof FixedNode) {
+        FixedNode fixedNode = (FixedNode) childNode;
+        if (fixedNode.isWhitespace()) {
+          // We might get some FixedNode children containing just whitespace, that's OK, just ignore
+          // it without warning about it.
+          continue;
+        }
+
+        Log.warning(
+            engine.getConfig(),
+            "Unexpected content inside {\\% extends \\%}: %s",
+            fixedNode.getContent());
+        continue;
+      }
+
       if (!(childNode instanceof TagNode)) {
-        Log.warning(engine.getConfig(), "Unexpected node inside {%% extends %%}: %s", childNode);
+        Log.warning(
+            engine.getConfig(),
+            "Unexpected node inside {\\% extends \\%}: %s",
+            childNode);
         continue;
       }
 
       TagNode childTagNode = (TagNode) childNode;
       if (!(childTagNode.getTag() instanceof BlockTag)) {
-        Log.warning(engine.getConfig(), "Unexpected tag instde {%% extends %%}: {%% %s %%}", childTagNode.getTag());
+        Log.warning(
+            engine.getConfig(),
+            "Unexpected tag inside {\\% extends \\%}: {\\% %s \\%}",
+            childTagNode.getTag());
         continue;
       }
 
@@ -84,7 +106,8 @@ public class ExtendsTag extends Tag {
     }
 
     // TODO: we should locate the resource with the current parent.
-    ResourceName resourceName = engine.getConfig().getResourceLocator().findResource(null, skeletonName);
+    ResourceName resourceName =
+        engine.getConfig().getResourceLocator().findResource(null, skeletonName);
 
     scope.push(new SingletonBindings("__blocks", blockTags));
     engine.process(writer, resourceName, scope);

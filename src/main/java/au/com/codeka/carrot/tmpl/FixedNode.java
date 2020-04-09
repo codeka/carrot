@@ -28,6 +28,11 @@ public class FixedNode extends Node {
     return content;
   }
 
+  /** Returns true if this node contains only whitespace. */
+  public boolean isWhitespace() {
+    return content.trim().isEmpty();
+  }
+
   @Override
   public void render(CarrotEngine engine, Writer writer, Scope scope) throws IOException {
     writer.write(content);
