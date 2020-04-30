@@ -79,6 +79,15 @@ public class MethodTermTest {
     ).isEmpty();
   }
 
+  /**
+   * Tests that if there's more than one overload of a method, we will chose the one that
+   * @throws CarrotException
+   */
+  @Test
+  public void testSelectBestOverload() throws CarrotException {
+
+  }
+
   @Test
   public void testToString() {
     assertThat(new MethodTerm(

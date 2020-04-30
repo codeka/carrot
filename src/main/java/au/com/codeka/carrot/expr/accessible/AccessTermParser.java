@@ -30,7 +30,7 @@ public final class AccessTermParser implements TermParser {
     if (left instanceof EmptyTerm) {
       return left;
     }
-    AccessibleTerm result = new Unaccessible(new Variable(left));
+    AccessibleTerm result = new Inaccessible(new Variable(left));
 
     while (tokenizer.accept(TokenType.DOT, TokenType.LSQUARE, TokenType.LPAREN)) {
       Token token = tokenizer.expect(TokenType.DOT, TokenType.LSQUARE, TokenType.LPAREN);
@@ -44,7 +44,7 @@ public final class AccessTermParser implements TermParser {
       }
       if (token.getType() == TokenType.LPAREN) {
         // the accessor in () is supposed to be an iteration
-        result = new Unaccessible(new MethodTerm(result, iterationTerm.parse(tokenizer)));
+        result = new Inaccessible(new MethodTerm(result, iterationTerm.parse(tokenizer)));
       }
 
       if (token.getType().closingType() != null) {

@@ -8,15 +8,14 @@ import au.com.codeka.carrot.expr.Term;
 import javax.annotation.Nonnull;
 
 /**
- * An {@link AccessibleTerm} which can not be accessed. This serves as an {@link AccessibleTerm} adapter for arbitrary terms.
- *
- * @author Marten Gajda
+ * An {@link AccessibleTerm} which can not be accessed. This serves as an {@link AccessibleTerm}
+ * adapter for arbitrary terms.
  */
-public final class Unaccessible implements AccessibleTerm {
+public final class Inaccessible implements AccessibleTerm {
 
   private final Term delegate;
 
-  public Unaccessible(Term delegate) {
+  public Inaccessible(Term delegate) {
     this.delegate = delegate;
   }
 
@@ -27,7 +26,8 @@ public final class Unaccessible implements AccessibleTerm {
 
   @Nonnull
   @Override
-  public Callable callable(@Nonnull Configuration config, @Nonnull Scope scope) throws CarrotException {
-    throw new CarrotException("A Unaccessible adapter can not return a callable.");
+  public Callable callable(
+      @Nonnull Configuration config, @Nonnull Scope scope) throws CarrotException {
+    throw new CarrotException("A Inaccessible adapter can not return a callable.");
   }
 }

@@ -12,17 +12,14 @@ import java.util.HashSet;
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.fail;
 
-/**
- * @author Marten Gajda
- */
-public class UnaccessibleTest {
+public class InaccessibleTest {
   @Test
   public void testEvaluate() throws Exception {
     final Configuration testConfiguration = new Configuration.Builder().build();
     final Scope testScope = new Scope(new EmptyBindings());
     final Object testResult = new Object();
 
-    assertThat(new Unaccessible(new Term() {
+    assertThat(new Inaccessible(new Term() {
       @Override
       public Object evaluate(Configuration config, Scope scope) throws CarrotException {
         assertThat(config).isSameAs(testConfiguration);
@@ -34,7 +31,7 @@ public class UnaccessibleTest {
 
   @Test(expected = CarrotException.class)
   public void testCallable() throws Exception {
-    new Unaccessible(new Term() {
+    new Inaccessible(new Term() {
       @Override
       public Object evaluate(Configuration config, Scope scope) throws CarrotException {
         fail("evaluate called");

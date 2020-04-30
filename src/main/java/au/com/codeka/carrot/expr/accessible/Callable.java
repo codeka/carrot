@@ -7,8 +7,6 @@ import javax.annotation.Nullable;
 
 /**
  * A function or method which can be called with an {@link Iterable} of parameters.
- *
- * @author Marten Gajda
  */
 public interface Callable {
   /**

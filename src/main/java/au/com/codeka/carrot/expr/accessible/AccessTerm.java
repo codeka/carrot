@@ -33,12 +33,10 @@ public final class AccessTerm implements AccessibleTerm {
     this.accessorToken = accessorToken;
   }
 
-
   @Override
   public Object evaluate(Configuration config, Scope scope) throws CarrotException {
     return operation.apply(left.evaluate(config, scope), new LazyTerm(config, scope, right));
   }
-
 
   @Nonnull
   @Override
