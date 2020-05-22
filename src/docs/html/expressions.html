@@ -32,6 +32,13 @@ foo ? foo : "default"{% end %}{{ someHtml }}</code></pre>
   <p>You can also use the ternary operator to provide default values when querying a map for a value.</p>
   </dd>
 
+  <dt>Elvis operator</dt>
+  <dd><pre><code>{% set someHtml %}foo ?: "default"{% end %}{{ someHtml }}</code></pre>
+  <p>The <a href="https://en.wikipedia.org/wiki/Elvis_operator">elvis operator</a> tests the left-hand
+  side of the expression, and returns it if it's true-ish -- otherwise it returns the right-hand side.</p>
+  <p>The elvis operator is essentially short-hand for <code>{\{foo ? foo : "default"}}</code></p>
+  </dd>
+
   <dt>Accessor methods</dt>
   <dd><pre><code>foo.bar.baz
 foo["bar"]

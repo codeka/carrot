@@ -16,11 +16,11 @@ public class TernaryTermParser implements TermParser {
   public TernaryTermParser(
       TermParser leftTermParser,
       TermParser firstParser,
-      TermParser secondParserver,
+      TermParser secondParser,
       TokenType... tokenTypes) {
     this.leftTermParser = leftTermParser;
     this.firstTermParser = firstParser;
-    this.secondTermParser = secondParserver;
+    this.secondTermParser = secondParser;
     this.tokenTypes = tokenTypes;
   }
 

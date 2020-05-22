@@ -166,6 +166,21 @@ public class TokenizerTest {
   }
 
   @Test
+  public void testQuestion() throws CarrotException {
+    Tokenizer tokenizer = createTokenizer("foo ? bar : baz");
+    assertThat(tokenizer.expect(TokenType.IDENTIFIER).getValue()).isEqualTo("foo");
+    assertThat(tokenizer.expect(TokenType.QUESTION).getType()).isEqualTo(TokenType.QUESTION);
+    assertThat(tokenizer.expect(TokenType.IDENTIFIER).getValue()).isEqualTo("bar");
+    assertThat(tokenizer.expect(TokenType.COLON).getType()).isEqualTo(TokenType.COLON);
+    assertThat(tokenizer.expect(TokenType.IDENTIFIER).getValue()).isEqualTo("baz");
+
+    tokenizer = createTokenizer("foo ?: bar");
+    assertThat(tokenizer.expect(TokenType.IDENTIFIER).getValue()).isEqualTo("foo");
+    assertThat(tokenizer.expect(TokenType.ELVIS).getType()).isEqualTo(TokenType.ELVIS);
+    assertThat(tokenizer.expect(TokenType.IDENTIFIER).getValue()).isEqualTo("bar");
+  }
+
+  @Test
   public void testUnexpectedToken() {
     try {
       Tokenizer tokenizer = createTokenizer("a + + b");
@@ -174,17 +189,23 @@ public class TokenizerTest {
       assertThat(tokenizer.expect(TokenType.IDENTIFIER).getValue()).isEqualTo("b");
       fail("Expected CarrotException");
     } catch (CarrotException e) {
-      assertThat(e.getMessage()).isEqualTo("???\n1: a + + b\n        ^\nExpected token of type IDENTIFIER, got PLUS");
+      assertThat(e.getMessage()).isEqualTo(
+          "???\n1: a + + b\n        ^\nExpected token of type IDENTIFIER, got PLUS");
     }
 
     try {
       Tokenizer tokenizer = createTokenizer("a + + b");
       assertThat(tokenizer.expect(TokenType.IDENTIFIER).getValue()).isEqualTo("a");
       assertThat(tokenizer.expect(TokenType.PLUS).getType()).isEqualTo(TokenType.PLUS);
-      assertThat(tokenizer.expect(TokenType.IDENTIFIER, TokenType.NUMBER_LITERAL, TokenType.STRING_LITERAL).getValue()).isEqualTo("b");
+      assertThat(tokenizer.expect(
+          TokenType.IDENTIFIER,
+          TokenType.NUMBER_LITERAL,
+          TokenType.STRING_LITERAL).getValue()).isEqualTo("b");
       fail("Expected CarrotException");
     } catch (CarrotException e) {
-      assertThat(e.getMessage()).isEqualTo("???\n1: a + + b\n        ^\nExpected token of type IDENTIFIER, NUMBER_LITERAL or STRING_LITERAL, got PLUS");
+      assertThat(e.getMessage()).isEqualTo(
+          "???\n1: a + + b\n        ^\nExpected token of type IDENTIFIER, NUMBER_LITERAL or " +
+              "STRING_LITERAL, got PLUS");
     }
   }
 

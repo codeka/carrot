@@ -17,7 +17,8 @@ import java.util.*;
  */
 public class ValueHelper {
   /**
-   * Does the given value represent "true". For example, it's a Boolean that's true, a non-zero integer, etc.
+   * Does the given value represent "true". For example, it's a Boolean that's true, a non-zero
+   * integer, etc.
    *
    * @param value The value to test.
    * @return True if the value is "true-ish", false otherwise.
@@ -49,7 +50,8 @@ public class ValueHelper {
   }
 
   /**
-   * Returns the "negative" of the given value. For example, if you pass in "1" then "-1" is returned, etc.
+   * Returns the "negative" of the given value. For example, if you pass in "1" then "-1" is
+   * returned, etc.
    *
    * @param value The value to negate.
    * @return The negated value.
@@ -99,8 +101,9 @@ public class ValueHelper {
   }
 
   /**
-   * Adds the two values together. We attempt to make them the most-precise they can be (i.e. if one of them is a double
-   * then double is returned, if one of them is a long then long is returned, etc).
+   * Adds the two values together. We attempt to make them the most-precise they can be (i.e. if
+   * one of them is a double then double is returned, if one of them is a long then long is
+   * returned, etc).
    *
    * @param lhs The left-hand side to add.
    * @param rhs The right-hand side to add.
@@ -186,8 +189,9 @@ public class ValueHelper {
   }
 
   /**
-   * Convert the given value to a list of object, as if it were an iterable. If the value is itself an array or a list
-   * then it's just returned in-place. Otherwise it will be converted to an {@link ArrayList}.
+   * Convert the given value to a list of object, as if it were an iterable. If the value is itself
+   * an array or a list then it's just returned in-place. Otherwise it will be converted to an
+   * {@link ArrayList}.
    *
    * @param iterable The value to "iterate".
    * @return A {@link List} that can actually be iterated.
@@ -245,12 +249,13 @@ public class ValueHelper {
   }
 
   /**
-   * Performs a numerical comparison on the two operands (assuming they are both convertible to numbers).
+   * Performs a numerical comparison on the two operands (assuming they are both convertible to
+   * numbers).
    *
    * @param lhs The left hand side to compare.
    * @param rhs The right hand side to compare.
-   * @return Less than zero if lhs is less than rhs, zero if lhs is equal to rhs, and greater than zero if lhs is
-   * greater than rhs.
+   * @return Less than zero if lhs is less than rhs, zero if lhs is equal to rhs, and greater than
+   * zero if lhs is greater than rhs.
    * @throws CarrotException if either of the objects cannot be converted to numbers.
    */
   public static int compare(Object lhs, Object rhs) throws CarrotException {
@@ -273,10 +278,12 @@ public class ValueHelper {
   /**
    * Performs HTML-escaping of the given value.
    *
-   * @param value The value to escape. If the value is {@link SafeString}, then no escaping will be done.
+   * @param value The value to escape. If the value is {@link SafeString}, then no escaping will
+   *             be done.
    * @return The HTML-escaped version of the string.
    */
-  // TODO: without pulling in any other deps (e.g. Jakarta Commons) is this as comprehensive as it needs to be?
+  // TODO: without pulling in any other deps (e.g. Jakarta Commons) is this as comprehensive as it
+  // needs to be?
   public static String escape(@Nullable Object value) {
     if (value == null) {
       return "";

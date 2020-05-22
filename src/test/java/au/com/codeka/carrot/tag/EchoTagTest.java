@@ -73,4 +73,11 @@ public class EchoTagTest {
     assertThat(render("{{ a ? \"truthy\" : \"falsey\"", "a", 0)).isEqualTo("falsey");
     assertThat(render("{{ a ? \"truthy\" : \"falsey\"", "a", 1)).isEqualTo("truthy");
   }
+
+  @Test
+  public void testElvis() throws CarrotException {
+    assertThat(render("{{ a ?: \"foo\" }}", "a", 1)).isEqualTo("1");
+    assertThat(render("{{ a ?: \"foo\" }}", "a", 0)).isEqualTo("foo");
+    assertThat(render("{{ a ?: \"foo\" }}", "a", null)).isEqualTo("foo");
+  }
 }

@@ -43,7 +43,9 @@ import java.util.List;
  *
  *   or-term = and-term ["||" or-term]
  *
- *   ternary-term = or-term ["?" variable ":" variable]
+ *   elvis-term or-term ["?:" or-term]
+ *
+ *   ternary-term = elivs-term ["?" variable ":" variable]
  *
  *   emtpy-term =
  *
@@ -87,39 +89,41 @@ public class StatementParser {
                 new BinaryTermParser(
                     new BinaryTermParser(
                         new BinaryTermParser(
-                            new UnaryTermParser(
-                                new NumberTermParser(
-                                    new StringTermParser(
-                                        new ExpressionTermParser(
-                                            new AccessTermParser(
+                            new BinaryTermParser(
+                                new UnaryTermParser(
+                                    new NumberTermParser(
+                                        new StringTermParser(
+                                            new ExpressionTermParser(
+                                                new AccessTermParser(
+                                                    new TermParser() {
+                                                      @Override
+                                                      public Term parse(Tokenizer tokenizer) throws CarrotException {
+                                                        return expressionParser.parse(tokenizer);
+                                                      }
+                                                    },
+                                                    strictIdentifierParser,
+                                                    new TermParser() {
+                                                      @Override
+                                                      public Term parse(Tokenizer tokenizer) throws CarrotException {
+                                                        return iterableParser.parse(tokenizer);
+                                                      }
+                                                    }),
                                                 new TermParser() {
                                                   @Override
                                                   public Term parse(Tokenizer tokenizer) throws CarrotException {
                                                     return expressionParser.parse(tokenizer);
                                                   }
-                                                },
-                                                strictIdentifierParser,
-                                                new TermParser() {
-                                                  @Override
-                                                  public Term parse(Tokenizer tokenizer) throws CarrotException {
-                                                    return iterableParser.parse(tokenizer);
-                                                  }
-                                                }),
-                                            new TermParser() {
-                                              @Override
-                                              public Term parse(Tokenizer tokenizer) throws CarrotException {
-                                                return expressionParser.parse(tokenizer);
-                                              }
-                                            })
-                                    )
-                                ),
-                                TokenType.NOT),
-                            TokenType.MULTIPLY, TokenType.DIVIDE),
-                        TokenType.PLUS, TokenType.MINUS),
-                    TokenType.LESS_THAN, TokenType.LESS_THAN_OR_EQUAL, TokenType.GREATER_THAN, TokenType.GREATER_THAN_OR_EQUAL, TokenType.IN),
-                TokenType.EQUALITY, TokenType.INEQUALITY),
-            TokenType.LOGICAL_AND),
-        TokenType.LOGICAL_OR);
+                                                })
+                                        )
+                                    ),
+                                    TokenType.NOT),
+                                TokenType.MULTIPLY, TokenType.DIVIDE),
+                            TokenType.PLUS, TokenType.MINUS),
+                        TokenType.LESS_THAN, TokenType.LESS_THAN_OR_EQUAL, TokenType.GREATER_THAN, TokenType.GREATER_THAN_OR_EQUAL, TokenType.IN),
+                    TokenType.EQUALITY, TokenType.INEQUALITY),
+                TokenType.LOGICAL_AND),
+            TokenType.LOGICAL_OR),
+        TokenType.ELVIS);
     base = new TernaryTermParser(base, base, base, TokenType.QUESTION);
 
     // the generic expression uses a lax iteration parser

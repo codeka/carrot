@@ -161,7 +161,15 @@ public class Tokenizer {
         token = new Token(TokenType.DIVIDE);
         break;
       case '?':
-        token = new Token(TokenType.QUESTION);
+        next = nextChar();
+        if (next == ':') {
+          token = new Token(TokenType.ELVIS);
+        } else {
+          if (next > 0) {
+            lookahead = (char) next;
+          }
+          token = new Token(TokenType.QUESTION);
+        }
         break;
       case ':':
         token = new Token(TokenType.COLON);

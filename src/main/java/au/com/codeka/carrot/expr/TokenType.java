@@ -74,6 +74,7 @@ public enum TokenType {
   DIVIDE(false, new DivOperator()),
   IN(false, new InOperator()),
   COLON(false),
+  ELVIS(false, new ElvisOperator()),
   QUESTION(new ComparisonOperator(), COLON);
 
   private final boolean hasValue;
@@ -121,21 +122,24 @@ public enum TokenType {
 
   public TernaryOperator ternaryOperator() {
     if (ternaryOperator == null) {
-      throw new UnsupportedOperationException(String.format("%s is not a ternary operator", this.toString()));
+      throw new UnsupportedOperationException(
+          String.format("%s is not a ternary operator", this.toString()));
     }
     return ternaryOperator;
   }
 
   public BinaryOperator binaryOperator() {
     if (binaryOperator == null) {
-      throw new UnsupportedOperationException(String.format("%s is not a binary operator", this.toString()));
+      throw new UnsupportedOperationException(
+          String.format("%s is not a binary operator", this.toString()));
     }
     return binaryOperator;
   }
 
   public UnaryOperator unaryOperator() {
     if (unaryOperator == null) {
-      throw new UnsupportedOperationException(String.format("%s is not an unary operator", this.toString()));
+      throw new UnsupportedOperationException(
+          String.format("%s is not an unary operator", this.toString()));
     }
     return unaryOperator;
   }
