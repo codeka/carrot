@@ -7,8 +7,6 @@ import au.com.codeka.carrot.expr.TokenType;
 
 /**
  * The binary DIVISION operator like in {@code a / b}.
- *
- * @author Marten Gajda
  */
 public final class DivOperator implements BinaryOperator {
   @Override

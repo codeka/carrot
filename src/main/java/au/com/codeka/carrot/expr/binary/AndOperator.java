@@ -7,13 +7,12 @@ import au.com.codeka.carrot.expr.TokenType;
 
 /**
  * The binary boolean AND operator like in {@code a &amp;&amp; b}.
- *
- * @author Marten Gajda
  */
 public final class AndOperator implements BinaryOperator {
   @Override
   public Object apply(Object left, Lazy right) throws CarrotException {
-    // the result of an `AND` depends on the right operand if the left operand is true, otherwise it's false
+    // the result of an `AND` depends on the right operand if the left operand is true, otherwise
+    // it's false
     return ValueHelper.isTrue(left) ? right.value() : left /* === false*/;
   }
 

@@ -7,9 +7,8 @@ import au.com.codeka.carrot.expr.LazyTerm;
 import au.com.codeka.carrot.expr.Term;
 
 /**
- * A binary {@link Term}. It has a left and a right (Sub-){@link Term} as well as a {@link BinaryOperator}.
- *
- * @author Marten Gajda
+ * A binary {@link Term}. It has a left and a right (Sub-){@link Term} as well as a
+ * {@link BinaryOperator}.
  */
 public final class BinaryTerm implements Term {
   private final Term left;

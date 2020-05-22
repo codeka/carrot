@@ -9,8 +9,6 @@ import java.util.Objects;
 
 /**
  * The binary ADDITION operator like in {@code a + b}.
- *
- * @author Marten Gajda
  */
 public final class AddOperator implements BinaryOperator {
   @Override

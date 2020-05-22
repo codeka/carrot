@@ -7,15 +7,12 @@ import au.com.codeka.carrot.expr.TokenType;
 
 /**
  * The binary SUBTRACTION operator like in {@code a - b}.
- *
- * @author Marten Gajda
  */
 public final class SubOperator implements BinaryOperator {
   @Override
   public Object apply(Object left, Lazy right) throws CarrotException {
     return ValueHelper.add(left, ValueHelper.negate(right.value()));
   }
-
 
   @Override
   public String toString() {

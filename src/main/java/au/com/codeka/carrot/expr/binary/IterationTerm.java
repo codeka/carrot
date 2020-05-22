@@ -9,8 +9,6 @@ import java.util.Collections;
 
 /**
  * Adapter which makes the evaluated value of a {@link Term} {@link Iterable}.
- *
- * @author Marten Gajda
  */
 public final class IterationTerm implements Term {
   private final Term left;

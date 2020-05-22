@@ -10,8 +10,8 @@ public interface BinaryOperator {
   /**
    * Applies the binary operator to the given operands.
    *
-   * <p>Note that the right operand is passed as a {@link Lazy} because some operands may not need to evaluate it,
-   * depending on the left operand (e.g. boolean `and` and `or` operators).
+   * <p>Note that the right operand is passed as a {@link Lazy} because some operands may not need
+   * to evaluate it, depending on the left operand (e.g. boolean `and` and `or` operators).
    *
    * @param left  The left operand.
    * @param right The {@link Lazy} right operand.

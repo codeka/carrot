@@ -7,8 +7,6 @@ import au.com.codeka.carrot.expr.TokenType;
 
 /**
  * The binary MULTIPLICATION operator like in {@code a * b}.
- *
- * @author Marten Gajda
  */
 public final class MulOperator implements BinaryOperator {
   @Override

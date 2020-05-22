@@ -6,8 +6,6 @@ import au.com.codeka.carrot.expr.Lazy;
 
 /**
  * The boolean complement operator of another {@link BinaryOperator}.
- *
- * @author Marten Gajda
  */
 public final class Complement implements BinaryOperator {
   private final BinaryOperator delegate;

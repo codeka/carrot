@@ -7,8 +7,6 @@ import au.com.codeka.carrot.expr.TokenType;
 
 /**
  * The binary LESS THAN operator like in {@code a &lt; b}.
- *
- * @author Marten Gajda
  */
 public final class LessOperator implements BinaryOperator {
   @Override

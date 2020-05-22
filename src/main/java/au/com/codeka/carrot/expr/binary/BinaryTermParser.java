@@ -8,8 +8,6 @@ import au.com.codeka.carrot.expr.Tokenizer;
 
 /**
  * A factory for binary {@link Term}s.
- *
- * @author Marten Gajda
  */
 public final class BinaryTermParser implements TermParser {
   private final TermParser termParser;
