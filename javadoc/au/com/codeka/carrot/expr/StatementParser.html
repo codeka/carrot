@@ -134,7 +134,9 @@ extends java.lang.Object</pre>
 
    or-term = and-term ["||" or-term]
 
-   ternary-term = or-term ["?" variable ":" variable]
+   elvis-term or-term ["?:" or-term]
+
+   ternary-term = elivs-term ["?" variable ":" variable]
 
    emtpy-term =
 

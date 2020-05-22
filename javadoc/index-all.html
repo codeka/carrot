@@ -148,6 +148,8 @@
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="au/com/codeka/carrot/expr/binary/DivOperator.html#apply-java.lang.Object-au.com.codeka.carrot.expr.Lazy-">apply(Object, Lazy)</a></span> - Method in class au.com.codeka.carrot.expr.binary.<a href="au/com/codeka/carrot/expr/binary/DivOperator.html" title="class in au.com.codeka.carrot.expr.binary">DivOperator</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="au/com/codeka/carrot/expr/binary/ElvisOperator.html#apply-java.lang.Object-au.com.codeka.carrot.expr.Lazy-">apply(Object, Lazy)</a></span> - Method in class au.com.codeka.carrot.expr.binary.<a href="au/com/codeka/carrot/expr/binary/ElvisOperator.html" title="class in au.com.codeka.carrot.expr.binary">ElvisOperator</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="au/com/codeka/carrot/expr/binary/EqOperator.html#apply-java.lang.Object-au.com.codeka.carrot.expr.Lazy-">apply(Object, Lazy)</a></span> - Method in class au.com.codeka.carrot.expr.binary.<a href="au/com/codeka/carrot/expr/binary/EqOperator.html" title="class in au.com.codeka.carrot.expr.binary">EqOperator</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="au/com/codeka/carrot/expr/binary/GreaterOperator.html#apply-java.lang.Object-au.com.codeka.carrot.expr.Lazy-">apply(Object, Lazy)</a></span> - Method in class au.com.codeka.carrot.expr.binary.<a href="au/com/codeka/carrot/expr/binary/GreaterOperator.html" title="class in au.com.codeka.carrot.expr.binary">GreaterOperator</a></dt>
@@ -284,7 +286,7 @@
 <dd>
 <div class="block">A function or method which can be called with an <code>Iterable</code> of parameters.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="au/com/codeka/carrot/expr/accessible/Unaccessible.html#callable-au.com.codeka.carrot.Configuration-au.com.codeka.carrot.Scope-">callable(Configuration, Scope)</a></span> - Method in class au.com.codeka.carrot.expr.accessible.<a href="au/com/codeka/carrot/expr/accessible/Unaccessible.html" title="class in au.com.codeka.carrot.expr.accessible">Unaccessible</a></dt>
+<dt><span class="memberNameLink"><a href="au/com/codeka/carrot/expr/accessible/Inaccessible.html#callable-au.com.codeka.carrot.Configuration-au.com.codeka.carrot.Scope-">callable(Configuration, Scope)</a></span> - Method in class au.com.codeka.carrot.expr.accessible.<a href="au/com/codeka/carrot/expr/accessible/Inaccessible.html" title="class in au.com.codeka.carrot.expr.accessible">Inaccessible</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="au/com/codeka/carrot/tag/ElseTag.html#canChain-au.com.codeka.carrot.tag.Tag-">canChain(Tag)</a></span> - Method in class au.com.codeka.carrot.tag.<a href="au/com/codeka/carrot/tag/ElseTag.html" title="class in au.com.codeka.carrot.tag">ElseTag</a></dt>
 <dd>
@@ -351,7 +353,8 @@
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="au/com/codeka/carrot/util/ValueHelper.html#compare-java.lang.Object-java.lang.Object-">compare(Object, Object)</a></span> - Static method in class au.com.codeka.carrot.util.<a href="au/com/codeka/carrot/util/ValueHelper.html" title="class in au.com.codeka.carrot.util">ValueHelper</a></dt>
 <dd>
-<div class="block">Performs a numerical comparison on the two operands (assuming they are both convertible to numbers).</div>
+<div class="block">Performs a numerical comparison on the two operands (assuming they are both convertible to
+ numbers).</div>
 </dd>
 <dt><a href="au/com/codeka/carrot/expr/ternary/ComparisonOperator.html" title="class in au.com.codeka.carrot.expr.ternary"><span class="typeNameLink">ComparisonOperator</span></a> - Class in <a href="au/com/codeka/carrot/expr/ternary/package-summary.html">au.com.codeka.carrot.expr.ternary</a></dt>
 <dd>&nbsp;</dd>
@@ -437,6 +440,12 @@
 </dd>
 <dt><span class="memberNameLink"><a href="au/com/codeka/carrot/tag/ElseTag.html#ElseTag--">ElseTag()</a></span> - Constructor for class au.com.codeka.carrot.tag.<a href="au/com/codeka/carrot/tag/ElseTag.html" title="class in au.com.codeka.carrot.tag">ElseTag</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="au/com/codeka/carrot/expr/binary/ElvisOperator.html" title="class in au.com.codeka.carrot.expr.binary"><span class="typeNameLink">ElvisOperator</span></a> - Class in <a href="au/com/codeka/carrot/expr/binary/package-summary.html">au.com.codeka.carrot.expr.binary</a></dt>
+<dd>
+<div class="block">The "elvis" operator, '?:'.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="au/com/codeka/carrot/expr/binary/ElvisOperator.html#ElvisOperator--">ElvisOperator()</a></span> - Constructor for class au.com.codeka.carrot.expr.binary.<a href="au/com/codeka/carrot/expr/binary/ElvisOperator.html" title="class in au.com.codeka.carrot.expr.binary">ElvisOperator</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="au/com/codeka/carrot/bindings/EmptyBindings.html" title="class in au.com.codeka.carrot.bindings"><span class="typeNameLink">EmptyBindings</span></a> - Class in <a href="au/com/codeka/carrot/bindings/package-summary.html">au.com.codeka.carrot.bindings</a></dt>
 <dd>
 <div class="block"><a href="au/com/codeka/carrot/Bindings.html" title="interface in au.com.codeka.carrot"><code>Bindings</code></a> without any values.</div>
@@ -501,9 +510,9 @@
 </dd>
 <dt><span class="memberNameLink"><a href="au/com/codeka/carrot/expr/accessible/AccessTerm.html#evaluate-au.com.codeka.carrot.Configuration-au.com.codeka.carrot.Scope-">evaluate(Configuration, Scope)</a></span> - Method in class au.com.codeka.carrot.expr.accessible.<a href="au/com/codeka/carrot/expr/accessible/AccessTerm.html" title="class in au.com.codeka.carrot.expr.accessible">AccessTerm</a></dt>
 <dd>&nbsp;</dd>
-<dt><span class="memberNameLink"><a href="au/com/codeka/carrot/expr/accessible/MethodTerm.html#evaluate-au.com.codeka.carrot.Configuration-au.com.codeka.carrot.Scope-">evaluate(Configuration, Scope)</a></span> - Method in class au.com.codeka.carrot.expr.accessible.<a href="au/com/codeka/carrot/expr/accessible/MethodTerm.html" title="class in au.com.codeka.carrot.expr.accessible">MethodTerm</a></dt>
+<dt><span class="memberNameLink"><a href="au/com/codeka/carrot/expr/accessible/Inaccessible.html#evaluate-au.com.codeka.carrot.Configuration-au.com.codeka.carrot.Scope-">evaluate(Configuration, Scope)</a></span> - Method in class au.com.codeka.carrot.expr.accessible.<a href="au/com/codeka/carrot/expr/accessible/Inaccessible.html" title="class in au.com.codeka.carrot.expr.accessible">Inaccessible</a></dt>
 <dd>&nbsp;</dd>
-<dt><span class="memberNameLink"><a href="au/com/codeka/carrot/expr/accessible/Unaccessible.html#evaluate-au.com.codeka.carrot.Configuration-au.com.codeka.carrot.Scope-">evaluate(Configuration, Scope)</a></span> - Method in class au.com.codeka.carrot.expr.accessible.<a href="au/com/codeka/carrot/expr/accessible/Unaccessible.html" title="class in au.com.codeka.carrot.expr.accessible">Unaccessible</a></dt>
+<dt><span class="memberNameLink"><a href="au/com/codeka/carrot/expr/accessible/MethodTerm.html#evaluate-au.com.codeka.carrot.Configuration-au.com.codeka.carrot.Scope-">evaluate(Configuration, Scope)</a></span> - Method in class au.com.codeka.carrot.expr.accessible.<a href="au/com/codeka/carrot/expr/accessible/MethodTerm.html" title="class in au.com.codeka.carrot.expr.accessible">MethodTerm</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="au/com/codeka/carrot/expr/binary/BinaryTerm.html#evaluate-au.com.codeka.carrot.Configuration-au.com.codeka.carrot.Scope-">evaluate(Configuration, Scope)</a></span> - Method in class au.com.codeka.carrot.expr.binary.<a href="au/com/codeka/carrot/expr/binary/BinaryTerm.html" title="class in au.com.codeka.carrot.expr.binary">BinaryTerm</a></dt>
 <dd>&nbsp;</dd>
@@ -715,6 +724,12 @@
 <div class="block">The "if" tag evaluates it's single parameter and outputs it's children if true.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="au/com/codeka/carrot/tag/IfTag.html#IfTag--">IfTag()</a></span> - Constructor for class au.com.codeka.carrot.tag.<a href="au/com/codeka/carrot/tag/IfTag.html" title="class in au.com.codeka.carrot.tag">IfTag</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="au/com/codeka/carrot/expr/accessible/Inaccessible.html" title="class in au.com.codeka.carrot.expr.accessible"><span class="typeNameLink">Inaccessible</span></a> - Class in <a href="au/com/codeka/carrot/expr/accessible/package-summary.html">au.com.codeka.carrot.expr.accessible</a></dt>
+<dd>
+<div class="block">An <a href="au/com/codeka/carrot/expr/accessible/AccessibleTerm.html" title="interface in au.com.codeka.carrot.expr.accessible"><code>AccessibleTerm</code></a> which can not be accessed.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="au/com/codeka/carrot/expr/accessible/Inaccessible.html#Inaccessible-au.com.codeka.carrot.expr.Term-">Inaccessible(Term)</a></span> - Constructor for class au.com.codeka.carrot.expr.accessible.<a href="au/com/codeka/carrot/expr/accessible/Inaccessible.html" title="class in au.com.codeka.carrot.expr.accessible">Inaccessible</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="au/com/codeka/carrot/tag/IncludeTag.html" title="class in au.com.codeka.carrot.tag"><span class="typeNameLink">IncludeTag</span></a> - Class in <a href="au/com/codeka/carrot/tag/package-summary.html">au.com.codeka.carrot.tag</a></dt>
 <dd>
@@ -1414,6 +1429,8 @@
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="au/com/codeka/carrot/expr/binary/DivOperator.html#toString--">toString()</a></span> - Method in class au.com.codeka.carrot.expr.binary.<a href="au/com/codeka/carrot/expr/binary/DivOperator.html" title="class in au.com.codeka.carrot.expr.binary">DivOperator</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="au/com/codeka/carrot/expr/binary/ElvisOperator.html#toString--">toString()</a></span> - Method in class au.com.codeka.carrot.expr.binary.<a href="au/com/codeka/carrot/expr/binary/ElvisOperator.html" title="class in au.com.codeka.carrot.expr.binary">ElvisOperator</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="au/com/codeka/carrot/expr/binary/EqOperator.html#toString--">toString()</a></span> - Method in class au.com.codeka.carrot.expr.binary.<a href="au/com/codeka/carrot/expr/binary/EqOperator.html" title="class in au.com.codeka.carrot.expr.binary">EqOperator</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="au/com/codeka/carrot/expr/binary/GreaterOperator.html#toString--">toString()</a></span> - Method in class au.com.codeka.carrot.expr.binary.<a href="au/com/codeka/carrot/expr/binary/GreaterOperator.html" title="class in au.com.codeka.carrot.expr.binary">GreaterOperator</a></dt>
@@ -1466,12 +1483,6 @@
 </a>
 <h2 class="title">U</h2>
 <dl>
-<dt><a href="au/com/codeka/carrot/expr/accessible/Unaccessible.html" title="class in au.com.codeka.carrot.expr.accessible"><span class="typeNameLink">Unaccessible</span></a> - Class in <a href="au/com/codeka/carrot/expr/accessible/package-summary.html">au.com.codeka.carrot.expr.accessible</a></dt>
-<dd>
-<div class="block">An <a href="au/com/codeka/carrot/expr/accessible/AccessibleTerm.html" title="interface in au.com.codeka.carrot.expr.accessible"><code>AccessibleTerm</code></a> which can not be accessed.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="au/com/codeka/carrot/expr/accessible/Unaccessible.html#Unaccessible-au.com.codeka.carrot.expr.Term-">Unaccessible(Term)</a></span> - Constructor for class au.com.codeka.carrot.expr.accessible.<a href="au/com/codeka/carrot/expr/accessible/Unaccessible.html" title="class in au.com.codeka.carrot.expr.accessible">Unaccessible</a></dt>
-<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="au/com/codeka/carrot/expr/TokenType.html#unaryOperator--">unaryOperator()</a></span> - Method in enum au.com.codeka.carrot.expr.<a href="au/com/codeka/carrot/expr/TokenType.html" title="enum in au.com.codeka.carrot.expr">TokenType</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="au/com/codeka/carrot/expr/unary/UnaryOperator.html" title="interface in au.com.codeka.carrot.expr.unary"><span class="typeNameLink">UnaryOperator</span></a> - Interface in <a href="au/com/codeka/carrot/expr/unary/package-summary.html">au.com.codeka.carrot.expr.unary</a></dt>
